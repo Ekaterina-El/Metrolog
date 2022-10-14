@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/app_nav_graph"
+  app:startDestination="@id/welcomeFragment">
+
+  <fragment
+    android:id="@+id/welcomeFragment"
+    android:name="el.ka.someapp.view.WelcomeFragment"
+    android:label="WelcomeFragment" >
+    <action
+      android:id="@+id/action_welcomeFragment_to_loginFragment"
+      app:destination="@id/loginFragment"
+      app:popUpToInclusive="false" />
+    <action
+      android:id="@+id/action_welcomeFragment_to_registrationFragment"
+      app:destination="@id/registrationFragment" />
+  </fragment>
+  <fragment
+    android:id="@+id/loginFragment"
+    android:name="el.ka.someapp.view.LoginFragment"
+    android:label="LoginFragment" />
+  <fragment
+    android:id="@+id/registrationFragment"
+    android:name="el.ka.someapp.view.RegistrationFragment"
+    android:label="RegistrationFragment" />
+</navigation>

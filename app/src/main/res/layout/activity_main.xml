@@ -1,92 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools">
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
 
-  <data>
-
-    <variable
-      name="master"
-      type="el.ka.someapp.MainActivity" />
-  </data>
-
-  <androidx.core.widget.NestedScrollView
+  <androidx.fragment.app.FragmentContainerView
+    android:id="@+id/fragmentContainerView"
+    android:name="androidx.navigation.fragment.NavHostFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color"
-    tools:context=".MainActivity">
+    app:defaultNavHost="true"
+    app:navGraph="@navigation/app_nav_graph" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content">
-
-      <TextView
-        android:id="@+id/textAppTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:fontFamily="@font/nosifer_regular"
-        android:text="@string/app_name"
-        android:textColor="@color/primary_color"
-        android:textSize="32sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-      <TextView
-        android:id="@+id/textSubtitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/nothing_you_could_do_regular"
-        android:text="@string/app_tag"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textAppTitle" />
-
-      <Button
-        android:id="@+id/buttonLogin"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="200dp"
-        android:layout_marginEnd="30dp"
-        android:background="@drawable/button_color_wrapper"
-        android:fontFamily="@font/montserrat_alternates"
-        android:onClick="@{() -> master.toLogin()}"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="100"
-        android:text="@string/login"
-        android:textAllCaps="false"
-        android:textColor="@color/text_on_primary"
-        app:backgroundTint="@null"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textSubtitle" />
-
-      <Button
-        android:id="@+id/buttonRegistration"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="30dp"
-        android:background="@drawable/button_wrapper"
-        android:fontFamily="@font/montserrat_alternates"
-        android:onClick="@{() -> master.toRegistration()}"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="100"
-        android:text="@string/register"
-        android:textAllCaps="false"
-        android:textColor="@color/primary_dark_color"
-        app:backgroundTint="@null"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonLogin" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-  </androidx.core.widget.NestedScrollView>
-</layout>
+</androidx.constraintlayout.widget.ConstraintLayout>

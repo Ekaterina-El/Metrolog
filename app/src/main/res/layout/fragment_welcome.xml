@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <data>
+    <variable
+      name="master"
+      type="el.ka.someapp.view.WelcomeFragment" />
+  </data>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    tools:context=".MainActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+      <TextView
+        android:id="@+id/textAppTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:fontFamily="@font/nosifer_regular"
+        android:text="@string/app_name"
+        android:textColor="@color/primary_color"
+        android:textSize="32sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+      <TextView
+        android:id="@+id/textSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nothing_you_could_do_regular"
+        android:text="@string/app_tag"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textAppTitle" />
+
+      <Button
+        android:id="@+id/buttonLogin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/button_color_wrapper"
+        android:fontFamily="@font/montserrat_alternates"
+        android:onClick="@{() -> master.toLogin()}"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="100"
+        android:text="@string/login"
+        android:textAllCaps="false"
+        android:textColor="@color/text_on_primary"
+        app:backgroundTint="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@id/buttonRegistration" />
+
+      <Button
+        android:id="@+id/buttonRegistration"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/button_wrapper"
+        android:fontFamily="@font/montserrat_alternates"
+        android:onClick="@{() -> master.toRegistration()}"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="100"
+        android:text="@string/register"
+        android:textAllCaps="false"
+        android:textColor="@color/primary_dark_color"
+        app:backgroundTint="@null"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
