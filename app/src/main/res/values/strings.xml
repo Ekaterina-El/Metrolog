@@ -1,0 +1,14 @@
+<resources>
+  <string name="app_name">Metrolog</string>
+  <string name="app_tag">Приложение, где живут ваши СИ</string>
+  <string name="login">Войти</string>
+  <string name="register">Зарегистрироваться</string>
+  <string name="registration">Регистрация</string>
+  <string name="email">Почта</string>
+  <string name="email_example">example@mail.com</string>
+  <string name="fullname">ФИО</string>
+  <string name="fullname_example">Иванов Иван Иванович</string>
+  <string name="password_example">*************</string>
+  <string name="password">Пароль</string>
+  <string name="password_repeat">Повтор пароля</string>
+</resources>
