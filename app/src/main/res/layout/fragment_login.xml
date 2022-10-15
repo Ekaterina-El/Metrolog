@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto">
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+
+    <variable
+      name="viewModel"
+      type="el.ka.someapp.viewmodel.LoginViewModel" />
 
     <variable
       name="master"
@@ -76,7 +81,8 @@
           android:hint="@string/email_example"
           android:inputType="textEmailAddress"
           android:maxLines="1"
-          android:textColor="@color/primary_color"
+          android:textColor="@color/secondary_color"
+          android:text="@={viewModel.email}"
           android:textColorHint="@color/hint_color" />
       </LinearLayout>
 
@@ -127,11 +133,12 @@
           android:layout_marginHorizontal="10dp"
           android:autofillHints="emailAddress"
           android:background="@null"
+          android:textColor="@color/secondary_color"
           android:ellipsize="end"
+          android:text="@={viewModel.password}"
           android:hint="@string/password_example"
           android:inputType="textPassword"
           android:maxLines="1"
-          android:textColor="@color/primary_color"
           android:textColorHint="@color/hint_color" />
       </LinearLayout>
 
@@ -178,7 +185,7 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:background="@color/semi_dark"
-      android:visibility="gone">
+      app:isLoad="@{viewModel.state}">
 
       <ProgressBar
         android:layout_width="80dp"

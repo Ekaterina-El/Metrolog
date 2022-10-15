@@ -1,6 +1,5 @@
 package el.ka.someapp.view
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,36 +7,53 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import el.ka.someapp.data.State.*
 import el.ka.someapp.databinding.FragmentLoginBinding
+import el.ka.someapp.viewmodel.LoginViewModel
+
 
 class LoginFragment : Fragment() {
-  var isLoading = false
   private lateinit var binding: FragmentLoginBinding
+  private lateinit var viewModel: LoginViewModel
 
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    binding = FragmentLoginBinding.inflate(layoutInflater)
-    binding.master = this
+    initFunctionalityParts()
+    inflateBindingVariables()
+    addOnBackPressButton()
     return binding.root
   }
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    addOnBackPressButton()
+  private fun initFunctionalityParts() {
+    viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
+    binding = FragmentLoginBinding.inflate(layoutInflater)
+  }
+
+  private fun inflateBindingVariables() {
+    binding.lifecycleOwner = viewLifecycleOwner
+    binding.master = this
+    binding.viewModel = viewModel
   }
 
   private fun addOnBackPressButton() {
     requireActivity().onBackPressedDispatcher.addCallback(this) {
-      if (!isLoading) Navigation.findNavController(requireView()).popBackStack()
+      if (viewModel.state.value != LOADING) Navigation.findNavController(requireView())
+        .popBackStack()
     }
   }
 
   fun login() {
-    isLoading = true
-    binding.layoutLoader.visibility = View.VISIBLE    // TODO: in future move to viewmodel
+    verificationCredentials()
+  }
+
+  private fun verificationCredentials() {
+    val email = viewModel.email.value
+    val password = viewModel.password.value
+    Toast.makeText(requireContext(), "$email : $password", Toast.LENGTH_SHORT).show()
   }
 }
