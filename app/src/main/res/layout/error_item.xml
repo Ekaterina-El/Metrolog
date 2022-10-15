@@ -6,7 +6,7 @@
   <data>
     <variable
       name="error"
-      type="el.ka.someapp.data.ErrorApp" />
+      type="el.ka.someapp.data.model.ErrorApp" />
   </data>
 
   <androidx.cardview.widget.CardView

@@ -18,4 +18,5 @@
   <string name="invalidPassword">Некорректный пароль. Минимальная длина 8</string>
   <string name="noEqualPassword">Пароли не совпадают</string>
   <string name="invalidFullName">Некорректное ФИО</string>
+  <string name="somethingWrong">Что-то пошло не так -_-</string>
 </resources>

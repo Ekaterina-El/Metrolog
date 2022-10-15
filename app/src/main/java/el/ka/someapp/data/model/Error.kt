@@ -1,4 +1,4 @@
-package el.ka.someapp.data
+package el.ka.someapp.data.model
 
 import el.ka.someapp.R
 
@@ -12,4 +12,5 @@ object Errors {
   val alreadyTakenEmail = ErrorApp(textId = R.string.alreadyTakenEmail)
   val invalidPassword = ErrorApp(textId = R.string.invalidPassword)
   val noEqualPassword = ErrorApp(textId = R.string.noEqualPassword)
+  val somethingWrong = ErrorApp(textId = R.string.somethingWrong)
 }

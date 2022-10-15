@@ -10,8 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import el.ka.someapp.data.ErrorApp
-import el.ka.someapp.data.State
+import el.ka.someapp.data.model.ErrorApp
+import el.ka.someapp.data.model.State
 import el.ka.someapp.databinding.FragmentRegistrationBinding
 import el.ka.someapp.view.adapters.ErrorAdapter
 import el.ka.someapp.viewmodel.RegistrationViewModel

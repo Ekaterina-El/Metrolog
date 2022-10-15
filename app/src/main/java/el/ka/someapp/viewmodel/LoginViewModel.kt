@@ -1,11 +1,10 @@
 package el.ka.someapp.viewmodel
 
 import android.app.Application
-import androidx.databinding.ObservableField
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import el.ka.someapp.data.State
+import el.ka.someapp.data.model.State
 
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
   var email = MutableLiveData<String>()

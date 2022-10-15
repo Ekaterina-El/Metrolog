@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "715993923162",
+    "project_id": "metrolog-79c82",
+    "storage_bucket": "metrolog-79c82.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:715993923162:android:13cd8be55d0689635ea263",
+        "android_client_info": {
+          "package_name": "el.ka.someapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "715993923162-ppejju8lufj90af5adeo3sbicbtejp4u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASaj-I42WXrQ2cTu3i1vseic2uAfJt6jU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "715993923162-ppejju8lufj90af5adeo3sbicbtejp4u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

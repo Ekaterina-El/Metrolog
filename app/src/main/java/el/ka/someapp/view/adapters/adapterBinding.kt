@@ -3,7 +3,7 @@ package el.ka.someapp.view
 import android.view.View
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import el.ka.someapp.data.State
+import el.ka.someapp.data.model.State
 
 @BindingAdapter("app:isLoad")
 fun visibleLoader(view: View, state: State) {

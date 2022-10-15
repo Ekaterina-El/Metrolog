@@ -9,7 +9,7 @@ import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import el.ka.someapp.data.State.*
+import el.ka.someapp.data.model.State.*
 import el.ka.someapp.databinding.FragmentLoginBinding
 import el.ka.someapp.viewmodel.LoginViewModel
 

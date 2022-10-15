@@ -3,7 +3,7 @@ package el.ka.someapp.view.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import el.ka.someapp.data.ErrorApp
+import el.ka.someapp.data.model.ErrorApp
 import el.ka.someapp.databinding.ErrorItemBinding
 
 class ErrorAdapter : RecyclerView.Adapter<ErrorAdapter.ViewHolder>() {

@@ -5,11 +5,13 @@ import android.util.Patterns
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import el.ka.someapp.data.ErrorApp
-import el.ka.someapp.data.Errors
-import el.ka.someapp.data.State
+import el.ka.someapp.data.model.ErrorApp
+import el.ka.someapp.data.model.Errors
+import el.ka.someapp.data.model.State
+import el.ka.someapp.data.repository.FirebaseAuthentication
 
 class RegistrationViewModel(application: Application) : AndroidViewModel(application) {
+  val auth = FirebaseAuthentication
   val email = MutableLiveData("")
   val fullName = MutableLiveData("")
   val password = MutableLiveData("")
@@ -26,9 +28,17 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
 
 
   fun verificationCredentials() {
-    //_state.value = State.LOADING
+    _state.value = State.LOADING
     _errors.value  = checkCredentials()
 
+    if (_errors.value!!.size == 0) {
+      auth.registerUser(email = email.value!!, password = password.value!!, onSuccess = {
+        _state.value = State.AWAITING
+      }, onFailure = {
+        _state.value = State.ENTER_DATA
+        _errors.value = mutableListOf(Errors.somethingWrong)
+      })
+    }
   }
 
   private fun checkCredentials(): MutableList<ErrorApp> {
@@ -48,11 +58,6 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
     } else if (value != repeat) {
       listOfErrors.add(Errors.noEqualPassword)
     }
-    listOfErrors.add(Errors.invalidPassword)
-    listOfErrors.add(Errors.invalidPassword)
-    listOfErrors.add(Errors.invalidPassword)
-    listOfErrors.add(Errors.invalidPassword)
-
   }
 
   private fun checkName(listOfErrors: MutableList<ErrorApp>) {
