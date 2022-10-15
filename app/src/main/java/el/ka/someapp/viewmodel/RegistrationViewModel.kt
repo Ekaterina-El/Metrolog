@@ -28,15 +28,12 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
 
 
   fun verificationCredentials() {
-    _errors.value!!.clear()
-    _errors.value!!.addAll(
-      Verificator.checkForRegistration(
-        email = email.value!!,
-        fullName = fullName.value!!,
-        password = password.value!!,
-        repeatPassword = repeatPassword.value!!
-      )
-    )
+    _errors.value = Verificator.checkForRegistration(
+      email = email.value!!,
+      fullName = fullName.value!!,
+      password = password.value!!,
+      repeatPassword = repeatPassword.value!!
+    ).toMutableList()
 
     if (_errors.value!!.size == 0) { registrationUser() }
   }
