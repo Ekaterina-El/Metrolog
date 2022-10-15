@@ -8,10 +8,11 @@ import androidx.lifecycle.MutableLiveData
 import el.ka.someapp.data.model.ErrorApp
 import el.ka.someapp.data.model.Errors
 import el.ka.someapp.data.model.State
-import el.ka.someapp.data.repository.FirebaseAuthentication
+import el.ka.someapp.data.model.User
+import el.ka.someapp.data.repository.AuthenticationService
 
 class RegistrationViewModel(application: Application) : AndroidViewModel(application) {
-  val auth = FirebaseAuthentication
+  val auth = AuthenticationService
   val email = MutableLiveData("")
   val fullName = MutableLiveData("")
   val password = MutableLiveData("")
@@ -42,7 +43,13 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
         onFailure = { error ->
           _state.value = State.ENTER_DATA
           _errors.value = mutableListOf(error)
-        })
+        },
+        userData = User(
+          fullName = fullName.value!!,
+          email = email.value!!
+        )
+      )
+
     }
   }
 
@@ -58,7 +65,7 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
   private fun checkPassword(listOfErrors: MutableList<ErrorApp>) {
     val value = password.value
     val repeat = repeatPassword.value
-    if (value.isNullOrEmpty() || value.length == 0) {
+    if (value.isNullOrEmpty() || value.length < 8) {
       listOfErrors.add(Errors.invalidPassword)
     } else if (value != repeat) {
       listOfErrors.add(Errors.noEqualPassword)
@@ -77,7 +84,6 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
     if (value.isNullOrEmpty() || !Patterns.EMAIL_ADDRESS.matcher(value).matches()) {
       listOfErrors.add(Errors.invalidEmail)
     }
-    // TODO: проверка на статус свободности почты...
   }
 
 }
