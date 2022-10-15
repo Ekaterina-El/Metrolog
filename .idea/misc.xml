@@ -3,9 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/SomeApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.214" />
         <entry key="..\:/SomeApp/app/src/main/res/drawable/button_color_wrapper.xml" value="0.182" />
         <entry key="..\:/SomeApp/app/src/main/res/drawable/button_wrapper.xml" value="0.182" />
         <entry key="..\:/SomeApp/app/src/main/res/drawable/gradient.xml" value="0.182" />
+        <entry key="..\:/SomeApp/app/src/main/res/drawable/ic_email.xml" value="0.214" />
+        <entry key="..\:/SomeApp/app/src/main/res/drawable/ic_info.xml" value="0.214" />
+        <entry key="..\:/SomeApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1065" />
+        <entry key="..\:/SomeApp/app/src/main/res/drawable/ic_lock.xml" value="0.214" />
+        <entry key="..\:/SomeApp/app/src/main/res/drawable/ic_person.xml" value="0.214" />
+        <entry key="..\:/SomeApp/app/src/main/res/drawable/input_wrapper.xml" value="0.214" />
         <entry key="..\:/SomeApp/app/src/main/res/layout/activity_login.xml" value="0.264" />
         <entry key="..\:/SomeApp/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/SomeApp/app/src/main/res/layout/activity_registration.xml" value="0.264" />

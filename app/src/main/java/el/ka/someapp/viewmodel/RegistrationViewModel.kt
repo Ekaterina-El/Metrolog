@@ -48,6 +48,11 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
     } else if (value != repeat) {
       listOfErrors.add(Errors.noEqualPassword)
     }
+    listOfErrors.add(Errors.invalidPassword)
+    listOfErrors.add(Errors.invalidPassword)
+    listOfErrors.add(Errors.invalidPassword)
+    listOfErrors.add(Errors.invalidPassword)
+
   }
 
   private fun checkName(listOfErrors: MutableList<ErrorApp>) {
