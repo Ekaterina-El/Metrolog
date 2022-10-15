@@ -15,6 +15,15 @@ object Verificator {
     return listOfErrors.toTypedArray()
   }
 
+  private fun checkPassword(password: String): Array<ErrorApp> {
+    val listOfErrors = mutableListOf<ErrorApp>()
+
+    if (password.isEmpty() || password.length < 8) {
+      listOfErrors.add(Errors.invalidPassword)
+    }
+    return listOfErrors.toTypedArray()
+  }
+
   fun checkName(fullName: String): Array<ErrorApp> {
     val listOfErrors = mutableListOf<ErrorApp>()
     if (fullName.isEmpty() || fullName.trim().split(" ").size < 2) {
@@ -36,7 +45,7 @@ object Verificator {
     fullName: String,
     password: String,
     repeatPassword: String
-  ): Array<ErrorApp> {
+  ): MutableList<ErrorApp> {
     val listOfErrors = mutableListOf<ErrorApp>()
     listOfErrors.addAll(checkEmail(email = email))
     listOfErrors.addAll(checkName(fullName = fullName))
@@ -47,6 +56,16 @@ object Verificator {
       )
     )
 
-    return listOfErrors.toTypedArray()
+    return listOfErrors
+  }
+
+  fun checkForSignIn(
+    email: String,
+    password: String,
+  ): MutableList<ErrorApp> {
+    val listOfErrors = mutableListOf<ErrorApp>()
+    listOfErrors.addAll(checkEmail(email = email))
+    listOfErrors.addAll(checkPassword(password = password))
+    return listOfErrors
   }
 }

@@ -51,11 +51,27 @@ object AuthenticationService {
       }
   }
 
-  private fun enterUserDataToRealtimeDatabase(userData: User, onSuccess: () -> Unit = {}, onFailure: () -> Unit = {}) {
+  private fun enterUserDataToRealtimeDatabase(
+    userData: User,
+    onSuccess: () -> Unit = {},
+    onFailure: () -> Unit = {}
+  ) {
     databaseUsers.child(userData.uid).setValue(userData)
       .addOnCompleteListener {
         if (it.isSuccessful) onSuccess() else onFailure()
-    }
+      }
+  }
+
+  fun loginUser(
+    email: String,
+    password: String,
+    onSuccess: () -> Unit,
+    onFailed: () -> Unit
+  ) {
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .addOnSuccessListener { onSuccess() }
+      .addOnFailureListener { onFailed() }
   }
 
 }

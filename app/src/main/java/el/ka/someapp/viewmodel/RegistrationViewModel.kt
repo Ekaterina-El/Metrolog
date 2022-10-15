@@ -11,7 +11,7 @@ import el.ka.someapp.data.repository.AuthenticationService
 import el.ka.someapp.utils.Verificator
 
 class RegistrationViewModel(application: Application) : AndroidViewModel(application) {
-  val auth = AuthenticationService
+  private val auth = AuthenticationService
   val email = MutableLiveData("")
   val fullName = MutableLiveData("")
   val password = MutableLiveData("")
