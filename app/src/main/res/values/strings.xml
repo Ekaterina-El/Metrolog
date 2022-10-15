@@ -22,4 +22,6 @@
   <string name="weekPassword">Ваш пароль не надежный. Введите другой…</string>
   <string name="invalidCredentialsRegistration">Почта не корректная или уже используеться</string>
   <string name="collisionUser">Почта занята</string>
+  <string name="invalidUser">Пользователь не найден. Попробуйте зарегестрироваться сейчас</string>
+  <string name="invalidEmailOrPassword">Неверные почта или пароль. Проверьте свои данные или восстановить пароль</string>
 </resources>

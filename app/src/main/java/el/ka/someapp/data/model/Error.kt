@@ -17,4 +17,8 @@ object Errors {
   val somethingWrong = ErrorApp(textId = R.string.somethingWrong)
   val collisionUser = ErrorApp(textId = R.string.collisionUser)
 
+  val invalidUser = ErrorApp(textId = R.string.invalidUser)
+  val invalidEmailOrPassword = ErrorApp(textId = R.string.invalidEmailOrPassword)
+
+
 }

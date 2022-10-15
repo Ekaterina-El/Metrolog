@@ -65,13 +65,21 @@ object AuthenticationService {
   fun loginUser(
     email: String,
     password: String,
-    onSuccess: () -> Unit,
-    onFailed: () -> Unit
+    onSuccess: () -> Unit = {},
+    onFailed: (ErrorApp) -> Unit = {}
   ) {
     auth
       .signInWithEmailAndPassword(email, password)
       .addOnSuccessListener { onSuccess() }
-      .addOnFailureListener { onFailed() }
+      .addOnFailureListener {
+        val error = when(it as FirebaseAuthException) {
+          is FirebaseAuthInvalidUserException -> Errors.invalidUser
+          is FirebaseAuthInvalidCredentialsException -> Errors.invalidEmailOrPassword
+          else -> Errors.somethingWrong
+        }
+
+        onFailed(error)
+      }
   }
 
 }

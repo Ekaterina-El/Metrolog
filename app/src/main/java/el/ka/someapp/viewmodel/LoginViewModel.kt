@@ -48,8 +48,9 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
       onSuccess = {
         _state.value = State.AWAITING
       },
-      onFailed = {
+      onFailed = { error ->
         _state.value = State.ENTER_DATA
+        _errors.value = mutableListOf(error)
       })
   }
 }
