@@ -4,6 +4,9 @@
   xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+    <variable
+      name="errorAdapter"
+      type="el.ka.someapp.view.adapters.ErrorAdapter" />
 
     <variable
       name="viewModel"
@@ -46,125 +49,175 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textAppTitle" />
 
-      <!--Edit text: Email - start-->
-      <LinearLayout
-        android:id="@+id/layoutEmail"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/app_padding"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="@dimen/app_padding"
-        android:background="@drawable/input_wrapper"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingHorizontal="15dp"
-        android:paddingVertical="10dp"
+      <View
+        android:id="@+id/viewDividerSubtitle"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/light_gray"
+        app:layout_constraintTop_toBottomOf="@id/textSubtitle" />
+
+      <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:overScrollMode="never"
+        app:layout_constraintBottom_toTopOf="@id/viewDividerButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textSubtitle">
+        app:layout_constraintTop_toBottomOf="@id/viewDividerSubtitle">
 
-        <ImageView
-          android:layout_width="20dp"
-          android:layout_height="20dp"
-          android:contentDescription="@string/app_name"
-          android:src="@drawable/ic_email"
-          app:tint="@color/primary_color" />
-
-        <EditText
-          android:id="@+id/editTextEmail"
+        <androidx.constraintlayout.widget.ConstraintLayout
           android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginHorizontal="10dp"
-          android:autofillHints="emailAddress"
-          android:background="@null"
-          android:ellipsize="end"
-          android:hint="@string/email_example"
-          android:inputType="textEmailAddress"
-          android:maxLines="1"
-          android:textColor="@color/secondary_color"
-          android:text="@={viewModel.email}"
-          android:textColorHint="@color/hint_color" />
-      </LinearLayout>
+          android:layout_height="wrap_content">
 
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:background="@color/background_color"
-        android:paddingHorizontal="10dp"
-        android:text="@string/email"
-        android:textAllCaps="true"
-        android:textColor="@color/primary_color"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/layoutEmail"
-        app:layout_constraintStart_toStartOf="@id/layoutEmail"
-        app:layout_constraintTop_toTopOf="@id/layoutEmail" />
-      <!--Edit text: Email - end-->
 
-      <!--Edit text: Password - start-->
-      <LinearLayout
-        android:id="@+id/layoutPassword"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/app_padding"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="@dimen/app_padding"
-        android:background="@drawable/input_wrapper"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingHorizontal="15dp"
-        android:paddingVertical="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layoutEmail">
+          <!--Edit text: Email - start-->
+          <LinearLayout
+            android:id="@+id/layoutEmail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/app_padding"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="@dimen/app_padding"
+            android:background="@drawable/input_wrapper"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-          android:layout_width="20dp"
-          android:layout_height="20dp"
-          android:contentDescription="@string/app_name"
-          android:src="@drawable/ic_lock"
-          app:tint="@color/primary_color" />
+            <ImageView
+              android:layout_width="20dp"
+              android:layout_height="20dp"
+              android:contentDescription="@string/app_name"
+              android:src="@drawable/ic_email"
+              app:tint="@color/primary_color" />
 
-        <EditText
-          android:id="@+id/editTextPassword"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginHorizontal="10dp"
-          android:autofillHints="emailAddress"
-          android:background="@null"
-          android:textColor="@color/secondary_color"
-          android:ellipsize="end"
-          android:text="@={viewModel.password}"
-          android:hint="@string/password_example"
-          android:inputType="textPassword"
-          android:maxLines="1"
-          android:textColorHint="@color/hint_color" />
-      </LinearLayout>
+            <EditText
+              android:id="@+id/editTextEmail"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginHorizontal="10dp"
+              android:autofillHints="emailAddress"
+              android:background="@null"
+              android:ellipsize="end"
+              android:hint="@string/email_example"
+              android:inputType="textEmailAddress"
+              android:maxLines="1"
+              android:text="@={viewModel.email}"
+              android:textColor="@color/secondary_color"
+              android:textColorHint="@color/hint_color" />
+          </LinearLayout>
 
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:background="@color/background_color"
-        android:paddingHorizontal="10dp"
-        android:text="@string/password"
-        android:textAllCaps="true"
-        android:textColor="@color/primary_color"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/layoutPassword"
-        app:layout_constraintStart_toStartOf="@id/layoutPassword"
-        app:layout_constraintTop_toTopOf="@id/layoutPassword" />
-      <!--Edit text: Password - end-->
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:background="@color/background_color"
+            android:paddingHorizontal="10dp"
+            android:text="@string/email"
+            android:textAllCaps="true"
+            android:textColor="@color/primary_color"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/layoutEmail"
+            app:layout_constraintStart_toStartOf="@id/layoutEmail"
+            app:layout_constraintTop_toTopOf="@id/layoutEmail" />
+          <!--Edit text: Email - end-->
+
+          <!--Edit text: Password - start-->
+          <LinearLayout
+            android:id="@+id/layoutPassword"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/app_padding"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="@dimen/app_padding"
+            android:background="@drawable/input_wrapper"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layoutEmail">
+
+            <ImageView
+              android:layout_width="20dp"
+              android:layout_height="20dp"
+              android:contentDescription="@string/app_name"
+              android:src="@drawable/ic_lock"
+              app:tint="@color/primary_color" />
+
+            <EditText
+              android:id="@+id/editTextPassword"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginHorizontal="10dp"
+              android:autofillHints="emailAddress"
+              android:background="@null"
+              android:ellipsize="end"
+              android:hint="@string/password_example"
+              android:inputType="textPassword"
+              android:maxLines="1"
+              android:text="@={viewModel.password}"
+              android:textColor="@color/secondary_color"
+              android:textColorHint="@color/hint_color" />
+          </LinearLayout>
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:background="@color/background_color"
+            android:paddingHorizontal="10dp"
+            android:text="@string/password"
+            android:textAllCaps="true"
+            android:textColor="@color/primary_color"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/layoutPassword"
+            app:layout_constraintStart_toStartOf="@id/layoutPassword"
+            app:layout_constraintTop_toTopOf="@id/layoutPassword" />
+          <!--Edit text: Password - end-->
+
+          <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/layoutErrors"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/app_padding"
+            android:adapter="@{errorAdapter}"
+            android:clipToPadding="false"
+            android:padding="10dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layoutPassword"
+            tools:itemCount="3"
+            tools:listitem="@layout/error_item" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+      </androidx.core.widget.NestedScrollView>
+
+
+      <View
+        android:id="@+id/viewDividerButton"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="15dp"
+        android:background="@color/light_gray"
+        app:layout_constraintBottom_toTopOf="@id/buttonLogin" />
 
       <Button
-        android:id="@+id/buttonRegistration"
+        android:id="@+id/buttonLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="30dp"
+        android:layout_marginBottom="15dp"
         android:background="@drawable/button_color_wrapper"
         android:fontFamily="@font/montserrat_alternates"
         android:onClick="@{() -> master.login()}"
@@ -175,9 +228,9 @@
         android:textAllCaps="false"
         android:textColor="@color/text_on_primary"
         app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layoutPassword" />
+        app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -185,7 +238,8 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:background="@color/semi_dark"
-      app:isLoad="@{viewModel.state}">
+      app:isLoad="@{viewModel.state}"
+      tools:visibility="gone">
 
       <ProgressBar
         android:layout_width="80dp"
