@@ -13,14 +13,13 @@ object AuthenticationService {
 
 
   fun registerUser(
-    email: String,
     password: String,
     userData: User,
     onSuccess: (FirebaseUser) -> Unit = {},
     onFailure: (ErrorApp) -> Unit = {}
   ) {
     auth
-      .createUserWithEmailAndPassword(email, password)
+      .createUserWithEmailAndPassword(userData.email, password)
       .addOnSuccessListener {
         val user = auth.currentUser!!
         userData.uid = user.uid

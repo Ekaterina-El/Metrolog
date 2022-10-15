@@ -1,15 +1,14 @@
 package el.ka.someapp.viewmodel
 
 import android.app.Application
-import android.util.Patterns
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import el.ka.someapp.data.model.ErrorApp
-import el.ka.someapp.data.model.Errors
 import el.ka.someapp.data.model.State
 import el.ka.someapp.data.model.User
 import el.ka.someapp.data.repository.AuthenticationService
+import el.ka.someapp.utils.Verificator
 
 class RegistrationViewModel(application: Application) : AndroidViewModel(application) {
   val auth = AuthenticationService
@@ -29,61 +28,35 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
 
 
   fun verificationCredentials() {
-    _errors.value = checkCredentials()
-
-    if (_errors.value!!.size == 0) {
-      _state.value = State.LOADING
-
-      auth.registerUser(
+    _errors.value!!.clear()
+    _errors.value!!.addAll(
+      Verificator.checkForRegistration(
         email = email.value!!,
+        fullName = fullName.value!!,
         password = password.value!!,
-        onSuccess = {
-          _state.value = State.AWAITING
-        },
-        onFailure = { error ->
-          _state.value = State.ENTER_DATA
-          _errors.value = mutableListOf(error)
-        },
-        userData = User(
-          fullName = fullName.value!!,
-          email = email.value!!
-        )
+        repeatPassword = repeatPassword.value!!
       )
+    )
 
-    }
+    if (_errors.value!!.size == 0) { registrationUser() }
   }
 
-  private fun checkCredentials(): MutableList<ErrorApp> {
-    val listOfErrors = mutableListOf<ErrorApp>()
-    checkEmail(listOfErrors)
-    checkName(listOfErrors)
-    checkPassword(listOfErrors)
-
-    return listOfErrors
-  }
-
-  private fun checkPassword(listOfErrors: MutableList<ErrorApp>) {
-    val value = password.value
-    val repeat = repeatPassword.value
-    if (value.isNullOrEmpty() || value.length < 8) {
-      listOfErrors.add(Errors.invalidPassword)
-    } else if (value != repeat) {
-      listOfErrors.add(Errors.noEqualPassword)
-    }
-  }
-
-  private fun checkName(listOfErrors: MutableList<ErrorApp>) {
-    val value = fullName.value
-    if (value.isNullOrEmpty() || value.trim().split(" ").size < 2) {
-      listOfErrors.add(Errors.invalidFullName)
-    }
-  }
-
-  private fun checkEmail(listOfErrors: MutableList<ErrorApp>) {
-    val value = email.value
-    if (value.isNullOrEmpty() || !Patterns.EMAIL_ADDRESS.matcher(value).matches()) {
-      listOfErrors.add(Errors.invalidEmail)
-    }
+  private fun registrationUser() {
+    _state.value = State.LOADING
+    auth.registerUser(
+      password = password.value!!,
+      onSuccess = {
+        _state.value = State.AWAITING
+      },
+      onFailure = { error ->
+        _state.value = State.ENTER_DATA
+        _errors.value = mutableListOf(error)
+      },
+      userData = User(
+        fullName = fullName.value!!,
+        email = email.value!!
+      )
+    )
   }
 
 }
