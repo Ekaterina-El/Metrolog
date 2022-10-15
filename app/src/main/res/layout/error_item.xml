@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+    <variable
+      name="error"
+      type="el.ka.someapp.data.ErrorApp" />
+  </data>
+
+  <androidx.cardview.widget.CardView
+    app:cardElevation="0dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="5dp"
+    app:cardCornerRadius="10dp"
+    android:backgroundTint="@color/background_color">
+
+    <LinearLayout
+      android:background="@color/attentionColor"
+      android:layout_width="match_parent"
+      android:padding="10dp"
+      android:gravity="center"
+      android:layout_height="match_parent"
+      android:orientation="horizontal">
+
+      <ImageView
+        android:src="@drawable/ic_info"
+        android:layout_marginEnd="20dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:tint="@color/white"
+        android:contentDescription="@null" />
+
+      <TextView
+        app:loadText="@{error.textId}"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/montserrat_alternates"
+        tools:text="No username found" />
+    </LinearLayout>
+  </androidx.cardview.widget.CardView>
+</layout>

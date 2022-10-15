@@ -11,4 +11,11 @@
   <string name="password_example">*************</string>
   <string name="password">Пароль</string>
   <string name="password_repeat">Повтор пароля</string>
+
+  <!-- Errors -->
+  <string name="invalidEmail">Некорректный адрес эл.почты</string>
+  <string name="alreadyTakenEmail">Введенная эл.почта уже использована</string>
+  <string name="invalidPassword">Некорректный пароль. Минимальная длина 8</string>
+  <string name="noEqualPassword">Пароли не совпадают</string>
+  <string name="invalidFullName">Некорректное ФИО</string>
 </resources>
