@@ -1,7 +1,8 @@
 package el.ka.someapp.data.repository
 
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.*
+import el.ka.someapp.data.model.ErrorApp
+import el.ka.someapp.data.model.Errors
 
 object FirebaseAuthentication {
   private const val TAG = "FirebaseAuthentication"
@@ -11,7 +12,7 @@ object FirebaseAuthentication {
     email: String,
     password: String,
     onSuccess: (FirebaseUser) -> Unit = {},
-    onFailure: () -> Unit = {}
+    onFailure: (ErrorApp) -> Unit = {}
   ) {
     auth
       .createUserWithEmailAndPassword(email, password)
@@ -20,7 +21,16 @@ object FirebaseAuthentication {
         user.sendEmailVerification()
         onSuccess(user)
       }
-      .addOnFailureListener { onFailure() }
+      .addOnFailureListener {
+        val error = when(it as FirebaseAuthException) {
+          is FirebaseAuthWeakPasswordException -> Errors.weakPassword
+          is FirebaseAuthInvalidCredentialsException -> Errors.invalidCredentials
+          is FirebaseAuthUserCollisionException -> Errors.collisionUser
+          else -> Errors.somethingWrong
+        }
+
+        onFailure(error)
+      }
   }
 
 }

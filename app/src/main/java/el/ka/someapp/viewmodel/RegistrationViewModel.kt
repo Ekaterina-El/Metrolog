@@ -28,16 +28,21 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
 
 
   fun verificationCredentials() {
-    _state.value = State.LOADING
-    _errors.value  = checkCredentials()
+    _errors.value = checkCredentials()
 
     if (_errors.value!!.size == 0) {
-      auth.registerUser(email = email.value!!, password = password.value!!, onSuccess = {
-        _state.value = State.AWAITING
-      }, onFailure = {
-        _state.value = State.ENTER_DATA
-        _errors.value = mutableListOf(Errors.somethingWrong)
-      })
+      _state.value = State.LOADING
+
+      auth.registerUser(
+        email = email.value!!,
+        password = password.value!!,
+        onSuccess = {
+          _state.value = State.AWAITING
+        },
+        onFailure = { error ->
+          _state.value = State.ENTER_DATA
+          _errors.value = mutableListOf(error)
+        })
     }
   }
 
@@ -53,7 +58,7 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
   private fun checkPassword(listOfErrors: MutableList<ErrorApp>) {
     val value = password.value
     val repeat = repeatPassword.value
-    if (value.isNullOrEmpty() || value.length < 8) {
+    if (value.isNullOrEmpty() || value.length == 0) {
       listOfErrors.add(Errors.invalidPassword)
     } else if (value != repeat) {
       listOfErrors.add(Errors.noEqualPassword)

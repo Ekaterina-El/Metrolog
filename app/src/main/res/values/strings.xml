@@ -19,4 +19,7 @@
   <string name="noEqualPassword">Пароли не совпадают</string>
   <string name="invalidFullName">Некорректное ФИО</string>
   <string name="somethingWrong">Что-то пошло не так -_-</string>
+  <string name="weekPassword">Ваш пароль не надежный. Введите другой...</string>
+  <string name="invalidCredentialsRegistration">Почта не корректная или уже используеться</string>
+  <string name="collisionUser">Почта занята</string>
 </resources>
