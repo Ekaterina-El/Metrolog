@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools">
+  xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <data>
+
+    <variable
+      name="viewModel"
+      type="el.ka.someapp.viewmodel.RegistrationViewModel" />
 
     <variable
       name="master"
@@ -76,7 +79,8 @@
           android:hint="@string/email_example"
           android:inputType="textEmailAddress"
           android:maxLines="1"
-          android:textColor="@color/primary_color"
+          android:text="@={viewModel.email}"
+          android:textColor="@color/secondary_color"
           android:textColorHint="@color/hint_color" />
       </LinearLayout>
 
@@ -131,7 +135,8 @@
           android:hint="@string/fullname_example"
           android:inputType="textPersonName"
           android:maxLines="1"
-          android:textColor="@color/primary_color"
+          android:text="@={viewModel.fullName}"
+          android:textColor="@color/secondary_color"
           android:textColorHint="@color/hint_color" />
       </LinearLayout>
 
@@ -186,7 +191,8 @@
           android:hint="@string/password_example"
           android:inputType="textPassword"
           android:maxLines="1"
-          android:textColor="@color/primary_color"
+          android:text="@={viewModel.password}"
+          android:textColor="@color/secondary_color"
           android:textColorHint="@color/hint_color" />
       </LinearLayout>
 
@@ -241,7 +247,8 @@
           android:hint="@string/password_example"
           android:inputType="textPassword"
           android:maxLines="1"
-          android:textColor="@color/primary_color"
+          android:text="@={viewModel.repeatPassword}"
+          android:textColor="@color/secondary_color"
           android:textColorHint="@color/hint_color" />
       </LinearLayout>
 
@@ -288,7 +295,7 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:background="@color/semi_dark"
-      android:visibility="gone">
+      app:isLoad="@{viewModel.state}">
 
       <ProgressBar
         android:layout_width="80dp"
