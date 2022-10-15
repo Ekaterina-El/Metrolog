@@ -55,5 +55,6 @@ class LoginFragment : Fragment() {
     val email = viewModel.email.value
     val password = viewModel.password.value
     Toast.makeText(requireContext(), "$email : $password", Toast.LENGTH_SHORT).show()
+    viewModel.verificationCredentials()
   }
 }
