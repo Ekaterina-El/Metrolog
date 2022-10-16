@@ -25,4 +25,5 @@
   <string name="invalidUser">Пользователь не найден. Попробуйте зарегестрироваться сейчас</string>
   <string name="invalidEmailOrPassword">Неверные почта или пароль. Проверьте свои данные или восстановить пароль</string>
   <string name="noVerifiedEmail">Ваша почта не подтверждена\nЧтобы войти подтвердите свою почту (письмо может находиться в папке спам!)</string>
+  <string name="successReg">Вы успешно зарегистрированы</string>
 </resources>

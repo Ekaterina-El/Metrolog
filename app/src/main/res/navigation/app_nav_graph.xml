@@ -23,5 +23,9 @@
   <fragment
     android:id="@+id/registrationFragment"
     android:name="el.ka.someapp.view.RegistrationFragment"
-    android:label="RegistrationFragment" />
+    android:label="RegistrationFragment" >
+    <action
+      android:id="@+id/action_registrationFragment_to_loginFragment"
+      app:destination="@id/loginFragment" />
+  </fragment>
 </navigation>

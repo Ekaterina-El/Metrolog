@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import el.ka.someapp.R
 import el.ka.someapp.data.model.ErrorApp
 import el.ka.someapp.data.model.State
 import el.ka.someapp.databinding.FragmentRegistrationBinding
@@ -23,6 +24,19 @@ class RegistrationFragment : Fragment() {
   private lateinit var errorAdapter: ErrorAdapter
   private val errorsObserver = Observer<MutableList<ErrorApp>> {
     errorAdapter.setErrors(it)
+  }
+
+  private val goToLoginState = Observer<State> {
+    if (it == State.AWAITING) {
+      Toast.makeText(requireContext(), getString(R.string.successReg), Toast.LENGTH_SHORT).show()
+      goToLogin()
+    }
+  }
+
+  private fun goToLogin() {
+    Navigation
+      .findNavController(requireView())
+      .navigate(R.id.action_registrationFragment_to_loginFragment)
   }
 
   override fun onCreateView(
@@ -44,6 +58,7 @@ class RegistrationFragment : Fragment() {
   override fun onResume() {
     super.onResume()
     viewModel.errors.observe(viewLifecycleOwner, errorsObserver)
+    viewModel.state.observe(viewLifecycleOwner, goToLoginState)
   }
 
 
@@ -57,7 +72,8 @@ class RegistrationFragment : Fragment() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     requireActivity().onBackPressedDispatcher.addCallback(this) {
-      if (viewModel.state.value != State.LOADING) Navigation.findNavController(requireView()).popBackStack()
+      if (viewModel.state.value != State.LOADING) Navigation.findNavController(requireView())
+        .popBackStack()
     }
   }
 
@@ -66,15 +82,13 @@ class RegistrationFragment : Fragment() {
   }
 
   private fun verificationCredentials() {
-    with(viewModel) {
-      val s = "${email.value} ${fullName.value} ${password.value} ${repeatPassword.value}".trimIndent()
-      Toast.makeText(requireContext(), s, Toast.LENGTH_SHORT).show()
-    }
     viewModel.verificationCredentials()
   }
 
   override fun onDestroy() {
     super.onDestroy()
     viewModel.errors.removeObserver { errorsObserver }
+    viewModel.state.removeObserver { goToLoginState }
+
   }
 }
