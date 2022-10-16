@@ -12,6 +12,10 @@ import el.ka.someapp.utils.Verificator
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
   private val auth = AuthenticationService
 
+  private val _showPassword = MutableLiveData(false)
+  val showPassword: LiveData<Boolean>
+    get() = _showPassword
+
   var email = MutableLiveData<String>()
   var password = MutableLiveData<String>()
 
@@ -27,6 +31,10 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
   init {
     email.value = ""
     password.value = ""
+  }
+
+  fun changeShowPasswordState() {
+    _showPassword.value = !_showPassword.value!!
   }
 
   fun verificationCredentials() {

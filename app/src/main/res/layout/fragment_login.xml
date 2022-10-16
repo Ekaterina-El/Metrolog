@@ -152,8 +152,10 @@
               app:tint="@color/primary_color" />
 
             <EditText
+              app:showPassword="@{viewModel.showPassword}"
               android:id="@+id/editTextPassword"
-              android:layout_width="match_parent"
+              android:layout_width="0dp"
+              android:layout_weight="1"
               android:layout_height="wrap_content"
               android:layout_marginHorizontal="10dp"
               android:autofillHints="emailAddress"
@@ -165,6 +167,14 @@
               android:text="@={viewModel.password}"
               android:textColor="@color/secondary_color"
               android:textColorHint="@color/hint_color" />
+
+            <ImageView
+              android:layout_width="20dp"
+              android:layout_height="20dp"
+              tools:src="@drawable/ic_close_eye"
+              android:onClick="@{() -> viewModel.changeShowPasswordState()}"
+              app:eyeState="@{viewModel.showPassword}"
+              app:tint="@color/primary_dark_color" />
           </LinearLayout>
 
           <TextView
