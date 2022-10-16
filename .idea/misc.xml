@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/SomeApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.214" />
+        <entry key="..\:/SomeApp/app/src/main/res/drawable/bg.xml" value="0.1065" />
         <entry key="..\:/SomeApp/app/src/main/res/drawable/button_color_wrapper.xml" value="0.182" />
         <entry key="..\:/SomeApp/app/src/main/res/drawable/button_wrapper.xml" value="0.182" />
         <entry key="..\:/SomeApp/app/src/main/res/drawable/gradient.xml" value="0.182" />
@@ -13,6 +14,7 @@
         <entry key="..\:/SomeApp/app/src/main/res/drawable/ic_lock.xml" value="0.214" />
         <entry key="..\:/SomeApp/app/src/main/res/drawable/ic_person.xml" value="0.214" />
         <entry key="..\:/SomeApp/app/src/main/res/drawable/input_wrapper.xml" value="0.214" />
+        <entry key="..\:/SomeApp/app/src/main/res/drawable/program_bar.xml" value="0.214" />
         <entry key="..\:/SomeApp/app/src/main/res/layout/activity_login.xml" value="0.264" />
         <entry key="..\:/SomeApp/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/SomeApp/app/src/main/res/layout/activity_registration.xml" value="0.264" />
@@ -20,6 +22,7 @@
         <entry key="..\:/SomeApp/app/src/main/res/layout/fragment_login.xml" value="0.264" />
         <entry key="..\:/SomeApp/app/src/main/res/layout/fragment_registration.xml" value="0.264" />
         <entry key="..\:/SomeApp/app/src/main/res/layout/fragment_welcome.xml" value="0.264" />
+        <entry key="..\:/SomeApp/app/src/main/res/layout/splash_fragment.xml" value="0.264" />
       </map>
     </option>
   </component>

@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:id="@+id/app_nav_graph"
-  app:startDestination="@id/welcomeFragment">
+  app:startDestination="@id/splashFragment">
 
   <fragment
     android:id="@+id/welcomeFragment"
@@ -27,5 +27,13 @@
     <action
       android:id="@+id/action_registrationFragment_to_loginFragment"
       app:destination="@id/loginFragment" />
+  </fragment>
+  <fragment
+    android:id="@+id/splashFragment"
+    android:name="el.ka.someapp.view.SplashFragment"
+    android:label="SplashFragment" >
+    <action
+      android:id="@+id/action_splashFragment_to_welcomeFragment"
+      app:destination="@id/welcomeFragment" />
   </fragment>
 </navigation>

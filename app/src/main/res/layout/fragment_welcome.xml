@@ -42,6 +42,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textAppTitle" />
 
+      <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nothing_you_could_do_regular"
+        android:text="@string/welcomeText"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="20dp"
+        android:textSize="16sp"
+        android:textColor="@color/secondary_color"
+        android:layout_marginStart="@dimen/app_padding"
+        android:layout_marginEnd="@dimen/app_padding"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/buttonLogin"
+        />
+
+      <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/light_gray"
+        android:layout_marginBottom="15dp"
+        app:layout_constraintBottom_toTopOf="@id/text" />
+
       <Button
         android:id="@+id/buttonLogin"
         android:layout_width="0dp"
