@@ -2,5 +2,5 @@
 <resources>
   <dimen name="app_padding">30dp</dimen>
   <dimen name="defender_circle_size">12dp</dimen>
-  <dimen name="defender_number_size">16sp</dimen>
+  <dimen name="defender_number_size">24sp</dimen>
 </resources>

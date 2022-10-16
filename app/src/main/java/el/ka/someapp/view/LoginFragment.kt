@@ -10,7 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import el.ka.someapp.R
 import el.ka.someapp.data.model.ErrorApp
+import el.ka.someapp.data.model.State
 import el.ka.someapp.data.model.State.*
 import el.ka.someapp.databinding.FragmentLoginBinding
 import el.ka.someapp.view.adapters.ErrorAdapter
@@ -37,9 +39,23 @@ class LoginFragment : Fragment() {
     return binding.root
   }
 
+  private val goToDefenderState = Observer<State> {
+    if (it == AWAITING) {
+      Toast.makeText(requireContext(), getString(R.string.successAuth), Toast.LENGTH_SHORT).show()
+      goToDefenderState()
+    }
+  }
+
+  private fun goToDefenderState() {
+    Navigation
+      .findNavController(requireView())
+      .navigate(R.id.action_loginFragment_to_defenderFragment)
+  }
+
   override fun onResume() {
     super.onResume()
     viewModel.errors.observe(viewLifecycleOwner, errorsObserver)
+    viewModel.state.observe(viewLifecycleOwner, goToDefenderState)
   }
 
   private fun initFunctionalityParts() {
@@ -69,5 +85,6 @@ class LoginFragment : Fragment() {
   override fun onDestroy() {
     super.onDestroy()
     viewModel.errors.removeObserver(errorsObserver)
+    viewModel.state.removeObserver(goToDefenderState)
   }
 }
