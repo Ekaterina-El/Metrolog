@@ -70,7 +70,18 @@ object AuthenticationService {
   ) {
     auth
       .signInWithEmailAndPassword(email, password)
-      .addOnSuccessListener { onSuccess() }
+      .addOnSuccessListener {
+        val user = auth.currentUser
+        if (user!!.isEmailVerified) {
+          onSuccess()
+        } else {
+          val error = Errors.noVerifiedEmail
+          val a = user.email
+          onFailed(error)
+          user.sendEmailVerification()
+          auth.signOut()
+        }
+      }
       .addOnFailureListener {
         val error = when(it as FirebaseAuthException) {
           is FirebaseAuthInvalidUserException -> Errors.invalidUser

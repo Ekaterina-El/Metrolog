@@ -19,6 +19,6 @@ object Errors {
 
   val invalidUser = ErrorApp(textId = R.string.invalidUser)
   val invalidEmailOrPassword = ErrorApp(textId = R.string.invalidEmailOrPassword)
-
+  val noVerifiedEmail = ErrorApp(textId = R.string.noVerifiedEmail)
 
 }
