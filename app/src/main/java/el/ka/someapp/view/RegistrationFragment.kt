@@ -17,7 +17,7 @@ import el.ka.someapp.databinding.FragmentRegistrationBinding
 import el.ka.someapp.view.adapters.ErrorAdapter
 import el.ka.someapp.viewmodel.RegistrationViewModel
 
-class RegistrationFragment : Fragment() {
+class RegistrationFragment : BaseFragment() {
   private lateinit var binding: FragmentRegistrationBinding
   private lateinit var viewModel: RegistrationViewModel
 
@@ -29,14 +29,8 @@ class RegistrationFragment : Fragment() {
   private val goToLoginState = Observer<State> {
     if (it == State.AWAITING) {
       Toast.makeText(requireContext(), getString(R.string.successReg), Toast.LENGTH_SHORT).show()
-      goToLogin()
+      navigate(R.id.action_registrationFragment_to_loginFragment)
     }
-  }
-
-  private fun goToLogin() {
-    Navigation
-      .findNavController(requireView())
-      .navigate(R.id.action_registrationFragment_to_loginFragment)
   }
 
   override fun onCreateView(
@@ -44,15 +38,21 @@ class RegistrationFragment : Fragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    createFunctionalityParts()
-    inflateBindingVariables()
+    super.onCreateView(inflater, container, savedInstanceState)
     return binding.root
   }
 
-  private fun createFunctionalityParts() {
+  override fun initFunctionalityParts() {
     viewModel = ViewModelProvider(this)[RegistrationViewModel::class.java]
     binding = FragmentRegistrationBinding.inflate(layoutInflater)
     errorAdapter = ErrorAdapter()
+  }
+
+  override fun inflateBindingVariables() {
+    binding.master = this
+    binding.viewModel = viewModel
+    binding.lifecycleOwner = viewLifecycleOwner
+    binding.errorAdapter = errorAdapter
   }
 
   override fun onResume() {
@@ -61,27 +61,12 @@ class RegistrationFragment : Fragment() {
     viewModel.state.observe(viewLifecycleOwner, goToLoginState)
   }
 
-
-  private fun inflateBindingVariables() {
-    binding.master = this
-    binding.viewModel = viewModel
-    binding.lifecycleOwner = viewLifecycleOwner
-    binding.errorAdapter = errorAdapter
-  }
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    requireActivity().onBackPressedDispatcher.addCallback(this) {
-      if (viewModel.state.value != State.LOADING) Navigation.findNavController(requireView())
-        .popBackStack()
-    }
+  override fun onBackPressed() {
+    if (viewModel.state.value != State.LOADING) Navigation.findNavController(requireView())
+      .popBackStack()
   }
 
   fun registration() {
-    verificationCredentials()
-  }
-
-  private fun verificationCredentials() {
     viewModel.verificationCredentials()
   }
 
@@ -89,6 +74,5 @@ class RegistrationFragment : Fragment() {
     super.onDestroy()
     viewModel.errors.removeObserver { errorsObserver }
     viewModel.state.removeObserver { goToLoginState }
-
   }
 }

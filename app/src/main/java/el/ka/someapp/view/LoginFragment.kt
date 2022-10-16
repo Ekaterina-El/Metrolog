@@ -19,7 +19,7 @@ import el.ka.someapp.view.adapters.ErrorAdapter
 import el.ka.someapp.viewmodel.LoginViewModel
 
 
-class LoginFragment : Fragment() {
+class LoginFragment : BaseFragment() {
   private lateinit var binding: FragmentLoginBinding
   private lateinit var viewModel: LoginViewModel
 
@@ -33,49 +33,39 @@ class LoginFragment : Fragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    initFunctionalityParts()
-    inflateBindingVariables()
-    addOnBackPressButton()
+    super.onCreateView(inflater, container, savedInstanceState)
     return binding.root
   }
 
-  private val goToDefenderState = Observer<State> {
+  private val stateObserver = Observer<State> {
     if (it == AWAITING) {
       Toast.makeText(requireContext(), getString(R.string.successAuth), Toast.LENGTH_SHORT).show()
-      goToDefenderState()
+      navigate(R.id.action_loginFragment_to_defenderFragment)
     }
-  }
-
-  private fun goToDefenderState() {
-    Navigation
-      .findNavController(requireView())
-      .navigate(R.id.action_loginFragment_to_defenderFragment)
   }
 
   override fun onResume() {
     super.onResume()
     viewModel.errors.observe(viewLifecycleOwner, errorsObserver)
-    viewModel.state.observe(viewLifecycleOwner, goToDefenderState)
+    viewModel.state.observe(viewLifecycleOwner, stateObserver)
   }
 
-  private fun initFunctionalityParts() {
+  override fun initFunctionalityParts() {
     viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
     binding = FragmentLoginBinding.inflate(layoutInflater)
     errorAdapter = ErrorAdapter()
   }
 
-  private fun inflateBindingVariables() {
+  override fun inflateBindingVariables() {
     binding.lifecycleOwner = viewLifecycleOwner
     binding.master = this
     binding.viewModel = viewModel
     binding.errorAdapter = errorAdapter
   }
 
-  private fun addOnBackPressButton() {
-    requireActivity().onBackPressedDispatcher.addCallback(this) {
-      if (viewModel.state.value != LOADING) Navigation.findNavController(requireView())
-        .popBackStack()
-    }
+  override fun onBackPressed() {
+    if (viewModel.state.value != LOADING) Navigation.findNavController(requireView())
+      .popBackStack()
   }
 
   fun login() {
@@ -85,6 +75,6 @@ class LoginFragment : Fragment() {
   override fun onDestroy() {
     super.onDestroy()
     viewModel.errors.removeObserver(errorsObserver)
-    viewModel.state.removeObserver(goToDefenderState)
+    viewModel.state.removeObserver(stateObserver)
   }
 }
