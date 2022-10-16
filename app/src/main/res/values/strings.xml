@@ -27,4 +27,7 @@
   <string name="noVerifiedEmail">Ваша почта не подтверждена\nЧтобы войти подтвердите свою почту (письмо может находиться в папке спам!)</string>
   <string name="successReg">Вы успешно зарегистрированы</string>
   <string name="welcomeText">Для работы с сервисом необходимо авторизоваться.</string>
+  <string name="defender">Defender</string>
+  <string name="defender_create_pass">Придумайте 5-значный пароль\nВ дальнейшем он будет использваться для входа в приложение</string>
+  <string name="change_user">Сменить пользователя</string>
 </resources>

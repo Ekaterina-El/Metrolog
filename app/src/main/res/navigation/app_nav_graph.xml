@@ -19,7 +19,11 @@
   <fragment
     android:id="@+id/loginFragment"
     android:name="el.ka.someapp.view.LoginFragment"
-    android:label="LoginFragment" />
+    android:label="LoginFragment" >
+    <action
+      android:id="@+id/action_loginFragment_to_defenderFragment"
+      app:destination="@id/defenderFragment" />
+  </fragment>
   <fragment
     android:id="@+id/registrationFragment"
     android:name="el.ka.someapp.view.RegistrationFragment"
@@ -35,5 +39,16 @@
     <action
       android:id="@+id/action_splashFragment_to_welcomeFragment"
       app:destination="@id/welcomeFragment" />
+    <action
+      android:id="@+id/action_splashFragment_to_defenderFragment"
+      app:destination="@id/defenderFragment" />
+  </fragment>
+  <fragment
+    android:id="@+id/defenderFragment"
+    android:name="el.ka.someapp.view.DefenderFragment"
+    android:label="DefenderFragment" >
+    <action
+      android:id="@+id/action_defenderFragment_to_loginFragment"
+      app:destination="@id/loginFragment" />
   </fragment>
 </navigation>
