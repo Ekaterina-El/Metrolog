@@ -19,13 +19,18 @@ class DefenderFragment : BaseFragment() {
   private val statePasswordObserver = Observer<StatePassword> { state ->
     when(state) {
       StatePassword.AWAITING_WITH_SAVE -> savePasswordAndToCompanies()
+      StatePassword.AWAITING -> navigateToCompanies()
       else -> {}
     }
   }
 
+  private fun navigateToCompanies() {
+    navigate(R.id.action_defenderFragment_to_companiesFragment)
+  }
+
   private fun savePasswordAndToCompanies() {
     sharedPreferences.edit().putString(LOCAL_CURRENT_PASSWORD, viewModel.field.value).apply()
-    navigate(R.id.action_defenderFragment_to_companiesFragment)
+    navigateToCompanies()
   }
 
   override fun onCreateView(
