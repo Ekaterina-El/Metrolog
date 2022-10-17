@@ -96,4 +96,8 @@ object AuthenticationService {
   fun checkUserIsAuth(onAuth: () -> Unit, onNoAuth: () -> Unit) {
     if (auth.currentUser != null) onAuth() else onNoAuth()
   }
+
+  fun logout() {
+    auth.signOut()
+  }
 }

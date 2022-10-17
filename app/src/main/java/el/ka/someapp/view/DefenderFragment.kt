@@ -20,6 +20,7 @@ class DefenderFragment : BaseFragment() {
     when(state) {
       StatePassword.AWAITING_WITH_SAVE -> savePasswordAndToCompanies()
       StatePassword.AWAITING -> navigateToCompanies()
+      StatePassword.LOGOUT -> logout()
       else -> {}
     }
   }
@@ -29,7 +30,8 @@ class DefenderFragment : BaseFragment() {
   }
 
   private fun savePasswordAndToCompanies() {
-    sharedPreferences.edit().putString(LOCAL_CURRENT_PASSWORD, viewModel.field.value).apply()
+    setPassword(viewModel.field.value)
+    //sharedPreferences.edit().putString(LOCAL_CURRENT_PASSWORD, viewModel.field.value).apply()
     navigateToCompanies()
   }
 
@@ -65,7 +67,7 @@ class DefenderFragment : BaseFragment() {
 
 
   private fun setCorrectPassword() {
-    val currentPassword = sharedPreferences.getString(LOCAL_CURRENT_PASSWORD, "") ?: ""
+    val currentPassword = getCurrentPassword()
     viewModel.setCorrectPassword(currentPassword)
   }
 
@@ -74,7 +76,8 @@ class DefenderFragment : BaseFragment() {
     viewModel.statePassword.removeObserver { statePasswordObserver }
   }
 
-  companion object {
-    const val LOCAL_CURRENT_PASSWORD = "local_current_password"
+  private fun logout() {
+    setPassword(null)
+    navigate(R.id.action_defenderFragment_to_welcomeFragment)
   }
 }

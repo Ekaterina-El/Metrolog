@@ -43,7 +43,15 @@ abstract class BaseFragment : Fragment() {
       .navigate(actionId)
   }
 
+  fun getCurrentPassword() = sharedPreferences.getString(LOCAL_CURRENT_PASSWORD, "") ?: ""
+
+  fun setPassword(password: String?) {
+    sharedPreferences.edit().putString(LOCAL_CURRENT_PASSWORD, password).apply()
+  }
+
   companion object {
     const val sharedPreferencesName = "METROLOGY"
+    const val LOCAL_CURRENT_PASSWORD = "local_current_password"
+
   }
 }

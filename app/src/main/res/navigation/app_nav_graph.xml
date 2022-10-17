@@ -48,11 +48,11 @@
     android:name="el.ka.someapp.view.DefenderFragment"
     android:label="DefenderFragment" >
     <action
-      android:id="@+id/action_defenderFragment_to_loginFragment"
-      app:destination="@id/loginFragment" />
-    <action
       android:id="@+id/action_defenderFragment_to_companiesFragment"
       app:destination="@id/companiesFragment" />
+    <action
+      android:id="@+id/action_defenderFragment_to_welcomeFragment"
+      app:destination="@id/welcomeFragment" />
   </fragment>
   <fragment
     android:id="@+id/companiesFragment"

@@ -5,8 +5,11 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import el.ka.someapp.data.repository.AuthenticationService
 
 class DefenderViewModel(application: Application) : AndroidViewModel(application) {
+
+  val auth = AuthenticationService
   val tag = "DefenderViewModel"
   private val _statePassword = MutableLiveData(StatePassword.NO_NEW)
   val statePassword: LiveData<StatePassword>
@@ -75,8 +78,13 @@ class DefenderViewModel(application: Application) : AndroidViewModel(application
     _field.value = ""
     _statePassword.value = StatePassword.REPEAT_NEW
   }
+
+  fun logout() {
+    auth.logout()
+    _statePassword.value = StatePassword.LOGOUT
+  }
 }
 
 enum class StatePassword {
-  NEW, REPEAT_NEW, NO_NEW, AWAITING, AWAITING_WITH_SAVE
+  NEW, REPEAT_NEW, NO_NEW, AWAITING, AWAITING_WITH_SAVE, LOGOUT
 }

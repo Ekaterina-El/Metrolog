@@ -78,7 +78,7 @@
         android:layout_height="@dimen/defender_circle_size"
         android:layout_gravity="center"
         android:layout_marginHorizontal="10dp"
-        android:background="@{viewModel.field.length() >= 1 ? @drawable/defender_circle_active: @drawable/defender_circle}"
+        app:defenderIndicatorState="@{viewModel.field.length() >= 1}"
         tools:background="@drawable/defender_circle_active" />
 
       <View
@@ -272,6 +272,8 @@
       android:layout_marginStart="@dimen/app_padding"
       android:layout_marginTop="40dp"
       android:layout_marginEnd="@dimen/app_padding"
+      android:clickable="true"
+      android:onClick="@{() -> viewModel.logout()}"
       android:layout_marginBottom="30dp"
       android:fontFamily="@font/montserrat_alternates"
       android:gravity="center"
