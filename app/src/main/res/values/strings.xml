@@ -31,4 +31,7 @@
   <string name="defender_create_pass">Придумайте 5-значный пароль\nВ дальнейшем он будет использваться для входа в приложение</string>
   <string name="change_user">Сменить пользователя</string>
   <string name="successAuth">Вы успешно авторизовались!</string>
+  <string name="defener_repeat_password">Повторите пароль</string>
+  <string name="defender_no_new">Введите пароль или смените пользователя</string>
+  <string name="loading">Загружаем...</string>
 </resources>

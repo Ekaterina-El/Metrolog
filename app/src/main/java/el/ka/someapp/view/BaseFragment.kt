@@ -1,5 +1,7 @@
 package el.ka.someapp.view
 
+import android.app.Activity
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,11 +11,16 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 
 abstract class BaseFragment : Fragment() {
+
+  lateinit var sharedPreferences: SharedPreferences
+
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
+    sharedPreferences = requireActivity()
+      .getSharedPreferences(sharedPreferencesName, Activity.MODE_PRIVATE)
     initFunctionalityParts()
     inflateBindingVariables()
     addOnBackPressButton()
@@ -34,5 +41,9 @@ abstract class BaseFragment : Fragment() {
     Navigation
       .findNavController(requireView())
       .navigate(actionId)
+  }
+
+  companion object {
+    const val sharedPreferencesName = "METROLOGY"
   }
 }

@@ -6,6 +6,10 @@
   <data>
 
     <variable
+      name="viewModel"
+      type="el.ka.someapp.viewmodel.DefenderViewModel" />
+
+    <variable
       name="master"
       type="el.ka.someapp.view.DefenderFragment" />
   </data>
@@ -49,7 +53,7 @@
       android:layout_marginEnd="@dimen/app_padding"
       android:fontFamily="@font/montserrat_alternates"
       android:gravity="center"
-      android:text="@string/defender_create_pass"
+      app:defenderStateText="@{viewModel.statePassword}"
       android:textColor="@color/secondary_color"
       android:textSize="14sp"
       app:layout_constraintEnd_toEndOf="parent"
@@ -74,6 +78,7 @@
         android:layout_height="@dimen/defender_circle_size"
         android:layout_gravity="center"
         android:layout_marginHorizontal="10dp"
+        android:background="@{viewModel.field.length() >= 1 ? @drawable/defender_circle_active: @drawable/defender_circle}"
         tools:background="@drawable/defender_circle_active" />
 
       <View
@@ -81,6 +86,7 @@
         android:layout_height="@dimen/defender_circle_size"
         android:layout_gravity="center"
         android:layout_marginHorizontal="10dp"
+        app:defenderIndicatorState="@{viewModel.field.length() >= 2}"
         tools:background="@drawable/defender_circle_active" />
 
       <View
@@ -88,6 +94,7 @@
         android:layout_height="@dimen/defender_circle_size"
         android:layout_gravity="center"
         android:layout_marginHorizontal="10dp"
+        app:defenderIndicatorState="@{viewModel.field.length() >= 3}"
         tools:background="@drawable/defender_circle_active" />
 
       <View
@@ -95,6 +102,7 @@
         android:layout_height="@dimen/defender_circle_size"
         android:layout_gravity="center"
         android:layout_marginHorizontal="10dp"
+        app:defenderIndicatorState="@{viewModel.field.length() >= 4}"
         tools:background="@drawable/defender_circle" />
 
       <View
@@ -102,6 +110,7 @@
         android:layout_height="@dimen/defender_circle_size"
         android:layout_gravity="center"
         android:layout_marginHorizontal="10dp"
+        app:defenderIndicatorState="@{viewModel.field.length() >= 5}"
         tools:background="@drawable/defender_circle" />
     </LinearLayout>
 
@@ -125,6 +134,8 @@
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_weight="1"
+          android:clickable="true"
+          android:onClick="@{() -> viewModel.addPasswordElement('1')}"
           android:gravity="center"
           android:paddingVertical="15dp"
           android:text="1"
@@ -132,9 +143,12 @@
           tools:ignore="HardcodedText" />
 
         <TextView
+          android:id="@+id/num2"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_weight="1"
+          android:clickable="true"
+          android:onClick="@{() -> viewModel.addPasswordElement('2')}"
           android:gravity="center"
           android:paddingVertical="15dp"
           android:text="2"
@@ -145,6 +159,8 @@
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_weight="1"
+          android:clickable="true"
+          android:onClick="@{() -> viewModel.addPasswordElement('3')}"
           android:gravity="center"
           android:paddingVertical="15dp"
           android:text="3"
@@ -162,6 +178,8 @@
           android:layout_height="wrap_content"
           android:layout_weight="1"
           android:gravity="center"
+          android:clickable="true"
+          android:onClick="@{() -> viewModel.addPasswordElement('4')}"
           android:paddingVertical="15dp"
           android:text="4"
           android:textSize="@dimen/defender_number_size"
@@ -172,6 +190,8 @@
           android:layout_height="wrap_content"
           android:layout_weight="1"
           android:gravity="center"
+          android:clickable="true"
+          android:onClick="@{() -> viewModel.addPasswordElement('5')}"
           android:paddingVertical="15dp"
           android:text="5"
           android:textSize="@dimen/defender_number_size"
@@ -184,6 +204,8 @@
           android:gravity="center"
           android:paddingVertical="15dp"
           android:text="6"
+          android:clickable="true"
+          android:onClick="@{() -> viewModel.addPasswordElement('6')}"
           android:textSize="@dimen/defender_number_size"
           tools:ignore="HardcodedText" />
       </LinearLayout>
@@ -198,8 +220,10 @@
           android:layout_height="wrap_content"
           android:layout_weight="1"
           android:gravity="center"
-          android:text="7"
           android:paddingVertical="15dp"
+          android:clickable="true"
+          android:onClick="@{() -> viewModel.addPasswordElement('7')}"
+          android:text="7"
           android:textSize="@dimen/defender_number_size"
           tools:ignore="HardcodedText" />
 
@@ -210,6 +234,8 @@
           android:gravity="center"
           android:paddingVertical="15dp"
           android:text="8"
+          android:clickable="true"
+          android:onClick="@{() -> viewModel.addPasswordElement('8')}"
           android:textSize="@dimen/defender_number_size"
           tools:ignore="HardcodedText" />
 
@@ -219,6 +245,8 @@
           android:layout_weight="1"
           android:gravity="center"
           android:paddingVertical="15dp"
+          android:clickable="true"
+          android:onClick="@{() -> viewModel.addPasswordElement('9')}"
           android:text="9"
           android:textSize="@dimen/defender_number_size"
           tools:ignore="HardcodedText" />
@@ -229,6 +257,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:paddingVertical="15dp"
+        android:clickable="true"
+        android:onClick="@{() -> viewModel.addPasswordElement('0')}"
         android:text="0"
         android:textSize="@dimen/defender_number_size"
         tools:ignore="HardcodedText" />

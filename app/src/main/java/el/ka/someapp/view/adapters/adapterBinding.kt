@@ -1,5 +1,6 @@
 package el.ka.someapp.view.adapters
 
+import android.annotation.SuppressLint
 import android.text.InputType
 import android.view.View
 import android.widget.EditText
@@ -8,6 +9,7 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import el.ka.someapp.R
 import el.ka.someapp.data.model.State
+import el.ka.someapp.viewmodel.StatePassword
 
 @BindingAdapter("app:isLoad")
 fun visibleLoader(view: View, state: State) {
@@ -33,4 +35,23 @@ fun showPassword(editText: EditText, state: Boolean) {
     editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
   }
   editText.setSelection(editText.text.length)
+}
+
+@BindingAdapter("app:defenderIndicatorState")
+fun setDefenderState(view: View, isActive: Boolean) {
+  val drawableId = if (isActive) R.drawable.defender_circle_active else R.drawable.defender_circle
+  view.background = view.context.getDrawable(drawableId)
+}
+
+@BindingAdapter("app:defenderStateText")
+fun setDefenderStateText(textView: TextView, state: StatePassword) {
+  val stringId = when(state) {
+    StatePassword.NEW -> R.string.defender_create_pass
+    StatePassword.REPEAT_NEW -> R.string.defener_repeat_password
+    StatePassword.NO_NEW -> R.string.defender_no_new
+    StatePassword.AWAITING -> R.string.loading
+  }
+
+  textView.setText(stringId)
+
 }
