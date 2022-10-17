@@ -62,7 +62,7 @@ class DefenderViewModel(application: Application) : AndroidViewModel(application
 
   private fun checkPasswordRepeat() {
     if (_fieldRepeat.value == _field.value) {
-      _statePassword.value = StatePassword.AWAITING
+      _statePassword.value = StatePassword.AWAITING_WITH_SAVE
     } else {
       _field.value = ""
       _fieldRepeat.value = ""
@@ -78,5 +78,5 @@ class DefenderViewModel(application: Application) : AndroidViewModel(application
 }
 
 enum class StatePassword {
-  NEW, REPEAT_NEW, NO_NEW, AWAITING
+  NEW, REPEAT_NEW, NO_NEW, AWAITING, AWAITING_WITH_SAVE
 }

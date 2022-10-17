@@ -50,5 +50,12 @@
     <action
       android:id="@+id/action_defenderFragment_to_loginFragment"
       app:destination="@id/loginFragment" />
+    <action
+      android:id="@+id/action_defenderFragment_to_companiesFragment"
+      app:destination="@id/companiesFragment" />
   </fragment>
+  <fragment
+    android:id="@+id/companiesFragment"
+    android:name="el.ka.someapp.view.CompaniesFragment"
+    android:label="CompaniesFragment" />
 </navigation>

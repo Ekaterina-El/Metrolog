@@ -49,7 +49,7 @@ fun setDefenderStateText(textView: TextView, state: StatePassword) {
     StatePassword.NEW -> R.string.defender_create_pass
     StatePassword.REPEAT_NEW -> R.string.defener_repeat_password
     StatePassword.NO_NEW -> R.string.defender_no_new
-    StatePassword.AWAITING -> R.string.loading
+    else -> R.string.loading
   }
 
   textView.setText(stringId)
