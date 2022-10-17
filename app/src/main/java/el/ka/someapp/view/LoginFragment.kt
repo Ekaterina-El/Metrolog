@@ -72,6 +72,10 @@ class LoginFragment : BaseFragment() {
     viewModel.verificationCredentials()
   }
 
+  fun resetPassword() {
+    navigate(R.id.action_loginFragment_to_resetPasswordFragment)
+  }
+
   override fun onDestroy() {
     super.onDestroy()
     viewModel.errors.removeObserver(errorsObserver)

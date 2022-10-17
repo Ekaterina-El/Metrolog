@@ -100,4 +100,16 @@ object AuthenticationService {
   fun logout() {
     auth.signOut()
   }
+
+  fun resetPassword(email: String, onSuccess: () -> Unit, onFailure: (ErrorApp) -> Unit) {
+    auth.sendPasswordResetEmail(email)
+      .addOnSuccessListener { onSuccess() }
+      .addOnFailureListener {
+        val error = when(it as FirebaseAuthException) {
+          is FirebaseAuthInvalidUserException -> Errors.noFoundUser
+          else -> Errors.somethingWrong
+        }
+        onFailure(error)
+      }
+  }
 }

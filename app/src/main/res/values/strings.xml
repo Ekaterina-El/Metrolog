@@ -35,4 +35,8 @@
   <string name="defender_no_new">Введите пароль или смените пользователя</string>
   <string name="loading">Загружаем...</string>
   <string name="companies_title">Предприятия</string>
+  <string name="continueText">Продолжить</string>
+  <string name="noFoundUser">Пользователь не найден. Проверте введенные данные</string>
+  <string name="reset_password">Восстановить пароль</string>
+  <string name="reset_password_success_text">На ваш почтовый адресс отправленно письмо с ссылкой для восстановление пароля\n\n(Письмо может быть в папке Спам)</string>
 </resources>

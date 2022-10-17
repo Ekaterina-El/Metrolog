@@ -53,5 +53,9 @@ fun setDefenderStateText(textView: TextView, state: StatePassword) {
   }
 
   textView.setText(stringId)
+}
 
+@BindingAdapter("app:resetPasswordText")
+fun showResetPasswordText(textView: TextView, state: State) {
+  textView.visibility = if (state == State.AWAITING_CONTINUE) View.VISIBLE else View.GONE
 }
