@@ -20,10 +20,42 @@ object CloudDatabaseService {
     onSuccess: () -> Unit = {},
     onFailure: () -> Unit = {}
   ) {
-    FirebaseServices.databaseNodes
-      .add(node)
-      .addOnSuccessListener { onSuccess() }
-      .addOnFailureListener { onFailure() }
+    checkUniqueNodeName(
+      nodeName = node.name,
+      nodeLevel = node.level,
+      root = node.rootNodeId,
+      onFailure = {
+        val a = it
+      },
+      onSuccess = {
+        FirebaseServices.databaseNodes
+          .add(node)
+          .addOnSuccessListener { onSuccess() }
+          .addOnFailureListener { onFailure() }
+      }
+    )
+  }
+
+  private fun checkUniqueNodeName(
+    nodeName: String,
+    nodeLevel: Int,
+    root: String? = null,
+    onFailure: (ErrorApp) -> Unit,
+    onSuccess: () -> Unit
+  ) {
+    var query = FirebaseServices.databaseNodes
+      .whereEqualTo(NODE_NAME_FIELD, nodeName)
+      .whereEqualTo(LEVEL_FIELD, nodeLevel)
+
+    if (root != null) {
+      query = query.whereEqualTo(ROOT_FIELD, root)
+    }
+
+    query.get()
+      .addOnSuccessListener {
+        if (it.documents.size > 0) onFailure(Errors.nonUniqueName) else onSuccess()
+      }
+      .addOnFailureListener { onFailure(Errors.somethingWrong) }
   }
 
   fun getNodesById(
@@ -94,4 +126,6 @@ object CloudDatabaseService {
   }
 
   private const val LEVEL_FIELD = "level"
+  private const val NODE_NAME_FIELD = "name"
+  private const val ROOT_FIELD = "rootNodeId"
 }

@@ -81,15 +81,24 @@ object AuthenticationService {
 
     if (auth.currentUser != null) {
       // region TestCode
-      /*
+/*
       val node = Node(
-        name = "Предприятие №5",
-        level = 0,
-        readers = listOf(auth.currentUser!!.uid),
-        head = listOf("sdadsa3")
+        name = "Предприятие №1",
+        level = 1,
+        head = listOf("sdadsa3"),
+        rootNodeId = "tB7vfk0O9VWsp69QnGfD"
       )
-      CloudDatabaseService.saveNode(node)
-       */
+      CloudDatabaseService.saveNode(
+        node = node,
+        onSuccess = {
+          val a = 10
+        },
+        onFailure = {
+          val a = 10
+        })
+
+
+ */
       /*
       CloudDatabaseService.getUserMainNodes(
         userId = auth.currentUser!!.uid,

@@ -7,6 +7,7 @@ data class ErrorApp(
 )
 
 object Errors {
+  val nonUniqueName = ErrorApp(textId = R.string.nonUniqueName)
   val invalidEmail = ErrorApp(textId = R.string.invalidEmail)
   val invalidFullName = ErrorApp(textId = R.string.invalidFullName)
   val invalidPassword = ErrorApp(textId = R.string.invalidPassword)
