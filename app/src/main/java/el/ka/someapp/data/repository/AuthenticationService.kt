@@ -5,7 +5,6 @@ import el.ka.someapp.data.model.ErrorApp
 import el.ka.someapp.data.model.Errors
 import el.ka.someapp.data.model.User
 import el.ka.someapp.data.repository.FirebaseServices.auth
-import el.ka.someapp.data.repository.FirebaseServices.databaseUsers
 
 object AuthenticationService {
   private const val TAG = "FirebaseAuthentication"
@@ -79,7 +78,30 @@ object AuthenticationService {
   }
 
   fun checkUserIsAuth(onAuth: () -> Unit, onNoAuth: () -> Unit) {
-    if (auth.currentUser != null) onAuth() else onNoAuth()
+
+    if (auth.currentUser != null) {
+      // region TestCode
+      /*
+      val node = Node(
+        name = "Предприятие №5",
+        level = 0,
+        readers = listOf(auth.currentUser!!.uid),
+        head = listOf("sdadsa3")
+      )
+      CloudDatabaseService.saveNode(node)
+       */
+      /*
+      CloudDatabaseService.getUserMainNodes(
+        userId = auth.currentUser!!.uid,
+        onSuccess = { nodes ->
+        },
+        onFailure = { error ->
+        }
+      )*/
+      //endregion
+
+      onAuth()
+    } else onNoAuth()
   }
 
   fun logout() {
