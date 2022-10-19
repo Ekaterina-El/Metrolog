@@ -1,15 +1,18 @@
 package el.ka.someapp.data.repository
 
 import com.google.firebase.auth.*
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import el.ka.someapp.data.model.ErrorApp
 import el.ka.someapp.data.model.Errors
 import el.ka.someapp.data.model.User
 
 object AuthenticationService {
+  const val USERS_COLLECTION = "users"
+
   private const val TAG = "FirebaseAuthentication"
   private val auth = FirebaseAuth.getInstance()
-  private val databaseUsers = FirebaseDatabase.getInstance().getReference("users")
+  private val databaseUsers = Firebase.firestore.collection(USERS_COLLECTION)
 
 
   fun registerUser(
@@ -56,10 +59,11 @@ object AuthenticationService {
     onSuccess: () -> Unit = {},
     onFailure: () -> Unit = {}
   ) {
-    databaseUsers.child(userData.uid).setValue(userData)
-      .addOnCompleteListener {
-        if (it.isSuccessful) onSuccess() else onFailure()
-      }
+    databaseUsers
+      .document(userData.uid)
+      .set(userData)
+      .addOnSuccessListener { onSuccess() }
+      .addOnFailureListener { onFailure() }
   }
 
   fun loginUser(
@@ -83,7 +87,7 @@ object AuthenticationService {
         }
       }
       .addOnFailureListener {
-        val error = when(it as FirebaseAuthException) {
+        val error = when (it as FirebaseAuthException) {
           is FirebaseAuthInvalidUserException -> Errors.invalidUser
           is FirebaseAuthInvalidCredentialsException -> Errors.invalidEmailOrPassword
           else -> Errors.somethingWrong
@@ -105,7 +109,7 @@ object AuthenticationService {
     auth.sendPasswordResetEmail(email)
       .addOnSuccessListener { onSuccess() }
       .addOnFailureListener {
-        val error = when(it as FirebaseAuthException) {
+        val error = when (it as FirebaseAuthException) {
           is FirebaseAuthInvalidUserException -> Errors.noFoundUser
           else -> Errors.somethingWrong
         }
