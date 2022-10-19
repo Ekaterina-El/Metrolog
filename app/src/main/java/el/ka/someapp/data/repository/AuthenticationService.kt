@@ -1,19 +1,14 @@
 package el.ka.someapp.data.repository
 
 import com.google.firebase.auth.*
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import el.ka.someapp.data.model.ErrorApp
 import el.ka.someapp.data.model.Errors
 import el.ka.someapp.data.model.User
+import el.ka.someapp.data.repository.FirebaseServices.auth
+import el.ka.someapp.data.repository.FirebaseServices.databaseUsers
 
 object AuthenticationService {
-  const val USERS_COLLECTION = "users"
-
   private const val TAG = "FirebaseAuthentication"
-  private val auth = FirebaseAuth.getInstance()
-  private val databaseUsers = Firebase.firestore.collection(USERS_COLLECTION)
-
 
   fun registerUser(
     password: String,
@@ -27,8 +22,7 @@ object AuthenticationService {
         val user = auth.currentUser!!
         userData.uid = user.uid
 
-
-        enterUserDataToRealtimeDatabase(
+        CloudDatabaseService.saveUser(
           userData = userData,
           onSuccess = {
             user.sendEmailVerification()
@@ -54,18 +48,6 @@ object AuthenticationService {
       }
   }
 
-  private fun enterUserDataToRealtimeDatabase(
-    userData: User,
-    onSuccess: () -> Unit = {},
-    onFailure: () -> Unit = {}
-  ) {
-    databaseUsers
-      .document(userData.uid)
-      .set(userData)
-      .addOnSuccessListener { onSuccess() }
-      .addOnFailureListener { onFailure() }
-  }
-
   fun loginUser(
     email: String,
     password: String,
@@ -80,7 +62,6 @@ object AuthenticationService {
           onSuccess()
         } else {
           val error = Errors.noVerifiedEmail
-          val a = user.email
           onFailed(error)
           user.sendEmailVerification()
           auth.signOut()
