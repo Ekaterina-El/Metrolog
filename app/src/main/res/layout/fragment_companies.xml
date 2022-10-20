@@ -4,6 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+
     <variable
       name="viewModel"
       type="el.ka.someapp.viewmodel.NodesViewModel" />
@@ -42,5 +43,23 @@
       app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
       app:layout_constraintTop_toBottomOf="@id/textTitle"
       tools:listitem="@layout/item_company" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/layoutLoader"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="@drawable/bg"
+      app:isLoad="@{viewModel.state}"
+      tools:visibility="gone">
+
+      <ProgressBar
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:indeterminateTint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
   </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

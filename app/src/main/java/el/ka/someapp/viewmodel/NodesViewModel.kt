@@ -14,7 +14,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   val nodes: LiveData<List<Node>>
     get() = _nodes
 
-  private val _state = MutableLiveData<State>(State.VIEW)
+  private val _state = MutableLiveData(State.ENTER_DATA)
   val state: LiveData<State>
     get() = _state
 
