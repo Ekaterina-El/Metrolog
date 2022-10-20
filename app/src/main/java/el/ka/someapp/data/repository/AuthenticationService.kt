@@ -79,39 +79,10 @@ object AuthenticationService {
 
   fun checkUserIsAuth(onAuth: () -> Unit, onNoAuth: () -> Unit) {
 
-    if (auth.currentUser != null) {
-      // region TestCode
-/*
-      val node = Node(
-        name = "Предприятие №1",
-        level = 1,
-        head = listOf("sdadsa3"),
-        rootNodeId = "tB7vfk0O9VWsp69QnGfD"
-      )
-      CloudDatabaseService.saveNode(
-        node = node,
-        onSuccess = {
-          val a = 10
-        },
-        onFailure = {
-          val a = 10
-        })
-
-
- */
-      /*
-      CloudDatabaseService.getUserMainNodes(
-        userId = auth.currentUser!!.uid,
-        onSuccess = { nodes ->
-        },
-        onFailure = { error ->
-        }
-      )*/
-      //endregion
-
-      onAuth()
-    } else onNoAuth()
+    if (auth.currentUser != null) onAuth() else onNoAuth()
   }
+
+  fun getUserUid() = auth.currentUser?.uid
 
   fun logout() {
     auth.signOut()

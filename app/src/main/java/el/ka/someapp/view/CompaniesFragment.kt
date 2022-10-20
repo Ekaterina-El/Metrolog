@@ -4,10 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import el.ka.someapp.data.model.Node
 import el.ka.someapp.databinding.FragmentCompaniesBinding
+import el.ka.someapp.view.adapters.NodesAdapter
+import el.ka.someapp.viewmodel.NodesViewModel
 
-class CompaniesFragment: BaseFragment() {
+class CompaniesFragment : BaseFragment() {
   private lateinit var binding: FragmentCompaniesBinding
+  private lateinit var adapter: NodesAdapter
+  private val viewModel: NodesViewModel by activityViewModels()
+  private val nodesObserver = Observer<List<Node>> {
+    adapter.setNodes(it)
+  }
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -20,8 +30,27 @@ class CompaniesFragment: BaseFragment() {
 
   override fun initFunctionalityParts() {
     binding = FragmentCompaniesBinding.inflate(layoutInflater)
+    adapter = NodesAdapter()
   }
 
-  override fun inflateBindingVariables() {}
+  override fun inflateBindingVariables() {
+    binding.apply {
+      lifecycleOwner = viewLifecycleOwner
+      adapter = this@CompaniesFragment.adapter
+      viewModel = this@CompaniesFragment.viewModel
+    }
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    viewModel.loadMainNodes()
+    viewModel.nodes.observe(viewLifecycleOwner, nodesObserver)
+  }
+
+  override fun onDestroy() {
+    super.onDestroy()
+    viewModel.nodes.removeObserver { nodesObserver }
+  }
+
   override fun onBackPressed() {}
 }

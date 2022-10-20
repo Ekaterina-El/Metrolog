@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto">
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+    <variable
+      name="viewModel"
+      type="el.ka.someapp.viewmodel.NodesViewModel" />
 
+    <variable
+      name="adapter"
+      type="el.ka.someapp.view.adapters.NodesAdapter" />
   </data>
 
   <androidx.constraintlayout.widget.ConstraintLayout
@@ -11,13 +18,29 @@
     android:layout_height="match_parent">
 
     <TextView
+      android:id="@+id/textTitle"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
+      android:layout_marginStart="@dimen/app_padding"
+      android:layout_marginTop="@dimen/app_padding"
       android:text="@string/companies_title"
-      android:textSize="26sp" />
+      android:textColor="@color/primary_dark_color"
+      android:textSize="26sp"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/listCompanies"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/app_padding"
+      android:layout_marginTop="24dp"
+      android:layout_marginEnd="@dimen/app_padding"
+      android:adapter="@{adapter}"
+      android:clipToPadding="false"
+      android:overScrollMode="never"
+      app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+      app:layout_constraintTop_toBottomOf="@id/textTitle"
+      tools:listitem="@layout/item_company" />
   </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
