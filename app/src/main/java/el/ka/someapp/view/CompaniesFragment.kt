@@ -44,12 +44,12 @@ class CompaniesFragment : BaseFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     viewModel.loadMainNodes()
-    viewModel.nodes.observe(viewLifecycleOwner, nodesObserver)
+    viewModel.filteredNodes.observe(viewLifecycleOwner, nodesObserver)
   }
 
   override fun onDestroy() {
     super.onDestroy()
-    viewModel.nodes.removeObserver { nodesObserver }
+    viewModel.filteredNodes.removeObserver { nodesObserver }
   }
 
   override fun onBackPressed() {}

@@ -16,4 +16,5 @@
   <color name="secondary_color">#757575</color>
   <color name="attentionColor">#CC2D2D</color>
   <color name="light_gray">#DDDDDD</color>
+  <color name="dark_gray">#BABABA</color>
 </resources>

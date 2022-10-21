@@ -30,6 +30,50 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+      android:id="@+id/imageSearch"
+      android:layout_width="30dp"
+      android:layout_height="30dp"
+      android:layout_marginEnd="@dimen/app_padding"
+      android:contentDescription="@null"
+      android:src="@drawable/ic_search"
+      app:layout_constraintBottom_toBottomOf="@id/editTextFilter"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/editTextFilter"
+      app:tint="@color/dark_gray" />
+
+    <EditText
+      android:id="@+id/editTextFilter"
+      android:layout_width="0dp"
+      android:text="@={viewModel.filter}"
+      android:afterTextChanged="@{() -> viewModel.filterNodes()}"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/app_padding"
+      android:layout_marginTop="20dp"
+      android:layout_marginEnd="10dp"
+      android:hint="@string/search"
+      android:textColorHint="@color/dark_gray"
+      android:background="@null"
+      android:ellipsize="end"
+      android:maxLines="1"
+      android:textColor="@color/secondary_color"
+      android:textSize="18sp"
+      app:layout_constraintEnd_toStartOf="@id/imageSearch"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/textTitle"
+      android:importantForAutofill="no"
+      android:inputType="textFilter" />
+
+    <View
+      android:id="@+id/viewFilterLine"
+      android:background="@color/dark_gray"
+      app:layout_constraintTop_toBottomOf="@id/editTextFilter"
+      android:layout_marginTop="6dp"
+      android:layout_marginStart="@dimen/app_padding"
+      android:layout_marginEnd="@dimen/app_padding"
+      android:layout_width="match_parent"
+      android:layout_height="1dp" />
+
     <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/listCompanies"
       android:layout_width="match_parent"
@@ -41,7 +85,7 @@
       android:clipToPadding="false"
       android:overScrollMode="never"
       app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-      app:layout_constraintTop_toBottomOf="@id/textTitle"
+      app:layout_constraintTop_toBottomOf="@id/viewFilterLine"
       tools:listitem="@layout/item_company" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
