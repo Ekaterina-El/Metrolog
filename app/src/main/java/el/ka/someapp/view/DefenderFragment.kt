@@ -1,6 +1,5 @@
 package el.ka.someapp.view
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +16,7 @@ class DefenderFragment : BaseFragment() {
   private lateinit var viewModel: DefenderViewModel
 
   private val statePasswordObserver = Observer<StatePassword> { state ->
-    when(state) {
+    when (state) {
       StatePassword.AWAITING_WITH_SAVE -> savePasswordAndToCompanies()
       StatePassword.AWAITING -> navigateToCompanies()
       StatePassword.LOGOUT -> logout()

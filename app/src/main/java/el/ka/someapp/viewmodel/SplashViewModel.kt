@@ -13,7 +13,7 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
 
   fun checkUserIsAuth() {
     AuthenticationService.checkUserIsAuth(
-      onAuth = { _userIsAuthed.value = UserState.AUTH},
+      onAuth = { _userIsAuthed.value = UserState.AUTH },
       onNoAuth = { _userIsAuthed.value = UserState.NO_AUTH }
     )
   }

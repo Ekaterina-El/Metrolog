@@ -5,15 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.addCallback
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import el.ka.someapp.R
 import el.ka.someapp.data.model.ErrorApp
 import el.ka.someapp.data.model.State
-import el.ka.someapp.data.model.State.*
+import el.ka.someapp.data.model.State.AWAITING
+import el.ka.someapp.data.model.State.LOADING
 import el.ka.someapp.databinding.FragmentLoginBinding
 import el.ka.someapp.view.adapters.ErrorAdapter
 import el.ka.someapp.viewmodel.LoginViewModel
