@@ -42,4 +42,7 @@
   <string name="nonUniqueName">Не уникальное название</string>
   <string name="search">Поиск</string>
   <string name="empty_data">Данные не найдены</string>
+  <string name="add">Добавление</string>
+  <string name="enter_node_name">Введите название для предприятия/узла</string>
+  <string name="name">Название</string>
 </resources>

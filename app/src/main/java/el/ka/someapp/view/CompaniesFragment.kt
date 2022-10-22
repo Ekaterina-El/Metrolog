@@ -1,12 +1,16 @@
 package el.ka.someapp.view
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.SimpleItemAnimator
+import el.ka.someapp.R
 import el.ka.someapp.data.model.Node
 import el.ka.someapp.databinding.FragmentCompaniesBinding
 import el.ka.someapp.view.adapters.NodesAdapter
@@ -21,6 +25,9 @@ class CompaniesFragment : BaseFragment() {
     adapter.setNodes(it)
   }
 
+  private lateinit var dialog: Dialog
+
+
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
@@ -33,6 +40,7 @@ class CompaniesFragment : BaseFragment() {
   override fun initFunctionalityParts() {
     binding = FragmentCompaniesBinding.inflate(layoutInflater)
     adapter = NodesAdapter()
+    dialog = Dialog(requireActivity())
   }
 
   override fun inflateBindingVariables() {
@@ -42,6 +50,7 @@ class CompaniesFragment : BaseFragment() {
       lifecycleOwner = viewLifecycleOwner
       adapter = this@CompaniesFragment.adapter
       viewModel = this@CompaniesFragment.viewModel
+      master = this@CompaniesFragment
     }
   }
 
@@ -49,6 +58,21 @@ class CompaniesFragment : BaseFragment() {
     super.onViewCreated(view, savedInstanceState)
     viewModel.loadMainNodes()
     viewModel.filteredNodes.observe(viewLifecycleOwner, nodesObserver)
+  }
+
+  fun showAddCompanyDialog() {
+    dialog.setContentView(R.layout.add_node_dialog)
+    dialog.window!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+    dialog.setCancelable(true)
+
+    val editTextNodeName: EditText = dialog.findViewById(R.id.editTextNodeName)
+    val buttonOk: Button = dialog.findViewById(R.id.buttonOk)
+
+    buttonOk.setOnClickListener {
+      Toast.makeText(requireContext(), "Value: ${editTextNodeName.text}", Toast.LENGTH_SHORT).show()
+      dialog.dismiss()
+    }
+    dialog.show()
   }
 
   override fun onDestroy() {
