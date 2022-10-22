@@ -11,8 +11,6 @@ import el.ka.someapp.data.repository.CloudDatabaseService
 
 class NodesViewModel(application: Application) : AndroidViewModel(application) {
   private val _nodes = MutableLiveData<List<Node>>(listOf())
-  val nodes: LiveData<List<Node>>
-    get() = _nodes
 
   private val _state = MutableLiveData(State.ENTER_DATA)
   val state: LiveData<State>
@@ -30,7 +28,6 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     } else {
       _filteredNodes.value = _nodes.value!!.filter { it.name.contains(filter.value!!, ignoreCase = true) }
     }
-    val a = 10
   }
 
   fun loadMainNodes() {
@@ -48,5 +45,12 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
         _state.value = State.VIEW
       }
     )
+  }
+
+  fun addNodeWithName(name: String) {
+    _state.value = State.LOADING
+    // проверить, свободно ли на данном уровне данное название
+    // сохранить
+    // загрузить обновленный список node
   }
 }

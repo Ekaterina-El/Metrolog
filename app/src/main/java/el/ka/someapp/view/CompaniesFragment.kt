@@ -2,12 +2,15 @@ package el.ka.someapp.view
 
 import android.app.Dialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import el.ka.someapp.R
@@ -40,7 +43,7 @@ class CompaniesFragment : BaseFragment() {
   override fun initFunctionalityParts() {
     binding = FragmentCompaniesBinding.inflate(layoutInflater)
     adapter = NodesAdapter()
-    dialog = Dialog(requireActivity())
+    createAddCompanyDialog()
   }
 
   override fun inflateBindingVariables() {
@@ -60,7 +63,8 @@ class CompaniesFragment : BaseFragment() {
     viewModel.filteredNodes.observe(viewLifecycleOwner, nodesObserver)
   }
 
-  fun showAddCompanyDialog() {
+  private fun createAddCompanyDialog() {
+    dialog = Dialog(requireActivity())
     dialog.setContentView(R.layout.add_node_dialog)
     dialog.window!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     dialog.setCancelable(true)
@@ -69,9 +73,12 @@ class CompaniesFragment : BaseFragment() {
     val buttonOk: Button = dialog.findViewById(R.id.buttonOk)
 
     buttonOk.setOnClickListener {
-      Toast.makeText(requireContext(), "Value: ${editTextNodeName.text}", Toast.LENGTH_SHORT).show()
+      viewModel.addNodeWithName(editTextNodeName.text.toString())
       dialog.dismiss()
     }
+  }
+
+  fun showAddCompanyDialog() {
     dialog.show()
   }
 
