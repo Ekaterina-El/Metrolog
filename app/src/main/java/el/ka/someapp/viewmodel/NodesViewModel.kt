@@ -4,15 +4,19 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import el.ka.someapp.data.model.Errors
 import el.ka.someapp.data.model.Node
 import el.ka.someapp.data.model.State
 import el.ka.someapp.data.repository.AuthenticationService
 import el.ka.someapp.data.repository.CloudDatabaseService
 
 class NodesViewModel(application: Application) : AndroidViewModel(application) {
+  private val _currentLevel = MutableLiveData<Int>(-1)  // -1 = main menu with companies
+  private val _currentRoot = MutableLiveData<String?>(null)
+
   private val _nodes = MutableLiveData<List<Node>>(listOf())
 
-  private val _state = MutableLiveData(State.ENTER_DATA)
+  private val _state = MutableLiveData(State.VIEW)
   val state: LiveData<State>
     get() = _state
 
@@ -49,8 +53,22 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
 
   fun addNodeWithName(name: String) {
     _state.value = State.LOADING
-    // проверить, свободно ли на данном уровне данное название
-    // сохранить
-    // загрузить обновленный список node
+    CloudDatabaseService.checkUniqueNodeName(
+      nodeName = name,
+      nodeLevel = _currentLevel.value!! + 1,
+      root = _currentRoot.value,
+      onFailure = {
+        if (it == Errors.nonUniqueName) {
+          _state.value = State.NON_UNIQUE_NAME
+        }
+      },
+      onSuccess = {
+        _state.value = State.VIEW
+        // сохранить
+        // загрузить обновленный список node
+      }
+
+    )
+
   }
 }

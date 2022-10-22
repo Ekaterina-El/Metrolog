@@ -36,7 +36,7 @@ object CloudDatabaseService {
     )
   }
 
-  private fun checkUniqueNodeName(
+  fun checkUniqueNodeName(
     nodeName: String,
     nodeLevel: Int,
     root: String? = null,
