@@ -20,20 +20,14 @@ object CloudDatabaseService {
     onSuccess: () -> Unit = {},
     onFailure: () -> Unit = {}
   ) {
-    checkUniqueNodeName(
-      nodeName = node.name,
-      nodeLevel = node.level,
-      root = node.rootNodeId,
-      onFailure = {
-        val a = it
-      },
-      onSuccess = {
-        FirebaseServices.databaseNodes
-          .add(node)
-          .addOnSuccessListener { onSuccess() }
-          .addOnFailureListener { onFailure() }
+    FirebaseServices.databaseNodes
+      .add(node)
+      .addOnSuccessListener {
+        it.update(ID_FIELD, it.id).addOnSuccessListener {
+          onSuccess()
+        }
       }
-    )
+      .addOnFailureListener { onFailure() }
   }
 
   fun checkUniqueNodeName(
@@ -128,4 +122,5 @@ object CloudDatabaseService {
   private const val LEVEL_FIELD = "level"
   private const val NODE_NAME_FIELD = "name"
   private const val ROOT_FIELD = "rootNodeId"
+  private const val ID_FIELD = "id"
 }

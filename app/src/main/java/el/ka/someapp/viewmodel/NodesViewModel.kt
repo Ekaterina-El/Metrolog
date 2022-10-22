@@ -30,7 +30,8 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     if (filter.value == "") {
       _filteredNodes.value = _nodes.value
     } else {
-      _filteredNodes.value = _nodes.value!!.filter { it.name.contains(filter.value!!, ignoreCase = true) }
+      _filteredNodes.value =
+        _nodes.value!!.filter { it.name.contains(filter.value!!, ignoreCase = true) }
     }
   }
 
@@ -52,6 +53,10 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   }
 
   fun addNodeWithName(name: String) {
+    saveWithCheck(name)
+  }
+
+  private fun saveWithCheck(name: String) {
     _state.value = State.LOADING
     CloudDatabaseService.checkUniqueNodeName(
       nodeName = name,
@@ -64,15 +69,29 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       },
       onSuccess = {
         _state.value = State.NEW_NODE_ADDED
-        // сохранить
-        // загрузить обновленный список node
+        addNode(name)
       }
-
     )
+  }
 
-    fun toViewState() {
-      _state.value = State.VIEW
-    }
+  private fun addNode(name: String) {
+    _state.value = State.LOADING
+    val node = Node(
+      name = name,
+      level = _currentLevel.value!! + 1,
+      rootNodeId = _currentRoot.value,
+      head = listOf(AuthenticationService.getUserUid()!!),
+    )
+    CloudDatabaseService.saveNode(
+      node,
+      onFailure = {},
+      onSuccess = {
+//       TODO:  loadNodes()
+        loadMainNodes()
+      })
+  }
 
+  fun toViewState() {
+    _state.value = State.VIEW
   }
 }

@@ -37,6 +37,7 @@ class CompaniesFragment : BaseFragment() {
       }
       State.NEW_NODE_ADDED -> {
         clearDialog()
+        viewModel.toViewState()
       }
       else -> {}
     }
