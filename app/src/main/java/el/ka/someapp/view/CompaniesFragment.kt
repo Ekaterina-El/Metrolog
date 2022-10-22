@@ -9,12 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import el.ka.someapp.R
+import el.ka.someapp.data.model.Errors
 import el.ka.someapp.data.model.Node
+import el.ka.someapp.data.model.State
 import el.ka.someapp.databinding.FragmentCompaniesBinding
 import el.ka.someapp.view.adapters.NodesAdapter
 import el.ka.someapp.viewmodel.NodesViewModel
@@ -27,9 +30,19 @@ class CompaniesFragment : BaseFragment() {
   private val nodesObserver = Observer<List<Node>> {
     adapter.setNodes(it)
   }
+  private val stateObserver = Observer<State> {
+    when(it) {
+      State.NON_UNIQUE_NAME -> {
+        showCreateDialogWithError(getString(Errors.nonUniqueName.textId))
+      }
+      State.NEW_NODE_ADDED -> {
+        clearDialog()
+      }
+      else -> {}
+    }
+  }
 
   private lateinit var dialog: Dialog
-
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -61,6 +74,7 @@ class CompaniesFragment : BaseFragment() {
     super.onViewCreated(view, savedInstanceState)
     viewModel.loadMainNodes()
     viewModel.filteredNodes.observe(viewLifecycleOwner, nodesObserver)
+    viewModel.state.observe(viewLifecycleOwner, stateObserver)
   }
 
   private fun createAddCompanyDialog() {
@@ -73,18 +87,35 @@ class CompaniesFragment : BaseFragment() {
     val buttonOk: Button = dialog.findViewById(R.id.buttonOk)
 
     buttonOk.setOnClickListener {
-      viewModel.addNodeWithName(editTextNodeName.text.toString())
+      val value = editTextNodeName.text.toString()
+      if (value.isNotEmpty()) {
+        viewModel.addNodeWithName(value)
+      } else {
+        clearDialog()
+      }
       dialog.dismiss()
     }
+  }
+
+  private fun showCreateDialogWithError(error: String) {
+    dialog.findViewById<TextView>(R.id.textError).text = error
+    showAddCompanyDialog()
   }
 
   fun showAddCompanyDialog() {
     dialog.show()
   }
 
+  private fun clearDialog() {
+    dialog.findViewById<EditText>(R.id.editTextNodeName).setText("")
+    dialog.findViewById<TextView>(R.id.textError).text = null
+  }
+
+
   override fun onDestroy() {
     super.onDestroy()
     viewModel.filteredNodes.removeObserver { nodesObserver }
+    viewModel.state.removeObserver { stateObserver }
   }
 
   override fun onBackPressed() {}

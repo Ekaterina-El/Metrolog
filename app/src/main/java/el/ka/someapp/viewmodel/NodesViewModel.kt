@@ -63,12 +63,16 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
         }
       },
       onSuccess = {
-        _state.value = State.VIEW
+        _state.value = State.NEW_NODE_ADDED
         // сохранить
         // загрузить обновленный список node
       }
 
     )
+
+    fun toViewState() {
+      _state.value = State.VIEW
+    }
 
   }
 }
