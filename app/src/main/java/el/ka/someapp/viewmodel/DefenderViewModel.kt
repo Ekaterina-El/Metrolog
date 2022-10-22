@@ -1,7 +1,6 @@
 package el.ka.someapp.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -39,7 +38,8 @@ class DefenderViewModel(application: Application) : AndroidViewModel(application
     if (field.value!!.length >= 5) {
       if (statePassword.value == StatePassword.NEW
         || statePassword.value == StatePassword.NO_NEW
-        || statePassword.value == StatePassword.REPEAT_NEW) {
+        || statePassword.value == StatePassword.REPEAT_NEW
+      ) {
         onPasswordFull()
       }
     }

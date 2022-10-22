@@ -35,7 +35,9 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
       repeatPassword = repeatPassword.value!!
     ).toMutableList()
 
-    if (_errors.value!!.size == 0) { registrationUser() }
+    if (_errors.value!!.size == 0) {
+      registrationUser()
+    }
   }
 
   private fun registrationUser() {

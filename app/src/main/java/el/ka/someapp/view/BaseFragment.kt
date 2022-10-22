@@ -12,7 +12,7 @@ import androidx.navigation.Navigation
 
 abstract class BaseFragment : Fragment() {
 
-  lateinit var sharedPreferences: SharedPreferences
+  private lateinit var sharedPreferences: SharedPreferences
 
   override fun onCreateView(
     inflater: LayoutInflater,

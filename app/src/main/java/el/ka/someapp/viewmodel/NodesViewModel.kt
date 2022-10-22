@@ -35,21 +35,39 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     }
   }
 
-  fun loadMainNodes() {
+  fun loadNodes() {
+    if (_currentLevel.value == -1) loadMainNodes() else loadLevelNodes()
+  }
+
+  private fun loadLevelNodes() {
+    _state.value = State.LOADING
+    CloudDatabaseService.getNotesInLevelRoot(
+      root = _currentRoot.value,
+      level = _currentLevel.value!! + 1,
+      onFailure = { onNodesLoadFailure() },
+      onSuccess = { setNodes(it) }
+    )
+  }
+
+  private fun loadMainNodes() {
     _state.value = State.LOADING
     CloudDatabaseService.getUserMainNodes(
       userId = AuthenticationService.getUserUid()!!,
-      onSuccess = {
-        _nodes.value = it
-        _state.value = State.VIEW
-        filter.value = ""
-        filterNodes()
-      },
-      onFailure = {
-        // TODO: Handle Errors
-        _state.value = State.VIEW
-      }
+      onSuccess = { setNodes(it) },
+      onFailure = { onNodesLoadFailure() }
     )
+  }
+
+  private fun onNodesLoadFailure() {
+    // TODO: handle error
+    _state.value = State.VIEW
+  }
+
+  private fun setNodes(list: List<Node>) {
+    _nodes.value = list
+    _state.value = State.VIEW
+    filter.value = ""
+    filterNodes()
   }
 
   fun addNodeWithName(name: String) {
@@ -85,10 +103,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     CloudDatabaseService.saveNode(
       node,
       onFailure = {},
-      onSuccess = {
-//       TODO:  loadNodes()
-        loadMainNodes()
-      })
+      onSuccess = { loadNodes() })
   }
 
   fun toViewState() {

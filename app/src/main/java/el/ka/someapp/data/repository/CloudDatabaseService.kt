@@ -69,6 +69,23 @@ object CloudDatabaseService {
       }
   }
 
+  fun getNotesInLevelRoot(
+    root: String?,
+    level: Int,
+    onFailure: () -> Unit,
+    onSuccess: (List<Node>) -> Unit
+  ) {
+    FirebaseServices
+      .databaseNodes
+      .whereEqualTo(ROOT_FIELD, root)
+      .whereEqualTo(LEVEL_FIELD, level)
+      .get()
+      .addOnFailureListener { onFailure() }
+      .addOnSuccessListener {
+        onSuccess(it.toObjects(Node::class.java))
+      }
+  }
+
 
   fun getUserMainNodes(
     userId: String,
@@ -107,7 +124,7 @@ object CloudDatabaseService {
     onSuccess: (Array<Node>) -> Unit,
     onFailure: (ErrorApp) -> Unit
   ) {
-    val a = userRole.roleName
+//    val a = userRole.roleName
     FirebaseServices.databaseNodes
       .whereEqualTo(LEVEL_FIELD, 0)
       .whereArrayContains(userRole.roleName, userId)
