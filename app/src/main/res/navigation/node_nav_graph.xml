@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/node_nav_graph"
+  app:startDestination="@id/nodeInfoFragment">
+
+  <fragment
+    android:id="@+id/nodeInfoFragment"
+    android:name="el.ka.someapp.view.node.NodeInfoFragment"
+    android:label="NodeInfoFragment" >
+    <action
+      android:id="@+id/action_nodeInfoFragment_to_nodeNodesFragment"
+      app:destination="@id/nodeNodesFragment" />
+  </fragment>
+  <fragment
+    android:id="@+id/nodeNodesFragment"
+    android:name="el.ka.someapp.view.node.NodeNodesFragment"
+    android:label="NodeNodesFragment" >
+    <action
+      android:id="@+id/action_nodeNodesFragment_to_nodeUsersFragment"
+      app:destination="@id/nodeUsersFragment" />
+  </fragment>
+  <fragment
+    android:id="@+id/nodeUsersFragment"
+    android:name="el.ka.someapp.view.node.NodeUsersFragment"
+    android:label="NodeUsersFragment" >
+    <action
+      android:id="@+id/action_nodeUsersFragment_to_nodeMeasuringFragment"
+      app:destination="@id/nodeMeasuringFragment" />
+  </fragment>
+  <fragment
+    android:id="@+id/nodeMeasuringFragment"
+    android:name="el.ka.someapp.view.node.NodeMeasuringFragment"
+    android:label="NodeMeasuringFragment" />
+</navigation>

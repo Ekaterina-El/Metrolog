@@ -75,7 +75,7 @@
   </fragment>
   <fragment
     android:id="@+id/nodeFragment"
-    android:name="el.ka.someapp.view.NodeFragment"
+    android:name="el.ka.someapp.view.node.NodeFragment"
     android:label="NodeFragment" >
     <action
       android:id="@+id/action_nodeFragment_to_companiesFragment"

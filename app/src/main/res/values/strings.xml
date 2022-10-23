@@ -45,4 +45,8 @@
   <string name="add">Добавление</string>
   <string name="enter_node_name">Введите название для предприятия/узла</string>
   <string name="name">Название</string>
+  <string name="info">Информация</string>
+  <string name="nodes">Узлы</string>
+  <string name="users">Пользователи</string>
+  <string name="measuring">СИ</string>
 </resources>

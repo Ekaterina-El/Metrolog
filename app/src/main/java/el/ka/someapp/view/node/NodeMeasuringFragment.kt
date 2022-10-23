@@ -1,19 +1,18 @@
-package el.ka.someapp.view
+package el.ka.someapp.view.node
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
-import el.ka.someapp.R
-import el.ka.someapp.data.model.Node
-import el.ka.someapp.databinding.FragmentNodeBinding
+import el.ka.someapp.databinding.FragmentNodeMeasuringBinding
+import el.ka.someapp.view.BaseFragment
 import el.ka.someapp.viewmodel.NodesViewModel
 
-class NodeFragment : BaseFragment() {
-  private lateinit var binding: FragmentNodeBinding
+class NodeMeasuringFragment: BaseFragment() {
+  private lateinit var binding: FragmentNodeMeasuringBinding
   private val viewModel: NodesViewModel by activityViewModels()
+
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -25,18 +24,17 @@ class NodeFragment : BaseFragment() {
   }
 
   override fun initFunctionalityParts() {
-    binding = FragmentNodeBinding.inflate(layoutInflater)
+    binding = FragmentNodeMeasuringBinding.inflate(layoutInflater)
   }
 
   override fun inflateBindingVariables() {
     binding.apply {
+      viewmodel = this@NodeMeasuringFragment.viewModel
+      master = this@NodeMeasuringFragment
       lifecycleOwner = viewLifecycleOwner
-      master = this@NodeFragment
-      viewmodel = this@NodeFragment.viewModel
     }
   }
 
   override fun onBackPressed() {
-    navigate(R.id.action_nodeFragment_to_companiesFragment)
   }
 }
