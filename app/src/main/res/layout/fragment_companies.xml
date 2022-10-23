@@ -4,7 +4,6 @@
   xmlns:tools="http://schemas.android.com/tools">
 
   <data>
-
     <import type="android.view.View" />
 
     <variable
@@ -84,11 +83,13 @@
           android:textSize="18sp" />
 
         <ImageView
-          android:id="@+id/imageSearch"
+          android:onClick="@{() -> viewModel.clearFilter()}"
+          android:id="@+id/imageSearchClear"
           android:layout_width="30dp"
           android:layout_height="30dp"
           android:contentDescription="@null"
-          android:src="@drawable/ic_search"
+          tools:src="@drawable/ic_search"
+          android:src="@{viewModel.filter.length() > 0 ? @drawable/ic_close : @drawable/ic_search}"
           app:layout_constraintBottom_toBottomOf="@id/editTextFilter"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintTop_toTopOf="@id/editTextFilter"

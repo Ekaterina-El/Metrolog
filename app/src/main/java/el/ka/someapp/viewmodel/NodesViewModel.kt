@@ -13,7 +13,6 @@ import el.ka.someapp.data.repository.CloudDatabaseService
 class NodesViewModel(application: Application) : AndroidViewModel(application) {
   //private val _currentLevel = MutableLiveData<Int>(-1)  // -1 = main menu with companies
   //private val _currentRoot = MutableLiveData<String?>(null)
-
   val currentNode = MutableLiveData<Node?>(null)
 
   private val _nodes = MutableLiveData<List<Node>>(listOf())
@@ -27,6 +26,11 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   private val _filteredNodes = MutableLiveData<List<Node>>(listOf())
   val filteredNodes: LiveData<List<Node>>
     get() = _filteredNodes
+
+  fun clearFilter() {
+    filter.value = ""
+    filterNodes()
+  }
 
   fun filterNodes() {
     if (filter.value == "") {
