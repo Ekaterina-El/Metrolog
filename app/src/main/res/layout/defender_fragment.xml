@@ -53,9 +53,9 @@
       android:layout_marginEnd="@dimen/app_padding"
       android:fontFamily="@font/montserrat_alternates"
       android:gravity="center"
-      app:defenderStateText="@{viewModel.statePassword}"
       android:textColor="@color/secondary_color"
       android:textSize="14sp"
+      app:defenderStateText="@{viewModel.statePassword}"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/textTitle" />
@@ -135,12 +135,14 @@
           android:layout_height="wrap_content"
           android:layout_weight="1"
           android:clickable="true"
-          android:onClick="@{() -> viewModel.addPasswordElement('1')}"
           android:gravity="center"
+          android:onClick="@{() -> viewModel.addPasswordElement('1')}"
           android:paddingVertical="15dp"
           android:text="1"
+          android:textColor="@color/text_color"
           android:textSize="@dimen/defender_number_size"
-          tools:ignore="HardcodedText" />
+          tools:ignore="HardcodedText"
+          tools:textColor="@color/secondary_color" />
 
         <TextView
           android:id="@+id/num2"
@@ -148,24 +150,28 @@
           android:layout_height="wrap_content"
           android:layout_weight="1"
           android:clickable="true"
-          android:onClick="@{() -> viewModel.addPasswordElement('2')}"
           android:gravity="center"
+          android:onClick="@{() -> viewModel.addPasswordElement('2')}"
           android:paddingVertical="15dp"
           android:text="2"
+          android:textColor="@color/text_color"
           android:textSize="@dimen/defender_number_size"
-          tools:ignore="HardcodedText" />
+          tools:ignore="HardcodedText"
+          tools:textColor="@color/secondary_color" />
 
         <TextView
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_weight="1"
           android:clickable="true"
-          android:onClick="@{() -> viewModel.addPasswordElement('3')}"
           android:gravity="center"
+          android:onClick="@{() -> viewModel.addPasswordElement('3')}"
           android:paddingVertical="15dp"
           android:text="3"
+          android:textColor="@color/text_color"
           android:textSize="@dimen/defender_number_size"
-          tools:ignore="HardcodedText" />
+          tools:ignore="HardcodedText"
+          tools:textColor="@color/secondary_color" />
       </LinearLayout>
 
       <LinearLayout
@@ -177,37 +183,43 @@
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_weight="1"
-          android:gravity="center"
           android:clickable="true"
+          android:gravity="center"
           android:onClick="@{() -> viewModel.addPasswordElement('4')}"
           android:paddingVertical="15dp"
           android:text="4"
+          android:textColor="@color/text_color"
           android:textSize="@dimen/defender_number_size"
-          tools:ignore="HardcodedText" />
+          tools:ignore="HardcodedText"
+          tools:textColor="@color/secondary_color" />
 
         <TextView
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_weight="1"
-          android:gravity="center"
           android:clickable="true"
+          android:gravity="center"
           android:onClick="@{() -> viewModel.addPasswordElement('5')}"
           android:paddingVertical="15dp"
           android:text="5"
+          android:textColor="@color/text_color"
           android:textSize="@dimen/defender_number_size"
-          tools:ignore="HardcodedText" />
+          tools:ignore="HardcodedText"
+          tools:textColor="@color/secondary_color" />
 
         <TextView
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_weight="1"
+          android:clickable="true"
           android:gravity="center"
+          android:onClick="@{() -> viewModel.addPasswordElement('6')}"
           android:paddingVertical="15dp"
           android:text="6"
-          android:clickable="true"
-          android:onClick="@{() -> viewModel.addPasswordElement('6')}"
+          android:textColor="@color/text_color"
           android:textSize="@dimen/defender_number_size"
-          tools:ignore="HardcodedText" />
+          tools:ignore="HardcodedText"
+          tools:textColor="@color/secondary_color" />
       </LinearLayout>
 
       <LinearLayout
@@ -219,49 +231,57 @@
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_weight="1"
-          android:gravity="center"
-          android:paddingVertical="15dp"
           android:clickable="true"
+          android:gravity="center"
           android:onClick="@{() -> viewModel.addPasswordElement('7')}"
+          android:paddingVertical="15dp"
           android:text="7"
+          android:textColor="@color/text_color"
           android:textSize="@dimen/defender_number_size"
-          tools:ignore="HardcodedText" />
+          tools:ignore="HardcodedText"
+          tools:textColor="@color/secondary_color" />
 
         <TextView
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_weight="1"
+          android:clickable="true"
           android:gravity="center"
+          android:onClick="@{() -> viewModel.addPasswordElement('8')}"
           android:paddingVertical="15dp"
           android:text="8"
-          android:clickable="true"
-          android:onClick="@{() -> viewModel.addPasswordElement('8')}"
+          android:textColor="@color/text_color"
           android:textSize="@dimen/defender_number_size"
-          tools:ignore="HardcodedText" />
+          tools:ignore="HardcodedText"
+          tools:textColor="@color/secondary_color" />
 
         <TextView
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_weight="1"
-          android:gravity="center"
-          android:paddingVertical="15dp"
           android:clickable="true"
+          android:gravity="center"
           android:onClick="@{() -> viewModel.addPasswordElement('9')}"
+          android:paddingVertical="15dp"
           android:text="9"
+          android:textColor="@color/text_color"
           android:textSize="@dimen/defender_number_size"
-          tools:ignore="HardcodedText" />
+          tools:ignore="HardcodedText"
+          tools:textColor="@color/secondary_color" />
       </LinearLayout>
 
       <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingVertical="15dp"
         android:clickable="true"
+        android:gravity="center"
         android:onClick="@{() -> viewModel.addPasswordElement('0')}"
+        android:paddingVertical="15dp"
         android:text="0"
+        android:textColor="@color/text_color"
         android:textSize="@dimen/defender_number_size"
-        tools:ignore="HardcodedText" />
+        tools:ignore="HardcodedText"
+        tools:textColor="@color/secondary_color" />
 
     </LinearLayout>
 
@@ -272,11 +292,11 @@
       android:layout_marginStart="@dimen/app_padding"
       android:layout_marginTop="40dp"
       android:layout_marginEnd="@dimen/app_padding"
-      android:clickable="true"
-      android:onClick="@{() -> viewModel.logout()}"
       android:layout_marginBottom="30dp"
+      android:clickable="true"
       android:fontFamily="@font/montserrat_alternates"
       android:gravity="center"
+      android:onClick="@{() -> viewModel.logout()}"
       android:text="@string/change_user"
       android:textColor="@color/secondary_color"
       android:textSize="16sp"
