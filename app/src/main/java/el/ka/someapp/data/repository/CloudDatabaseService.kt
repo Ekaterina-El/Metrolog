@@ -24,25 +24,27 @@ object CloudDatabaseService {
       .add(node)
       .addOnSuccessListener {
         it.update(ID_FIELD, it.id).addOnSuccessListener {
-          onSuccess()
+          if (node.rootNodeId != null) {
+            // TODO: добавить в поле children у root id нового node
+          } else {
+            onSuccess()
+          }
         }
       }
       .addOnFailureListener { onFailure() }
   }
 
   fun checkUniqueNodeName(
-    nodeName: String,
-    nodeLevel: Int,
-    root: String? = null,
+    node: Node,
     onFailure: (ErrorApp) -> Unit,
     onSuccess: () -> Unit
   ) {
     var query = FirebaseServices.databaseNodes
-      .whereEqualTo(NODE_NAME_FIELD, nodeName)
-      .whereEqualTo(LEVEL_FIELD, nodeLevel)
+      .whereEqualTo(NODE_NAME_FIELD, node.name)
+      .whereEqualTo(LEVEL_FIELD, node.level)
 
-    if (root != null) {
-      query = query.whereEqualTo(ROOT_FIELD, root)
+    if (node.rootNodeId != null) {
+      query = query.whereEqualTo(ROOT_FIELD, node.rootNodeId)
     }
 
     query.get()

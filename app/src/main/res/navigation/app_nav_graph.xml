@@ -60,7 +60,11 @@
   <fragment
     android:id="@+id/companiesFragment"
     android:name="el.ka.someapp.view.CompaniesFragment"
-    android:label="CompaniesFragment" />
+    android:label="CompaniesFragment" >
+    <action
+      android:id="@+id/action_companiesFragment_to_nodeFragment"
+      app:destination="@id/nodeFragment" />
+  </fragment>
   <fragment
     android:id="@+id/resetPasswordFragment"
     android:name="el.ka.someapp.view.ResetPasswordFragment"
@@ -68,5 +72,13 @@
     <action
       android:id="@+id/action_resetPasswordFragment_to_loginFragment"
       app:destination="@id/loginFragment" />
+  </fragment>
+  <fragment
+    android:id="@+id/nodeFragment"
+    android:name="el.ka.someapp.view.NodeFragment"
+    android:label="NodeFragment" >
+    <action
+      android:id="@+id/action_nodeFragment_to_companiesFragment"
+      app:destination="@id/companiesFragment" />
   </fragment>
 </navigation>

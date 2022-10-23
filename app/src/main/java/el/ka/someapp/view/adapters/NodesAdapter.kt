@@ -5,8 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import el.ka.someapp.data.model.Node
 import el.ka.someapp.databinding.ItemCompanyBinding
+import el.ka.someapp.generated.callback.OnClickListener
 
-class NodesAdapter : RecyclerView.Adapter<NodesAdapter.ViewHolder>() {
+class NodesAdapter(val listener: ItemListener? = null) : RecyclerView.Adapter<NodesAdapter.ViewHolder>() {
   inner class ViewHolder(val binding: ItemCompanyBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(node: Node) {
       binding.textName.text = node.name
@@ -22,6 +23,18 @@ class NodesAdapter : RecyclerView.Adapter<NodesAdapter.ViewHolder>() {
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     holder.bind(items[position])
+  }
+
+  override fun onViewAttachedToWindow(holder: ViewHolder) {
+    super.onViewAttachedToWindow(holder)
+    holder.itemView.setOnClickListener {
+      listener?.onClick(items[holder.adapterPosition].id)
+    }
+  }
+
+  override fun onViewDetachedFromWindow(holder: ViewHolder) {
+    super.onViewDetachedFromWindow(holder)
+    holder.itemView.setOnClickListener(null)
   }
 
   override fun getItemCount(): Int = items.size
@@ -43,5 +56,9 @@ class NodesAdapter : RecyclerView.Adapter<NodesAdapter.ViewHolder>() {
   private fun addNode(node: Node) {
     items.add(node)
     notifyItemInserted(items.size)
+  }
+
+  interface ItemListener {
+    fun onClick(nodeId: String)
   }
 }

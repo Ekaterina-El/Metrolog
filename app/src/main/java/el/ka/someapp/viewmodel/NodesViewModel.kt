@@ -11,8 +11,10 @@ import el.ka.someapp.data.repository.AuthenticationService
 import el.ka.someapp.data.repository.CloudDatabaseService
 
 class NodesViewModel(application: Application) : AndroidViewModel(application) {
-  private val _currentLevel = MutableLiveData<Int>(-1)  // -1 = main menu with companies
-  private val _currentRoot = MutableLiveData<String?>(null)
+  //private val _currentLevel = MutableLiveData<Int>(-1)  // -1 = main menu with companies
+  //private val _currentRoot = MutableLiveData<String?>(null)
+
+  val currentNode = MutableLiveData<Node?>(null)
 
   private val _nodes = MutableLiveData<List<Node>>(listOf())
 
@@ -36,14 +38,14 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   }
 
   fun loadNodes() {
-    if (_currentLevel.value == -1) loadMainNodes() else loadLevelNodes()
+    if (currentNode.value == null) loadMainNodes() else loadLevelNodes()
   }
 
   private fun loadLevelNodes() {
     _state.value = State.LOADING
     CloudDatabaseService.getNotesInLevelRoot(
-      root = _currentRoot.value,
-      level = _currentLevel.value!! + 1,
+      root = currentNode.value!!.rootNodeId,
+      level = currentNode.value!!.level + 1,
       onFailure = { onNodesLoadFailure() },
       onSuccess = { setNodes(it) }
     )
@@ -75,11 +77,16 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   }
 
   private fun saveWithCheck(name: String) {
+    val node = Node(
+      name = name,
+      level = if (currentNode.value != null) currentNode.value!!.level + 1 else 0,
+      rootNodeId = if (currentNode.value != null) currentNode.value!!.id else null,
+      head = listOf(AuthenticationService.getUserUid()!!),
+    )
+
     _state.value = State.LOADING
     CloudDatabaseService.checkUniqueNodeName(
-      nodeName = name,
-      nodeLevel = _currentLevel.value!! + 1,
-      root = _currentRoot.value,
+      node = node,
       onFailure = {
         if (it == Errors.nonUniqueName) {
           _state.value = State.NON_UNIQUE_NAME
@@ -87,19 +94,13 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       },
       onSuccess = {
         _state.value = State.NEW_NODE_ADDED
-        addNode(name)
+        addNode(node)
       }
     )
   }
 
-  private fun addNode(name: String) {
+  private fun addNode(node: Node) {
     _state.value = State.LOADING
-    val node = Node(
-      name = name,
-      level = _currentLevel.value!! + 1,
-      rootNodeId = _currentRoot.value,
-      head = listOf(AuthenticationService.getUserUid()!!),
-    )
     CloudDatabaseService.saveNode(
       node,
       onFailure = {},
@@ -108,5 +109,18 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
 
   fun toViewState() {
     _state.value = State.VIEW
+  }
+
+  fun loadNodeByID(nodeId: String) {
+    _state.value = State.LOADING
+    CloudDatabaseService.getNodesById(
+      nodeId,
+      onFailure = {
+        // TODO: handle error
+      },
+      onSuccess = {
+        currentNode.value = it
+        _state.value = State.VIEW
+      })
   }
 }
