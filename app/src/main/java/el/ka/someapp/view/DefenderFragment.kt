@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import el.ka.someapp.R
@@ -14,6 +16,17 @@ import el.ka.someapp.viewmodel.StatePassword
 class DefenderFragment : BaseFragment() {
   private lateinit var binding: DefenderFragmentBinding
   private lateinit var viewModel: DefenderViewModel
+
+  private lateinit var bounceAnimation: Animation
+  private lateinit var circles: List<View>
+
+  private val fieldObserver = Observer<String> { it ->
+    val circlePosition = it.length - 1
+    circles.forEach { circle -> circle.clearAnimation() }
+    if (circlePosition >= 0) {
+      circles[circlePosition].startAnimation(bounceAnimation)
+    }
+  }
 
   private val statePasswordObserver = Observer<StatePassword> { state ->
     when (state) {
@@ -30,8 +43,12 @@ class DefenderFragment : BaseFragment() {
 
   private fun savePasswordAndToCompanies() {
     setPassword(viewModel.field.value)
-    //sharedPreferences.edit().putString(LOCAL_CURRENT_PASSWORD, viewModel.field.value).apply()
     navigateToCompanies()
+  }
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    bounceAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.bounce_anim)
   }
 
   override fun onCreateView(
@@ -46,7 +63,15 @@ class DefenderFragment : BaseFragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+
+    circles = listOf(
+      binding.c1, binding.c2,
+      binding.c3, binding.c4,
+      binding.c5
+    )
+
     viewModel.statePassword.observe(viewLifecycleOwner, statePasswordObserver)
+    viewModel.field.observe(viewLifecycleOwner, fieldObserver)
   }
 
   override fun initFunctionalityParts() {
@@ -73,6 +98,7 @@ class DefenderFragment : BaseFragment() {
   override fun onDestroy() {
     super.onDestroy()
     viewModel.statePassword.removeObserver { statePasswordObserver }
+    viewModel.field.removeObserver { fieldObserver }
   }
 
   private fun logout() {

@@ -74,6 +74,7 @@
       app:layout_constraintTop_toBottomOf="@id/textUserHint">
 
       <View
+        android:id="@+id/c1"
         android:layout_width="@dimen/defender_circle_size"
         android:layout_height="@dimen/defender_circle_size"
         android:layout_gravity="center"
@@ -82,6 +83,7 @@
         tools:background="@drawable/defender_circle_active" />
 
       <View
+        android:id="@+id/c2"
         android:layout_width="@dimen/defender_circle_size"
         android:layout_height="@dimen/defender_circle_size"
         android:layout_gravity="center"
@@ -90,6 +92,7 @@
         tools:background="@drawable/defender_circle_active" />
 
       <View
+        android:id="@+id/c3"
         android:layout_width="@dimen/defender_circle_size"
         android:layout_height="@dimen/defender_circle_size"
         android:layout_gravity="center"
@@ -98,6 +101,7 @@
         tools:background="@drawable/defender_circle_active" />
 
       <View
+        android:id="@+id/c4"
         android:layout_width="@dimen/defender_circle_size"
         android:layout_height="@dimen/defender_circle_size"
         android:layout_gravity="center"
@@ -106,6 +110,7 @@
         tools:background="@drawable/defender_circle" />
 
       <View
+        android:id="@+id/c5"
         android:layout_width="@dimen/defender_circle_size"
         android:layout_height="@dimen/defender_circle_size"
         android:layout_gravity="center"
