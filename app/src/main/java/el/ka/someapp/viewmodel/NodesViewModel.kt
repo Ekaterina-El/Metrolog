@@ -111,16 +111,20 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     _state.value = State.VIEW
   }
 
-  fun loadNodeByID(nodeId: String) {
-    _state.value = State.LOADING
-    CloudDatabaseService.getNodesById(
-      nodeId,
-      onFailure = {
-        // TODO: handle error
-      },
-      onSuccess = {
-        currentNode.value = it
-        _state.value = State.VIEW
-      })
+  fun loadNodeByID(nodeId: String?) {
+    if (nodeId == null) {
+      currentNode.value = null
+    } else {
+      _state.value = State.LOADING
+      CloudDatabaseService.getNodesById(
+        nodeId,
+        onFailure = {
+          // TODO: handle error
+        },
+        onSuccess = {
+          currentNode.value = it
+          _state.value = State.VIEW
+        })
+    }
   }
 }

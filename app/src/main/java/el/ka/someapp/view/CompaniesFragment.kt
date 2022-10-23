@@ -51,22 +51,17 @@ class CompaniesFragment : BaseFragment() {
   }
 
   override fun initFunctionalityParts() {
-    binding = FragmentCompaniesBinding.inflate(layoutInflater)
+    viewModel.loadNodeByID(null)
 
+    binding = FragmentCompaniesBinding.inflate(layoutInflater)
     adapter = NodesAdapter(
       listener = object: NodesAdapter.ItemListener {
         override fun onClick(nodeId: String) {
           openNode(nodeId)
         }
-
       }
     )
     createAddCompanyDialog()
-  }
-
-  private fun openNode(nodeId: String) {
-    viewModel.loadNodeByID(nodeId)
-    navigate(R.id.action_companiesFragment_to_nodeFragment)
   }
 
   override fun inflateBindingVariables() {
@@ -85,6 +80,11 @@ class CompaniesFragment : BaseFragment() {
     viewModel.filteredNodes.observe(viewLifecycleOwner, nodesObserver)
     viewModel.state.observe(viewLifecycleOwner, stateObserver)
     viewModel.loadNodes()
+  }
+
+  private fun openNode(nodeId: String) {
+    viewModel.loadNodeByID(nodeId)
+    navigate(R.id.action_companiesFragment_to_nodeFragment)
   }
 
   private fun createAddCompanyDialog() {
