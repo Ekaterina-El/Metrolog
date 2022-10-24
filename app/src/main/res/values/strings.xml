@@ -49,4 +49,7 @@
   <string name="nodes">Узлы</string>
   <string name="users">Пользователи</string>
   <string name="measuring">СИ</string>
+  <string name="company_positions_title">Должностные лица</string>
+  <string name="hierarchy_title">Иерархия родительских узлов</string>
+  <string name="delete_node">Удалить узел/предприятие</string>
 </resources>

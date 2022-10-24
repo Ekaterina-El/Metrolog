@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:orientation="horizontal"
+  android:layout_height="wrap_content"
+  android:paddingVertical="10dp"
+  android:gravity="center"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <LinearLayout
+    android:layout_weight="1"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+      android:id="@+id/position"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      tools:text="Технический руководитель"
+      android:textSize="14sp"
+      android:textColor="@color/super_dark_gray"
+      android:fontFamily="@font/montserrat_alternates" />
+
+    <TextView
+      android:id="@+id/fullName"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textStyle="bold"
+      android:layout_marginTop="5dp"
+      tools:text="Крутильников Алексей Викторович"
+      android:textSize="16sp"
+      android:textColor="@color/secondary_color"
+      android:fontFamily="@font/montserrat_alternates" />
+
+    <TextView
+      android:id="@+id/email"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="5dp"
+      tools:text="krutilnikov_alex@gmail.com"
+      android:textSize="16sp"
+      android:textColor="@color/secondary_color"
+      android:fontFamily="@font/montserrat_alternates" />
+  </LinearLayout>
+  
+  <ImageView
+    android:layout_width="25dp"
+    android:layout_height="25dp"
+    app:tint="@color/secondary_color"
+    android:src="@drawable/ic_vert_more" />
+
+
+
+</LinearLayout>

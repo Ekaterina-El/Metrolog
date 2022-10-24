@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:paddingVertical="5dp"
+  android:fontFamily="@font/montserrat_alternates"
+  android:textColor="@color/secondary_color"
+  android:textSize="16sp"
+  android:textStyle="bold"
+  app:drawableStartCompat="@drawable/ic_arrow_down"
+  tools:text="Предприятие XYZ" />
