@@ -11,7 +11,9 @@ import el.ka.someapp.data.repository.AuthenticationService
 import el.ka.someapp.data.repository.CloudDatabaseService
 
 class NodesViewModel(application: Application) : AndroidViewModel(application) {
-  val currentNode = MutableLiveData<Node?>(null)
+  private val _currentNode = MutableLiveData<Node?>(null)
+  val currentNode: LiveData<Node?>
+    get() = _currentNode
 
   private val _nodes = MutableLiveData<List<Node>>(listOf())
 
@@ -40,14 +42,14 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   }
 
   fun loadNodes() {
-    if (currentNode.value == null) loadMainNodes() else loadLevelNodes()
+    if (_currentNode.value == null) loadMainNodes() else loadLevelNodes()
   }
 
   private fun loadLevelNodes() {
     _state.value = State.LOADING
     CloudDatabaseService.getNotesInLevelRoot(
-      root = currentNode.value!!.id,
-      level = currentNode.value!!.level + 1,
+      root = _currentNode.value!!.id,
+      level = _currentNode.value!!.level + 1,
       onFailure = {
         onNodesLoadFailure()
                   },
@@ -85,8 +87,8 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   private fun saveWithCheck(name: String) {
     val node = Node(
       name = name,
-      level = if (currentNode.value != null) currentNode.value!!.level + 1 else 0,
-      rootNodeId = if (currentNode.value != null) currentNode.value!!.id else null,
+      level = if (_currentNode.value != null) _currentNode.value!!.level + 1 else 0,
+      rootNodeId = if (_currentNode.value != null) _currentNode.value!!.id else null,
       head = listOf(AuthenticationService.getUserUid()!!),
     )
 
@@ -122,7 +124,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
 
   fun loadNodeByID(nodeId: String?) {
     if (nodeId == null) {
-      currentNode.value = null
+      _currentNode.value = null
     } else {
       _state.value = State.LOADING
       CloudDatabaseService.getNodesById(
@@ -131,8 +133,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
           // TODO: handle error
         },
         onSuccess = {
-          currentNode.value = it
-          loadNodes()
+          _currentNode.value = it
           _state.value = State.VIEW
         })
     }

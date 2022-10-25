@@ -24,6 +24,12 @@ class NodeNodesFragment : BaseFragment() {
   private val viewModel: NodesViewModel by activityViewModels()
 
   private lateinit var adapter: NodesAdapter
+  val nodesAdapterListener = object: NodesAdapter.ItemListener {
+    override fun onClick(nodeId: String) {
+      viewModel.loadNodeByID(nodeId)
+    }
+
+  }
   private val nodesObserver = Observer<List<Node>> {
     adapter.setNodes(it)
   }
@@ -40,8 +46,11 @@ class NodeNodesFragment : BaseFragment() {
       else -> {}
     }
   }
-
   private lateinit var dialog: Dialog
+
+  private val currentNodeObserver = Observer<Node?> {
+    viewModel.loadNodes()
+  }
 
 
   override fun onCreateView(
@@ -57,11 +66,12 @@ class NodeNodesFragment : BaseFragment() {
     super.onViewCreated(view, savedInstanceState)
     viewModel.filteredNodes.observe(viewLifecycleOwner, nodesObserver)
     viewModel.state.observe(viewLifecycleOwner, stateObserver)
+    viewModel.currentNode.observe(viewLifecycleOwner, currentNodeObserver)
   }
 
   override fun initFunctionalityParts() {
     binding = FragmentNodeNodesBinding.inflate(layoutInflater)
-    adapter = NodesAdapter()
+    adapter = NodesAdapter(nodesAdapterListener)
     createAddNodeDialog()
   }
 
@@ -81,6 +91,7 @@ class NodeNodesFragment : BaseFragment() {
     super.onDestroy()
     viewModel.filteredNodes.removeObserver(nodesObserver)
     viewModel.state.removeObserver(stateObserver)
+    viewModel.currentNode.removeObserver(currentNodeObserver)
   }
 
   // region Dialog Add Node

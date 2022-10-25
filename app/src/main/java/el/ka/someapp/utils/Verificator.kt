@@ -55,7 +55,6 @@ object Verificator {
         repeatPassword = repeatPassword
       )
     )
-
     return listOfErrors
   }
 
