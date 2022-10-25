@@ -11,8 +11,6 @@ import el.ka.someapp.data.repository.AuthenticationService
 import el.ka.someapp.data.repository.CloudDatabaseService
 
 class NodesViewModel(application: Application) : AndroidViewModel(application) {
-  //private val _currentLevel = MutableLiveData<Int>(-1)  // -1 = main menu with companies
-  //private val _currentRoot = MutableLiveData<String?>(null)
   val currentNode = MutableLiveData<Node?>(null)
 
   private val _nodes = MutableLiveData<List<Node>>(listOf())
@@ -48,10 +46,14 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   private fun loadLevelNodes() {
     _state.value = State.LOADING
     CloudDatabaseService.getNotesInLevelRoot(
-      root = currentNode.value!!.rootNodeId,
+      root = currentNode.value!!.id,
       level = currentNode.value!!.level + 1,
-      onFailure = { onNodesLoadFailure() },
-      onSuccess = { setNodes(it) }
+      onFailure = {
+        onNodesLoadFailure()
+                  },
+      onSuccess = {
+        setNodes(it)
+      }
     )
   }
 
@@ -127,6 +129,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
         },
         onSuccess = {
           currentNode.value = it
+          loadNodes()
           _state.value = State.VIEW
         })
     }

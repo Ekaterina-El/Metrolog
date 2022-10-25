@@ -34,14 +34,6 @@ class NodeFragment : BaseFragment() {
 
     val navController = (childFragmentManager.findFragmentById(R.id.node_nav_host_fragment) as NavHostFragment).navController
     binding.bottomNavView.setupWithNavController(navController)
-
-//    binding.bottomNavView.setupWithNavController(binding.nodeNavHostFragment.findNavController())
-/*
-    val navController = (binding.nodeNavHostFragment.findNavController())
-    val navView: BottomNavigationView = binding.bottomNavView
-    navView.setupWithNavController(navController)
-
- */
   }
 
   override fun inflateBindingVariables() {

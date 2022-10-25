@@ -33,26 +33,13 @@
       app:layout_constraintTop_toTopOf="parent"
       tools:text="Отдел кадров" />
 
-    <TextView
-      android:id="@+id/textAddress"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="@dimen/app_padding"
-      android:fontFamily="@font/montserrat_alternates"
-      android:textColor="@color/dark_gray"
-      android:textSize="14sp"
-      android:textStyle="bold"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/textName"
-      tools:text="г. Пермь, ул. Компроса 24" />
-
     <ImageView
-      android:contentDescription="@null"
       android:layout_width="25dp"
       android:layout_height="25dp"
       android:layout_marginEnd="@dimen/app_padding"
+      android:contentDescription="@null"
       android:src="@drawable/ic_edit"
-      app:layout_constraintBottom_toBottomOf="@id/textAddress"
+      app:layout_constraintBottom_toBottomOf="@+id/textName"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="@id/textName"
       app:tint="@color/primary_dark_color" />
@@ -63,14 +50,13 @@
       android:id="@+id/textCompanyPositionTitle"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginTop="30dp"
+      android:layout_marginStart="@dimen/app_padding"
       android:fontFamily="@font/montserrat_alternates"
+      android:text="@string/company_positions_title"
       android:textColor="@color/secondary_color"
       android:textSize="18sp"
-      app:layout_constraintTop_toBottomOf="@id/textAddress"
       app:layout_constraintStart_toStartOf="parent"
-      android:text="@string/company_positions_title"
-      android:layout_marginStart="@dimen/app_padding" />
+      tools:layout_editor_absoluteY="98dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
       app:layout_constraintTop_toTopOf="@id/textCompanyPositionTitle"
