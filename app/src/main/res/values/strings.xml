@@ -47,6 +47,7 @@
   <string name="name">Название</string>
   <string name="info">Информация</string>
   <string name="nodes">Узлы</string>
+  <string name="nodes_with_name">%1$s: Узлы</string>
   <string name="users">Пользователи</string>
   <string name="measuring">СИ</string>
   <string name="company_positions_title">Должностные лица</string>
