@@ -47,7 +47,8 @@
       android:orientation="horizontal"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/textTitle">
+      app:layout_constraintTop_toBottomOf="@id/textTitle"
+      android:baselineAligned="false">
 
       <LinearLayout
         android:id="@+id/layoutSearchForm"
@@ -68,6 +69,8 @@
           android:layout_height="wrap_content"
           android:layout_marginEnd="10dp"
           android:layout_weight="1"
+          android:text="@={viewmodel.filter}"
+          android:afterTextChanged="@{() -> viewmodel.filterNodes()}"
           android:background="@null"
           android:ellipsize="end"
           android:fontFamily="@font/montserrat_alternates"
@@ -83,6 +86,8 @@
           android:id="@+id/imageSearchClear"
           android:layout_width="30dp"
           android:layout_height="30dp"
+          android:onClick="@{() -> viewmodel.clearFilter()}"
+          android:src="@{viewmodel.filter.length() == 0 ? @drawable/ic_search : @drawable/ic_close}"
           android:contentDescription="@null"
           app:layout_constraintBottom_toBottomOf="@id/editTextFilter"
           app:layout_constraintEnd_toEndOf="parent"
