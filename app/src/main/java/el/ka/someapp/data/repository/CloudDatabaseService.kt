@@ -26,9 +26,11 @@ object CloudDatabaseService {
         it.update(ID_FIELD, it.id).addOnSuccessListener {
           if (node.rootNodeId != null) {
             // TODO: добавить в поле children у root id нового node
+            onSuccess()
           } else {
             onSuccess()
           }
+        }.addOnFailureListener {
         }
       }
       .addOnFailureListener { onFailure() }
@@ -126,7 +128,6 @@ object CloudDatabaseService {
     onSuccess: (Array<Node>) -> Unit,
     onFailure: (ErrorApp) -> Unit
   ) {
-//    val a = userRole.roleName
     FirebaseServices.databaseNodes
       .whereEqualTo(LEVEL_FIELD, 0)
       .whereArrayContains(userRole.roleName, userId)

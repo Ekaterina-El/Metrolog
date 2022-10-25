@@ -109,8 +109,11 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     _state.value = State.LOADING
     CloudDatabaseService.saveNode(
       node,
-      onFailure = {},
-      onSuccess = { loadNodes() })
+      onFailure = {
+      },
+      onSuccess = {
+        loadNodes()
+      })
   }
 
   fun toViewState() {
