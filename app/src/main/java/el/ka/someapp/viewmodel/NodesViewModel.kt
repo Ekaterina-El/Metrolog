@@ -11,6 +11,36 @@ import el.ka.someapp.data.repository.AuthenticationService
 import el.ka.someapp.data.repository.CloudDatabaseService
 
 class NodesViewModel(application: Application) : AndroidViewModel(application) {
+  // region History
+  private val _nodesHistory = MutableLiveData<List<String>>(listOf())
+  val nodesHistory: LiveData<List<String>>
+    get() = _nodesHistory
+
+  private fun addToHistory(id: String) {
+    if (_nodesHistory.value!!.isEmpty() || _nodesHistory.value!!.last() != id) {
+      val history = _nodesHistory.value!!.toMutableList()
+      history.add(id)
+      _nodesHistory.value = history.toList()
+    }
+  }
+
+  private fun popupHistory() {
+    val history = _nodesHistory.value!!.toMutableList()
+    history.removeLastOrNull()
+    _nodesHistory.value = history
+  }
+
+  fun goBack() {
+    popupHistory()
+
+    if (_nodesHistory.value!!.isEmpty()) {
+      _state.value = State.BACK
+    } else {
+      loadNodeByID(_nodesHistory.value!!.last())
+    }
+  }
+  // endregion
+
   private val _currentNode = MutableLiveData<Node?>(null)
   val currentNode: LiveData<Node?>
     get() = _currentNode
@@ -52,7 +82,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       level = _currentNode.value!!.level + 1,
       onFailure = {
         onNodesLoadFailure()
-                  },
+      },
       onSuccess = {
         setNodes(it)
       }
@@ -125,6 +155,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   fun loadNodeByID(nodeId: String?) {
     if (nodeId == null) {
       _currentNode.value = null
+      _nodesHistory.value = listOf()
     } else {
       _state.value = State.LOADING
       CloudDatabaseService.getNodesById(
@@ -134,8 +165,11 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
         },
         onSuccess = {
           _currentNode.value = it
+          addToHistory(_currentNode.value!!.id)
           _state.value = State.VIEW
         })
     }
   }
+
+
 }

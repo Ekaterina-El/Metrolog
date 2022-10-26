@@ -49,6 +49,7 @@ abstract class BaseFragment : Fragment() {
     sharedPreferences.edit().putString(LOCAL_CURRENT_PASSWORD, password).apply()
   }
 
+
   companion object {
     const val sharedPreferencesName = "METROLOGY"
     const val LOCAL_CURRENT_PASSWORD = "local_current_password"
