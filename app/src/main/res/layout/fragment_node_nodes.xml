@@ -4,6 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+
     <import type="android.view.View" />
 
     <variable
@@ -19,162 +20,166 @@
       type="el.ka.someapp.view.adapters.NodesAdapter" />
   </data>
 
-  <androidx.constraintlayout.widget.ConstraintLayout
+  <androidx.core.widget.NestedScrollView
     android:layout_width="match_parent"
+    android:overScrollMode="never"
     android:layout_height="match_parent">
 
-    <TextView
-      android:id="@+id/textTitle"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="@dimen/app_padding"
-      android:layout_marginTop="20dp"
-      android:fontFamily="@font/montserrat_alternates"
-      android:textColor="@color/primary_dark_color"
-      android:textSize="18sp"
-      android:textStyle="bold"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      android:text="@{@string/nodes_with_name(viewmodel.currentNode.name)}"
-      tools:text="Отдел кадров: Узлы" />
-
-    <!--  Search - start  -->
-    <LinearLayout
-      android:id="@+id/layoutHead"
+    <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="@dimen/app_padding"
-      android:layout_marginTop="20dp"
-      android:layout_marginEnd="@dimen/app_padding"
-      android:orientation="horizontal"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/textTitle"
-      android:baselineAligned="false">
+      android:layout_height="match_parent">
 
+      <TextView
+        android:id="@+id/textTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/app_padding"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/montserrat_alternates"
+        android:text="@{@string/nodes_with_name(viewmodel.currentNode.name)}"
+        android:textColor="@color/primary_dark_color"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Отдел кадров: Узлы" />
+
+      <!--  Search - start  -->
       <LinearLayout
-        android:id="@+id/layoutSearchForm"
-        android:layout_width="0dp"
-        android:layout_height="45dp"
-        android:layout_weight="1"
-        android:background="@drawable/search_wrapper"
-        android:gravity="center"
-        android:paddingHorizontal="15dp"
-        android:paddingVertical="10dp"
+        android:id="@+id/layoutHead"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/app_padding"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="@dimen/app_padding"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textTitle">
 
-        <EditText
-          android:id="@+id/editTextFilter"
+        <LinearLayout
+          android:id="@+id/layoutSearchForm"
           android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginEnd="10dp"
+          android:layout_height="45dp"
           android:layout_weight="1"
-          android:text="@={viewmodel.filter}"
-          android:afterTextChanged="@{() -> viewmodel.filterNodes()}"
-          android:background="@null"
-          android:ellipsize="end"
-          android:fontFamily="@font/montserrat_alternates"
-          android:hint="@string/search"
-          android:importantForAutofill="no"
-          android:inputType="textFilter"
-          android:maxLines="1"
-          android:textColor="@color/secondary_color"
-          android:textColorHint="@color/light_gray"
-          android:textSize="18sp" />
-
-        <ImageView
-          android:id="@+id/imageSearchClear"
-          android:layout_width="30dp"
-          android:layout_height="30dp"
-          android:onClick="@{() -> viewmodel.clearFilter()}"
-          android:src="@{viewmodel.filter.length() == 0 ? @drawable/ic_search : @drawable/ic_close}"
-          android:contentDescription="@null"
-          app:layout_constraintBottom_toBottomOf="@id/editTextFilter"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintTop_toTopOf="@id/editTextFilter"
-          app:tint="@color/light_gray"
-          tools:src="@drawable/ic_search" />
-      </LinearLayout>
-
-      <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="10dp"
-        android:onClick="@{() -> master.showAddNodeDialog()}"
-        android:background="@drawable/button_selector"
-        android:clickable="true"
-        android:focusable="true">
-
-        <ImageView
-          android:layout_width="30dp"
-          android:layout_height="30dp"
-          android:contentDescription="@null"
-          android:src="@drawable/ic_add"
-          app:layout_constraintBottom_toBottomOf="parent"
+          android:background="@drawable/search_wrapper"
+          android:gravity="center"
+          android:paddingHorizontal="15dp"
+          android:paddingVertical="10dp"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent"
-          app:tint="@color/text_on_primary" />
+          app:layout_constraintTop_toBottomOf="@id/textTitle">
+
+          <EditText
+            android:id="@+id/editTextFilter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:afterTextChanged="@{() -> viewmodel.filterNodes()}"
+            android:background="@null"
+            android:ellipsize="end"
+            android:fontFamily="@font/montserrat_alternates"
+            android:hint="@string/search"
+            android:importantForAutofill="no"
+            android:inputType="textFilter"
+            android:maxLines="1"
+            android:text="@={viewmodel.filter}"
+            android:textColor="@color/secondary_color"
+            android:textColorHint="@color/light_gray"
+            android:textSize="18sp" />
+
+          <ImageView
+            android:id="@+id/imageSearchClear"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:contentDescription="@null"
+            android:onClick="@{() -> viewmodel.clearFilter()}"
+            android:src="@{viewmodel.filter.length() == 0 ? @drawable/ic_search : @drawable/ic_close}"
+            app:layout_constraintBottom_toBottomOf="@id/editTextFilter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/editTextFilter"
+            app:tint="@color/light_gray"
+            tools:src="@drawable/ic_search" />
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+          android:layout_width="45dp"
+          android:layout_height="45dp"
+          android:layout_marginStart="10dp"
+          android:background="@drawable/button_selector"
+          android:clickable="true"
+          android:focusable="true"
+          android:onClick="@{() -> master.showAddNodeDialog()}">
+
+          <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_add"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/text_on_primary" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+      </LinearLayout>
+      <!--  Search - end  -->
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutEmpty"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/app_padding"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="@dimen/app_padding"
+        android:visibility="@{viewmodel.filteredNodes.size() == 0 ? View.VISIBLE : View.GONE}"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layoutHead">
+
+        <TextView
+          android:id="@+id/textEmptyList"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:fontFamily="@font/montserrat_alternates"
+          android:gravity="center"
+          android:text="@string/empty_data"
+          android:textColor="@color/secondary_color"
+          android:textSize="16sp"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/imageEmpty" />
+
+        <ImageView
+          android:id="@+id/imageEmpty"
+          android:layout_width="100dp"
+          android:layout_height="100dp"
+          android:layout_marginTop="5dp"
+          android:contentDescription="@string/empty_data"
+          android:src="@drawable/ic_database"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent" />
 
       </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
-    <!--  Search - end  -->
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-      android:id="@+id/layoutEmpty"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="@dimen/app_padding"
-      android:layout_marginTop="24dp"
-      android:layout_marginEnd="@dimen/app_padding"
-      android:visibility="@{viewmodel.filteredNodes.size() == 0 ? View.VISIBLE : View.GONE}"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/layoutHead">
-
-      <TextView
-        android:id="@+id/textEmptyList"
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listCompanies"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/montserrat_alternates"
-        android:gravity="center"
-        android:text="@string/empty_data"
-        android:textColor="@color/secondary_color"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageEmpty" />
-
-      <ImageView
-        android:id="@+id/imageEmpty"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="5dp"
-        android:contentDescription="@string/empty_data"
-        android:src="@drawable/ic_database"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/app_padding"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="@dimen/app_padding"
+        android:adapter="@{adapter}"
+        android:nestedScrollingEnabled="false"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/layoutHead"
+        tools:listitem="@layout/item_company" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/listCompanies"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="@dimen/app_padding"
-      android:layout_marginTop="20dp"
-      android:layout_marginEnd="@dimen/app_padding"
-      android:clipToPadding="false"
-      android:overScrollMode="never"
-      android:adapter="@{adapter}"
-      app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-      app:layout_constraintTop_toBottomOf="@id/layoutHead"
-      tools:listitem="@layout/item_company"
-      />
-
-  </androidx.constraintlayout.widget.ConstraintLayout>
+  </androidx.core.widget.NestedScrollView>
 </layout>

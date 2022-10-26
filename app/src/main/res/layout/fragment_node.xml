@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto">
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+
     <variable
       name="viewmodel"
       type="el.ka.someapp.viewmodel.NodesViewModel" />
@@ -16,29 +18,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.fragment.app.FragmentContainerView
+    <fragment
       android:id="@+id/node_nav_host_fragment"
       android:name="androidx.navigation.fragment.NavHostFragment"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      android:nestedScrollingEnabled="true"
-      app:layout_constraintBottom_toTopOf="@id/bottom_nav_view"
+      android:layout_height="0dp"
       app:defaultNavHost="false"
+      app:layout_constraintBottom_toTopOf="@id/bottom_nav_view"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
       app:navGraph="@navigation/node_nav_graph" />
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
       android:id="@+id/bottom_nav_view"
-      app:labelVisibilityMode="unlabeled"
       style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
+      app:labelVisibilityMode="unlabeled"
       app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
       app:menu="@menu/node_bottom_menu" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/layoutLoader"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="@drawable/bg"
+      app:isLoad="@{viewmodel.state}"
+      tools:visibility="visible">
+
+      <ProgressBar
+        android:layout_width="80dp"
+        android:indeterminateTint="@color/text_on_primary"
+        android:layout_height="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
