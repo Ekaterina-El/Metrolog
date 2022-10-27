@@ -31,6 +31,7 @@
       android:textStyle="bold"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
+      android:text="@{viewmodel.currentNode.name}"
       tools:text="Отдел кадров" />
 
     <ImageView
@@ -47,6 +48,7 @@
 
     <!-- Company positions - start -->
     <TextView
+      android:layout_marginTop="30dp"
       android:id="@+id/textCompanyPositionTitle"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -55,8 +57,9 @@
       android:text="@string/company_positions_title"
       android:textColor="@color/secondary_color"
       android:textSize="18sp"
+      app:layout_constraintTop_toBottomOf="@id/textName"
       app:layout_constraintStart_toStartOf="parent"
-      tools:layout_editor_absoluteY="98dp" />
+      />
 
     <androidx.constraintlayout.widget.ConstraintLayout
       app:layout_constraintTop_toTopOf="@id/textCompanyPositionTitle"
