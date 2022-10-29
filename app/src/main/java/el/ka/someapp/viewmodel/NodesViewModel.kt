@@ -4,11 +4,14 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import el.ka.someapp.data.model.Errors
 import el.ka.someapp.data.model.Node
 import el.ka.someapp.data.model.State
 import el.ka.someapp.data.repository.AuthenticationService
 import el.ka.someapp.data.repository.CloudDatabaseService
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.launch
 
 class NodesViewModel(application: Application) : AndroidViewModel(application) {
   // region History
@@ -77,8 +80,15 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
 
   private fun loadLevelNodes() {
     _state.value = State.LOADING
+    viewModelScope.launch {
+      val a = CloudDatabaseService.getNodesInLevelRoot(
+        children = _currentNode.value!!.children
+       ).awaitAll().map { it.toObject(Node::class.java)!! }
+      setNodes(a)
+    }
+    /*
     CloudDatabaseService.getNotesInLevelRoot(
-      root = _currentNode.value!!.id,
+      children = _currentNode.value!!.children,
       level = _currentNode.value!!.level + 1,
       onFailure = {
         onNodesLoadFailure()
@@ -87,6 +97,8 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
         setNodes(it)
       }
     )
+
+     */
   }
 
   private fun loadMainNodes() {
@@ -142,7 +154,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     CloudDatabaseService.saveNode(
       node,
       onFailure = {
-                  // TODO: handle error
+        // TODO: handle error
       },
       onSuccess = {
         loadNodes()
@@ -159,7 +171,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       _nodesHistory.value = listOf()
     } else {
       _state.value = State.LOADING
-      CloudDatabaseService.getNodesById(
+      CloudDatabaseService.getNodeById(
         nodeId,
         onFailure = {
           // TODO: handle error

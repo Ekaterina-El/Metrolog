@@ -1,8 +1,11 @@
 package el.ka.someapp.data.repository
 
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
+import com.google.firebase.inject.Deferred
 import el.ka.someapp.data.model.*
+import kotlinx.coroutines.tasks.asDeferred
 
 object CloudDatabaseService {
   fun saveUser(
@@ -90,11 +93,12 @@ object CloudDatabaseService {
       .addOnFailureListener { onFailure(Errors.somethingWrong) }
   }
 
-  fun getNodesById(
+  fun getNodeById(
     nodeId: String,
     onSuccess: (Node) -> Unit,
     onFailure: (ErrorApp) -> Unit
   ) {
+
     FirebaseServices.databaseNodes
       .document(nodeId)
       .get()
@@ -107,12 +111,19 @@ object CloudDatabaseService {
       }
   }
 
-  fun getNotesInLevelRoot(
-    root: String?,
-    level: Int,
-    onFailure: () -> Unit,
-    onSuccess: (List<Node>) -> Unit
-  ) {
+  suspend fun getNodesInLevelRoot(
+    children: List<String>): List<kotlinx.coroutines.Deferred<DocumentSnapshot>> {
+    // получаем список children у Root
+    // прходим по всем id children
+    //    * последовательно загружаем по id узел (getNodeByID)
+    //    * после получения узла добавляем его в спиоск
+    // вызываем функцию OnSuccess педелаём, в качестве аргумента, список загруженых узлов
+    val db = FirebaseServices.databaseNodes
+    return children.map { nodeId ->
+      db.document(nodeId).get().asDeferred()
+    }
+
+    /*
     FirebaseServices
       .databaseNodes
       .whereEqualTo(ROOT_FIELD, root)
@@ -122,6 +133,7 @@ object CloudDatabaseService {
       .addOnSuccessListener {
         onSuccess(it.toObjects(Node::class.java))
       }
+     */
   }
 
 
