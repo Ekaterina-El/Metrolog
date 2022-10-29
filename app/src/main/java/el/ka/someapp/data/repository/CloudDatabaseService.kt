@@ -122,18 +122,6 @@ object CloudDatabaseService {
     return children.map { nodeId ->
       db.document(nodeId).get().asDeferred()
     }
-
-    /*
-    FirebaseServices
-      .databaseNodes
-      .whereEqualTo(ROOT_FIELD, root)
-      .whereEqualTo(LEVEL_FIELD, level)
-      .get()
-      .addOnFailureListener { onFailure() }
-      .addOnSuccessListener {
-        onSuccess(it.toObjects(Node::class.java))
-      }
-     */
   }
 
 

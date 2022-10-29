@@ -86,19 +86,6 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
        ).awaitAll().map { it.toObject(Node::class.java)!! }
       setNodes(a)
     }
-    /*
-    CloudDatabaseService.getNotesInLevelRoot(
-      children = _currentNode.value!!.children,
-      level = _currentNode.value!!.level + 1,
-      onFailure = {
-        onNodesLoadFailure()
-      },
-      onSuccess = {
-        setNodes(it)
-      }
-    )
-
-     */
   }
 
   private fun loadMainNodes() {
