@@ -139,6 +139,19 @@ object CloudDatabaseService {
       }
   }
 
+  fun changeNodeName(
+    nodeId: String,
+    newName: String,
+    onFailure: (ErrorApp) -> Unit,
+    onSuccess: () -> Unit
+  ) {
+    FirebaseServices.databaseNodes
+      .document(nodeId)
+      .update(NODE_NAME_FIELD, newName)
+      .addOnFailureListener { onFailure(Errors.somethingWrong) }
+      .addOnSuccessListener { onSuccess() }
+  }
+
   private const val LEVEL_FIELD = "level"
   private const val NODE_NAME_FIELD = "name"
   private const val ROOT_FIELD = "rootNodeId"

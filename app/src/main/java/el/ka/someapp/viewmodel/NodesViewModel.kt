@@ -152,7 +152,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     _state.value = State.VIEW
   }
 
-  fun loadNodeByID(nodeId: String?) {
+  fun loadNodeByID(nodeId: String?, saveToHistory: Boolean = true) {
     if (nodeId == null) {
       _currentNode.value = null
       _nodesHistory.value = listOf()
@@ -165,11 +165,38 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
         },
         onSuccess = {
           _currentNode.value = it
-          addToHistory(_currentNode.value!!.id)
+          if (saveToHistory) addToHistory(_currentNode.value!!.id)
           _state.value = State.VIEW
         })
     }
   }
 
+  fun changeNodeName(value: String) {
+    val node = _currentNode.value!!.copy()
+    node.name = value
+    _state.value = State.LOADING
+    CloudDatabaseService.checkUniqueNodeName(
+      node = node,
+      onFailure = {
+        _state.value = State.NON_UNIQUE_NAME
+      },
+      onSuccess = {
+        CloudDatabaseService.changeNodeName(
+          nodeId = node.id,
+          newName = node.name,
+          onFailure = {
+            // todo: handle error
+          },
+          onSuccess = {
+            updateCurrentNodeDate()
+          }
+        )
+      }
+    )
+  }
 
+  private fun updateCurrentNodeDate() {
+    val id = currentNode.value!!.id
+    loadNodeByID(nodeId = id, saveToHistory = false)
+  }
 }

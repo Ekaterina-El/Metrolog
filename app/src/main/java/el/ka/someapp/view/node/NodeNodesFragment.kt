@@ -86,7 +86,6 @@ class NodeNodesFragment : BaseFragment() {
 
   override fun onBackPressed() {
     viewModel.goBack()
-    val a = 10
   }
 
   override fun onDestroy() {
