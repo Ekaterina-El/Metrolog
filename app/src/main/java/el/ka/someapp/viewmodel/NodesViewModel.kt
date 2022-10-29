@@ -142,6 +142,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     CloudDatabaseService.saveNode(
       node,
       onFailure = {
+                  // TODO: handle error
       },
       onSuccess = {
         loadNodes()

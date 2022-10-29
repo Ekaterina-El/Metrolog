@@ -1,5 +1,7 @@
 package el.ka.someapp.data.repository
 
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FieldValue
 import el.ka.someapp.data.model.*
 
 object CloudDatabaseService {
@@ -22,18 +24,50 @@ object CloudDatabaseService {
   ) {
     FirebaseServices.databaseNodes
       .add(node)
+      .addOnFailureListener { onFailure() }
       .addOnSuccessListener {
-        it.update(ID_FIELD, it.id).addOnSuccessListener {
-          if (node.rootNodeId != null) {
-            // TODO: добавить в поле children у root id нового node
-            onSuccess()
-          } else {
-            onSuccess()
-          }
-        }.addOnFailureListener {
+        afterAddNode(
+          doc = it,
+          node = node,
+          onSuccess = onSuccess,
+          onFailure = onFailure
+        )
+      }
+  }
+
+  private fun afterAddNode(
+    doc: DocumentReference,
+    node: Node,
+    onSuccess: () -> Unit,
+    onFailure: () -> Unit
+  ) {
+    doc
+      .update(ID_FIELD, doc.id)
+      .addOnFailureListener { onFailure() }
+      .addOnSuccessListener {
+        if (node.rootNodeId != null) {
+          addNodeIDToParent(
+            rootId = node.rootNodeId,
+            nodeId = doc.id,
+            onFailure = onFailure,
+            onSuccess = onSuccess
+          )
+        } else {
+          onSuccess()
         }
       }
+  }
+
+  private fun addNodeIDToParent(
+    rootId: String,
+    nodeId: String,
+    onFailure: () -> Unit,
+    onSuccess: () -> Unit
+  ) {
+    FirebaseServices.databaseNodes.document(rootId)
+      .update(CHILDREN_FIELD, FieldValue.arrayUnion(nodeId))
       .addOnFailureListener { onFailure() }
+      .addOnSuccessListener { onSuccess() }
   }
 
   fun checkUniqueNodeName(
@@ -156,4 +190,5 @@ object CloudDatabaseService {
   private const val NODE_NAME_FIELD = "name"
   private const val ROOT_FIELD = "rootNodeId"
   private const val ID_FIELD = "id"
+  private const val CHILDREN_FIELD = "children"
 }
