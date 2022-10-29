@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:textSize="14sp"
         android:textColor="@color/white"
-        android:fontFamily="@font/montserrat_alternates"
+        android:fontFamily="@font/montserrat_regular"
         tools:text="No username found" />
     </LinearLayout>
   </androidx.cardview.widget.CardView>

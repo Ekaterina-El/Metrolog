@@ -25,7 +25,7 @@
       android:layout_height="wrap_content"
       android:textSize="16sp"
       android:textColor="@color/secondary_color"
-      android:fontFamily="@font/montserrat_alternates"
+      android:fontFamily="@font/montserrat_regular"
       android:textStyle="bold"
       tools:text="Пользователь N" />
 
@@ -34,7 +34,7 @@
       android:layout_height="wrap_content"
       android:textSize="14sp"
       android:textColor="@color/super_dark_gray"
-      android:fontFamily="@font/montserrat_alternates"
+      android:fontFamily="@font/montserrat_regular"
       tools:text="Редактор" />
 
   </LinearLayout>

@@ -29,7 +29,7 @@
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/app_padding"
       android:layout_marginTop="@dimen/app_padding"
-      android:fontFamily="@font/montserrat_alternates"
+      android:fontFamily="@font/montserrat_regular"
       android:text="@string/companies_title"
       android:textColor="@color/primary_dark_color"
       android:textSize="26sp"
@@ -70,7 +70,7 @@
           android:afterTextChanged="@{() -> viewModel.filterNodes()}"
           android:background="@null"
           android:ellipsize="end"
-          android:fontFamily="@font/montserrat_alternates"
+          android:fontFamily="@font/montserrat_regular"
           android:hint="@string/search"
           android:importantForAutofill="no"
           android:inputType="textFilter"
@@ -131,7 +131,7 @@
       app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
       app:layout_constraintTop_toBottomOf="@id/layoutHead"
       tools:listitem="@layout/item_company"
-      tools:visibility="gone" />
+      />
 
     <androidx.constraintlayout.widget.ConstraintLayout
       android:id="@+id/layoutEmpty"
@@ -150,7 +150,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:fontFamily="@font/montserrat_alternates"
+        android:fontFamily="@font/montserrat_regular"
         android:gravity="center"
         android:text="@string/empty_data"
         android:textColor="@color/secondary_color"

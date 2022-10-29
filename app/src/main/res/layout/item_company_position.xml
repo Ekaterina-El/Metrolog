@@ -21,7 +21,7 @@
       tools:text="Технический руководитель"
       android:textSize="14sp"
       android:textColor="@color/super_dark_gray"
-      android:fontFamily="@font/montserrat_alternates" />
+      android:fontFamily="@font/montserrat_regular" />
 
     <TextView
       android:id="@+id/fullName"
@@ -32,7 +32,7 @@
       tools:text="Крутильников Алексей Викторович"
       android:textSize="16sp"
       android:textColor="@color/secondary_color"
-      android:fontFamily="@font/montserrat_alternates" />
+      android:fontFamily="@font/montserrat_regular" />
 
     <TextView
       android:id="@+id/email"
@@ -42,7 +42,7 @@
       tools:text="krutilnikov_alex@gmail.com"
       android:textSize="16sp"
       android:textColor="@color/secondary_color"
-      android:fontFamily="@font/montserrat_alternates" />
+      android:fontFamily="@font/montserrat_regular" />
   </LinearLayout>
   
   <ImageView

@@ -30,7 +30,7 @@
       android:textColor="@color/text_on_primary"
       android:layout_height="wrap_content"
       android:text="@string/add"
-      android:fontFamily="@font/montserrat_alternates"
+      android:fontFamily="@font/montserrat_regular"
       />
   </LinearLayout>
 
@@ -42,7 +42,7 @@
 
     <TextView
       android:layout_width="match_parent"
-      android:fontFamily="@font/montserrat_alternates"
+      android:fontFamily="@font/montserrat_regular"
       android:layout_height="wrap_content"
       android:textColor="@color/secondary_color"
       android:text="@string/enter_node_name"
@@ -59,7 +59,7 @@
     <EditText
       android:id="@+id/editTextNodeName"
       android:textSize="20sp"
-      android:fontFamily="@font/montserrat_alternates"
+      android:fontFamily="@font/montserrat_regular"
       android:textColor="@color/secondary_color"
       android:layout_marginTop="15dp"
       android:textColorHint="@color/light_gray"
@@ -73,7 +73,7 @@
     <Button
       android:id="@+id/buttonOk"
       android:layout_width="wrap_content"
-      android:fontFamily="@font/montserrat_alternates"
+      android:fontFamily="@font/montserrat_regular"
       android:layout_height="wrap_content"
       android:layout_gravity="end"
       android:layout_marginTop="15dp"

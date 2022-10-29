@@ -20,6 +20,7 @@
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
+      android:textSize="14sp"
       app:layout_constraintBottom_toBottomOf="parent"
       tools:text="Предприятие N"
       android:layout_marginStart="20dp"

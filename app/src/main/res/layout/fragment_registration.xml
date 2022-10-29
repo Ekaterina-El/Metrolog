@@ -329,7 +329,7 @@
         android:layout_marginEnd="@dimen/app_padding"
         android:layout_marginBottom="15dp"
         android:background="@drawable/button_color_wrapper"
-        android:fontFamily="@font/montserrat_alternates"
+        android:fontFamily="@font/montserrat_regular"
         android:onClick="@{() -> master.registration()}"
         android:shadowDx="0"
         android:shadowDy="0"
