@@ -28,8 +28,8 @@ class NodeInfoFragment : BaseFragment() {
     hierarchyAdapter.setNodes(it)
   }
   private val hierarchyNodeListener = object : HierarchyNodesAdapter.ItemListener {
-    override fun onClick(nodeId: String) {
-      // TODO: сделвть переход назад
+    override fun onClick(node: Node) {
+      viewModel.navigateByHistoryTo(node)
     }
 
   }

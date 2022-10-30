@@ -42,6 +42,20 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       loadNodeByID(_nodesHistory.value!!.last().id)
     }
   }
+
+  fun navigateByHistoryTo(node: Node) {
+    if (node.id == _currentNode.value!!.id)  return
+    _state.value = State.LOADING
+
+    // получить индекс nodeID
+    val idx = _nodesHistory.value!!.indexOf(node)
+
+    // преобрзование списка истории узлов
+    _nodesHistory.value = _nodesHistory.value!!.subList(0, idx+1)
+
+    // загрузить данные о текущем node
+    loadNodeByID(node.id, false)
+  }
   // endregion
 
   private val _currentNode = MutableLiveData<Node?>(null)
@@ -83,18 +97,16 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     viewModelScope.launch {
       val a = CloudDatabaseService.getNodesInLevelRoot(
         children = _currentNode.value!!.children
-       ).awaitAll().map { it.toObject(Node::class.java)!! }
+      ).awaitAll().map { it.toObject(Node::class.java)!! }
       setNodes(a)
     }
   }
 
   private fun loadMainNodes() {
     _state.value = State.LOADING
-    CloudDatabaseService.getUserMainNodes(
-      userId = AuthenticationService.getUserUid()!!,
+    CloudDatabaseService.getUserMainNodes(userId = AuthenticationService.getUserUid()!!,
       onSuccess = { setNodes(it) },
-      onFailure = { onNodesLoadFailure() }
-    )
+      onFailure = { onNodesLoadFailure() })
   }
 
   private fun onNodesLoadFailure() {
@@ -122,30 +134,23 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     )
 
     _state.value = State.LOADING
-    CloudDatabaseService.checkUniqueNodeName(
-      node = node,
-      onFailure = {
-        if (it == Errors.nonUniqueName) {
-          _state.value = State.NON_UNIQUE_NAME
-        }
-      },
-      onSuccess = {
-        _state.value = State.NEW_NODE_ADDED
-        addNode(node)
+    CloudDatabaseService.checkUniqueNodeName(node = node, onFailure = {
+      if (it == Errors.nonUniqueName) {
+        _state.value = State.NON_UNIQUE_NAME
       }
-    )
+    }, onSuccess = {
+      _state.value = State.NEW_NODE_ADDED
+      addNode(node)
+    })
   }
 
   private fun addNode(node: Node) {
     _state.value = State.LOADING
-    CloudDatabaseService.saveNode(
-      node,
-      onFailure = {
-        // TODO: handle error
-      },
-      onSuccess = {
-        loadNodes()
-      })
+    CloudDatabaseService.saveNode(node, onFailure = {
+      // TODO: handle error
+    }, onSuccess = {
+      loadNodes()
+    })
   }
 
   fun toViewState() {
@@ -158,16 +163,13 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       _nodesHistory.value = listOf()
     } else {
       _state.value = State.LOADING
-      CloudDatabaseService.getNodeById(
-        nodeId,
-        onFailure = {
-          // TODO: handle error
-        },
-        onSuccess = {
-          _currentNode.value = it
-          if (saveToHistory) addToHistory(_currentNode.value!!)
-          _state.value = State.VIEW
-        })
+      CloudDatabaseService.getNodeById(nodeId, onFailure = {
+        // TODO: handle error
+      }, onSuccess = {
+        _currentNode.value = it
+        if (saveToHistory) addToHistory(_currentNode.value!!)
+        _state.value = State.VIEW
+      })
     }
   }
 
@@ -175,24 +177,15 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     val node = _currentNode.value!!.copy()
     node.name = value
     _state.value = State.LOADING
-    CloudDatabaseService.checkUniqueNodeName(
-      node = node,
-      onFailure = {
-        _state.value = State.NON_UNIQUE_NAME
-      },
-      onSuccess = {
-        CloudDatabaseService.changeNodeName(
-          nodeId = node.id,
-          newName = node.name,
-          onFailure = {
-            // todo: handle error
-          },
-          onSuccess = {
-            updateCurrentNodeDate()
-          }
-        )
-      }
-    )
+    CloudDatabaseService.checkUniqueNodeName(node = node, onFailure = {
+      _state.value = State.NON_UNIQUE_NAME
+    }, onSuccess = {
+      CloudDatabaseService.changeNodeName(nodeId = node.id, newName = node.name, onFailure = {
+        // todo: handle error
+      }, onSuccess = {
+        updateCurrentNodeDate()
+      })
+    })
   }
 
   private fun updateCurrentNodeDate() {

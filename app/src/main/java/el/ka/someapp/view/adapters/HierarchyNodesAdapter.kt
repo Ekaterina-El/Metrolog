@@ -36,7 +36,7 @@ class HierarchyNodesAdapter(val listener: ItemListener? = null) :
     holder.binding.isFirst = pos == 0
 
     holder.itemView.setOnClickListener {
-      listener?.onClick(items[pos].id)
+      listener?.onClick(items[pos])
     }
   }
 
@@ -67,6 +67,6 @@ class HierarchyNodesAdapter(val listener: ItemListener? = null) :
   }
 
   interface ItemListener {
-    fun onClick(nodeId: String)
+    fun onClick(node: Node)
   }
 }
