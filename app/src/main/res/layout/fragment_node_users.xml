@@ -21,7 +21,7 @@
     <TextView
       android:id="@+id/textTitle"
       android:layout_width="match_parent"
-
+      android:text="@{@string/users_with_name(viewmodel.currentNode.name)}"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/app_padding"
       android:layout_marginTop="20dp"

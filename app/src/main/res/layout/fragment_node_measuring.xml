@@ -16,21 +16,23 @@
 
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:background="@color/white">
 
     <TextView
       android:id="@+id/textTitle"
-      tools:text="Отдел кадров: СИ"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/app_padding"
       android:layout_marginTop="20dp"
       android:fontFamily="@font/montserrat_regular"
+      android:text="@{@string/measuring_with_name(viewmodel.currentNode.name)}"
       android:textColor="@color/primary_dark_color"
       android:textSize="18sp"
       android:textStyle="bold"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
+      app:layout_constraintTop_toTopOf="parent"
+      tools:text="Отдел кадров: СИ" />
 
     <!--  Search - start  -->
     <LinearLayout
@@ -77,14 +79,14 @@
 
         <ImageView
           android:id="@+id/imageSearchClear"
-          tools:src="@drawable/ic_search"
           android:layout_width="30dp"
           android:layout_height="30dp"
           android:contentDescription="@null"
           app:layout_constraintBottom_toBottomOf="@id/editTextFilter"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintTop_toTopOf="@id/editTextFilter"
-          app:tint="@color/light_gray" />
+          app:tint="@color/light_gray"
+          tools:src="@drawable/ic_search" />
       </LinearLayout>
 
       <androidx.constraintlayout.widget.ConstraintLayout
@@ -112,7 +114,6 @@
 
     <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/list_measuring"
-      tools:listitem="@layout/item_mesuring"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/app_padding"
@@ -121,7 +122,8 @@
       android:clipToPadding="false"
       android:overScrollMode="never"
       app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-      app:layout_constraintTop_toBottomOf="@id/layoutHead" />
+      app:layout_constraintTop_toBottomOf="@id/layoutHead"
+      tools:listitem="@layout/item_mesuring" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

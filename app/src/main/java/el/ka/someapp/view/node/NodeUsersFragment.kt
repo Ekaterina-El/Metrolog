@@ -35,5 +35,6 @@ class NodeUsersFragment : BaseFragment() {
   }
 
   override fun onBackPressed() {
+    viewModel.goBack()
   }
 }

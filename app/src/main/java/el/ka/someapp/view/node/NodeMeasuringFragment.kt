@@ -36,5 +36,6 @@ class NodeMeasuringFragment: BaseFragment() {
   }
 
   override fun onBackPressed() {
+    viewModel.goBack()
   }
 }
