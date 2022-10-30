@@ -4,7 +4,6 @@
   xmlns:tools="http://schemas.android.com/tools">
 
   <data>
-
     <variable
       name="viewmodel"
       type="el.ka.someapp.viewmodel.NodesViewModel" />
@@ -12,9 +11,14 @@
     <variable
       name="master"
       type="el.ka.someapp.view.node.NodeInfoFragment" />
+
+    <variable
+      name="hierarchyAdapter"
+      type="el.ka.someapp.view.adapters.HierarchyNodesAdapter" />
   </data>
 
   <androidx.constraintlayout.widget.ConstraintLayout
+    tools:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -121,6 +125,8 @@
       android:layout_width="match_parent"
       tools:listitem="@layout/item_hierarchy"
       tools:itemCount="3"
+      app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+      android:adapter="@{hierarchyAdapter}"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       android:layout_marginTop="10dp"

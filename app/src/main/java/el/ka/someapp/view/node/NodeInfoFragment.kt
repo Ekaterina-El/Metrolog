@@ -12,19 +12,31 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import el.ka.someapp.R
 import el.ka.someapp.data.model.Errors
+import el.ka.someapp.data.model.Node
 import el.ka.someapp.data.model.State
 import el.ka.someapp.databinding.FragmentNodeInfoBinding
 import el.ka.someapp.view.BaseFragment
+import el.ka.someapp.view.adapters.HierarchyNodesAdapter
 import el.ka.someapp.viewmodel.NodesViewModel
-import org.w3c.dom.Text
 
 class NodeInfoFragment : BaseFragment() {
   private lateinit var binding: FragmentNodeInfoBinding
   private val viewModel: NodesViewModel by activityViewModels()
 
+  private lateinit var hierarchyAdapter: HierarchyNodesAdapter
+  private val hierarchyObserver = Observer<List<Node>> {
+    hierarchyAdapter.setNodes(it)
+  }
+  private val hierarchyNodeListener = object : HierarchyNodesAdapter.ItemListener {
+    override fun onClick(nodeId: String) {
+      // TODO: сделвть переход назад
+    }
+
+  }
+
   private var changeNameDialog: Dialog? = null
   private var stateObserver = Observer<State> {
-    when(it) {
+    when (it) {
       State.NON_UNIQUE_NAME ->
         showChangeNameDialogWithError(getString(Errors.nonUniqueName.textId))
       else -> {}
@@ -42,6 +54,7 @@ class NodeInfoFragment : BaseFragment() {
 
   override fun initFunctionalityParts() {
     binding = FragmentNodeInfoBinding.inflate(layoutInflater)
+    hierarchyAdapter = HierarchyNodesAdapter(listener = hierarchyNodeListener)
   }
 
   override fun inflateBindingVariables() {
@@ -49,6 +62,7 @@ class NodeInfoFragment : BaseFragment() {
       viewmodel = this@NodeInfoFragment.viewModel
       master = this@NodeInfoFragment
       lifecycleOwner = viewLifecycleOwner
+      hierarchyAdapter = this@NodeInfoFragment.hierarchyAdapter
     }
   }
 
@@ -59,14 +73,16 @@ class NodeInfoFragment : BaseFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     viewModel.state.observe(viewLifecycleOwner, stateObserver)
+    viewModel.nodesHistory.observe(viewLifecycleOwner, hierarchyObserver)
   }
 
   override fun onDestroy() {
     super.onDestroy()
     viewModel.state.removeObserver(stateObserver)
+    viewModel.nodesHistory.removeObserver(hierarchyObserver)
   }
 
-    // region Change Node Name Dialog
+  // region Change Node Name Dialog
   private fun createChangeNameDialog() {
     changeNameDialog = Dialog(requireActivity())
     changeNameDialog!!.setContentView(R.layout.add_node_dialog)
@@ -75,7 +91,7 @@ class NodeInfoFragment : BaseFragment() {
       ViewGroup.LayoutParams.WRAP_CONTENT
     )
     changeNameDialog!!.setCancelable(true)
-    changeNameDialog!!.findViewById<TextView>(R.id.textTitle).text  = getString(R.string.edit)
+    changeNameDialog!!.findViewById<TextView>(R.id.textTitle).text = getString(R.string.edit)
     val editTextName = changeNameDialog!!.findViewById<EditText>(R.id.editTextNodeName)
     //editTextName.setText(viewModel.currentNode.value!!.name)
 
@@ -83,7 +99,7 @@ class NodeInfoFragment : BaseFragment() {
       val value = editTextName.text.toString()
       viewModel.changeNodeName(value)
       clearDialog()
-       changeNameDialog!!.dismiss()
+      changeNameDialog!!.dismiss()
     }
   }
 

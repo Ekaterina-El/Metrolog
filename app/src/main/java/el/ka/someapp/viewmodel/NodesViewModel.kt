@@ -15,14 +15,14 @@ import kotlinx.coroutines.launch
 
 class NodesViewModel(application: Application) : AndroidViewModel(application) {
   // region History
-  private val _nodesHistory = MutableLiveData<List<String>>(listOf())
-  val nodesHistory: LiveData<List<String>>
+  private val _nodesHistory = MutableLiveData<List<Node>>(listOf())
+  val nodesHistory: LiveData<List<Node>>
     get() = _nodesHistory
 
-  private fun addToHistory(id: String) {
-    if (_nodesHistory.value!!.isEmpty() || _nodesHistory.value!!.last() != id) {
+  private fun addToHistory(node: Node) {
+    if (_nodesHistory.value!!.isEmpty() || _nodesHistory.value!!.last().id != node.id) {
       val history = _nodesHistory.value!!.toMutableList()
-      history.add(id)
+      history.add(node)
       _nodesHistory.value = history.toList()
     }
   }
@@ -39,7 +39,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     if (_nodesHistory.value!!.isEmpty()) {
       _state.value = State.BACK
     } else {
-      loadNodeByID(_nodesHistory.value!!.last())
+      loadNodeByID(_nodesHistory.value!!.last().id)
     }
   }
   // endregion
@@ -165,7 +165,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
         },
         onSuccess = {
           _currentNode.value = it
-          if (saveToHistory) addToHistory(_currentNode.value!!.id)
+          if (saveToHistory) addToHistory(_currentNode.value!!)
           _state.value = State.VIEW
         })
     }
