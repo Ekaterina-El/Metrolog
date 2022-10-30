@@ -3,7 +3,10 @@ package el.ka.someapp.data.repository
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
-import el.ka.someapp.data.model.*
+import el.ka.someapp.data.model.ErrorApp
+import el.ka.someapp.data.model.Errors
+import el.ka.someapp.data.model.Node
+import el.ka.someapp.data.model.User
 import kotlinx.coroutines.tasks.asDeferred
 
 object CloudDatabaseService {
@@ -97,60 +100,12 @@ object CloudDatabaseService {
     }
   }
 
-  suspend fun getNodesInLevelRoot(
-    children: List<String>
-  ): List<kotlinx.coroutines.Deferred<DocumentSnapshot>> {
-    // получаем список children у Root
-    // прходим по всем id children
-    //    * последовательно загружаем по id узел (getNodeByID)
-    //    * после получения узла добавляем его в спиоск
-    // вызываем функцию OnSuccess педелаём, в качестве аргумента, список загруженых узлов
-    val db = FirebaseServices.databaseNodes
-    return children.map { nodeId ->
-      db.document(nodeId).get().asDeferred()
+  suspend fun getNodesByIDs(
+    nodeIds: List<String>
+  ): List<kotlinx.coroutines.Deferred<DocumentSnapshot>> =
+    nodeIds.map { nodeId ->
+      FirebaseServices.databaseNodes.document(nodeId).get().asDeferred()
     }
-  }
-
-
-  fun getUserMainNodes(
-    userId: String, onSuccess: (List<Node>) -> Unit = {}, onFailure: (ErrorApp) -> Unit = {}
-  ) {
-    val foundNodes = mutableListOf<Node>()
-
-    getUserMainNodesWithRole(userId = userId,
-      userRole = UserRole.HEAD,
-      onFailure = { onFailure(Errors.somethingWrong) },
-      onSuccess = { headNodes ->
-        foundNodes.addAll(headNodes)
-        getUserMainNodesWithRole(userId = userId,
-          userRole = UserRole.EDITOR,
-          onFailure = { onFailure(Errors.somethingWrong) },
-          onSuccess = { editorNodes ->
-            foundNodes.addAll(editorNodes)
-            getUserMainNodesWithRole(userId = userId,
-              userRole = UserRole.READER,
-              onFailure = { onFailure(Errors.somethingWrong) },
-              onSuccess = { readerNodes ->
-                foundNodes.addAll(readerNodes)
-                onSuccess(foundNodes)
-              })
-          })
-      })
-  }
-
-  private fun getUserMainNodesWithRole(
-    userId: String,
-    userRole: UserRole,
-    onSuccess: (Array<Node>) -> Unit,
-    onFailure: (ErrorApp) -> Unit
-  ) {
-    FirebaseServices.databaseNodes.whereEqualTo(LEVEL_FIELD, 0)
-      .whereArrayContains(userRole.roleName, userId).get()
-      .addOnFailureListener { onFailure(Errors.somethingWrong) }.addOnSuccessListener {
-        val nodes = (it.toObjects(Node::class.java))
-        onSuccess(nodes.toTypedArray())
-      }
-  }
 
   fun changeNodeName(
     nodeId: String, newName: String, onFailure: (ErrorApp) -> Unit, onSuccess: () -> Unit
