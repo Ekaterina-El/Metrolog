@@ -38,6 +38,7 @@ object CloudDatabaseService {
       }
   }
 
+  // TODO: перенести в UsersDatabase
   private fun addToUsersAllowedProjects(
     nodeId: String,
     onFailure: () -> Unit,
@@ -121,5 +122,6 @@ object CloudDatabaseService {
   private const val ID_FIELD = "id"
   private const val CHILDREN_FIELD = "children"
 
+  // TODO: перенести в UsersDatabase
   private const val ALLOWED_PROJECTS = "allowedProjects"
 }

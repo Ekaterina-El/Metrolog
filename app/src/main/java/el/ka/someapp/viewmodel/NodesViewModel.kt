@@ -5,10 +5,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import el.ka.someapp.data.model.Errors
-import el.ka.someapp.data.model.Node
-import el.ka.someapp.data.model.State
-import el.ka.someapp.data.model.User
+import el.ka.someapp.R
+import el.ka.someapp.data.model.*
 import el.ka.someapp.data.repository.AuthenticationService
 import el.ka.someapp.data.repository.CloudDatabaseService
 import el.ka.someapp.data.repository.UsersDatabaseService
@@ -181,12 +179,15 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   }
 
   private fun saveWithCheck(name: String) {
+    val uid = AuthenticationService.getUserUid()!!
+
     val node = Node(
       name = name,
       level = if (_currentNode.value != null) _currentNode.value!!.level + 1 else 0,
       rootNodeId = if (_currentNode.value != null) _currentNode.value!!.id else null,
-      head = listOf(AuthenticationService.getUserUid()!!),
-      usersHaveAccess = listOf(AuthenticationService.getUserUid()!!)
+      head = listOf(uid),
+      usersHaveAccess = listOf(uid),
+      jobs = listOf(JobField.getDefaultHead(uid))
     )
 
     _state.value = State.LOADING

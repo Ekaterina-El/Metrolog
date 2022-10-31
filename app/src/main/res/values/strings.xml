@@ -56,4 +56,5 @@
   <string name="hierarchy_title">Иерархия узлов</string>
   <string name="delete_node">Удалить узел/предприятие</string>
   <string name="edit">Редактирование</string>
+  <string name="head">Технический директор</string>
 </resources>
