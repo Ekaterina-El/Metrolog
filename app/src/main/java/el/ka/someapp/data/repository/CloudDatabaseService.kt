@@ -3,10 +3,11 @@ package el.ka.someapp.data.repository
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
-import el.ka.someapp.data.model.ErrorApp
-import el.ka.someapp.data.model.Errors
-import el.ka.someapp.data.model.Node
-import el.ka.someapp.data.model.User
+import com.google.firebase.firestore.ktx.toObject
+import el.ka.someapp.data.model.*
+import el.ka.someapp.data.repository.UsersDatabaseService.loadCompanyAllUsers
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.tasks.asDeferred
 
 object CloudDatabaseService {
@@ -114,6 +115,25 @@ object CloudDatabaseService {
     FirebaseServices.databaseNodes.document(nodeId).update(NODE_NAME_FIELD, newName)
       .addOnFailureListener { onFailure(Errors.somethingWrong) }
       .addOnSuccessListener { onSuccess() }
+  }
+
+  suspend fun loadCompaniesJobsUsers(jobs: List<JobField>): List<LocalUser> {
+    val usersIds = jobs.map { it.userId }
+    val usersProfiles = hashMapOf<String, User>()
+    loadCompanyAllUsers(usersIds)
+      .awaitAll()
+      .map { it.toObject(User::class.java)!! }
+      .forEach { usersProfiles[it.uid] = it }
+
+    val localUsers = jobs.map {
+      LocalUser(
+        user = usersProfiles[it.userId]!!,
+        jobField = it
+      )
+    }
+
+    val a = 10
+    return localUsers
   }
 
   private const val LEVEL_FIELD = "level"

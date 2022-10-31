@@ -57,4 +57,5 @@
   <string name="delete_node">Удалить узел/предприятие</string>
   <string name="edit">Редактирование</string>
   <string name="head">Технический директор</string>
+  <string name="user_profile_avatar">user_profile_avatar</string>
 </resources>

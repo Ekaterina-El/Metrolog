@@ -5,7 +5,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import el.ka.someapp.R
 import el.ka.someapp.data.model.*
 import el.ka.someapp.data.repository.AuthenticationService
 import el.ka.someapp.data.repository.CloudDatabaseService
@@ -115,7 +114,9 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       val a = CloudDatabaseService
         .getNodesByIDs(nodeIds = nodesIds)
         .awaitAll()
-        .mapNotNull { it.toObject(Node::class.java) }
+        .mapNotNull {
+          it.toObject(Node::class.java)
+        }
       setNodes(a)
     }
   }
@@ -139,15 +140,21 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       _companyAllUsers.value = null
     } else {
       _state.value = State.LOADING
-      CloudDatabaseService.getNodeById(nodeId, onFailure = {
-        // TODO: handle error
-      }, onSuccess = {
-        _currentNode.value = it
-        loadCompanyAllUsers()
-        if (saveToHistory) addToHistory(_currentNode.value!!)
-        _state.value = State.VIEW
-      })
+      CloudDatabaseService.getNodeById(
+        nodeId,
+        onFailure = {
+          // TODO: handle error
+        },
+        onSuccess = { afterLoadNode(it, saveToHistory) })
     }
+  }
+
+  private fun afterLoadNode(node: Node, saveToHistory: Boolean) {
+    _currentNode.value = node
+    loadLocalUsers()
+    loadCompanyAllUsers()
+    if (saveToHistory) addToHistory(_currentNode.value!!)
+    _state.value = State.VIEW
   }
   // endregion
 
@@ -281,5 +288,19 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     }
   }
   // endregion
+  // endregion
+
+  // region LocalUsers
+  private val _localUsers = MutableLiveData<List<LocalUser>>(listOf())
+  val localUser: LiveData<List<LocalUser>>
+    get() = _localUsers
+
+  private fun loadLocalUsers() {
+    viewModelScope.launch {
+      val users = CloudDatabaseService
+        .loadCompaniesJobsUsers(_currentNode.value!!.jobs)
+      _localUsers.value = users
+    }
+  }
   // endregion
 }

@@ -1,6 +1,5 @@
 package el.ka.someapp.view.adapters
 
-import android.annotation.SuppressLint
 import android.text.InputType
 import android.view.View
 import android.widget.EditText
@@ -10,6 +9,7 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import el.ka.someapp.R
 import el.ka.someapp.data.model.State
+import el.ka.someapp.data.model.UserRole
 import el.ka.someapp.viewmodel.StatePassword
 
 @BindingAdapter("app:isLoad")
@@ -46,7 +46,7 @@ fun setDefenderState(view: View, isActive: Boolean) {
 
 @BindingAdapter("app:defenderStateText")
 fun setDefenderStateText(textView: TextView, state: StatePassword) {
-  val stringId = when(state) {
+  val stringId = when (state) {
     StatePassword.NEW -> R.string.defender_create_pass
     StatePassword.REPEAT_NEW -> R.string.defener_repeat_password
     StatePassword.NO_NEW -> R.string.defender_no_new
@@ -68,4 +68,12 @@ fun showImage(imageView: ImageView, url: String) {
     .placeholder(R.drawable.profile_placeholder)
     .circleCrop()
     .into(imageView)
+}
+
+@BindingAdapter("app:jobPosition")
+fun setJobPositionName(textView: TextView, positionName: String) {
+  textView.text =
+    if (positionName == UserRole.HEAD.roleName)
+      textView.context.getString(R.string.head)
+    else positionName
 }

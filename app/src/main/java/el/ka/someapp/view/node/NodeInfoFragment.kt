@@ -12,11 +12,13 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import el.ka.someapp.R
 import el.ka.someapp.data.model.Errors
+import el.ka.someapp.data.model.LocalUser
 import el.ka.someapp.data.model.Node
 import el.ka.someapp.data.model.State
 import el.ka.someapp.databinding.FragmentNodeInfoBinding
 import el.ka.someapp.view.BaseFragment
 import el.ka.someapp.view.adapters.HierarchyNodesAdapter
+import el.ka.someapp.view.adapters.JobsAdapter
 import el.ka.someapp.viewmodel.NodesViewModel
 
 class NodeInfoFragment : BaseFragment() {
@@ -31,6 +33,14 @@ class NodeInfoFragment : BaseFragment() {
     override fun onClick(node: Node) {
       viewModel.navigateByHistoryTo(node)
     }
+  }
+
+  private lateinit var localUsersAdapter: JobsAdapter
+  private val localUsersObserver = Observer<List<LocalUser>> {
+    localUsersAdapter.setLocalUser(it)
+  }
+  private val localUsersListener = object: JobsAdapter.ItemListener {
+    override fun onClick(userId: String) {}
 
   }
 
@@ -55,6 +65,7 @@ class NodeInfoFragment : BaseFragment() {
   override fun initFunctionalityParts() {
     binding = FragmentNodeInfoBinding.inflate(layoutInflater)
     hierarchyAdapter = HierarchyNodesAdapter(listener = hierarchyNodeListener)
+    localUsersAdapter = JobsAdapter(listener = localUsersListener)
   }
 
   override fun inflateBindingVariables() {
@@ -63,6 +74,7 @@ class NodeInfoFragment : BaseFragment() {
       master = this@NodeInfoFragment
       lifecycleOwner = viewLifecycleOwner
       hierarchyAdapter = this@NodeInfoFragment.hierarchyAdapter
+      localUsersAdapter = this@NodeInfoFragment.localUsersAdapter
     }
   }
 
@@ -74,12 +86,14 @@ class NodeInfoFragment : BaseFragment() {
     super.onViewCreated(view, savedInstanceState)
     viewModel.state.observe(viewLifecycleOwner, stateObserver)
     viewModel.nodesHistory.observe(viewLifecycleOwner, hierarchyObserver)
+    viewModel.localUser.observe(viewLifecycleOwner, localUsersObserver)
   }
 
   override fun onDestroy() {
     super.onDestroy()
     viewModel.state.removeObserver(stateObserver)
     viewModel.nodesHistory.removeObserver(hierarchyObserver)
+    viewModel.localUser.removeObserver(localUsersObserver)
   }
 
   // region Change Node Name Dialog
