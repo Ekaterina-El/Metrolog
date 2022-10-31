@@ -117,7 +117,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       val a = CloudDatabaseService
         .getNodesByIDs(nodeIds = nodesIds)
         .awaitAll()
-        .map { it.toObject(Node::class.java)!! }
+        .mapNotNull { it.toObject(Node::class.java) }
       setNodes(a)
     }
   }
@@ -138,12 +138,14 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     if (nodeId == null) {
       _currentNode.value = null
       _nodesHistory.value = listOf()
+      _companyAllUsers.value = null
     } else {
       _state.value = State.LOADING
       CloudDatabaseService.getNodeById(nodeId, onFailure = {
         // TODO: handle error
       }, onSuccess = {
         _currentNode.value = it
+        loadCompanyAllUsers()
         if (saveToHistory) addToHistory(_currentNode.value!!)
         _state.value = State.VIEW
       })
@@ -184,6 +186,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       level = if (_currentNode.value != null) _currentNode.value!!.level + 1 else 0,
       rootNodeId = if (_currentNode.value != null) _currentNode.value!!.id else null,
       head = listOf(AuthenticationService.getUserUid()!!),
+      usersHaveAccess = listOf(AuthenticationService.getUserUid()!!)
     )
 
     _state.value = State.LOADING
@@ -205,7 +208,8 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
         // TODO: handle error
       },
       onSuccess = {
-        getCurrentUserProfile(onSuccess = { loadNodes() })
+        if (node.level == 0) getCurrentUserProfile(onSuccess = { loadNodes() })
+        else loadNodes()
       })
   }
 
@@ -223,6 +227,58 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       })
     })
   }
+  // endregion
 
+  // region Node Users
+  /* Загружать только для 0 уровня node | Обнулять при очистке истории */
+  private val _companyAllUsers = MutableLiveData<List<User>?>(null)
+
+  fun loadCompanyAllUsers() {
+    if (_currentNode.value!!.level != 0) return
+
+    _state.value = State.LOADING
+    val usersIds = _currentNode.value!!.usersHaveAccess
+    viewModelScope.launch {
+      val users = UsersDatabaseService
+        .loadCompanyAllUsers(listUsersID = usersIds)
+        .awaitAll()
+        .mapNotNull { it.toObject(User::class.java) }
+      setUsers(users)
+    }
+  }
+
+  private fun setUsers(list: List<User>) {
+    _companyAllUsers.value = list
+    _state.value = State.VIEW
+    filter.value = ""
+    filterUsers()
+  }
+
+  // region Filter Users
+  val filterUsersVal = MutableLiveData("")
+
+  private val _filteredUsers = MutableLiveData<List<User>>(listOf())
+  val filteredUsers: LiveData<List<User>>
+    get() = _filteredUsers
+
+  fun clearFilterUsers() {
+    filterUsersVal.value = ""
+    filterUsers()
+  }
+
+  private fun filterUsers() {
+    if (filter.value == "") {
+      _filteredUsers.value = _companyAllUsers.value
+    } else {
+      _filteredUsers.value =
+        _companyAllUsers.value!!.filter {
+          it.fullName.contains(
+            filterUsersVal.value!!,
+            ignoreCase = true
+          )
+        }
+    }
+  }
+  // endregion
   // endregion
 }

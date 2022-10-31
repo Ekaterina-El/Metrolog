@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import com.bumptech.glide.Glide
 import el.ka.someapp.R
 import el.ka.someapp.data.model.State
 import el.ka.someapp.viewmodel.StatePassword
@@ -58,4 +59,13 @@ fun setDefenderStateText(textView: TextView, state: StatePassword) {
 @BindingAdapter("app:resetPasswordText")
 fun showResetPasswordText(textView: TextView, state: State) {
   textView.visibility = if (state == State.AWAITING_CONTINUE) View.VISIBLE else View.GONE
+}
+
+@BindingAdapter("app:imageUrl")
+fun showImage(imageView: ImageView, url: String) {
+  Glide.with(imageView.context)
+    .load(url)
+    .placeholder(R.drawable.profile_placeholder)
+    .circleCrop()
+    .into(imageView)
 }

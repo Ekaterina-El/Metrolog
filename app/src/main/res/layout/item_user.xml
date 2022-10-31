@@ -1,48 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="match_parent"
-  android:layout_height="wrap_content"
-  android:paddingVertical="10dp"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
-  android:gravity="center_vertical"
-  android:orientation="horizontal">
-  
-  <ImageView
-    android:layout_width="45dp"
-    android:layout_height="45dp"
-    android:background="@color/secondary_color"
-    android:contentDescription="@null" />
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <data>
+    <variable
+      name="user"
+      type="el.ka.someapp.data.model.User" />
+  </data>
 
   <LinearLayout
-    android:layout_width="0dp"
-    android:layout_marginHorizontal="5dp"
-    android:layout_weight="1"
-    android:orientation="vertical"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="10dp"
+    tools:background="@color/white"
+    android:orientation="horizontal">
 
-    <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:textSize="16sp"
-      android:textColor="@color/secondary_color"
-      android:fontFamily="@font/montserrat_regular"
-      android:textStyle="bold"
-      tools:text="Пользователь N" />
+    <ImageView
+      app:imageUrl="@{user.profileImageUrl}"
+      android:layout_width="60dp"
+      tools:src="@drawable/profile_placeholder"
+      android:layout_height="60dp"
+      android:contentDescription="@null" />
 
-    <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:textSize="14sp"
-      android:textColor="@color/super_dark_gray"
-      android:fontFamily="@font/montserrat_regular"
-      tools:text="Редактор" />
+    <LinearLayout
+      android:layout_width="0dp"
+      android:layout_marginHorizontal="15dp"
+      android:layout_weight="1"
+      android:layout_marginTop="6dp"
+      android:orientation="vertical"
+      android:layout_height="wrap_content">
+
+      <TextView
+        android:text="@{user.fullName}"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/secondary_color"
+        android:fontFamily="@font/montserrat_regular"
+        android:textStyle="bold"
+        tools:text="Пользователь N" />
+
+      <TextView
+        android:text="@{user.email}"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@color/dark_gray"
+        android:fontFamily="@font/montserrat_regular"
+        android:textStyle="bold"
+        tools:text="example@email.com" />
+
+    </LinearLayout>
+
+    <ImageView
+      android:layout_marginTop="6dp"
+      android:contentDescription="@null"
+      android:layout_width="20dp"
+      android:layout_height="20dp"
+      android:src="@drawable/ic_vert_more" />
 
   </LinearLayout>
-
-  <ImageView
-    android:contentDescription="@null"
-    android:layout_width="25dp"
-    android:layout_height="25dp"
-    android:src="@drawable/ic_vert_more" />
-
-</LinearLayout>
+</layout>

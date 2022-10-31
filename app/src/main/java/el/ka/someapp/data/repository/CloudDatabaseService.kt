@@ -100,7 +100,7 @@ object CloudDatabaseService {
     }
   }
 
-  suspend fun getNodesByIDs(
+  fun getNodesByIDs(
     nodeIds: List<String>
   ): List<kotlinx.coroutines.Deferred<DocumentSnapshot>> =
     nodeIds.map { nodeId ->
