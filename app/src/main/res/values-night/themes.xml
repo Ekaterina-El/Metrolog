@@ -13,9 +13,7 @@
     <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
     <!-- Customize your theme here. -->
     <item name="android:autofilledHighlight">@android:color/transparent</item>
-
   </style>
-
 
   <style name="SplashTheme" parent="Theme.SomeApp">
     <item name="android:windowBackground">@drawable/splash</item>
