@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import el.ka.someapp.R
+import el.ka.someapp.data.model.State
 import el.ka.someapp.data.model.User
 import el.ka.someapp.databinding.FragmentNodeUsersBinding
 import el.ka.someapp.view.BaseFragment
@@ -26,6 +28,17 @@ class NodeUsersFragment : BaseFragment() {
   private lateinit var usersAdapter: AllUsersAdapter
   private val userObserver = Observer<List<User>> {
     usersAdapter.setUsers(it)
+  }
+
+  private val stateObserver = Observer<State> {
+    when(it) {
+      State.ADD_USER_ERROR ->
+        showAddUserDialogWithEmailAndError(
+          error = getString(viewModel.addUserError.value!!.textId)
+        )
+      State.ADD_USER_SUCCESS -> clearAddUserDialog()
+      else -> {}
+    }
   }
 
   override fun onCreateView(
@@ -58,11 +71,13 @@ class NodeUsersFragment : BaseFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     viewModel.filteredUsers.observe(viewLifecycleOwner, userObserver)
+    viewModel.state.observe(viewLifecycleOwner, stateObserver)
   }
 
   override fun onDestroy() {
     super.onDestroy()
     viewModel.filteredUsers.removeObserver { userObserver }
+    viewModel.state.removeObserver {stateObserver }
   }
 
   // region Add User Dialog
@@ -80,8 +95,8 @@ class NodeUsersFragment : BaseFragment() {
       val buttonOk: Button = dialog.findViewById(R.id.buttonOk)
 
       buttonOk.setOnClickListener {
-        Toast.makeText(requireContext(), "User with Email: ${editTextEmail.text}", Toast.LENGTH_SHORT).show()
-        editTextEmail.setText("")
+        val email = editTextEmail.text.toString()
+        viewModel.addUserToProjectByEmail(email = email)
         dialog.dismiss()
       }
     }
@@ -92,8 +107,15 @@ class NodeUsersFragment : BaseFragment() {
     addUserDialog?.show()
   }
 
-  fun showAddUserDialogWithEmail(email: String) {
-    addUserDialog?.findViewById<EditText>(R.id.editTextUserEmail)?.setText(email)
+  private fun clearAddUserDialog() {
+    addUserDialog?.findViewById<EditText>(R.id.editTextUserEmail)?.setText("")
+    addUserDialog?.findViewById<TextView>(R.id.textError)?.text = ""
+
+  }
+
+  private fun showAddUserDialogWithEmailAndError(error: String) {
+    addUserDialog?.findViewById<TextView>(R.id.textError)?.text = error
     showAddUserDialog()
   }
+  // endregion
 }

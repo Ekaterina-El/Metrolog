@@ -26,6 +26,8 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   val nodesHistory: LiveData<List<Node>>
     get() = _nodesHistory
 
+  private fun getCurrentRootNode() = _nodesHistory.value!![0].id
+
   private fun addToHistory(node: Node) {
     if (_nodesHistory.value!!.isEmpty() || _nodesHistory.value!!.last().id != node.id) {
       val history = _nodesHistory.value!!.toMutableList()
@@ -68,7 +70,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   // region User
   private val _currentUserProfile = MutableLiveData<User?>(null)
 
-  fun getCurrentUserProfile(onSuccess: () -> Unit = {}) {
+  private fun getCurrentUserProfile(onSuccess: () -> Unit = {}) {
     _state.value = State.LOADING
     UsersDatabaseService.loadCurrentUserProfile(
       onFailure = {},
@@ -298,6 +300,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
   }
+
   // endregion
   // endregion
 
@@ -312,6 +315,34 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
         .loadCompaniesJobsUsers(_currentNode.value!!.jobs)
       _localUsers.value = users
     }
+  }
+  // endregion
+
+  // region Add User by Email
+  private val _addUserError = MutableLiveData<ErrorApp?>(null)
+  val addUserError: LiveData<ErrorApp?>
+    get() = _addUserError
+
+  /* Предоставляем доступ пользователю к проекту по адрессу эл.почты */
+  fun addUserToProjectByEmail(email: String) {
+    _state.value = State.LOADING
+    CloudDatabaseService.addUserToProjectByEmail(
+      email = email,
+      currentProjectId = getCurrentRootNode(),
+      onFailure = {
+        _addUserError.value = it
+        _state.value = State.ADD_USER_ERROR
+      },
+      onSuccess = { user ->
+        _state.value = State.ADD_USER_SUCCESS
+
+        val users = _companyAllUsers.value!!.toMutableList()
+        users.add(user)
+        _companyAllUsers.value = users
+        filterUsers()
+
+      }
+    )
   }
   // endregion
 }

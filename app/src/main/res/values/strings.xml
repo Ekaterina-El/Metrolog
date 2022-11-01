@@ -36,7 +36,7 @@
   <string name="loading">Загружаем...</string>
   <string name="companies_title">Предприятия</string>
   <string name="continueText">Продолжить</string>
-  <string name="noFoundUser">Пользователь не найден. Проверте введенные данные</string>
+  <string name="noFoundUser">Пользователь не найден. Проверьте введенные данные</string>
   <string name="reset_password">Восстановить пароль</string>
   <string name="reset_password_success_text">На ваш почтовый адресс отправленно письмо с ссылкой для восстановление пароля\n\n(Письмо может быть в папке Спам)</string>
   <string name="nonUniqueName">Не уникальное название</string>
@@ -61,4 +61,5 @@
   <string name="add_user">Добавление пользователя</string>
   <string name="enter_user_email">Для предоставление пользователю доступ к проекту введите его почту</string>
   <string name="add_button">Добавить</string>
+  <string name="user_aready_has_access">У пользователя уже есть доступ к этому проекту</string>
 </resources>

@@ -24,4 +24,5 @@ object Errors {
   val invalidEmailOrPassword = ErrorApp(textId = R.string.invalidEmailOrPassword)
   val noVerifiedEmail = ErrorApp(textId = R.string.noVerifiedEmail)
 
+  val userAlreadyHasAccess = ErrorApp(textId = R.string.user_aready_has_access)
 }

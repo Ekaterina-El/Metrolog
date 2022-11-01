@@ -3,14 +3,14 @@ package el.ka.someapp.data.repository
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.ktx.toObject
 import el.ka.someapp.data.model.*
 import el.ka.someapp.data.repository.UsersDatabaseService.loadCompanyAllUsers
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.tasks.asDeferred
 
+// TODO: переиминовать в NodesDatabaseService
 object CloudDatabaseService {
+  // TODO: переместить в UsersDS
   fun saveUser(
     userData: User, onSuccess: () -> Unit = {}, onFailure: () -> Unit = {}
   ) {
@@ -28,7 +28,8 @@ object CloudDatabaseService {
           node = node,
           onSuccess = {
             if (node.level == 0) {
-              addToUsersAllowedProjects(
+              addToUserAllowedProjects(
+                uid = AuthenticationService.getUserUid()!!,
                 nodeId = newNode.id,
                 onFailure = { onFailure() },
                 onSuccess = { onSuccess(newNode.id) })
@@ -40,14 +41,15 @@ object CloudDatabaseService {
   }
 
   // TODO: перенести в UsersDatabase
-  private fun addToUsersAllowedProjects(
+  private fun addToUserAllowedProjects(
     nodeId: String,
+    uid: String,
     onFailure: () -> Unit,
     onSuccess: () -> Unit
   ) {
     FirebaseServices
       .databaseUsers
-      .document(AuthenticationService.getUserUid()!!)
+      .document(uid)
       .update(ALLOWED_PROJECTS, FieldValue.arrayUnion(nodeId))
       .addOnFailureListener { onFailure() }
       .addOnSuccessListener { onSuccess() }
@@ -134,11 +136,57 @@ object CloudDatabaseService {
     return localUsers
   }
 
+  private fun addUserIDToAllowedForProject(
+    userId: String,
+    nodeId: String,
+    onFailure: (ErrorApp) -> Unit,
+    onSuccess: () -> Unit
+  ) {
+    FirebaseServices.databaseNodes.document(nodeId)
+      .update(USERS_HAVE_ACCESS, FieldValue.arrayUnion(userId))
+      .addOnFailureListener { onFailure(Errors.somethingWrong) }
+      .addOnSuccessListener { onSuccess() }
+  }
+
+  fun addUserToProjectByEmail(
+    email: String,
+    currentProjectId: String,
+    onFailure: (ErrorApp) -> Unit,
+    onSuccess: (User) -> Unit
+  ) {
+    // Ищем пользователя по Email
+    UsersDatabaseService.getUserByEmail(
+      email,
+      onFailure = { onFailure(it) },        // Ошибка если пользователь не найлен
+      onSuccess = { user ->
+        // Проверяем имеет ли доступ пользователь к проекту. Имеет -> ошибка
+        if (user.allowedProjects.contains(currentProjectId)) onFailure(Errors.userAlreadyHasAccess)
+        else {
+          // Разрешаем пользователю доступ к проектку
+          addToUserAllowedProjects(
+            nodeId = currentProjectId,
+            uid = user.uid,
+            onFailure = { onFailure(Errors.somethingWrong) },
+            onSuccess = {
+              // Данные о пользователе добавляем в проект
+              addUserIDToAllowedForProject(
+                userId = user.uid,
+                nodeId = currentProjectId,
+                onFailure = { onFailure(Errors.somethingWrong) },
+                onSuccess = { onSuccess(user) }
+              )
+            })
+        }
+      }
+    )
+  }
+
   private const val LEVEL_FIELD = "level"
   private const val NODE_NAME_FIELD = "name"
   private const val ROOT_FIELD = "rootNodeId"
   private const val ID_FIELD = "id"
   private const val CHILDREN_FIELD = "children"
+  private const val USERS_HAVE_ACCESS = "usersHaveAccess"
 
   // TODO: перенести в UsersDatabase
   private const val ALLOWED_PROJECTS = "allowedProjects"
