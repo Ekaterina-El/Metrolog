@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import el.ka.someapp.data.model.*
 import el.ka.someapp.data.repository.AuthenticationService
-import el.ka.someapp.data.repository.CloudDatabaseService
+import el.ka.someapp.data.repository.NodesDatabaseService
 import el.ka.someapp.data.repository.UsersDatabaseService
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
@@ -113,7 +113,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   private fun loadNodesFromDBByIDList(nodesIds: List<String>) {
     _state.value = State.LOADING
     viewModelScope.launch {
-      val a = CloudDatabaseService
+      val a = NodesDatabaseService
         .getNodesByIDs(nodeIds = nodesIds)
         .awaitAll()
         .mapNotNull {
@@ -142,7 +142,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       _companyAllUsers.value = null
     } else {
       _state.value = State.LOADING
-      CloudDatabaseService.getNodeById(
+      NodesDatabaseService.getNodeById(
         nodeId,
         onFailure = {
           // TODO: handle error
@@ -194,13 +194,12 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       name = name,
       level = if (_currentNode.value != null) _currentNode.value!!.level + 1 else 0,
       rootNodeId = if (_currentNode.value != null) _currentNode.value!!.id else null,
-      head = listOf(uid),
       usersHaveAccess = listOf(uid),
       jobs = listOf(JobField.getDefaultHead(uid))
     )
 
     _state.value = State.LOADING
-    CloudDatabaseService.checkUniqueNodeName(node = node, onFailure = {
+    NodesDatabaseService.checkUniqueNodeName(node = node, onFailure = {
       if (it == Errors.nonUniqueName) {
         _state.value = State.NON_UNIQUE_NAME
       }
@@ -212,7 +211,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
 
   private fun addNode(node: Node) {
     _state.value = State.LOADING
-    CloudDatabaseService.saveNode(
+    NodesDatabaseService.saveNode(
       node,
       onFailure = {
         // TODO: handle error
@@ -238,10 +237,10 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     val node = _currentNode.value!!.copy()
     node.name = value
     _state.value = State.LOADING
-    CloudDatabaseService.checkUniqueNodeName(node = node, onFailure = {
+    NodesDatabaseService.checkUniqueNodeName(node = node, onFailure = {
       _state.value = State.NON_UNIQUE_NAME
     }, onSuccess = {
-      CloudDatabaseService.changeNodeName(nodeId = node.id, newName = node.name, onFailure = {
+      NodesDatabaseService.changeNodeName(nodeId = node.id, newName = node.name, onFailure = {
         // todo: handle error
       }, onSuccess = {
         updateCurrentNodeDate()
@@ -254,7 +253,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   /* Загружать только для 0 уровня node | Обнулять при очистке истории */
   private val _companyAllUsers = MutableLiveData<List<User>?>(null)
 
-  fun loadCompanyAllUsers() {
+  private fun loadCompanyAllUsers() {
     if (_currentNode.value!!.level != 0) return
 
     _state.value = State.LOADING
@@ -311,7 +310,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
 
   private fun loadLocalUsers() {
     viewModelScope.launch {
-      val users = CloudDatabaseService
+      val users = NodesDatabaseService
         .loadCompaniesJobsUsers(_currentNode.value!!.jobs)
       _localUsers.value = users
     }
@@ -326,7 +325,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   /* Предоставляем доступ пользователю к проекту по адрессу эл.почты */
   fun addUserToProjectByEmail(email: String) {
     _state.value = State.LOADING
-    CloudDatabaseService.addUserToProjectByEmail(
+    NodesDatabaseService.addUserToProjectByEmail(
       email = email,
       currentProjectId = getCurrentRootNode(),
       onFailure = {

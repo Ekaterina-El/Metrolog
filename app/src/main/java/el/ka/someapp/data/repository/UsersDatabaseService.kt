@@ -1,12 +1,34 @@
 package el.ka.someapp.data.repository
 
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FieldValue
 import el.ka.someapp.data.model.ErrorApp
 import el.ka.someapp.data.model.Errors
 import el.ka.someapp.data.model.User
 import kotlinx.coroutines.tasks.asDeferred
 
 object UsersDatabaseService {
+  fun saveUser(
+    userData: User, onSuccess: () -> Unit = {}, onFailure: () -> Unit = {}
+  ) {
+    FirebaseServices.databaseUsers.document(userData.uid).set(userData)
+      .addOnSuccessListener { onSuccess() }.addOnFailureListener { onFailure() }
+  }
+
+  fun addToUserAllowedProjects(
+    nodeId: String,
+    uid: String,
+    onFailure: () -> Unit,
+    onSuccess: () -> Unit
+  ) {
+    FirebaseServices
+      .databaseUsers
+      .document(uid)
+      .update(ALLOWED_PROJECTS, FieldValue.arrayUnion(nodeId))
+      .addOnFailureListener { onFailure() }
+      .addOnSuccessListener { onSuccess() }
+  }
+
   fun loadCurrentUserProfile(
     onSuccess: (User) -> Unit,
     onFailure: () -> Unit
@@ -52,4 +74,5 @@ object UsersDatabaseService {
   }
 
   private const val EMAIL_FIELD = "email"
+  private const val ALLOWED_PROJECTS = "allowedProjects"
 }

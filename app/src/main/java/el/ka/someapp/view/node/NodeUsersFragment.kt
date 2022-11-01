@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import el.ka.someapp.R
@@ -31,7 +30,7 @@ class NodeUsersFragment : BaseFragment() {
   }
 
   private val stateObserver = Observer<State> {
-    when(it) {
+    when (it) {
       State.ADD_USER_ERROR ->
         showAddUserDialogWithEmailAndError(
           error = getString(viewModel.addUserError.value!!.textId)
@@ -77,7 +76,7 @@ class NodeUsersFragment : BaseFragment() {
   override fun onDestroy() {
     super.onDestroy()
     viewModel.filteredUsers.removeObserver { userObserver }
-    viewModel.state.removeObserver {stateObserver }
+    viewModel.state.removeObserver { stateObserver }
   }
 
   // region Add User Dialog

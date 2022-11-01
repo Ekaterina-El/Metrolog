@@ -24,7 +24,7 @@ class NodeNodesFragment : BaseFragment() {
   private val viewModel: NodesViewModel by activityViewModels()
 
   private lateinit var adapter: NodesAdapter
-  val nodesAdapterListener = object: NodesAdapter.ItemListener {
+  private val nodesAdapterListener = object: NodesAdapter.ItemListener {
     override fun onClick(nodeId: String) {
       viewModel.loadNodeByID(nodeId)
     }

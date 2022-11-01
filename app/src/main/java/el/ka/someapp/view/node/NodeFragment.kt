@@ -6,12 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import el.ka.someapp.R
 import el.ka.someapp.data.model.State
 import el.ka.someapp.databinding.FragmentNodeBinding
@@ -23,7 +19,7 @@ class NodeFragment : BaseFragment() {
   private val viewModel: NodesViewModel by activityViewModels()
 
   private val stateObserver = Observer<State> {
-    when(it) {
+    when (it) {
       State.BACK -> navigateBack()
       else -> {}
     }
@@ -45,7 +41,8 @@ class NodeFragment : BaseFragment() {
   override fun initFunctionalityParts() {
     binding = FragmentNodeBinding.inflate(layoutInflater)
 
-    val navController = (childFragmentManager.findFragmentById(R.id.node_nav_host_fragment) as NavHostFragment).navController
+    val navController =
+      (childFragmentManager.findFragmentById(R.id.node_nav_host_fragment) as NavHostFragment).navController
     binding.bottomNavView.setupWithNavController(navController)
   }
 

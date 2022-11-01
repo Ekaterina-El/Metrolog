@@ -1,5 +1,6 @@
 package el.ka.someapp.view.adapters
 
+import android.annotation.SuppressLint
 import android.text.InputType
 import android.view.View
 import android.widget.EditText

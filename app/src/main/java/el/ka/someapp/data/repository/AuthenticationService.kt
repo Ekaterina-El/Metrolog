@@ -21,7 +21,7 @@ object AuthenticationService {
         val user = auth.currentUser!!
         userData.uid = user.uid
 
-        CloudDatabaseService.saveUser(
+        UsersDatabaseService.saveUser(
           userData = userData,
           onSuccess = {
             user.sendEmailVerification()
@@ -72,13 +72,11 @@ object AuthenticationService {
           is FirebaseAuthInvalidCredentialsException -> Errors.invalidEmailOrPassword
           else -> Errors.somethingWrong
         }
-
         onFailed(error)
       }
   }
 
   fun checkUserIsAuth(onAuth: () -> Unit, onNoAuth: () -> Unit) {
-
     if (auth.currentUser != null) onAuth() else onNoAuth()
   }
 

@@ -20,7 +20,7 @@ class DefenderFragment : BaseFragment() {
   private lateinit var bounceAnimation: Animation
   private lateinit var circles: List<View>
 
-  private val fieldObserver = Observer<String> { it ->
+  private val fieldObserver = Observer<String> {
     val circlePosition = it.length - 1
     circles.forEach { circle -> circle.clearAnimation() }
     if (circlePosition >= 0) {

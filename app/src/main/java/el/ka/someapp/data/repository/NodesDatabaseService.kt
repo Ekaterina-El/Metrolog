@@ -8,18 +8,12 @@ import el.ka.someapp.data.repository.UsersDatabaseService.loadCompanyAllUsers
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.tasks.asDeferred
 
-// TODO: переиминовать в NodesDatabaseService
-object CloudDatabaseService {
-  // TODO: переместить в UsersDS
-  fun saveUser(
-    userData: User, onSuccess: () -> Unit = {}, onFailure: () -> Unit = {}
-  ) {
-    FirebaseServices.databaseUsers.document(userData.uid).set(userData)
-      .addOnSuccessListener { onSuccess() }.addOnFailureListener { onFailure() }
-  }
-
+object NodesDatabaseService {
+  // region New Node
   fun saveNode(
-    node: Node, onSuccess: (String) -> Unit = {}, onFailure: () -> Unit = {}
+    node: Node,
+    onSuccess: (String) -> Unit = {},
+    onFailure: () -> Unit = {}
   ) {
     FirebaseServices.databaseNodes.add(node).addOnFailureListener { onFailure() }
       .addOnSuccessListener { newNode ->
@@ -28,7 +22,7 @@ object CloudDatabaseService {
           node = node,
           onSuccess = {
             if (node.level == 0) {
-              addToUserAllowedProjects(
+              UsersDatabaseService.addToUserAllowedProjects(
                 uid = AuthenticationService.getUserUid()!!,
                 nodeId = newNode.id,
                 onFailure = { onFailure() },
@@ -40,20 +34,6 @@ object CloudDatabaseService {
       }
   }
 
-  // TODO: перенести в UsersDatabase
-  private fun addToUserAllowedProjects(
-    nodeId: String,
-    uid: String,
-    onFailure: () -> Unit,
-    onSuccess: () -> Unit
-  ) {
-    FirebaseServices
-      .databaseUsers
-      .document(uid)
-      .update(ALLOWED_PROJECTS, FieldValue.arrayUnion(nodeId))
-      .addOnFailureListener { onFailure() }
-      .addOnSuccessListener { onSuccess() }
-  }
 
   private fun afterAddNode(
     doc: DocumentReference, node: Node, onSuccess: () -> Unit, onFailure: () -> Unit
@@ -91,11 +71,12 @@ object CloudDatabaseService {
       if (it.documents.size > 0) onFailure(Errors.nonUniqueName) else onSuccess()
     }.addOnFailureListener { onFailure(Errors.somethingWrong) }
   }
+  // endregion
 
+  // region Get Node Info
   fun getNodeById(
     nodeId: String, onSuccess: (Node) -> Unit, onFailure: (ErrorApp) -> Unit
   ) {
-
     FirebaseServices.databaseNodes.document(nodeId).get().addOnSuccessListener { snap ->
       val doc = snap.toObject(Node::class.java)
       onSuccess(doc!!)
@@ -110,14 +91,6 @@ object CloudDatabaseService {
     nodeIds.map { nodeId ->
       FirebaseServices.databaseNodes.document(nodeId).get().asDeferred()
     }
-
-  fun changeNodeName(
-    nodeId: String, newName: String, onFailure: (ErrorApp) -> Unit, onSuccess: () -> Unit
-  ) {
-    FirebaseServices.databaseNodes.document(nodeId).update(NODE_NAME_FIELD, newName)
-      .addOnFailureListener { onFailure(Errors.somethingWrong) }
-      .addOnSuccessListener { onSuccess() }
-  }
 
   suspend fun loadCompaniesJobsUsers(jobs: List<JobField>): List<LocalUser> {
     val usersIds = jobs.map { it.userId }
@@ -134,6 +107,16 @@ object CloudDatabaseService {
       )
     }
     return localUsers
+  }
+  // endregion
+
+  // region Edit Node / Nodes
+  fun changeNodeName(
+    nodeId: String, newName: String, onFailure: (ErrorApp) -> Unit, onSuccess: () -> Unit
+  ) {
+    FirebaseServices.databaseNodes.document(nodeId).update(NODE_NAME_FIELD, newName)
+      .addOnFailureListener { onFailure(Errors.somethingWrong) }
+      .addOnSuccessListener { onSuccess() }
   }
 
   private fun addUserIDToAllowedForProject(
@@ -163,7 +146,7 @@ object CloudDatabaseService {
         if (user.allowedProjects.contains(currentProjectId)) onFailure(Errors.userAlreadyHasAccess)
         else {
           // Разрешаем пользователю доступ к проектку
-          addToUserAllowedProjects(
+          UsersDatabaseService.addToUserAllowedProjects(
             nodeId = currentProjectId,
             uid = user.uid,
             onFailure = { onFailure(Errors.somethingWrong) },
@@ -180,6 +163,7 @@ object CloudDatabaseService {
       }
     )
   }
+  // endregion
 
   private const val LEVEL_FIELD = "level"
   private const val NODE_NAME_FIELD = "name"
@@ -187,7 +171,4 @@ object CloudDatabaseService {
   private const val ID_FIELD = "id"
   private const val CHILDREN_FIELD = "children"
   private const val USERS_HAVE_ACCESS = "usersHaveAccess"
-
-  // TODO: перенести в UsersDatabase
-  private const val ALLOWED_PROJECTS = "allowedProjects"
 }

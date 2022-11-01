@@ -9,7 +9,6 @@ object FirebaseServices {
   private const val NODES_COLLECTION = "nodes"
 
   val auth = FirebaseAuth.getInstance()
-
   val databaseUsers = Firebase.firestore.collection(USERS_COLLECTION)
   val databaseNodes = Firebase.firestore.collection(NODES_COLLECTION)
 }
