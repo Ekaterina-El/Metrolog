@@ -58,4 +58,7 @@
   <string name="edit">Редактирование</string>
   <string name="head">Технический директор</string>
   <string name="user_profile_avatar">user_profile_avatar</string>
+  <string name="add_user">Добавление пользователя</string>
+  <string name="enter_user_email">Для предоставление пользователю доступ к проекту введите его почту</string>
+  <string name="add_button">Добавить</string>
 </resources>
