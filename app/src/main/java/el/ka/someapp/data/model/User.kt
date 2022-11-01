@@ -5,5 +5,5 @@ data class User(
   var fullName: String = "",
   val profileImageUrl: String = "",
   var email: String = "",
-  val allowedProjects: List<String> = listOf()
+  var allowedProjects: List<String> = listOf()
 )

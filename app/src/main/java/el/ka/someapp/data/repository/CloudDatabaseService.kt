@@ -19,7 +19,7 @@ object CloudDatabaseService {
   }
 
   fun saveNode(
-    node: Node, onSuccess: () -> Unit = {}, onFailure: () -> Unit = {}
+    node: Node, onSuccess: (String) -> Unit = {}, onFailure: () -> Unit = {}
   ) {
     FirebaseServices.databaseNodes.add(node).addOnFailureListener { onFailure() }
       .addOnSuccessListener { newNode ->
@@ -31,8 +31,8 @@ object CloudDatabaseService {
               addToUsersAllowedProjects(
                 nodeId = newNode.id,
                 onFailure = { onFailure() },
-                onSuccess = { onSuccess() })
-            } else onSuccess()
+                onSuccess = { onSuccess(newNode.id) })
+            } else onSuccess(newNode.id)
           },
           onFailure = onFailure
         )
@@ -131,8 +131,6 @@ object CloudDatabaseService {
         jobField = it
       )
     }
-
-    val a = 10
     return localUsers
   }
 

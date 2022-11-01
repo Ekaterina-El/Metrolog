@@ -216,8 +216,19 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
         // TODO: handle error
       },
       onSuccess = {
-        if (node.level == 0) getCurrentUserProfile(onSuccess = { loadNodes() })
-        else loadNodes()
+        val newNodeId = it
+
+        if (node.level == 0) {
+          val projects = _currentUserProfile.value!!.allowedProjects.toMutableList()
+          projects.add(newNodeId)
+          _currentUserProfile.value!!.allowedProjects = projects
+        } else {
+          val nodes = _currentNode.value!!.children.toMutableList()
+          nodes.add(newNodeId)
+          _currentNode.value!!.children = nodes
+        }
+
+        loadNodes()
       })
   }
 

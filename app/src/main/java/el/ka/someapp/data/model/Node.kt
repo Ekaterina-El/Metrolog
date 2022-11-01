@@ -8,6 +8,6 @@ data class Node(
   val usersHaveAccess: List<String> = listOf(),
   val editors: List<String> = listOf(),
   val head: List<String> = listOf(),        // TODO: head & editor - уничтожить, нельзя оставить
-  val children: List<String> = listOf(),
+  var children: List<String> = listOf(),
   var jobs: List<JobField> = listOf()
 )
