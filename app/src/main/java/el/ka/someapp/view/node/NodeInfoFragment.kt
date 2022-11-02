@@ -22,9 +22,9 @@ import el.ka.someapp.databinding.JobFieldDialogBinding
 import el.ka.someapp.view.BaseFragment
 import el.ka.someapp.view.adapters.HierarchyNodesAdapter
 import el.ka.someapp.view.adapters.JobsAdapter
+import el.ka.someapp.view.adapters.SpinnerUsersAdapter
 import el.ka.someapp.viewmodel.JobFieldViewModel
 import el.ka.someapp.viewmodel.NodesViewModel
-import el.ka.someapp.viewmodel.RegistrationViewModel
 
 class NodeInfoFragment : BaseFragment() {
   private lateinit var binding: FragmentNodeInfoBinding
@@ -145,21 +145,23 @@ class NodeInfoFragment : BaseFragment() {
   // region Job Field Dialog
   private var jobFieldDialog: Dialog? = null
   private lateinit var jobFieldViewModel: JobFieldViewModel
+  private lateinit var bindingJobFieldDialog: JobFieldDialogBinding
+
+  private var spinnerUsersAdapter: SpinnerUsersAdapter? = null
 
   private fun createJobFieldDialog() {
     jobFieldDialog = Dialog(requireContext())
-    jobFieldViewModel  = ViewModelProvider(this)[JobFieldViewModel::class.java]
+
+    if (spinnerUsersAdapter == null)
+      spinnerUsersAdapter = SpinnerUsersAdapter(requireContext(), viewModel.filteredUsers.value!!)
+    jobFieldViewModel = ViewModelProvider(this)[JobFieldViewModel::class.java]
 
     jobFieldDialog?.let { dialog ->
-      val binding: JobFieldDialogBinding = DataBindingUtil.inflate(
-        LayoutInflater.from(requireContext()),
-        R.layout.job_field_dialog,
-        null,
-        false
-      )
-      binding.viewModel = jobFieldViewModel
+      bindingJobFieldDialog = JobFieldDialogBinding.inflate(LayoutInflater.from(requireContext()))
+      dialog.setContentView(bindingJobFieldDialog.root)
+      bindingJobFieldDialog.spinner.adapter = spinnerUsersAdapter
+      bindingJobFieldDialog.viewModel = jobFieldViewModel
 
-      dialog.setContentView(binding.root)
       dialog.window!!.setLayout(
         ViewGroup.LayoutParams.MATCH_PARENT,
         ViewGroup.LayoutParams.WRAP_CONTENT

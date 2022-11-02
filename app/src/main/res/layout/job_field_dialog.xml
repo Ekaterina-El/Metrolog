@@ -77,6 +77,7 @@
           android:layout_marginHorizontal="10dp"
           android:autofillHints="emailAddress"
           android:background="@null"
+          android:textSize="14sp"
           android:ellipsize="end"
           android:fontFamily="@font/montserrat_regular"
           android:hint="@string/job_field_name_example"
@@ -176,8 +177,12 @@
         app:layout_constraintTop_toBottomOf="@id/layoutJobFieldRole">
 
         <Spinner
+          android:id="@+id/spinner"
           android:layout_width="match_parent"
-          android:layout_height="wrap_content" />
+          android:layout_height="wrap_content"
+          android:spinnerMode="dropdown"
+          tools:listitem="@layout/spinner_item_user"
+          />
       </LinearLayout>
 
       <TextView
