@@ -83,7 +83,11 @@
       android:focusable="true"
       android:background="@drawable/button_selector_small"
       android:layout_marginStart="10dp">
+
       <ImageView
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="@{() -> master.showJobFieldDialog()}"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

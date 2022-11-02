@@ -8,18 +8,23 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import el.ka.someapp.R
 import el.ka.someapp.data.model.Errors
 import el.ka.someapp.data.model.LocalUser
 import el.ka.someapp.data.model.Node
 import el.ka.someapp.data.model.State
 import el.ka.someapp.databinding.FragmentNodeInfoBinding
+import el.ka.someapp.databinding.JobFieldDialogBinding
 import el.ka.someapp.view.BaseFragment
 import el.ka.someapp.view.adapters.HierarchyNodesAdapter
 import el.ka.someapp.view.adapters.JobsAdapter
+import el.ka.someapp.viewmodel.JobFieldViewModel
 import el.ka.someapp.viewmodel.NodesViewModel
+import el.ka.someapp.viewmodel.RegistrationViewModel
 
 class NodeInfoFragment : BaseFragment() {
   private lateinit var binding: FragmentNodeInfoBinding
@@ -39,7 +44,7 @@ class NodeInfoFragment : BaseFragment() {
   private val localUsersObserver = Observer<List<LocalUser>> {
     localUsersAdapter.setLocalUser(it)
   }
-  private val localUsersListener = object: JobsAdapter.ItemListener {
+  private val localUsersListener = object : JobsAdapter.ItemListener {
     override fun onClick(userId: String) {}
 
   }
@@ -134,6 +139,38 @@ class NodeInfoFragment : BaseFragment() {
     editTextName.setText(viewModel.currentNode.value!!.name)
 
     changeNameDialog?.show()
+  }
+  // endregion
+
+  // region Job Field Dialog
+  private var jobFieldDialog: Dialog? = null
+  private lateinit var jobFieldViewModel: JobFieldViewModel
+
+  private fun createJobFieldDialog() {
+    jobFieldDialog = Dialog(requireContext())
+    jobFieldViewModel  = ViewModelProvider(this)[JobFieldViewModel::class.java]
+
+    jobFieldDialog?.let { dialog ->
+      val binding: JobFieldDialogBinding = DataBindingUtil.inflate(
+        LayoutInflater.from(requireContext()),
+        R.layout.job_field_dialog,
+        null,
+        false
+      )
+      binding.viewModel = jobFieldViewModel
+
+      dialog.setContentView(binding.root)
+      dialog.window!!.setLayout(
+        ViewGroup.LayoutParams.MATCH_PARENT,
+        ViewGroup.LayoutParams.WRAP_CONTENT
+      )
+      dialog.setCancelable(true)
+    }
+  }
+
+  fun showJobFieldDialog() {
+    if (jobFieldDialog == null) createJobFieldDialog()
+    jobFieldDialog!!.show()
   }
   // endregion
 }
