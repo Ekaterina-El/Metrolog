@@ -10,9 +10,9 @@ import com.bumptech.glide.Glide
 import el.ka.someapp.R
 import el.ka.someapp.data.model.ErrorApp
 import el.ka.someapp.data.model.State
+import el.ka.someapp.data.model.User
 import el.ka.someapp.data.model.UserRole
 import el.ka.someapp.viewmodel.StatePassword
-import java.time.chrono.Era
 
 @BindingAdapter("app:isLoad")
 fun visibleLoader(view: View, state: State) {
@@ -63,12 +63,22 @@ fun showResetPasswordText(textView: TextView, state: State) {
   textView.visibility = if (state == State.AWAITING_CONTINUE) View.VISIBLE else View.GONE
 }
 
+@BindingAdapter("app:userUrl")
+fun showUserUrl(imageView: ImageView, user: User?) {
+  Glide
+    .with(imageView.context)
+    .load(user?.profileImageUrl)
+    .placeholder(R.drawable.profile_placeholder)
+    .into(imageView)
+
+}
+
 @BindingAdapter("app:imageUrl")
 fun showImage(imageView: ImageView, url: String) {
-  Glide.with(imageView.context)
+  Glide
+    .with(imageView.context)
     .load(url)
     .placeholder(R.drawable.profile_placeholder)
-    .circleCrop()
     .into(imageView)
 }
 

@@ -11,6 +11,7 @@
   <color name="background_color">#fbfbfb</color>
   <color name="primary_dark_color">#F7674F</color>
   <color name="text_on_primary">#fff</color>
+  <color name="text_on_primary_light">#F2F2F2</color>
   <color name="hint_color">#C8BABA</color>
   <color name="semi_dark">#80454545</color>
   <color name="secondary_color">#757575</color>

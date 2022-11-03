@@ -4,6 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+
     <variable
       name="user"
       type="el.ka.someapp.data.model.LocalUser" />
@@ -12,64 +13,64 @@
 
   <LinearLayout
     android:layout_width="match_parent"
-    android:orientation="horizontal"
     android:layout_height="wrap_content"
-    android:paddingVertical="10dp"
-    tools:background="@color/white"
     android:gravity="center"
-    >
-    <ImageView
-      app:imageUrl="@{user.user.profileImageUrl}"
-      android:src="@drawable/profile_placeholder"
+    android:orientation="horizontal"
+    android:paddingVertical="10dp"
+    tools:background="@color/white">
+
+    <de.hdodenhof.circleimageview.CircleImageView
       android:layout_width="50dp"
       android:layout_height="50dp"
-      android:contentDescription="@string/user_profile_avatar" />
+      android:contentDescription="@string/user_profile_avatar"
+      android:src="@drawable/profile_placeholder"
+      app:imageUrl="@{user.user.profileImageUrl}" />
 
     <LinearLayout
-      android:layout_marginHorizontal="8dp"
-      android:layout_weight="1"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
+      android:layout_marginHorizontal="8dp"
+      android:layout_weight="1"
       android:orientation="vertical">
 
       <TextView
         android:id="@+id/position"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:jobPosition="@{user.jobField.jobName}"
-        tools:text="Технический директор"
-        android:textSize="12sp"
+        android:fontFamily="@font/montserrat_regular"
         android:textColor="@color/super_dark_gray"
-        android:fontFamily="@font/montserrat_regular" />
+        android:textSize="12sp"
+        app:jobPosition="@{user.jobField.jobName}"
+        tools:text="Технический директор" />
 
       <TextView
         android:id="@+id/fullName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
         android:layout_marginTop="2dp"
+        android:fontFamily="@font/montserrat_regular"
         android:text="@{user.user.fullName}"
-        tools:text="Крутильников Алексей Викторович"
-        android:textSize="14sp"
         android:textColor="@color/secondary_color"
-        android:fontFamily="@font/montserrat_regular" />
+        android:textSize="14sp"
+        android:textStyle="bold"
+        tools:text="Крутильников Алексей Викторович" />
 
       <TextView
         android:id="@+id/email"
-        android:text="@{user.user.email}"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="krutilnikov_alex@gmail.com"
-        android:textSize="14sp"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="@{user.user.email}"
         android:textColor="@color/secondary_color"
-        android:fontFamily="@font/montserrat_regular" />
+        android:textSize="14sp"
+        tools:text="krutilnikov_alex@gmail.com" />
     </LinearLayout>
 
     <ImageView
       android:layout_width="25dp"
       android:layout_height="25dp"
-      app:tint="@color/secondary_color"
-      android:src="@drawable/ic_vert_more" />
+      android:src="@drawable/ic_vert_more"
+      app:tint="@color/secondary_color" />
 
 
   </LinearLayout>

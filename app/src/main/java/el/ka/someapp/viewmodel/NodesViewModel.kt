@@ -69,6 +69,8 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
 
   // region User
   private val _currentUserProfile = MutableLiveData<User?>(null)
+  val currentUserProfile: LiveData<User?>
+    get() = _currentUserProfile
 
   private fun getCurrentUserProfile(onSuccess: () -> Unit = {}) {
     _state.value = State.LOADING

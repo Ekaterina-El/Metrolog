@@ -54,6 +54,7 @@ class JobFieldViewModel(application: Application) : AndroidViewModel(application
       }
       else -> {
         _nameError.value = null
+        withError = false
       }
     }
 

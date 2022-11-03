@@ -16,7 +16,7 @@
     android:background="@color/background_color"
     android:orientation="horizontal">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
       app:imageUrl="@{user.profileImageUrl}"
       android:layout_width="40dp"
       tools:src="@drawable/profile_placeholder"

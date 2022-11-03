@@ -4,6 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+
     <import type="android.view.View" />
 
     <variable
@@ -21,42 +22,105 @@
 
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:background="@color/background_color">
 
-    <TextView
-      android:id="@+id/textTitle"
-      android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/layoutHeader"
+      android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_marginStart="@dimen/app_padding"
-      android:layout_marginTop="@dimen/app_padding"
-      android:fontFamily="@font/montserrat_regular"
-      android:text="@string/companies_title"
-      android:textColor="@color/primary_dark_color"
-      android:textSize="26sp"
+      android:background="@drawable/bg_profile"
+      app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
+      app:layout_constraintTop_toTopOf="parent">
+
+      <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/ic_exit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/text_on_primary" />
+
+      <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imageViewProfile"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/profile_placeholder"
+        app:civ_border_color="@color/text_on_primary"
+        app:civ_border_width="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:userUrl="@{viewModel.currentUserProfile}" />
+
+      <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imageChangeUserProfile"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/camera"
+        app:layout_constraintBottom_toBottomOf="@id/imageViewProfile"
+        app:layout_constraintEnd_toEndOf="@id/imageViewProfile" />
+
+      <TextView
+        android:id="@+id/textViewUserName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="40dp"
+        android:fontFamily="@font/montserrat_regular"
+        android:gravity="center"
+        android:text="@{viewModel.currentUserProfile.fullName}"
+        android:textColor="@color/text_on_primary"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageViewProfile"
+        tools:text="Иванов Иван Иванович" />
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="@{viewModel.currentUserProfile.email}"
+        android:textColor="@color/text_on_primary_light"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewUserName"
+        tools:text="example@mail.com" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
       android:id="@+id/layoutHead"
-      android:layout_height="wrap_content"
       android:layout_width="match_parent"
+      android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/app_padding"
-      android:layout_marginTop="20dp"
+      android:layout_marginTop="30dp"
       android:layout_marginEnd="@dimen/app_padding"
+      android:gravity="center"
       android:orientation="horizontal"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/textTitle">
+      app:layout_constraintTop_toBottomOf="@id/layoutHeader">
 
       <LinearLayout
         android:id="@+id/layoutSearchForm"
         android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_height="45dp"
         android:background="@drawable/search_wrapper"
         android:gravity="center"
         android:paddingHorizontal="15dp"
-        android:paddingVertical="10dp"
+        android:paddingVertical="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textTitle">
@@ -78,41 +142,41 @@
           android:text="@={viewModel.filter}"
           android:textColor="@color/secondary_color"
           android:textColorHint="@color/light_gray"
-          android:textSize="18sp" />
+          android:textSize="14sp" />
 
         <ImageView
-          android:onClick="@{() -> viewModel.clearFilter()}"
           android:id="@+id/imageSearchClear"
-          android:layout_width="30dp"
-          android:layout_height="30dp"
+          android:layout_width="26dp"
+          android:layout_height="26dp"
           android:contentDescription="@null"
-          tools:src="@drawable/ic_search"
+          android:onClick="@{() -> viewModel.clearFilter()}"
           android:src="@{viewModel.filter.length() > 0 ? @drawable/ic_close : @drawable/ic_search}"
           app:layout_constraintBottom_toBottomOf="@id/editTextFilter"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintTop_toTopOf="@id/editTextFilter"
-          app:tint="@color/light_gray" />
+          app:tint="@color/light_gray"
+          tools:src="@drawable/ic_search" />
       </LinearLayout>
 
       <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/button_selector"
         android:clickable="true"
         android:focusable="true"
-        android:onClick="@{() -> master.showAddCompanyDialog()}"
-        android:background="@drawable/button_selector"
-        android:layout_marginStart="10dp">
+        android:onClick="@{() -> master.showAddCompanyDialog()}">
 
         <ImageView
-          app:layout_constraintTop_toTopOf="parent"
+          android:layout_width="25dp"
+          android:layout_height="25dp"
+          android:contentDescription="@null"
+          android:src="@drawable/ic_add"
+          app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintBottom_toBottomOf="parent"
-          android:src="@drawable/ic_add"
-          app:tint="@color/text_on_primary"
-          android:layout_width="30dp"
-          android:layout_height="30dp"
-          android:contentDescription="@null" />
+          app:layout_constraintTop_toTopOf="parent"
+          app:tint="@color/text_on_primary" />
 
       </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -123,22 +187,21 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/app_padding"
-      android:layout_marginTop="24dp"
+      android:layout_marginTop="14dp"
       android:layout_marginEnd="@dimen/app_padding"
       android:adapter="@{adapter}"
       android:clipToPadding="false"
       android:overScrollMode="never"
       app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
       app:layout_constraintTop_toBottomOf="@id/layoutHead"
-      tools:listitem="@layout/item_company"
-      />
+      tools:listitem="@layout/item_company" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
       android:id="@+id/layoutEmpty"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/app_padding"
-      android:layout_marginTop="24dp"
+      android:layout_marginTop="14dp"
       android:layout_marginEnd="@dimen/app_padding"
       android:visibility="@{viewModel.filteredNodes.size() == 0 ? View.VISIBLE : View.GONE}"
       app:layout_constraintEnd_toEndOf="parent"
