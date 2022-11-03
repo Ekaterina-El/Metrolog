@@ -163,9 +163,22 @@ object NodesDatabaseService {
       }
     )
   }
+
+  fun addJobField(
+    nodeId: String,
+    jobField: JobField,
+    onFailure: () -> Unit = {},
+    onSuccess: () -> Unit
+  ) {
+    FirebaseServices.databaseNodes.document(nodeId)
+      .update(JOBS_FIELD, FieldValue.arrayUnion(jobField))
+      .addOnFailureListener { onFailure() }
+      .addOnSuccessListener { onSuccess() }
+  }
   // endregion
 
   private const val LEVEL_FIELD = "level"
+  private const val JOBS_FIELD = "jobs"
   private const val NODE_NAME_FIELD = "name"
   private const val ROOT_FIELD = "rootNodeId"
   private const val ID_FIELD = "id"

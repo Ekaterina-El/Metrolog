@@ -139,7 +139,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     if (nodeId == null) {
       _currentNode.value = null
       _nodesHistory.value = listOf()
-      _companyAllUsers.value = null
+      _companyAllUsers.value = listOf()
     } else {
       _state.value = State.LOADING
       NodesDatabaseService.getNodeById(
@@ -251,7 +251,9 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
 
   // region Node Users
   /* Загружать только для 0 уровня node | Обнулять при очистке истории */
-  private val _companyAllUsers = MutableLiveData<List<User>?>(null)
+  private val _companyAllUsers = MutableLiveData<List<User>>(listOf())
+  val companyAllUsers: LiveData<List<User>>
+    get() = _companyAllUsers
 
   private fun loadCompanyAllUsers() {
     if (_currentNode.value!!.level != 0) return
@@ -307,6 +309,13 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   private val _localUsers = MutableLiveData<List<LocalUser>>(listOf())
   val localUser: LiveData<List<LocalUser>>
     get() = _localUsers
+
+  fun addJobField(jobField: JobField) {
+    val jobs = _currentNode.value!!.jobs.toMutableList()
+    jobs.add(jobField)
+    _currentNode.value!!.jobs = jobs
+    loadLocalUsers()
+  }
 
   private fun loadLocalUsers() {
     viewModelScope.launch {

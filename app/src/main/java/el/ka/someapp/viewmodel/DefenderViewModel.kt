@@ -8,7 +8,6 @@ import el.ka.someapp.data.repository.AuthenticationService
 
 class DefenderViewModel(application: Application) : AndroidViewModel(application) {
   private val auth = AuthenticationService
-//  val tag = "DefenderViewModel"
   private val _statePassword = MutableLiveData(StatePassword.NO_NEW)
   val statePassword: LiveData<StatePassword>
     get() = _statePassword

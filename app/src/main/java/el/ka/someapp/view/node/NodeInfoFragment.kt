@@ -5,18 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import el.ka.someapp.R
-import el.ka.someapp.data.model.Errors
-import el.ka.someapp.data.model.LocalUser
-import el.ka.someapp.data.model.Node
-import el.ka.someapp.data.model.State
+import el.ka.someapp.data.model.*
 import el.ka.someapp.databinding.FragmentNodeInfoBinding
 import el.ka.someapp.databinding.JobFieldDialogBinding
 import el.ka.someapp.view.BaseFragment
@@ -92,6 +89,7 @@ class NodeInfoFragment : BaseFragment() {
     viewModel.state.observe(viewLifecycleOwner, stateObserver)
     viewModel.nodesHistory.observe(viewLifecycleOwner, hierarchyObserver)
     viewModel.localUser.observe(viewLifecycleOwner, localUsersObserver)
+    jobFieldViewModel?.state?.observe(viewLifecycleOwner, jobFieldStateObserver)
   }
 
   override fun onDestroy() {
@@ -99,6 +97,7 @@ class NodeInfoFragment : BaseFragment() {
     viewModel.state.removeObserver(stateObserver)
     viewModel.nodesHistory.removeObserver(hierarchyObserver)
     viewModel.localUser.removeObserver(localUsersObserver)
+    jobFieldViewModel?.state?.removeObserver { jobFieldStateObserver }
   }
 
   // region Change Node Name Dialog
@@ -144,29 +143,56 @@ class NodeInfoFragment : BaseFragment() {
 
   // region Job Field Dialog
   private var jobFieldDialog: Dialog? = null
-  private lateinit var jobFieldViewModel: JobFieldViewModel
+  private var jobFieldViewModel: JobFieldViewModel? = null
   private lateinit var bindingJobFieldDialog: JobFieldDialogBinding
 
   private var spinnerUsersAdapter: SpinnerUsersAdapter? = null
+
+  private val jobFieldStateObserver = Observer<State> {
+    when (it) {
+      State.NEW_FIELD_JOB_ADDED -> {
+        jobFieldDialog?.dismiss()
+        val jobField = jobFieldViewModel!!.jobField.value!!
+        viewModel.addJobField(jobField)
+      }
+      else -> {}
+    }
+  }
 
   private fun createJobFieldDialog() {
     jobFieldDialog = Dialog(requireContext())
 
     if (spinnerUsersAdapter == null)
-      spinnerUsersAdapter = SpinnerUsersAdapter(requireContext(), viewModel.filteredUsers.value!!)
+      spinnerUsersAdapter = SpinnerUsersAdapter(requireContext(), viewModel.companyAllUsers.value!!)
+
     jobFieldViewModel = ViewModelProvider(this)[JobFieldViewModel::class.java]
+    jobFieldViewModel?.state?.observe(viewLifecycleOwner, jobFieldStateObserver)
 
     jobFieldDialog?.let { dialog ->
       bindingJobFieldDialog = JobFieldDialogBinding.inflate(LayoutInflater.from(requireContext()))
       dialog.setContentView(bindingJobFieldDialog.root)
+
       bindingJobFieldDialog.spinner.adapter = spinnerUsersAdapter
+      bindingJobFieldDialog.spinner.onItemSelectedListener =
+        object : AdapterView.OnItemSelectedListener {
+          override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+            val user = p0!!.selectedItem as User
+            jobFieldViewModel!!.setUser(user)
+          }
+          override fun onNothingSelected(p0: AdapterView<*>?) {}
+        }
       bindingJobFieldDialog.viewModel = jobFieldViewModel
+      bindingJobFieldDialog.lifecycleOwner = viewLifecycleOwner
 
       dialog.window!!.setLayout(
         ViewGroup.LayoutParams.MATCH_PARENT,
         ViewGroup.LayoutParams.WRAP_CONTENT
       )
       dialog.setCancelable(true)
+
+      bindingJobFieldDialog.buttonOk.setOnClickListener {
+        jobFieldViewModel!!.tryCreateJobField(viewModel.currentNode.value!!.id)
+      }
     }
   }
 
