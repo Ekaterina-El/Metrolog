@@ -1,6 +1,5 @@
 package el.ka.someapp.view.adapters
 
-import android.annotation.SuppressLint
 import android.text.InputType
 import android.view.View
 import android.widget.EditText
@@ -9,9 +8,11 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import el.ka.someapp.R
+import el.ka.someapp.data.model.ErrorApp
 import el.ka.someapp.data.model.State
 import el.ka.someapp.data.model.UserRole
 import el.ka.someapp.viewmodel.StatePassword
+import java.time.chrono.Era
 
 @BindingAdapter("app:isLoad")
 fun visibleLoader(view: View, state: State) {
@@ -77,4 +78,10 @@ fun setJobPositionName(textView: TextView, positionName: String) {
     if (positionName == UserRole.HEAD.roleName)
       textView.context.getString(R.string.head)
     else positionName
+}
+
+@BindingAdapter("app:showError")
+fun showError(textView: TextView, error: ErrorApp?) {
+  textView.text = if (error != null)
+    textView.context.getString(error.textId) else ""
 }

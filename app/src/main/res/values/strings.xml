@@ -71,4 +71,5 @@
   <string name="job_field_user">Пользователь</string>
   <string name="field_job_name_error">Введите название должности</string>
   <string name="field_job_role_error">Уровень доступа не выбран</string>
+  <string name="reservedValue">Значение зарезервировано</string>
 </resources>

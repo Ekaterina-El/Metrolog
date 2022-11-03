@@ -1,12 +1,16 @@
 package el.ka.someapp.data.model
 
 import el.ka.someapp.R
+import el.ka.someapp.data.model.Errors.reservedValue
 
 data class ErrorApp(
   val textId: Int
 )
 
 object Errors {
+  val reservedValue = ErrorApp(textId = R.string.reservedValue)
+  val emptyFieldNameValue = ErrorApp(textId = R.string.field_job_name_error)
+
   val nonUniqueName = ErrorApp(textId = R.string.nonUniqueName)
   val invalidEmail = ErrorApp(textId = R.string.invalidEmail)
   val invalidFullName = ErrorApp(textId = R.string.invalidFullName)
