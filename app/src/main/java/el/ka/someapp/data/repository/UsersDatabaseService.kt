@@ -74,7 +74,7 @@ object UsersDatabaseService {
       }
   }
 
-  fun changeProfileImage(uri: Uri, onFailure: () -> Unit, onSuccess: () -> Unit) {
+  fun changeProfileImage(uri: Uri, onFailure: () -> Unit, onSuccess: (String) -> Unit) {
     val ref = FirebaseServices.usersProfilesStore.child(AuthenticationService.getUserUid()!!)
     ref.putFile(uri)
       .addOnFailureListener { onFailure() }
@@ -82,11 +82,9 @@ object UsersDatabaseService {
         ref.downloadUrl
           .addOnFailureListener { onFailure() }
           .addOnSuccessListener {
-            changeUserProfileURL(url = it, onFailure = { onFailure() }, onSuccess = { onSuccess() })
+            changeUserProfileURL(url = it, onFailure = { onFailure() }, onSuccess = { onSuccess(it.toString()) })
           }
       }
-    // в записи пользователя изменить ссылку на новое изображение
-
   }
 
   private fun changeUserProfileURL(url: Uri, onFailure: () -> Unit, onSuccess: () -> Unit) {
@@ -96,6 +94,15 @@ object UsersDatabaseService {
       .addOnSuccessListener { onSuccess() }
   }
 
+  fun changeProfileFullName(newFullName: String, onFailure: () -> Unit, onSuccess: () -> Unit) {
+    FirebaseServices.databaseUsers
+      .document(AuthenticationService.getUserUid()!!)
+      .update(FULL_NAME_FIELD, newFullName)
+      .addOnSuccessListener { onSuccess() }
+      .addOnFailureListener { onFailure() }
+  }
+
+  private const val FULL_NAME_FIELD = "fullName"
   private const val EMAIL_FIELD = "email"
   private const val PROFILE_IMAGE_URL_FIELD = "profileImageUrl"
   private const val ALLOWED_PROJECTS = "allowedProjects"

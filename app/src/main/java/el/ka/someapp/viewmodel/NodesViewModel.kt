@@ -73,7 +73,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   val currentUserProfile: LiveData<User?>
     get() = _currentUserProfile
 
-  private fun getCurrentUserProfile(onSuccess: () -> Unit = {}) {
+  fun loadCurrentUserProfile(onSuccess: () -> Unit = {}) {
     _state.value = State.LOADING
     UsersDatabaseService.loadCurrentUserProfile(
       onFailure = {},
@@ -89,7 +89,19 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     UsersDatabaseService.changeProfileImage(
       uri = uri,
       onFailure = {},
-      onSuccess = {}
+      onSuccess = { newUrl ->
+        _currentUserProfile.value!!.profileImageUrl = newUrl
+      }
+    )
+  }
+
+  fun changeProfileFullName(newName: String) {
+    UsersDatabaseService.changeProfileFullName(
+      newFullName = newName,
+      onSuccess = {
+        _currentUserProfile.value!!.fullName = newName
+      },
+      onFailure = {}
     )
   }
   // endregion
@@ -109,7 +121,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   }
 
   private fun tryLoadUserNodes() {
-    if (_currentUserProfile.value == null) getCurrentUserProfile(onSuccess = { loadUserNodes() })
+    if (_currentUserProfile.value == null) loadCurrentUserProfile(onSuccess = { loadUserNodes() })
     else loadUserNodes()
   }
 

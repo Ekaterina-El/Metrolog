@@ -9,11 +9,10 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
@@ -22,8 +21,14 @@ import el.ka.someapp.R
 import el.ka.someapp.data.model.Errors
 import el.ka.someapp.data.model.Node
 import el.ka.someapp.data.model.State
+import el.ka.someapp.data.model.User
+import el.ka.someapp.databinding.ChangeUserDialogBinding
 import el.ka.someapp.databinding.FragmentCompaniesBinding
+import el.ka.someapp.databinding.JobFieldDialogBinding
 import el.ka.someapp.view.adapters.NodesAdapter
+import el.ka.someapp.view.adapters.SpinnerUsersAdapter
+import el.ka.someapp.viewmodel.ChangeUserFullNameViewModel
+import el.ka.someapp.viewmodel.JobFieldViewModel
 import el.ka.someapp.viewmodel.NodesViewModel
 
 
@@ -88,6 +93,13 @@ class CompaniesFragment : BaseFragment() {
     viewModel.filteredNodes.observe(viewLifecycleOwner, nodesObserver)
     viewModel.state.observe(viewLifecycleOwner, stateObserver)
     viewModel.loadNodes()
+  }
+
+  override fun onDestroyView() {
+    changeUserFullNameViewModel?.state?.removeObserver(changeUserObserverState)
+    viewModel.filteredNodes.removeObserver(nodesObserver)
+    viewModel.state.removeObserver(stateObserver)
+    super.onDestroyView()
   }
 
   override fun onBackPressed() {}
@@ -176,6 +188,50 @@ class CompaniesFragment : BaseFragment() {
     super.onDestroy()
     viewModel.filteredNodes.removeObserver { nodesObserver }
     viewModel.state.removeObserver { stateObserver }
+  }
+  // endregion
+
+  // region Change user full name dialog
+  private var changeUserFullNameDialog: Dialog? = null
+  private var changeUserFullNameViewModel: ChangeUserFullNameViewModel? = null
+  private lateinit var bindingChangeUserFullNameDialog: ChangeUserDialogBinding
+
+  private val changeUserObserverState = Observer<State> {
+    when(it) {
+      State.FULL_NAME_CHANGED -> {
+        changeUserFullNameDialog!!.dismiss()
+        viewModel.loadCurrentUserProfile()
+      }
+      else -> {}
+    }
+  }
+
+  private fun createChangeUserFullNameDialog() {
+    changeUserFullNameDialog = Dialog(requireContext())
+
+    changeUserFullNameViewModel = ViewModelProvider(this)[ChangeUserFullNameViewModel::class.java]
+    changeUserFullNameViewModel?.state?.observe(viewLifecycleOwner, changeUserObserverState)
+
+    changeUserFullNameDialog?.let { dialog ->
+      bindingChangeUserFullNameDialog = ChangeUserDialogBinding.inflate(LayoutInflater.from(requireContext()))
+      dialog.setContentView(bindingChangeUserFullNameDialog.root)
+
+
+      bindingChangeUserFullNameDialog.viewModel = changeUserFullNameViewModel
+      bindingChangeUserFullNameDialog.lifecycleOwner = viewLifecycleOwner
+
+      dialog.window!!.setLayout(
+        ViewGroup.LayoutParams.MATCH_PARENT,
+        ViewGroup.LayoutParams.WRAP_CONTENT
+      )
+      dialog.setCancelable(true)
+    }
+  }
+
+  fun showCreateChangeUserFullNameDialog() {
+    if (changeUserFullNameDialog == null) createChangeUserFullNameDialog()
+    changeUserFullNameViewModel!!.newFullName.value = viewModel.currentUserProfile.value!!.fullName
+    changeUserFullNameDialog!!.show()
   }
   // endregion
 

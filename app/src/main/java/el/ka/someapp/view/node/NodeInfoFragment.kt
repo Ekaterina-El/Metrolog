@@ -145,7 +145,6 @@ class NodeInfoFragment : BaseFragment() {
   private var jobFieldDialog: Dialog? = null
   private var jobFieldViewModel: JobFieldViewModel? = null
   private lateinit var bindingJobFieldDialog: JobFieldDialogBinding
-
   private var spinnerUsersAdapter: SpinnerUsersAdapter? = null
 
   private val jobFieldStateObserver = Observer<State> {

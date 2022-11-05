@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+
+    <import type="android.view.View" />
+
+    <import type="el.ka.someapp.data.model.State" />
+
+    <variable
+      name="viewModel"
+      type="el.ka.someapp.viewmodel.ChangeUserFullNameViewModel" />
+  </data>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@color/background_color"
+      android:orientation="vertical"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg"
+        android:gravity="center"
+        android:paddingHorizontal="15dp"
+        android:paddingVertical="10dp">
+
+        <ImageView
+          android:layout_width="20dp"
+          android:layout_height="20dp"
+          android:contentDescription="@null"
+          android:src="@drawable/ic_edit"
+          app:tint="@color/text_on_primary" />
+
+        <TextView
+          android:id="@+id/textTitle"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_weight="1"
+          android:fontFamily="@font/montserrat_regular"
+          android:text="@string/edit_user"
+          android:textColor="@color/text_on_primary"
+          android:textSize="16sp" />
+      </LinearLayout>
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!--Edit text: Job Field Name - start-->
+        <LinearLayout
+          android:id="@+id/layoutUserFullName"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:background="@drawable/input_wrapper"
+          android:gravity="center"
+          android:orientation="horizontal"
+          android:paddingHorizontal="15dp"
+          android:paddingVertical="10dp"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent">
+
+          <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_person"
+            app:tint="@color/primary_color" />
+
+          <EditText
+            android:id="@+id/editTextFullName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:autofillHints="emailAddress"
+            android:background="@null"
+            android:ellipsize="end"
+            android:fontFamily="@font/montserrat_regular"
+            android:hint="@string/fullname_example"
+            android:inputType="textPersonName"
+            android:maxLines="1"
+            android:text="@={viewModel.newFullName}"
+            android:textColor="@color/secondary_color"
+            android:textColorHint="@color/hint_color"
+            android:textSize="14sp" />
+        </LinearLayout>
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="40dp"
+          android:background="@color/background_color"
+          android:fontFamily="@font/montserrat_regular"
+          android:paddingHorizontal="10dp"
+          android:text="@string/fullname"
+          android:textAllCaps="true"
+          android:textColor="@color/primary_color"
+          android:textSize="10sp"
+          android:textStyle="bold"
+          app:layout_constraintBottom_toTopOf="@id/layoutUserFullName"
+          app:layout_constraintStart_toStartOf="@id/layoutUserFullName"
+          app:layout_constraintTop_toTopOf="@id/layoutUserFullName" />
+
+        <TextView
+          android:id="@+id/textErrorName"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="10dp"
+          android:layout_marginTop="5dp"
+          android:textColor="@color/attentionColor"
+          android:textSize="14sp"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/layoutUserFullName"
+          app:showError="@{viewModel.error}"
+          tools:text="@string/field_job_name_error"
+          tools:visibility="visible" />
+        <!--Edit text: Job Field Name - end-->
+
+        <Button
+          android:id="@+id/buttonOk"
+          android:onClick="@{() -> viewModel.truChangeFullName()}"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="end"
+          android:layout_marginTop="25dp"
+          android:background="@drawable/button_wrapper"
+          android:fontFamily="@font/montserrat_regular"
+          android:text="@string/save"
+          android:textAllCaps="false"
+          android:textColor="@color/primary_color"
+          android:textSize="12sp"
+          app:backgroundTint="@null"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/layoutUserFullName"
+          app:tint="@null" />
+      </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:background="@drawable/bg"
+      android:visibility="@{viewModel.state == State.LOADING ? View.VISIBLE : View.GONE}"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:visibility="gone">
+
+      <ProgressBar
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:indeterminateTint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
