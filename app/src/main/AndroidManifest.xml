@@ -25,6 +25,11 @@
       </intent-filter>
     </activity>
 
+    <activity
+      android:name="com.canhub.cropper.CropImageActivity"
+      android:theme="@style/Base.Theme.AppCompat"
+      />
+
     <meta-data
       android:name="preloaded_fonts"
       android:resource="@array/preloaded_fonts" />

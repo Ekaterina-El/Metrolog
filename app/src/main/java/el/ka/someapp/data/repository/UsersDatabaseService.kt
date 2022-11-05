@@ -1,5 +1,6 @@
 package el.ka.someapp.data.repository
 
+import android.net.Uri
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import el.ka.someapp.data.model.ErrorApp
@@ -73,6 +74,29 @@ object UsersDatabaseService {
       }
   }
 
+  fun changeProfileImage(uri: Uri, onFailure: () -> Unit, onSuccess: () -> Unit) {
+    val ref = FirebaseServices.usersProfilesStore.child(AuthenticationService.getUserUid()!!)
+    ref.putFile(uri)
+      .addOnFailureListener { onFailure() }
+      .addOnSuccessListener {
+        ref.downloadUrl
+          .addOnFailureListener { onFailure() }
+          .addOnSuccessListener {
+            changeUserProfileURL(url = it, onFailure = { onFailure() }, onSuccess = { onSuccess() })
+          }
+      }
+    // в записи пользователя изменить ссылку на новое изображение
+
+  }
+
+  private fun changeUserProfileURL(url: Uri, onFailure: () -> Unit, onSuccess: () -> Unit) {
+    FirebaseServices.databaseUsers.document(AuthenticationService.getUserUid()!!)
+      .update(PROFILE_IMAGE_URL_FIELD, url)
+      .addOnFailureListener { onFailure() }
+      .addOnSuccessListener { onSuccess() }
+  }
+
   private const val EMAIL_FIELD = "email"
+  private const val PROFILE_IMAGE_URL_FIELD = "profileImageUrl"
   private const val ALLOWED_PROJECTS = "allowedProjects"
 }

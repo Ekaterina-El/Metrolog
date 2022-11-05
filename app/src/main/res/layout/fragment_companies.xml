@@ -58,6 +58,9 @@
         app:userUrl="@{viewModel.currentUserProfile}" />
 
       <de.hdodenhof.circleimageview.CircleImageView
+        android:onClick="@{() -> master.changeProfileImage()}"
+        android:clickable="true"
+        android:focusable="true"
         android:id="@+id/imageChangeUserProfile"
         android:layout_width="40dp"
         android:layout_height="40dp"

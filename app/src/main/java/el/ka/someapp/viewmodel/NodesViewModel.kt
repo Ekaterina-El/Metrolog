@@ -1,6 +1,7 @@
 package el.ka.someapp.viewmodel
 
 import android.app.Application
+import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -81,6 +82,14 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
         _state.value = State.VIEW
         onSuccess()
       }
+    )
+  }
+
+  fun changeProfileImage(uri: Uri) {
+    UsersDatabaseService.changeProfileImage(
+      uri = uri,
+      onFailure = {},
+      onSuccess = {}
     )
   }
   // endregion

@@ -1,7 +1,11 @@
 package el.ka.someapp.view
 
+import android.app.Activity
 import android.app.Dialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +14,10 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.canhub.cropper.CropImageContract
+import com.canhub.cropper.CropImageContractOptions
+import com.canhub.cropper.CropImageOptions
+import com.canhub.cropper.CropImageView
 import el.ka.someapp.R
 import el.ka.someapp.data.model.Errors
 import el.ka.someapp.data.model.Node
@@ -27,7 +35,7 @@ class CompaniesFragment : BaseFragment() {
     adapter.setNodes(it)
   }
   private val stateObserver = Observer<State> {
-    when(it) {
+    when (it) {
       State.NON_UNIQUE_NAME -> {
         showCreateDialogWithError(getString(Errors.nonUniqueName.textId))
       }
@@ -55,7 +63,7 @@ class CompaniesFragment : BaseFragment() {
 
     binding = FragmentCompaniesBinding.inflate(layoutInflater)
     adapter = NodesAdapter(
-      listener = object: NodesAdapter.ItemListener {
+      listener = object : NodesAdapter.ItemListener {
         override fun onClick(nodeId: String) {
           openNode(nodeId)
         }
@@ -82,15 +90,57 @@ class CompaniesFragment : BaseFragment() {
     viewModel.loadNodes()
   }
 
+  override fun onBackPressed() {}
+
+  fun changeProfileImage() {
+
+    val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+    startActivityForResult(intent, PICK_IMAGE_REQUEST_CODE)
+  }
+
+  private val cropImage = registerForActivityResult(CropImageContract()) { result ->
+    if (result.isSuccessful) {
+      val uriContent = result.uriContent!!
+      binding.imageViewProfile.setImageURI(uriContent)
+      viewModel.changeProfileImage(uri = uriContent)
+    } else {
+      val exception = result.error
+    }
+  }
+
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    if (requestCode == PICK_IMAGE_REQUEST_CODE) {
+      if (resultCode == Activity.RESULT_OK) {
+        val image: Uri = data!!.data!!
+        cropImage.launch(
+          CropImageContractOptions(
+            uri = image,
+            CropImageOptions(
+              guidelines = CropImageView.Guidelines.ON,
+              aspectRatioX = 1,
+              aspectRatioY = 1,
+              fixAspectRatio = true,
+            )
+          )
+        )
+      }
+    }
+  }
+
+
   private fun openNode(nodeId: String) {
     viewModel.loadNodeByID(nodeId)
     navigate(R.id.action_companiesFragment_to_nodeFragment)
   }
 
+  // region Add Company Dialog
   private fun createAddCompanyDialog() {
     dialog = Dialog(requireActivity())
     dialog.setContentView(R.layout.add_node_dialog)
-    dialog.window!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+    dialog.window!!.setLayout(
+      ViewGroup.LayoutParams.MATCH_PARENT,
+      ViewGroup.LayoutParams.WRAP_CONTENT
+    )
     dialog.setCancelable(true)
 
     val editTextNodeName: EditText = dialog.findViewById(R.id.editTextNodeName)
@@ -127,6 +177,9 @@ class CompaniesFragment : BaseFragment() {
     viewModel.filteredNodes.removeObserver { nodesObserver }
     viewModel.state.removeObserver { stateObserver }
   }
+  // endregion
 
-  override fun onBackPressed() {}
+  companion object {
+    const val PICK_IMAGE_REQUEST_CODE = 1001
+  }
 }
