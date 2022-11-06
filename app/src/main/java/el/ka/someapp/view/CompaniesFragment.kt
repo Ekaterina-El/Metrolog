@@ -19,6 +19,7 @@ import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import el.ka.someapp.R
 import el.ka.someapp.data.model.Errors
 import el.ka.someapp.data.model.Node
@@ -144,11 +145,34 @@ class CompaniesFragment : BaseFragment() {
   }
 
   fun logout() {
-    // Show Dialog -> Are you sure?
-    viewModel.logout {
-      navigate(R.id.action_companiesFragment_to_welcomeFragment)
-    }
+    showLogoutDialog()
   }
+
+  // region Logout Dialog
+  private var logoutDialog: MaterialAlertDialogBuilder? = null
+
+  private fun createLogoutDialog() {
+    logoutDialog = MaterialAlertDialogBuilder(requireContext())
+      .setTitle(resources.getString(R.string.are_you_sure))
+      .setMessage(resources.getString(R.string.are_you_sure_message))
+      .setCancelable(false)
+      .setNeutralButton(getString(R.string.cancel)) { dialog, _ ->
+        dialog.dismiss()
+      }
+      .setNegativeButton(getString(R.string.continue_text)) { dialog, _ ->
+        viewModel.logout {
+          dialog.dismiss()
+          navigate(R.id.action_companiesFragment_to_welcomeFragment)
+        }
+      }
+  }
+
+  private fun showLogoutDialog() {
+    if (logoutDialog == null) createLogoutDialog()
+    logoutDialog!!.show()
+  }
+
+  // endregion
 
   // region Add Company Dialog
   private fun createAddCompanyDialog() {
