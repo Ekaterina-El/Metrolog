@@ -162,6 +162,7 @@ class CompaniesFragment : BaseFragment() {
       .setNegativeButton(getString(R.string.continue_text)) { dialog, _ ->
         viewModel.logout {
           dialog.dismiss()
+          setPassword(null)
           navigate(R.id.action_companiesFragment_to_welcomeFragment)
         }
       }
