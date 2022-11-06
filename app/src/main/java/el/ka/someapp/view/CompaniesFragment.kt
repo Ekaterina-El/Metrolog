@@ -9,7 +9,9 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -21,14 +23,10 @@ import el.ka.someapp.R
 import el.ka.someapp.data.model.Errors
 import el.ka.someapp.data.model.Node
 import el.ka.someapp.data.model.State
-import el.ka.someapp.data.model.User
 import el.ka.someapp.databinding.ChangeUserDialogBinding
 import el.ka.someapp.databinding.FragmentCompaniesBinding
-import el.ka.someapp.databinding.JobFieldDialogBinding
 import el.ka.someapp.view.adapters.NodesAdapter
-import el.ka.someapp.view.adapters.SpinnerUsersAdapter
 import el.ka.someapp.viewmodel.ChangeUserFullNameViewModel
-import el.ka.someapp.viewmodel.JobFieldViewModel
 import el.ka.someapp.viewmodel.NodesViewModel
 
 
@@ -145,6 +143,13 @@ class CompaniesFragment : BaseFragment() {
     navigate(R.id.action_companiesFragment_to_nodeFragment)
   }
 
+  fun logout() {
+    // Show Dialog -> Are you sure?
+    viewModel.logout {
+      navigate(R.id.action_companiesFragment_to_welcomeFragment)
+    }
+  }
+
   // region Add Company Dialog
   private fun createAddCompanyDialog() {
     dialog = Dialog(requireActivity())
@@ -197,7 +202,7 @@ class CompaniesFragment : BaseFragment() {
   private lateinit var bindingChangeUserFullNameDialog: ChangeUserDialogBinding
 
   private val changeUserObserverState = Observer<State> {
-    when(it) {
+    when (it) {
       State.FULL_NAME_CHANGED -> {
         changeUserFullNameDialog!!.dismiss()
         viewModel.loadCurrentUserProfile()
@@ -213,7 +218,8 @@ class CompaniesFragment : BaseFragment() {
     changeUserFullNameViewModel?.state?.observe(viewLifecycleOwner, changeUserObserverState)
 
     changeUserFullNameDialog?.let { dialog ->
-      bindingChangeUserFullNameDialog = ChangeUserDialogBinding.inflate(LayoutInflater.from(requireContext()))
+      bindingChangeUserFullNameDialog =
+        ChangeUserDialogBinding.inflate(LayoutInflater.from(requireContext()))
       dialog.setContentView(bindingChangeUserFullNameDialog.root)
 
 

@@ -64,6 +64,9 @@
     <action
       android:id="@+id/action_companiesFragment_to_nodeFragment"
       app:destination="@id/nodeFragment" />
+    <action
+      android:id="@+id/action_companiesFragment_to_welcomeFragment"
+      app:destination="@id/welcomeFragment" />
   </fragment>
   <fragment
     android:id="@+id/resetPasswordFragment"

@@ -104,6 +104,19 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       onFailure = {}
     )
   }
+
+  fun logout(afterLogout: () -> Unit = {}) {
+    AuthenticationService.logout()
+
+    _currentUserProfile.value = null
+    _currentNode.value = null
+    _nodesHistory.value = listOf()
+    _nodes.value = listOf()
+    _companyAllUsers.value = listOf()
+    _localUsers.value = listOf()
+
+    afterLogout()
+  }
   // endregion
 
   // region [state && load] Nodes
