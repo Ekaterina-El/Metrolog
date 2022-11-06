@@ -74,6 +74,8 @@
           android:layout_weight="1"
           android:background="@null"
           android:ellipsize="end"
+          android:afterTextChanged="@{() -> viewmodel.filterUsers()}"
+          android:text="@={viewmodel.filterUsersVal}"
           android:fontFamily="@font/montserrat_regular"
           android:hint="@string/search"
           android:importantForAutofill="no"

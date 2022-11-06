@@ -286,7 +286,6 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   // endregion
 
   // region Node Users
-  /* Загружать только для 0 уровня node | Обнулять при очистке истории */
   private val _companyAllUsers = MutableLiveData<List<User>>(listOf())
   val companyAllUsers: LiveData<List<User>>
     get() = _companyAllUsers
@@ -324,8 +323,8 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     filterUsers()
   }
 
-  private fun filterUsers() {
-    if (filter.value == "") {
+  fun filterUsers() {
+    if (filterUsersVal.value == "") {
       _filteredUsers.value = _companyAllUsers.value
     } else {
       _filteredUsers.value =
