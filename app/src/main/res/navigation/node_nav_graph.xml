@@ -31,5 +31,17 @@
   <fragment
     android:id="@+id/nodeMeasuringFragment"
     android:name="el.ka.someapp.view.node.NodeMeasuringFragment"
-    android:label="NodeMeasuringFragment" />
+    android:label="NodeMeasuringFragment" >
+    <action
+      android:id="@+id/action_nodeMeasuringFragment_to_addMeasuringFragment"
+      app:destination="@id/addMeasuringFragment" />
+  </fragment>
+  <fragment
+    android:id="@+id/addMeasuringFragment"
+    android:name="el.ka.someapp.view.node.AddMeasuringFragment"
+    android:label="AddMeasuringFragment" >
+    <action
+      android:id="@+id/action_addMeasuringFragment_to_nodeMeasuringFragment"
+      app:destination="@id/nodeMeasuringFragment" />
+  </fragment>
 </navigation>

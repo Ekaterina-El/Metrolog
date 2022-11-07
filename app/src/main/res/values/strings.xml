@@ -78,4 +78,23 @@
   <string name="are_you_sure_message">Вы уверены, что хотите выйти?</string>
   <string name="cancel">Отмена</string>
   <string name="continue_text">Продолжить</string>
+  <string name="add_measuring">Добавление СИ</string>
+  <string name="measuring_name">Наименование</string>
+  <string name="type_measuring">Вид СИ</string>
+  <string name="category_measuring">Категория СИ</string>
+  <string name="inventory_number">Инв. номер</string>
+  <string name="serial_number">Серийный номер</string>
+  <string name="reg_number_GRSI">Рег. номер ГРСИ</string>
+  <string name="manufacturer">Производитель</string>
+  <string name="supplier">Поставщик</string>
+  <string name="sector_GROEI">Сфера ГРОЕИ</string>
+  <string name="measurement_type">Вид измерений</string>
+  <string name="range">Предел измерений</string>
+  <string name="accuracyСlass">Класс точности</string>
+  <string name="graduationPoint">Цена деления</string>
+  <string name="status">Статус</string>
+  <string name="condition">Состояние</string>
+  <string name="conditionDate">Дата состояния</string>
+  <string name="releaseDate">Дата выпуска</string>
+  <string name="commissioningDate">Дата ввода в эксплутацию</string>
 </resources>

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import el.ka.someapp.R
 import el.ka.someapp.databinding.FragmentNodeMeasuringBinding
 import el.ka.someapp.view.BaseFragment
 import el.ka.someapp.viewmodel.NodesViewModel
@@ -37,5 +38,9 @@ class NodeMeasuringFragment: BaseFragment() {
 
   override fun onBackPressed() {
     viewModel.goBack()
+  }
+
+  fun goAddMeasuring() {
+    navigate(R.id.action_nodeMeasuringFragment_to_addMeasuringFragment)
   }
 }
