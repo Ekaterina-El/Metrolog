@@ -1,5 +1,6 @@
 package el.ka.someapp.view.adapters
 
+import android.text.Html
 import android.text.InputType
 import android.view.View
 import android.widget.EditText
@@ -7,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.google.android.material.textfield.TextInputLayout
 import el.ka.someapp.R
 import el.ka.someapp.data.model.ErrorApp
 import el.ka.someapp.data.model.State

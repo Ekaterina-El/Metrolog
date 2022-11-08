@@ -50,7 +50,7 @@
           android:id="@+id/inp1"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:textSize="14sp"
+           android:textSize="14sp"
           android:inputType="text"
           android:imeOptions="actionNext"
           android:ellipsize="end"
@@ -79,7 +79,7 @@
           android:textSize="14sp"
           android:fontFamily="@font/montserrat_regular"
           android:inputType="none"
-          app:simpleItems="@array/simple_items" />
+          app:simpleItems="@array/measuringTypes" />
       </com.google.android.material.textfield.TextInputLayout>
 
       <com.google.android.material.textfield.TextInputLayout
@@ -100,7 +100,7 @@
           android:textSize="14sp"
           android:fontFamily="@font/montserrat_regular"
           android:inputType="none"
-          app:simpleItems="@array/simple_items" />
+          app:simpleItems="@array/measuringCategories" />
       </com.google.android.material.textfield.TextInputLayout>
 
       <com.google.android.material.textfield.TextInputLayout
@@ -347,7 +347,7 @@
           android:textSize="14sp"
           android:fontFamily="@font/montserrat_regular"
           android:inputType="none"
-          app:simpleItems="@array/simple_items" />
+          app:simpleItems="@array/measurementStatus" />
       </com.google.android.material.textfield.TextInputLayout>
 
       <com.google.android.material.textfield.TextInputLayout
@@ -367,7 +367,7 @@
           android:layout_height="wrap_content"
           android:fontFamily="@font/montserrat_regular"
           android:inputType="none"
-          app:simpleItems="@array/simple_items" />
+          app:simpleItems="@array/measurementCondition" />
       </com.google.android.material.textfield.TextInputLayout>
 
       <com.google.android.material.textfield.TextInputLayout
