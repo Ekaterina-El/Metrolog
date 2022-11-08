@@ -7,13 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import el.ka.someapp.databinding.FragmentAddMeasuringBinding
 import el.ka.someapp.view.BaseFragment
+import el.ka.someapp.viewmodel.AddMeasuringViewModel
 import java.util.*
 
 class AddMeasuringFragment : BaseFragment() {
   private lateinit var binding: FragmentAddMeasuringBinding
-//  private val viewModel: NodesViewModel by activityViewModels()
+  private lateinit var viewModel: AddMeasuringViewModel
 
   private var datePickerDialog: DatePickerDialog? = null
 
@@ -28,25 +31,33 @@ class AddMeasuringFragment : BaseFragment() {
 
   override fun initFunctionalityParts() {
     binding = FragmentAddMeasuringBinding.inflate(layoutInflater)
+    viewModel = ViewModelProvider(this)[AddMeasuringViewModel::class.java]
   }
 
   override fun inflateBindingVariables() {
     binding.apply {
-//      viewmodel = this@AddMeasuringFragment.viewModel
+      viewmodel = this@AddMeasuringFragment.viewModel
       lifecycleOwner = viewLifecycleOwner
       master = this@AddMeasuringFragment
     }
   }
 
   private fun createDatePickerDialog() {
+    val calendar = Calendar.getInstance()
+
     val datePickerListener =
       DatePickerDialog.OnDateSetListener { datePicker, year, m, day ->
+
+        calendar.set(Calendar.YEAR, year)
+        calendar.set(Calendar.MONTH, m)
+        calendar.set(Calendar.DAY_OF_MONTH, day)
+        val date = calendar.time
+
         val month = m + 1
-        val date = makeDateString(day, month, year)
-        Toast.makeText(requireContext(), date, Toast.LENGTH_SHORT).show()
+        val dateString = makeDateString(day, month, year)
+        Toast.makeText(requireContext(), dateString, Toast.LENGTH_SHORT).show()
       }
 
-    val calendar = Calendar.getInstance()
     val year = calendar.get(Calendar.YEAR)
     val month = calendar.get(Calendar.MONTH)
     val day = calendar.get(Calendar.DAY_OF_MONTH)

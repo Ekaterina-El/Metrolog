@@ -6,6 +6,10 @@
   <data>
 
     <variable
+      name="viewmodel"
+      type="el.ka.someapp.viewmodel.AddMeasuringViewModel" />
+
+    <variable
       name="master"
       type="el.ka.someapp.view.node.AddMeasuringFragment" />
   </data>
@@ -20,19 +24,50 @@
       android:layout_height="match_parent"
       android:orientation="vertical">
 
-      <TextView
-        android:id="@+id/textName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/app_padding"
+      <LinearLayout
         android:layout_marginTop="20dp"
-        android:fontFamily="@font/montserrat_regular"
-        android:text="@string/add_measuring"
-        android:textColor="@color/primary_dark_color"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+
+        <TextView
+          android:id="@+id/textName"
+          android:layout_width="0dp"
+          android:layout_weight="1"
+          android:layout_height="wrap_content"
+          android:fontFamily="@font/montserrat_regular"
+          android:text="@string/add_measuring"
+          android:textColor="@color/primary_dark_color"
+          android:textSize="22sp"
+          android:textStyle="bold"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+          android:layout_width="35dp"
+          android:layout_height="35dp"
+          android:layout_marginStart="10dp"
+          android:background="@drawable/button_selector"
+          android:clickable="true"
+          android:focusable="true">
+
+          <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:clickable="true"
+            android:contentDescription="@null"
+            android:focusable="true"
+            android:onClick="@{() -> viewmodel.getMessingPassport()}"
+            android:src="@drawable/ic_add"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/text_on_primary" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+      </LinearLayout>
 
       <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -55,6 +90,7 @@
           android:imeOptions="actionNext"
           android:inputType="text"
           android:maxLines="1"
+          android:text="@={viewmodel.name}"
           android:textColor="#333"
           android:textSize="14sp" />
 
@@ -122,6 +158,7 @@
           android:imeOptions="actionNext"
           android:inputType="text"
           android:maxLines="1"
+          android:text="@={viewmodel.inventoryNumber}"
           android:textColor="#333"
           android:textSize="14sp" />
 
@@ -146,6 +183,7 @@
           android:imeOptions="actionNext"
           android:inputType="text"
           android:maxLines="1"
+          android:text="@={viewmodel.serialNumber}"
           android:textColor="#333"
           android:textSize="14sp" />
 
@@ -170,6 +208,7 @@
           android:imeOptions="actionNext"
           android:inputType="text"
           android:maxLines="1"
+          android:text="@={viewmodel.registrationNumberGRSI}"
           android:textColor="#333"
           android:textSize="14sp" />
 
@@ -194,6 +233,7 @@
           android:imeOptions="actionNext"
           android:inputType="text"
           android:maxLines="1"
+          android:text="@={viewmodel.manufacturer}"
           android:textColor="#333"
           android:textSize="14sp" />
 
@@ -218,6 +258,7 @@
           android:imeOptions="actionNext"
           android:inputType="text"
           android:maxLines="1"
+          android:text="@={viewmodel.supplier}"
           android:textColor="#333"
           android:textSize="14sp" />
 
@@ -242,6 +283,7 @@
           android:imeOptions="actionNext"
           android:inputType="text"
           android:maxLines="1"
+          android:text="@={viewmodel.sectorGROEI}"
           android:textColor="#333"
           android:textSize="14sp" />
 
@@ -283,6 +325,7 @@
           android:layout_height="wrap_content"
           android:fontFamily="@font/montserrat_regular"
           android:inputType="numberDecimal"
+          android:text="@={viewmodel.range}"
           android:textColor="#333"
           android:textSize="14sp" />
 
@@ -304,6 +347,7 @@
           android:layout_height="wrap_content"
           android:fontFamily="@font/montserrat_regular"
           android:inputType="numberDecimal"
+          android:text="@={viewmodel.accuracyСlass}"
           android:textColor="#333"
           android:textSize="14sp" />
 
@@ -325,6 +369,7 @@
           android:layout_height="wrap_content"
           android:fontFamily="@font/montserrat_regular"
           android:inputType="numberDecimal"
+          android:text="@={viewmodel.graduationPoint}"
           android:textColor="#333"
           android:textSize="14sp" />
 
@@ -372,15 +417,16 @@
 
       <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
         android:clickable="true"
-        android:onClick="@{() -> master.showDatePickerDialog()}"
-        android:layout_height="wrap_content">
+        android:onClick="@{() -> master.showDatePickerDialog()}">
+
         <LinearLayout
-          android:layout_marginTop="10dp"
           android:id="@+id/layoutUserFullName"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
           android:background="@drawable/input_wrapper_secondary"
           android:gravity="center"
           android:orientation="horizontal"
@@ -403,13 +449,14 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
             android:background="@null"
-            tools:text="12/12/2023"
             android:ellipsize="end"
             android:fontFamily="@font/montserrat_regular"
             android:maxLines="1"
+            android:text="@{viewmodel.conditionDate}"
             android:textColor="@color/secondary_color"
             android:textColorHint="@color/hint_color"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            tools:text="12/12/2023" />
         </LinearLayout>
 
         <TextView
@@ -430,16 +477,17 @@
 
       <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
         android:layout_marginTop="20dp"
         android:clickable="true"
-        android:onClick="@{() -> master.showDatePickerDialog()}"
-        android:layout_height="wrap_content">
+        android:onClick="@{() -> master.showDatePickerDialog()}">
+
         <LinearLayout
-          android:layout_marginTop="10dp"
           android:id="@+id/layoutCD"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
           android:background="@drawable/input_wrapper_secondary"
           android:gravity="center"
           android:orientation="horizontal"
@@ -461,13 +509,14 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
             android:background="@null"
-            tools:text="12/12/2023"
             android:ellipsize="end"
             android:fontFamily="@font/montserrat_regular"
             android:maxLines="1"
+            android:text="@{viewmodel.commissioningDate}"
             android:textColor="@color/secondary_color"
             android:textColorHint="@color/hint_color"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            tools:text="12/12/2023" />
         </LinearLayout>
 
         <TextView
@@ -477,7 +526,7 @@
           android:background="@color/background_color"
           android:fontFamily="@font/montserrat_regular"
           android:paddingHorizontal="10dp"
-          android:text="@string/conditionDate"
+          android:text="@string/commissioningDate"
           android:textColor="@color/secondary_color"
           android:textSize="12sp"
           android:textStyle="bold"
@@ -488,16 +537,18 @@
 
       <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:clickable="true"
-        android:onClick="@{() -> master.showDatePickerDialog()}"
-        android:layout_height="wrap_content">
+        android:onClick="@{() -> master.showDatePickerDialog()}">
+
         <LinearLayout
-          android:layout_marginTop="10dp"
           android:id="@+id/layoutReleaseDate"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
           android:background="@drawable/input_wrapper_secondary"
           android:gravity="center"
           android:orientation="horizontal"
@@ -519,13 +570,14 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
             android:background="@null"
-            tools:text="12/12/2023"
             android:ellipsize="end"
             android:fontFamily="@font/montserrat_regular"
             android:maxLines="1"
+            android:text="@{viewmodel.releaseDate}"
             android:textColor="@color/secondary_color"
             android:textColorHint="@color/hint_color"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            tools:text="12/12/2023" />
         </LinearLayout>
 
         <TextView
