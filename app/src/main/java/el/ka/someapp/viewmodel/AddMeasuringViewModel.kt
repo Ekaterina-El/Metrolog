@@ -101,20 +101,12 @@ class AddMeasuringViewModel(application: Application) : AndroidViewModel(applica
   }
 
 
-  private val _locationIDNode = MutableLiveData<String>("")
+  private val _locationIDNode = MutableLiveData("")
   fun setLocationIDNode(idNode: String) {
     _locationIDNode.value = idNode
   }
 
   fun getMessingPassport() {
-    /*
-    _type.value = MeasuringType.MEASURE
-    _category.value = MeasuringCategory.WORKING
-    _measurementType.value = MeasurementType.ACOUSTIC_QUANTITIES
-    _measuringState.value = MeasuringState.CALIBRATION
-    _measuringCondition.value = MeasuringCondition.IN_WORK
-    */
-
     val messingPassport = MeasuringPassport(
       passportId = "",
       type = _type.value!!,
@@ -137,6 +129,5 @@ class AddMeasuringViewModel(application: Application) : AndroidViewModel(applica
       commissioningDate = _commissioningDate.value,
       locationIDNode = _locationIDNode.value!!
     )
-    val a = 10
   }
 }

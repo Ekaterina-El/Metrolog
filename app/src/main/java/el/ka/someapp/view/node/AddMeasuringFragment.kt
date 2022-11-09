@@ -8,18 +8,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import el.ka.someapp.data.model.measuring.DateType
 import el.ka.someapp.data.model.measuring.Fields
 import el.ka.someapp.databinding.FragmentAddMeasuringBinding
 import el.ka.someapp.view.BaseFragment
 import el.ka.someapp.viewmodel.AddMeasuringViewModel
+import el.ka.someapp.viewmodel.NodesViewModel
 import java.util.*
 
 
 class AddMeasuringFragment : BaseFragment() {
   private lateinit var binding: FragmentAddMeasuringBinding
   private lateinit var viewModel: AddMeasuringViewModel
+
+  private val nodesViewModel: NodesViewModel by activityViewModels()
 
   private var datePickerDialog: DatePickerDialog? = null
 
@@ -43,6 +47,11 @@ class AddMeasuringFragment : BaseFragment() {
       lifecycleOwner = viewLifecycleOwner
       master = this@AddMeasuringFragment
     }
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    viewModel.setLocationIDNode(nodesViewModel.currentNode.value!!.id)
   }
 
   // region Date Picker Dialog
