@@ -6,6 +6,7 @@
     <item>Item 3</item>
   </string-array>
 
+  <!-- Последовательность должна соответсовать последовательности в массиве Field.measuringTypeVariables -->
   <string-array name="measuringTypes">
     <item>Мера</item>
     <item>Измерительный прибор</item>
@@ -13,12 +14,14 @@
     <item>Измерительная система</item>
   </string-array>
 
+  <!-- Последовательность должна соответсовать последовательности в массиве Field.measuringCategoryVariables -->
   <string-array name="measuringCategories">
     <item>Рабочие</item>
     <item>Образцовые меры</item>
     <item>Эталоны</item>
   </string-array>
 
+  <!-- Последовательность должна соответсовать последовательности в массиве Field.measurementTypeVariables -->
   <string-array name="measurementType">
     <item>(1) Измерение геометрических величин</item>
     <item>(2) Измерение механических величин</item>
@@ -34,12 +37,14 @@
     <item>(12) Измерения ионизирующих излучений и ядерных констант</item>
   </string-array>
 
+  <!-- Последовательность должна соответсовать последовательности в массиве Field.measurementStatusVariables -->
   <string-array name="measurementStatus">
     <item>Калибровка</item>
     <item>Поверка</item>
     <item>Аттестация</item>
   </string-array>
 
+  <!-- Последовательность должна соответсовать последовательности в массиве Field.measurementConditionVariables -->
   <string-array name="measurementCondition">
     <item>В работе</item>
     <item>Ремонт</item>

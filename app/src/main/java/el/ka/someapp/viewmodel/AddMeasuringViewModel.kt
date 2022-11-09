@@ -12,7 +12,7 @@ class AddMeasuringViewModel(application: Application) : AndroidViewModel(applica
   val name = MutableLiveData("")
 
   private val _type = MutableLiveData<MeasuringType?>(null)
-  fun setType(newType: MeasuringType) {
+  fun setMeasuringType(newType: MeasuringType) {
     _type.value = newType
   }
 

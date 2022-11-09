@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
+import el.ka.someapp.R
+import el.ka.someapp.data.model.measuring.Fields
+import el.ka.someapp.data.model.measuring.MeasuringType
 import el.ka.someapp.databinding.FragmentAddMeasuringBinding
 import el.ka.someapp.view.BaseFragment
 import el.ka.someapp.viewmodel.AddMeasuringViewModel
@@ -82,5 +84,62 @@ class AddMeasuringFragment : BaseFragment() {
 
   override fun onBackPressed() {
 //    viewModel.goBack()
+  }
+
+  override fun onResume() {
+    super.onResume()
+    binding.spinnerMeasuringType.setOnItemClickListener { _, _, position, _ ->
+      onMeasuringTypeSelected(position)
+    }
+
+    binding.spinnerMeasuringCategory.setOnItemClickListener { _, _, position, _ ->
+      onMeasuringCategorySelected(position)
+    }
+
+    binding.spinnerMeasurementType.setOnItemClickListener { _, _, position, _ ->
+      onMeasurementTypeSelected(position)
+    }
+
+    binding.spinnerMeasuremingStatus.setOnItemClickListener { _, _, position, _ ->
+      onMeasurementStateSelected(position)
+    }
+
+    binding.spinnerMeasuremingCondition.setOnItemClickListener { _, _, position, _ ->
+      onMeasurementConditionSelected(position)
+    }
+  }
+
+  override fun onDestroy() {
+    binding.spinnerMeasuringType.onItemClickListener = null
+    binding.spinnerMeasuringCategory.onItemClickListener = null
+    binding.spinnerMeasurementType.onItemClickListener = null
+    binding.spinnerMeasuremingStatus.onItemClickListener = null
+    binding.spinnerMeasuremingCondition.onItemClickListener = null
+    super.onDestroy()
+  }
+
+  private fun onMeasuringTypeSelected(position: Int) {
+    val type = Fields.measuringTypeVariables[position]
+    viewModel.setMeasuringType(type)
+  }
+
+  private fun onMeasuringCategorySelected(position: Int) {
+    val category = Fields.measuringCategoryVariables[position]
+    viewModel.setCategory(category)
+  }
+
+  private fun onMeasurementTypeSelected(position: Int) {
+    val type = Fields.measurementTypeVariables[position]
+    viewModel.setMeasurementType(type)
+  }
+
+  private fun onMeasurementStateSelected(position: Int) {
+    val status = Fields.measurementStatusVariables[position]
+    viewModel.setMeasuringState(status)
+  }
+
+  private fun onMeasurementConditionSelected(position: Int) {
+    val condition = Fields.measurementConditionVariables[position]
+    viewModel.setMeasuringCondition(condition)
   }
 }

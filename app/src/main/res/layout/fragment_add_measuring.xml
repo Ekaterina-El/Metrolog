@@ -25,17 +25,17 @@
       android:orientation="vertical">
 
       <LinearLayout
-        android:layout_marginTop="20dp"
-        android:layout_marginHorizontal="@dimen/app_padding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:layout_marginTop="20dp"
         android:gravity="center_vertical">
 
         <TextView
           android:id="@+id/textName"
           android:layout_width="0dp"
-          android:layout_weight="1"
           android:layout_height="wrap_content"
+          android:layout_weight="1"
           android:fontFamily="@font/montserrat_regular"
           android:text="@string/add_measuring"
           android:textColor="@color/primary_dark_color"
@@ -108,7 +108,7 @@
         app:errorTextColor="@color/attentionColor">
 
         <AutoCompleteTextView
-          android:id="@+id/inp2"
+          android:id="@+id/spinnerMeasuringType"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:fontFamily="@font/montserrat_regular"
@@ -130,6 +130,7 @@
         app:errorTextColor="@color/attentionColor">
 
         <AutoCompleteTextView
+          android:id="@+id/spinnerMeasuringCategory"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:fontFamily="@font/montserrat_regular"
@@ -301,12 +302,13 @@
         app:errorTextColor="@color/attentionColor">
 
         <AutoCompleteTextView
+          android:id="@+id/spinnerMeasurementType"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:fontFamily="@font/montserrat_regular"
           android:inputType="none"
           android:textSize="14sp"
-          app:simpleItems="@array/simple_items" />
+          app:simpleItems="@array/measurementType" />
       </com.google.android.material.textfield.TextInputLayout>
 
       <com.google.android.material.textfield.TextInputLayout
@@ -387,6 +389,7 @@
         app:errorTextColor="@color/attentionColor">
 
         <AutoCompleteTextView
+          android:id="@+id/spinnerMeasuremingStatus"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:fontFamily="@font/montserrat_regular"
@@ -407,6 +410,7 @@
         app:errorTextColor="@color/attentionColor">
 
         <AutoCompleteTextView
+          android:id="@+id/spinnerMeasuremingCondition"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:fontFamily="@font/montserrat_regular"
