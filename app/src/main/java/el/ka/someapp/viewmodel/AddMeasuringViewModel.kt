@@ -13,11 +13,17 @@ class AddMeasuringViewModel(application: Application) : AndroidViewModel(applica
   val name = MutableLiveData("")
 
   private val _type = MutableLiveData<MeasuringType?>(null)
+  val measuringType: LiveData<MeasuringType?>
+    get() = _type
+
   fun setMeasuringType(newType: MeasuringType) {
     _type.value = newType
   }
 
   private val _category = MutableLiveData<MeasuringCategory?>(null)
+  val measuringCategory: LiveData<MeasuringCategory?>
+    get() = _category
+
   fun setCategory(newCategory: MeasuringCategory) {
     _category.value = newCategory
   }
@@ -30,27 +36,36 @@ class AddMeasuringViewModel(application: Application) : AndroidViewModel(applica
   val sectorGROEI = MutableLiveData("")
 
   private val _measurementType = MutableLiveData<MeasurementType?>(null)
+  val measurementType: LiveData<MeasurementType?>
+    get() = _measurementType
+
   fun setMeasurementType(newType: MeasurementType) {
     _measurementType.value = newType
   }
 
   val range = MutableLiveData("")
-  val accuracyСlass = MutableLiveData("")
+  val accuracyClass = MutableLiveData("")
   val graduationPoint = MutableLiveData("")
 
   private val _measuringState = MutableLiveData<MeasuringState?>(null)
+  val measuringState: LiveData<MeasuringState?>
+    get() = _measuringState
+
   fun setMeasuringState(newState: MeasuringState) {
     _measuringState.value = newState
+  }
+
+  private val _measuringCondition = MutableLiveData<MeasuringCondition?>(null)
+  val measuringCondition: LiveData<MeasuringCondition?>
+    get() = _measuringCondition
+
+  fun setMeasuringCondition(newCondition: MeasuringCondition) {
+    _measuringCondition.value = newCondition
   }
 
   private val _editDate = MutableLiveData<DateType?>(null)
   fun setEditTime(timeType: DateType) {
     _editDate.value = timeType
-  }
-
-  private val _measuringCondition = MutableLiveData<MeasuringCondition?>(null)
-  fun setMeasuringCondition(newCondition: MeasuringCondition) {
-    _measuringCondition.value = newCondition
   }
 
   // region Condition Date
@@ -59,10 +74,6 @@ class AddMeasuringViewModel(application: Application) : AndroidViewModel(applica
     get() = _conditionDate
   val conditionDateFormatted =
     Transformations.map(_conditionDate) { date -> return@map date?.convertDate() ?: "??/??/????" }
-
-  fun setConditionDate(newDate: Date) {
-    _conditionDate.value = newDate
-  }
   // endregion
 
   // region Release Date
@@ -73,9 +84,6 @@ class AddMeasuringViewModel(application: Application) : AndroidViewModel(applica
   val releaseDateFormatted = Transformations.map(_releaseDate) { date ->
     return@map date?.convertDate() ?: "??/??/????"
   }
-  fun setReleaseDate(newDate: Date) {
-    _releaseDate.value = newDate
-  }
   // endregion
 
   // region Commissioning Date
@@ -84,10 +92,6 @@ class AddMeasuringViewModel(application: Application) : AndroidViewModel(applica
     get() = _commissioningDate
   val commissioningDateFormatted = Transformations.map(_commissioningDate) { date ->
     return@map date?.convertDate() ?: "??/??/????"
-  }
-
-  fun setCommissioningDate(newDate: Date) {
-    _commissioningDate.value = newDate
   }
   // endregion
 
@@ -106,8 +110,12 @@ class AddMeasuringViewModel(application: Application) : AndroidViewModel(applica
     _locationIDNode.value = idNode
   }
 
-  fun getMessingPassport() {
-    val messingPassport = MeasuringPassport(
+  fun saveMeasuring() {
+    val measuringPassport = getMessingPassport()
+  }
+
+  private fun getMessingPassport(): MeasuringPassport {
+    return MeasuringPassport(
       passportId = "",
       type = _type.value!!,
       category = _category.value!!,
@@ -120,7 +128,7 @@ class AddMeasuringViewModel(application: Application) : AndroidViewModel(applica
       sectorGROEI = sectorGROEI.value,
       measurementType = _measurementType.value!!,
       range = range.value!!,
-      accuracyСlass = accuracyСlass.value!!,
+      accuracyСlass = accuracyClass.value!!,
       graduationPoint = graduationPoint.value!!,
       status = _measuringState.value!!,
       condition = _measuringCondition.value!!,

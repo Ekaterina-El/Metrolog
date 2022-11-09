@@ -1,6 +1,5 @@
 package el.ka.someapp.view.node
 
-import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.DialogInterface
 import android.os.Bundle
@@ -10,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.textfield.TextInputLayout
+import el.ka.someapp.R
 import el.ka.someapp.data.model.measuring.DateType
 import el.ka.someapp.data.model.measuring.Fields
 import el.ka.someapp.databinding.FragmentAddMeasuringBinding
@@ -53,6 +54,85 @@ class AddMeasuringFragment : BaseFragment() {
     super.onViewCreated(view, savedInstanceState)
     viewModel.setLocationIDNode(nodesViewModel.currentNode.value!!.id)
   }
+
+  fun tryAddMeasuring() {
+    if (!checkFields()) {
+      binding.textError.visibility = View.GONE
+
+//      viewModel.saveMeasuring()
+    } else {
+      binding.textError.visibility = View.VISIBLE
+    }
+  }
+
+  private fun checkFields(): Boolean {
+    var hasErrors = false
+    val isRequireString = getString(R.string.is_required)
+
+    // Наиминование: обязательное && length >= 3
+    val name = viewModel.name.value
+    if (name == null || name == "") {
+      binding.layoutName.error = isRequireString
+      hasErrors = true
+    } else if (name.length < 3) {
+      binding.layoutName.error = getString(R.string.required_min_length, 3)
+      hasErrors = true
+    } else {
+      binding.layoutName.error = null
+    }
+
+    // Вид СИ: обязательное
+    val measuringType = viewModel.measuringType.value
+    var layout = binding.layoutMeasuringType
+    if (checkIsNoEmpty(layout, measuringType, isRequireString)) hasErrors = true
+
+    // Категория СИ: обязательное
+    val measuringCategory = viewModel.measuringCategory.value
+    layout = binding.layoutMeasuringCategory
+    if (checkIsNoEmpty(layout, measuringCategory, isRequireString)) hasErrors = true
+
+    // Вид измерений: обязательно
+    val measurementType = viewModel.measurementType.value
+    layout = binding.layoutMeasurementType
+    if (checkIsNoEmpty(layout, measurementType, isRequireString)) hasErrors = true
+
+    // Предел измерения: обязательный
+    val range = viewModel.range.value
+    layout = binding.layoutRange
+    if (checkIsNoEmpty(layout, range, isRequireString)) hasErrors = true
+
+    // Класс точности: обязательно
+    val accuracyClass = viewModel.accuracyClass.value
+    layout = binding.layoutAccuracyClass
+    if (checkIsNoEmpty(layout, accuracyClass, isRequireString)) hasErrors = true
+
+    // Статус: обязательно
+    val measuringState = viewModel.measuringState.value
+    layout = binding.layoutMeasuringState
+    if (checkIsNoEmpty(layout, measuringState, isRequireString)) hasErrors = true
+
+    // Состояние: обязательно
+    val measuringCondition = viewModel.measuringCondition.value
+    layout = binding.layoutMeasuringCondition
+    if (checkIsNoEmpty(layout, measuringCondition, isRequireString)) hasErrors = true
+
+    return hasErrors
+  }
+
+  private fun checkIsNoEmpty(
+    layout: TextInputLayout,
+    value: Any?,
+    isRequireString: String
+  ): Boolean {
+    return if (value == null || value == "") {
+      layout.error = isRequireString
+      true
+    } else {
+      layout.error = null
+      false
+    }
+  }
+
 
   // region Date Picker Dialog
   private var isOkayClicked = false
@@ -105,7 +185,7 @@ class AddMeasuringFragment : BaseFragment() {
 
   fun showDatePicker(type: DateType) {
     viewModel.setEditTime(type)
-    val date = when(type) {
+    val date = when (type) {
       DateType.RELEASE -> viewModel.releaseDate.value
       DateType.COMMISSION -> viewModel.commissioningDate.value
       DateType.CONDITION -> viewModel.conditionDate.value

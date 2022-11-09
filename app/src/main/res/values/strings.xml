@@ -79,6 +79,7 @@
   <string name="cancel">Отмена</string>
   <string name="continue_text">Продолжить</string>
   <string name="add_measuring">Добавление СИ</string>
+
   <string name="measuring_name">Наименование <font color="#CC2D2D">*</font></string>
   <string name="type_measuring">Вид СИ <font color="#CC2D2D">*</font></string>
   <string name="category_measuring">Категория СИ <font color="#CC2D2D">*</font></string>
@@ -97,4 +98,9 @@
   <string name="conditionDate">Дата состояния</string>
   <string name="releaseDate">Дата выпуска</string>
   <string name="commissioningDate">Дата ввода в эксплутацию</string>
+
+  <string name="is_required">Это обязательное поле</string>
+  <string name="required_min_length">Минимальная длина: %1$d</string>
+  <string name="creteMeasuringDescription">Для добавления нового СИ заполните форму</string>
+  <string name="createMeasuringError">При заполнении формы допущенны ошибки. Проверьте ещё раз и попробуйте вновь</string>
 </resources>
