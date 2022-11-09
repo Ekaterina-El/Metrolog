@@ -4,6 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+    <import type="el.ka.someapp.data.model.measuring.DateType" />
 
     <variable
       name="viewmodel"
@@ -424,7 +425,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
         android:clickable="true"
-        android:onClick="@{() -> master.showDatePickerDialog()}">
+        android:onClick="@{() -> master.showDatePicker(DateType.CONDITION)}">
 
         <LinearLayout
           android:id="@+id/layoutUserFullName"
@@ -456,7 +457,7 @@
             android:ellipsize="end"
             android:fontFamily="@font/montserrat_regular"
             android:maxLines="1"
-            android:text="@{viewmodel.conditionDate}"
+            android:text="@{viewmodel.conditionDateFormatted}"
             android:textColor="@color/secondary_color"
             android:textColorHint="@color/hint_color"
             android:textSize="14sp"
@@ -485,7 +486,7 @@
         android:layout_marginHorizontal="30dp"
         android:layout_marginTop="20dp"
         android:clickable="true"
-        android:onClick="@{() -> master.showDatePickerDialog()}">
+        android:onClick="@{() -> master.showDatePicker(DateType.COMMISSION)}">
 
         <LinearLayout
           android:id="@+id/layoutCD"
@@ -516,7 +517,7 @@
             android:ellipsize="end"
             android:fontFamily="@font/montserrat_regular"
             android:maxLines="1"
-            android:text="@{viewmodel.commissioningDate}"
+            android:text="@{viewmodel.commissioningDateFormatted}"
             android:textColor="@color/secondary_color"
             android:textColorHint="@color/hint_color"
             android:textSize="14sp"
@@ -546,7 +547,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:clickable="true"
-        android:onClick="@{() -> master.showDatePickerDialog()}">
+        android:onClick="@{() -> master.showDatePicker(DateType.RELEASE)}">
 
         <LinearLayout
           android:id="@+id/layoutReleaseDate"
@@ -577,7 +578,7 @@
             android:ellipsize="end"
             android:fontFamily="@font/montserrat_regular"
             android:maxLines="1"
-            android:text="@{viewmodel.releaseDate}"
+            android:text="@{viewmodel.releaseDateFormatted}"
             android:textColor="@color/secondary_color"
             android:textColorHint="@color/hint_color"
             android:textSize="14sp"
