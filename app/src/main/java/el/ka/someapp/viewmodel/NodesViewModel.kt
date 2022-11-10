@@ -153,7 +153,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
         .getNodesByIDs(nodeIds = nodesIds)
         .awaitAll()
         .mapNotNull {
-          it.toObject(Node::class.java)
+           it.toObject(Node::class.java)
         }
       setNodes(a)
     }

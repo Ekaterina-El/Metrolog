@@ -58,8 +58,7 @@ class AddMeasuringFragment : BaseFragment() {
   fun tryAddMeasuring() {
     if (!checkFields()) {
       binding.textError.visibility = View.GONE
-
-//      viewModel.saveMeasuring()
+      viewModel.saveMeasuring()
     } else {
       binding.textError.visibility = View.VISIBLE
     }

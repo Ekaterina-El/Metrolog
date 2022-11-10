@@ -175,9 +175,23 @@ object NodesDatabaseService {
       .addOnFailureListener { onFailure() }
       .addOnSuccessListener { onSuccess() }
   }
+
+  fun addMeasuringId(
+    nodeId: String,
+    measuringId: String,
+    onFailure: () -> Unit,
+    onSuccess: () -> Unit) {
+    FirebaseServices
+      .databaseNodes
+      .document(nodeId)
+      .update(MEASURING_FIELD, FieldValue.arrayUnion(measuringId))
+      .addOnFailureListener { onFailure() }
+      .addOnSuccessListener { onSuccess() }
+  }
   // endregion
 
   private const val LEVEL_FIELD = "level"
+  private const val MEASURING_FIELD = "measuring"
   private const val JOBS_FIELD = "jobs"
   private const val NODE_NAME_FIELD = "name"
   private const val ROOT_FIELD = "rootNodeId"

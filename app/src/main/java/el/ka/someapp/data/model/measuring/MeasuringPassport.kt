@@ -3,7 +3,6 @@ package el.ka.someapp.data.model.measuring
 import java.util.Date
 
 data class MeasuringPassport(
-  var passportId: String = "",
   var type: MeasuringType = MeasuringType.MEASURE,
   var category: MeasuringCategory = MeasuringCategory.WORKING,
   var name: String = "",

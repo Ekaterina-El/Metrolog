@@ -2,9 +2,9 @@ package el.ka.someapp.data.model.measuring
 
 data class Measuring(
   var measuringID: String = "",
-  var passportID: String = "",
-  var verificationID: String = "",
-  var TO_ID: String = "",
-  var maintenanceRepairID: String = "",
-  var overhaulID: String = ""
+  var passport: MeasuringPassport? = null,
+  var verification: Verification = Verification(),
+  var TO: TO = TO(),
+  var maintenanceRepair: MaintenanceRepair = MaintenanceRepair(),
+  var overhaul: Overhaul = Overhaul()
 )
