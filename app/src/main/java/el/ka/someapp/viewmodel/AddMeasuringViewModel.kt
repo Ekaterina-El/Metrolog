@@ -5,12 +5,17 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import el.ka.someapp.data.model.State
 import el.ka.someapp.data.model.convertDate
 import el.ka.someapp.data.model.measuring.*
 import el.ka.someapp.data.repository.MeasuringDatabaseService
 import java.util.*
 
 class AddMeasuringViewModel(application: Application) : AndroidViewModel(application) {
+  private val _state = MutableLiveData(State.VIEW)
+  val state: LiveData<State>
+    get() = _state
+
   val name = MutableLiveData("")
 
   private val _type = MutableLiveData<MeasuringType?>(null)
@@ -112,16 +117,17 @@ class AddMeasuringViewModel(application: Application) : AndroidViewModel(applica
   }
 
   fun saveMeasuring() {
+    _state.value = State.LOADING
     val measuringPassport = getMessingPassport()
     val measuring = Measuring(passport = measuringPassport)
 
     MeasuringDatabaseService.createMeasuring(
       measuring = measuring,
       onSuccess = {
-        val a = 10
+        _state.value = State.BACK
       },
       onFailure = {
-        val a = 10
+        _state.value = State.VIEW
       }
     )
   }

@@ -1,18 +1,43 @@
 package el.ka.someapp.view
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import el.ka.someapp.R
 
 abstract class BaseFragment : Fragment() {
 
   private lateinit var sharedPreferences: SharedPreferences
+
+  private var loadingDialog: Dialog? = null
+
+  fun showLoadingDialog() {
+    if (loadingDialog == null) createLoadingDialog()
+    loadingDialog!!.show()
+  }
+
+  fun hideLoadingDialog() = loadingDialog?.dismiss()
+
+  private fun createLoadingDialog() {
+    loadingDialog = Dialog(requireContext(), R.style.AppTheme_FullScreenDialog)
+    loadingDialog?.let { loadingDialog ->
+      loadingDialog.setContentView(R.layout.fragment_loading_progress_bar)
+      loadingDialog.window!!.setLayout(
+        ViewGroup.LayoutParams.MATCH_PARENT,
+        ViewGroup.LayoutParams.MATCH_PARENT,
+        )
+      loadingDialog.window!!.setWindowAnimations(R.style.Slide)
+      loadingDialog.setCancelable(false)
+    }
+  }
 
   override fun onCreateView(
     inflater: LayoutInflater,

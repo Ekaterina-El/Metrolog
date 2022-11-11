@@ -8,24 +8,37 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputLayout
 import el.ka.someapp.R
+import el.ka.someapp.data.model.State
 import el.ka.someapp.data.model.measuring.DateType
 import el.ka.someapp.data.model.measuring.Fields
 import el.ka.someapp.databinding.FragmentAddMeasuringBinding
 import el.ka.someapp.view.BaseFragment
 import el.ka.someapp.viewmodel.AddMeasuringViewModel
 import el.ka.someapp.viewmodel.NodesViewModel
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 
 
 class AddMeasuringFragment : BaseFragment() {
   private lateinit var binding: FragmentAddMeasuringBinding
+
   private lateinit var viewModel: AddMeasuringViewModel
+  private val stateObserver = Observer<State> { state ->
+    when (state) {
+      State.LOADING -> showLoadingDialog()
+      State.BACK -> {
+        hideLoadingDialog()
+        goBack()
+      }
+      else -> {}
+    }
+  }
 
   private val nodesViewModel: NodesViewModel by activityViewModels()
-
   private var datePickerDialog: DatePickerDialog? = null
 
   override fun onCreateView(
@@ -53,6 +66,9 @@ class AddMeasuringFragment : BaseFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     viewModel.setLocationIDNode(nodesViewModel.currentNode.value!!.id)
+  }
+
+  private fun goBack() {
   }
 
   fun tryAddMeasuring() {
@@ -239,9 +255,12 @@ class AddMeasuringFragment : BaseFragment() {
       onMeasurementConditionSelected(position)
     }
     // endregion
+
+    // Add state listener
+    viewModel.state.observe(viewLifecycleOwner, stateObserver)
   }
 
-  override fun onDestroy() {
+  override fun onStop() {
     // region remove listeners
     binding.spinnerMeasuringType.onItemClickListener = null
     binding.spinnerMeasuringCategory.onItemClickListener = null
@@ -249,7 +268,11 @@ class AddMeasuringFragment : BaseFragment() {
     binding.spinnerMeasuremingStatus.onItemClickListener = null
     binding.spinnerMeasuremingCondition.onItemClickListener = null
     // endregion
-    super.onDestroy()
+
+    // Remove  state listener
+    viewModel.state.removeObserver(stateObserver)
+
+    super.onStop()
   }
 
   // region SpinnerListeners
