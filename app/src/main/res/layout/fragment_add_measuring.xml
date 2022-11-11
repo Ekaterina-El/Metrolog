@@ -47,6 +47,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
           android:layout_width="35dp"
+          android:onClick="@{() -> master.tryAddMeasuring()}"
           android:layout_height="35dp"
           android:layout_marginStart="10dp"
           android:background="@drawable/button_selector"
@@ -56,10 +57,7 @@
           <ImageView
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:clickable="true"
             android:contentDescription="@null"
-            android:focusable="true"
-            android:onClick="@{() -> master.tryAddMeasuring()}"
             android:src="@drawable/ic_add"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

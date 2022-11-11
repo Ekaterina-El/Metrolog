@@ -69,6 +69,7 @@ class AddMeasuringFragment : BaseFragment() {
   }
 
   private fun goBack() {
+    navigate(R.id.action_addMeasuringFragment_to_nodeMeasuringFragment)
   }
 
   fun tryAddMeasuring() {
@@ -229,7 +230,7 @@ class AddMeasuringFragment : BaseFragment() {
   // endregion Date Picker Dialog
 
   override fun onBackPressed() {
-//    viewModel.goBack()
+    if (viewModel.state.value != State.LOADING) viewModel.goBack()
   }
 
   override fun onResume() {

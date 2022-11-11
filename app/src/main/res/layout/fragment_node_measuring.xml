@@ -93,14 +93,12 @@
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginStart="10dp"
+        android:onClick="@{() -> master.goAddMeasuring()}"
         android:background="@drawable/button_selector"
         android:clickable="true"
         android:focusable="true">
 
         <ImageView
-          android:clickable="true"
-          android:focusable="true"
-          android:onClick="@{() -> master.goAddMeasuring()}"
           android:layout_width="30dp"
           android:layout_height="30dp"
           android:contentDescription="@null"

@@ -155,4 +155,29 @@ class AddMeasuringViewModel(application: Application) : AndroidViewModel(applica
       locationIDNode = _locationIDNode.value!!
     )
   }
+
+  fun goBack() {
+    clearAllFields()
+    _state.value = State.BACK
+  }
+
+  private fun clearAllFields() {
+    name.value = ""
+    _type.value = null
+    _category.value = null
+    inventoryNumber.value = null
+    serialNumber.value = null
+    registrationNumberGRSI.value = null
+    manufacturer.value = null
+    supplier.value = null
+    range.value = null
+    accuracyClass.value = null
+    graduationPoint.value = null
+    _measuringState.value = null
+    _measuringCondition.value = null
+    _conditionDate.value = null
+    _releaseDate.value = null
+    _commissioningDate.value = null
+    _locationIDNode.value = null
+  }
 }
