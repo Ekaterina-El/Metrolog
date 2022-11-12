@@ -4,6 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+
     <import type="android.view.View" />
 
     <variable
@@ -58,13 +59,13 @@
         app:userUrl="@{viewModel.currentUserProfile}" />
 
       <de.hdodenhof.circleimageview.CircleImageView
-        android:onClick="@{() -> master.changeProfileImage()}"
-        android:clickable="true"
-        android:focusable="true"
         android:id="@+id/imageChangeUserProfile"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginEnd="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="@{() -> master.changeProfileImage()}"
         android:src="@drawable/camera"
         app:layout_constraintBottom_toBottomOf="@id/imageViewProfile"
         app:layout_constraintEnd_toEndOf="@id/imageViewProfile" />
@@ -73,14 +74,14 @@
         android:id="@+id/textViewUserName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:onClick="@{() -> master.showCreateChangeUserFullNameDialog()}"
         android:layout_marginStart="40dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="40dp"
+        android:clickable="true"
+        android:focusable="true"
         android:fontFamily="@font/montserrat_regular"
         android:gravity="center"
+        android:onClick="@{() -> master.showCreateChangeUserFullNameDialog()}"
         android:text="@{viewModel.currentUserProfile.fullName}"
         android:textColor="@color/text_on_primary"
         android:textSize="18sp"
@@ -239,24 +240,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-      android:id="@+id/layoutLoader"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:background="@drawable/bg"
-      app:isLoad="@{viewModel.state}"
-      tools:visibility="gone">
-
-      <ProgressBar
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:indeterminateTint="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
   </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

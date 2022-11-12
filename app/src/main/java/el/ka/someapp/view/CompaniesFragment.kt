@@ -38,6 +38,7 @@ class CompaniesFragment : BaseFragment() {
   private val nodesObserver = Observer<List<Node>> {
     adapter.setNodes(it)
   }
+
   private val stateObserver = Observer<State> {
     when (it) {
       State.NON_UNIQUE_NAME -> {
@@ -47,6 +48,8 @@ class CompaniesFragment : BaseFragment() {
         clearDialog()
         viewModel.toViewState()
       }
+      State.LOADING -> showLoadingDialog()
+      State.VIEW -> hideLoadingDialog()
       else -> {}
     }
   }
@@ -87,18 +90,18 @@ class CompaniesFragment : BaseFragment() {
     }
   }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
+  override fun onResume() {
+    super.onResume()
     viewModel.filteredNodes.observe(viewLifecycleOwner, nodesObserver)
     viewModel.state.observe(viewLifecycleOwner, stateObserver)
     viewModel.loadNodes()
   }
 
-  override fun onDestroyView() {
+  override fun onStop() {
+    super.onStop()
     changeUserFullNameViewModel?.state?.removeObserver(changeUserObserverState)
     viewModel.filteredNodes.removeObserver(nodesObserver)
     viewModel.state.removeObserver(stateObserver)
-    super.onDestroyView()
   }
 
   override fun onBackPressed() {}
