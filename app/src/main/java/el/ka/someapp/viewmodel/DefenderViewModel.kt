@@ -18,6 +18,12 @@ class DefenderViewModel(application: Application) : AndroidViewModel(application
 
   private val _fieldRepeat = MutableLiveData("")
 
+  fun deleteLetter() {
+    val str = _field.value!!
+    if (str == "") return
+    _field.value = str.substring(0, str.length - 1)
+  }
+
   private val _correctPassword = MutableLiveData("")
   fun setCorrectPassword(value: String) {
     if (value == "") {
@@ -57,7 +63,8 @@ class DefenderViewModel(application: Application) : AndroidViewModel(application
       _statePassword.value = StatePassword.AWAITING
     } else {
       // TODO: show error
-      _field.value = ""
+      while (_field.value!!.isNotEmpty()) deleteLetter()
+//      _field.value = ""
     }
   }
 

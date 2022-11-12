@@ -3,4 +3,5 @@
   <dimen name="app_padding">30dp</dimen>
   <dimen name="defender_circle_size">16dp</dimen>
   <dimen name="defender_number_size">24sp</dimen>
+  <dimen name="number_size">70dp</dimen>
 </resources>

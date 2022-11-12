@@ -4,6 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+    <import type="android.view.View" />
 
     <variable
       name="viewModel"
@@ -122,12 +123,13 @@
     <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginStart="@dimen/app_padding"
-      android:layout_marginTop="30dp"
-      android:layout_marginEnd="@dimen/app_padding"
+      android:layout_marginStart="10dp"
+      android:layout_marginTop="10dp"
+      android:layout_marginEnd="10dp"
       android:orientation="vertical"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintBottom_toTopOf="@id/textChangeUser"
       app:layout_constraintTop_toBottomOf="@id/layoutProgress">
 
       <LinearLayout
@@ -140,6 +142,7 @@
           android:layout_height="wrap_content"
           android:layout_weight="1"
           android:clickable="true"
+          android:fontFamily="@font/montserrat_regular"
           android:gravity="center"
           android:onClick="@{() -> viewModel.addPasswordElement('1')}"
           android:paddingVertical="15dp"
@@ -155,6 +158,7 @@
           android:layout_height="wrap_content"
           android:layout_weight="1"
           android:clickable="true"
+          android:fontFamily="@font/montserrat_regular"
           android:gravity="center"
           android:onClick="@{() -> viewModel.addPasswordElement('2')}"
           android:paddingVertical="15dp"
@@ -169,6 +173,7 @@
           android:layout_height="wrap_content"
           android:layout_weight="1"
           android:clickable="true"
+          android:fontFamily="@font/montserrat_regular"
           android:gravity="center"
           android:onClick="@{() -> viewModel.addPasswordElement('3')}"
           android:paddingVertical="15dp"
@@ -189,6 +194,7 @@
           android:layout_height="wrap_content"
           android:layout_weight="1"
           android:clickable="true"
+          android:fontFamily="@font/montserrat_regular"
           android:gravity="center"
           android:onClick="@{() -> viewModel.addPasswordElement('4')}"
           android:paddingVertical="15dp"
@@ -203,6 +209,7 @@
           android:layout_height="wrap_content"
           android:layout_weight="1"
           android:clickable="true"
+          android:fontFamily="@font/montserrat_regular"
           android:gravity="center"
           android:onClick="@{() -> viewModel.addPasswordElement('5')}"
           android:paddingVertical="15dp"
@@ -217,6 +224,7 @@
           android:layout_height="wrap_content"
           android:layout_weight="1"
           android:clickable="true"
+          android:fontFamily="@font/montserrat_regular"
           android:gravity="center"
           android:onClick="@{() -> viewModel.addPasswordElement('6')}"
           android:paddingVertical="15dp"
@@ -237,6 +245,7 @@
           android:layout_height="wrap_content"
           android:layout_weight="1"
           android:clickable="true"
+          android:fontFamily="@font/montserrat_regular"
           android:gravity="center"
           android:onClick="@{() -> viewModel.addPasswordElement('7')}"
           android:paddingVertical="15dp"
@@ -251,6 +260,7 @@
           android:layout_height="wrap_content"
           android:layout_weight="1"
           android:clickable="true"
+          android:fontFamily="@font/montserrat_regular"
           android:gravity="center"
           android:onClick="@{() -> viewModel.addPasswordElement('8')}"
           android:paddingVertical="15dp"
@@ -265,6 +275,7 @@
           android:layout_height="wrap_content"
           android:layout_weight="1"
           android:clickable="true"
+          android:fontFamily="@font/montserrat_regular"
           android:gravity="center"
           android:onClick="@{() -> viewModel.addPasswordElement('9')}"
           android:paddingVertical="15dp"
@@ -275,18 +286,53 @@
           tools:textColor="@color/secondary_color" />
       </LinearLayout>
 
-      <TextView
+      <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        android:gravity="center"
-        android:onClick="@{() -> viewModel.addPasswordElement('0')}"
-        android:paddingVertical="15dp"
-        android:text="0"
-        android:textColor="@color/text_color"
-        android:textSize="@dimen/defender_number_size"
-        tools:ignore="HardcodedText"
-        tools:textColor="@color/secondary_color" />
+        android:orientation="horizontal">
+
+        <View
+          android:layout_width="0dp"
+          android:layout_height="0dp"
+          android:layout_weight="1" />
+
+        <TextView
+          android:id="@+id/num0"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:clickable="true"
+          android:fontFamily="@font/montserrat_regular"
+          android:gravity="center"
+          android:onClick="@{() -> viewModel.addPasswordElement('0')}"
+          android:paddingVertical="15dp"
+          android:text="0"
+          android:textColor="@color/text_color"
+          android:textSize="@dimen/defender_number_size"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          tools:ignore="HardcodedText"
+          tools:textColor="@color/secondary_color" />
+
+        <RelativeLayout
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:layout_weight="1">
+
+          <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
+            android:visibility="@{viewModel.field.length() > 0 ? View.VISIBLE : View.GONE}"
+            tools:visibility="invisible"
+            android:onClick="@{() -> viewModel.deleteLetter()}"
+            android:src="@drawable/ic_backspace"
+            app:tint="@color/secondary_color" />
+        </RelativeLayout>
+      </LinearLayout>
 
     </LinearLayout>
 
