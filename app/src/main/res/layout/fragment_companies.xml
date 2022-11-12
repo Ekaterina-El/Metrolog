@@ -143,12 +143,13 @@
           android:ellipsize="end"
           android:fontFamily="@font/montserrat_regular"
           android:hint="@string/search"
+
           android:importantForAutofill="no"
           android:inputType="textFilter"
           android:maxLines="1"
           android:text="@={viewModel.filter}"
           android:textColor="@color/secondary_color"
-          android:textColorHint="@color/light_gray"
+          android:textColorHint="@color/dark_gray"
           android:textSize="14sp" />
 
         <ImageView
@@ -161,7 +162,7 @@
           app:layout_constraintBottom_toBottomOf="@id/editTextFilter"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintTop_toTopOf="@id/editTextFilter"
-          app:tint="@color/light_gray"
+          app:tint="@color/dark_gray"
           tools:src="@drawable/ic_search" />
       </LinearLayout>
 

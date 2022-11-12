@@ -11,6 +11,7 @@ class NodesAdapter(val listener: ItemListener? = null) : RecyclerView.Adapter<No
   inner class ViewHolder(val binding: ItemCompanyBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(node: Node) {
       binding.textName.text = node.name
+      binding.textName
     }
   }
 
@@ -22,7 +23,8 @@ class NodesAdapter(val listener: ItemListener? = null) : RecyclerView.Adapter<No
   }
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-    holder.bind(items[position])
+    holder.binding.node = items[position]
+//    items[position].children.size
   }
 
   override fun onViewAttachedToWindow(holder: ViewHolder) {
