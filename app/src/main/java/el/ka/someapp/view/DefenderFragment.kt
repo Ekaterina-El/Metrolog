@@ -8,7 +8,9 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.snackbar.Snackbar
 import el.ka.someapp.R
+import el.ka.someapp.data.model.State
 import el.ka.someapp.databinding.DefenderFragmentBinding
 import el.ka.someapp.viewmodel.DefenderViewModel
 import el.ka.someapp.viewmodel.StatePassword
@@ -26,6 +28,20 @@ class DefenderFragment : BaseFragment() {
     if (circlePosition >= 0) {
       circles[circlePosition].startAnimation(bounceAnimation)
     }
+  }
+
+  private val stateObserver = Observer<State> {
+    when(it) {
+      State.ERROR -> {
+        viewModel.resumeState()
+        errorPin()
+      }
+      else -> {}
+    }
+  }
+
+  private fun errorPin() {
+    Snackbar.make(requireView(), R.string.error_pin, Snackbar.LENGTH_SHORT).show()
   }
 
   private val statePasswordObserver = Observer<StatePassword> { state ->
@@ -88,6 +104,16 @@ class DefenderFragment : BaseFragment() {
   }
 
   override fun onBackPressed() {}
+
+  override fun onResume() {
+    super.onResume()
+    viewModel.state.observe(viewLifecycleOwner, stateObserver)
+  }
+
+  override fun onStop() {
+    super.onStop()
+    viewModel.state.removeObserver(stateObserver)
+  }
 
 
   private fun setCorrectPassword() {

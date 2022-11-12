@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import el.ka.someapp.data.model.State
 import el.ka.someapp.data.repository.AuthenticationService
 
 class DefenderViewModel(application: Application) : AndroidViewModel(application) {
@@ -64,8 +65,16 @@ class DefenderViewModel(application: Application) : AndroidViewModel(application
     } else {
       // TODO: show error
       while (_field.value!!.isNotEmpty()) deleteLetter()
-//      _field.value = ""
+      _state.value = State.ERROR
     }
+  }
+
+  private val _state = MutableLiveData(State.VIEW)
+  val state: LiveData<State>
+    get() = _state
+
+  fun resumeState() {
+    _state.value = State.VIEW
   }
 
   private fun checkPasswordRepeat() {

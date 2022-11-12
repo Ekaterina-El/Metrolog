@@ -19,60 +19,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-      android:id="@+id/textAppTitle"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
+    <ImageView
+      android:id="@+id/header"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
       android:layout_marginTop="100dp"
-      android:fontFamily="@font/nosifer_regular"
-      android:text="@string/app_name"
-      android:textColor="@color/primary_color"
-      android:textSize="32sp"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
+      android:layout_width="50dp"
+      android:layout_height="50dp"
+      android:src="@drawable/ic_lock"
+      app:tint="@color/primary_color" />
 
-    <TextView
-      android:id="@+id/textTitle"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="-10dp"
-      android:fontFamily="@font/montserrat_bold"
-      android:text="@string/defender"
-      android:textColor="@color/secondary_color"
-      android:textSize="24sp"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/textAppTitle" />
-
-    <TextView
-      android:id="@+id/textUserHint"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="@dimen/app_padding"
-      android:layout_marginTop="40dp"
-      android:layout_marginEnd="@dimen/app_padding"
-      android:fontFamily="@font/montserrat_regular"
-      android:gravity="center"
-      android:textColor="@color/secondary_color"
-      android:textSize="14sp"
-      app:defenderStateText="@{viewModel.statePassword}"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/textTitle" />
 
     <LinearLayout
       android:id="@+id/layoutProgress"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/app_padding"
-      android:layout_marginTop="30dp"
+      android:layout_marginTop="20dp"
       android:layout_marginEnd="@dimen/app_padding"
       android:gravity="center"
       android:orientation="horizontal"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/textUserHint">
+      app:layout_constraintTop_toBottomOf="@id/header">
 
       <View
         android:id="@+id/c1"
