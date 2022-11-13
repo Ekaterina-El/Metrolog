@@ -90,7 +90,25 @@
         tools:background="@drawable/defender_circle" />
     </LinearLayout>
 
+    <TextView
+      android:id="@+id/textUserHint"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/app_padding"
+      android:layout_marginEnd="@dimen/app_padding"
+      android:fontFamily="@font/montserrat_regular"
+      android:gravity="center"
+      android:textColor="@color/secondary_color"
+      android:textSize="14sp"
+      app:defenderStateText="@{viewModel.statePassword}"
+      tools:text="@string/defender_no_new"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintBottom_toTopOf="@id/layoutKeyboard"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/layoutProgress" />
+
     <LinearLayout
+      android:id="@+id/layoutKeyboard"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginStart="10dp"

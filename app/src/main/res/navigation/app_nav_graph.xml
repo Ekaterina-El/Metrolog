@@ -71,11 +71,7 @@
   <fragment
     android:id="@+id/resetPasswordFragment"
     android:name="el.ka.someapp.view.ResetPasswordFragment"
-    android:label="ResetPasswordFragment" >
-    <action
-      android:id="@+id/action_resetPasswordFragment_to_loginFragment"
-      app:destination="@id/loginFragment" />
-  </fragment>
+    android:label="ResetPasswordFragment" />
   <fragment
     android:id="@+id/nodeFragment"
     android:name="el.ka.someapp.view.node.NodeFragment"

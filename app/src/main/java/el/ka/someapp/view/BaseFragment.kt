@@ -12,7 +12,9 @@ import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import el.ka.someapp.R
+import el.ka.someapp.data.model.ErrorApp
 
 abstract class BaseFragment : Fragment() {
 
@@ -88,6 +90,25 @@ abstract class BaseFragment : Fragment() {
   fun setPassword(password: String?) {
     sharedPreferences.edit().putString(LOCAL_CURRENT_PASSWORD, password).apply()
   }
+
+  // region ShowErrorDialog
+  private var errorDialog: MaterialAlertDialogBuilder? = null
+
+  private fun createErrorDialog() {
+    errorDialog = MaterialAlertDialogBuilder(requireContext())
+      .setTitle(resources.getString(R.string.error))
+      .setCancelable(false)
+      .setNeutralButton(getString(R.string.ok_pin_error)) { dialog, _ ->
+        dialog.dismiss()
+      }
+  }
+
+  fun showErrorDialog(errorApp: ErrorApp) {
+    if (errorDialog == null) createErrorDialog()
+    errorDialog!!.setMessage(resources.getString(errorApp.textId))
+    errorDialog!!.show()
+  }
+  // endregion
 
 
   companion object {

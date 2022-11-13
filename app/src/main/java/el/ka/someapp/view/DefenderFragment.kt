@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import el.ka.someapp.R
+import el.ka.someapp.data.model.Errors
 import el.ka.someapp.data.model.State
 import el.ka.someapp.databinding.DefenderFragmentBinding
 import el.ka.someapp.viewmodel.DefenderViewModel
@@ -49,6 +50,7 @@ class DefenderFragment : BaseFragment() {
       StatePassword.AWAITING_WITH_SAVE -> savePasswordAndToCompanies()
       StatePassword.AWAITING -> navigateToCompanies()
       StatePassword.LOGOUT -> logout()
+      StatePassword.NEW_WITH_ERROR -> showErrorDialog(Errors.noEqualPassword)
       else -> {}
     }
   }

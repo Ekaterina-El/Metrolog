@@ -51,7 +51,7 @@ fun setDefenderState(view: View, isActive: Boolean) {
 @BindingAdapter("app:defenderStateText")
 fun setDefenderStateText(textView: TextView, state: StatePassword) {
   val stringId = when (state) {
-    StatePassword.NEW -> R.string.defender_create_pass
+    StatePassword.NEW, StatePassword.NEW_WITH_ERROR -> R.string.defender_create_pass
     StatePassword.REPEAT_NEW -> R.string.defener_repeat_password
     StatePassword.NO_NEW -> R.string.defender_no_new
     else -> R.string.loading

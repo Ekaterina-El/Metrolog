@@ -42,6 +42,7 @@ class DefenderViewModel(application: Application) : AndroidViewModel(application
 
     if (field.value!!.length >= 5) {
       if (statePassword.value == StatePassword.NEW
+        || statePassword.value == StatePassword.NEW_WITH_ERROR
         || statePassword.value == StatePassword.NO_NEW
         || statePassword.value == StatePassword.REPEAT_NEW
       ) {
@@ -52,7 +53,7 @@ class DefenderViewModel(application: Application) : AndroidViewModel(application
 
   private fun onPasswordFull() {
     when (_statePassword.value) {
-      StatePassword.NEW -> goRepeatPassword()
+      StatePassword.NEW, StatePassword.NEW_WITH_ERROR -> goRepeatPassword()
       StatePassword.REPEAT_NEW -> checkPasswordRepeat()
       StatePassword.NO_NEW -> checkPassword()
       else -> {}
@@ -83,7 +84,7 @@ class DefenderViewModel(application: Application) : AndroidViewModel(application
     } else {
       _field.value = ""
       _fieldRepeat.value = ""
-      _statePassword.value = StatePassword.NEW
+      _statePassword.value = StatePassword.NEW_WITH_ERROR
     }
   }
 
@@ -100,5 +101,5 @@ class DefenderViewModel(application: Application) : AndroidViewModel(application
 }
 
 enum class StatePassword {
-  NEW, REPEAT_NEW, NO_NEW, AWAITING, AWAITING_WITH_SAVE, LOGOUT
+  NEW, REPEAT_NEW, NO_NEW, AWAITING, AWAITING_WITH_SAVE, LOGOUT, NEW_WITH_ERROR
 }

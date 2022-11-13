@@ -22,7 +22,7 @@ class ResetPasswordFragment: BaseFragment() {
     errorAdapter.setErrors(it.toList())
   }
   private val stateObserver = Observer<State> {
-    if (it == State.AWAITING) navigate(R.id.action_resetPasswordFragment_to_loginFragment)
+    if (it == State.AWAITING) popUp()
   }
 
   override fun onCreateView(
@@ -62,5 +62,7 @@ class ResetPasswordFragment: BaseFragment() {
     viewModel.state.removeObserver { errorsObserver }
   }
 
-  override fun onBackPressed() {}
+  override fun onBackPressed() {
+    popUp()
+  }
 }

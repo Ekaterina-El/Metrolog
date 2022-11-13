@@ -104,6 +104,8 @@
   <string name="creteMeasuringDescription">Для добавления нового СИ заполните форму</string>
   <string name="createMeasuringError">При заполнении формы допущенны ошибки. Проверьте ещё раз и попробуйте вновь</string>
   <string name="error_pin">Пароль не верный</string>
+  <string name="error">Ошибка</string>
 
   <string name="item_node_preview_info">Узлы: %1$d | СИ на узле: %2$d</string>
+  <string name="ok_pin_error">Хорошо, исправлю</string>
 </resources>
