@@ -34,15 +34,28 @@
       android:layout_marginStart="@dimen/app_padding"
       android:layout_marginTop="20dp"
       android:fontFamily="@font/montserrat_regular"
-      android:textColor="@color/primary_dark_color"
-      android:textSize="22sp"
-      android:textStyle="bold"
+      android:textColor="@color/secondary_color"
+      android:textSize="18sp"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       android:text="@{viewmodel.currentNode.name}"
       tools:text="Отдел кадров" />
 
     <ImageView
+      android:clickable="true"
+      android:focusable="true"
+      android:layout_width="25dp"
+      android:layout_height="25dp"
+      android:layout_marginEnd="@dimen/app_padding"
+      android:contentDescription="@null"
+      android:src="@drawable/ic_delete"
+      app:layout_constraintBottom_toBottomOf="@+id/textName"
+      app:layout_constraintEnd_toStartOf="@id/imageEdit"
+      app:layout_constraintTop_toTopOf="@id/textName"
+      app:tint="@color/attentionColor" />
+
+    <ImageView
+      android:id="@+id/imageEdit"
       android:clickable="true"
       android:focusable="true"
       android:onClick="@{() -> master.showChangeNameDialog()}"
@@ -67,7 +80,7 @@
       android:fontFamily="@font/montserrat_regular"
       android:text="@string/company_positions_title"
       android:textColor="@color/secondary_color"
-      android:textSize="18sp"
+      android:textSize="16sp"
       app:layout_constraintTop_toBottomOf="@id/textName"
       app:layout_constraintStart_toStartOf="parent"
       />
@@ -124,7 +137,7 @@
       android:layout_marginTop="30dp"
       android:fontFamily="@font/montserrat_regular"
       android:textColor="@color/secondary_color"
-      android:textSize="18sp"
+      android:textSize="16sp"
       app:layout_constraintTop_toBottomOf="@id/company_positions_list"
       app:layout_constraintStart_toStartOf="parent"
       android:text="@string/hierarchy_title"
@@ -146,38 +159,6 @@
       android:layout_marginEnd="@dimen/app_padding"
       android:layout_height="wrap_content" />
     <!-- Hierarchy  positions - end -->
-
-    <LinearLayout
-      app:layout_constraintTop_toBottomOf="@id/hierarchy_list"
-      android:layout_marginTop="40dp"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:gravity="center"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      android:paddingVertical="10dp"
-      android:background="@drawable/button_color_wrapper_attention"
-      android:layout_marginStart="@dimen/app_padding"
-      android:layout_marginEnd="@dimen/app_padding"
-      android:orientation="horizontal">
-
-      <ImageView
-        android:layout_width="25dp"
-        app:tint="@color/text_on_primary"
-        android:layout_height="25dp"
-        android:src="@drawable/ic_delete"
-        android:contentDescription="@null" />
-
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/delete_node"
-        android:layout_marginStart="10dp"
-        android:fontFamily="@font/montserrat_regular"
-        android:textStyle="bold"
-        android:textColor="@color/text_on_primary" />
-
-    </LinearLayout>
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

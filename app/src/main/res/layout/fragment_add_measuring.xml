@@ -39,8 +39,8 @@
           android:layout_weight="1"
           android:fontFamily="@font/montserrat_regular"
           android:text="@string/add_measuring"
-          android:textColor="@color/primary_dark_color"
-          android:textSize="22sp"
+          android:textColor="@color/secondary_color"
+          android:textSize="18sp"
           android:textStyle="bold"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toTopOf="parent" />
@@ -452,7 +452,7 @@
       <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="30dp"
+        android:layout_marginHorizontal="@dimen/app_padding"
         android:clickable="true"
         android:onClick="@{() -> master.showDatePicker(DateType.CONDITION)}">
 
@@ -512,7 +512,7 @@
       <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="30dp"
+        android:layout_marginHorizontal="@dimen/app_padding"
         android:layout_marginTop="20dp"
         android:clickable="true"
         android:onClick="@{() -> master.showDatePicker(DateType.COMMISSION)}">
@@ -572,7 +572,7 @@
       <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="30dp"
+        android:layout_marginHorizontal="@dimen/app_padding"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:clickable="true"

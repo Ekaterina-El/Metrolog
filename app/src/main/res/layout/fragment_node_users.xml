@@ -4,6 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+
     <variable
       name="viewmodel"
       type="el.ka.someapp.viewmodel.NodesViewModel" />
@@ -18,22 +19,21 @@
   </data>
 
   <androidx.constraintlayout.widget.ConstraintLayout
-    tools:background="@color/white"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:background="@color/white">
 
     <TextView
       android:id="@+id/textTitle"
       android:layout_width="match_parent"
-      android:text="@{@string/users_with_name(viewmodel.currentNode.name)}"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/app_padding"
       android:layout_marginTop="20dp"
       android:layout_marginEnd="@dimen/app_padding"
       android:fontFamily="@font/montserrat_regular"
-      android:textColor="@color/primary_dark_color"
+      android:text="@{@string/users_with_name(viewmodel.currentNode.name)}"
+      android:textColor="@color/secondary_color"
       android:textSize="18sp"
-      android:textStyle="bold"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
@@ -47,11 +47,11 @@
       android:layout_marginStart="@dimen/app_padding"
       android:layout_marginTop="20dp"
       android:layout_marginEnd="@dimen/app_padding"
+      android:baselineAligned="false"
       android:orientation="horizontal"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/textTitle"
-      android:baselineAligned="false">
+      app:layout_constraintTop_toBottomOf="@id/textTitle">
 
       <LinearLayout
         android:id="@+id/layoutSearchForm"
@@ -72,17 +72,17 @@
           android:layout_height="wrap_content"
           android:layout_marginEnd="10dp"
           android:layout_weight="1"
+          android:afterTextChanged="@{() -> viewmodel.filterUsers()}"
           android:background="@null"
           android:ellipsize="end"
-          android:afterTextChanged="@{() -> viewmodel.filterUsers()}"
-          android:text="@={viewmodel.filterUsersVal}"
           android:fontFamily="@font/montserrat_regular"
           android:hint="@string/search"
           android:importantForAutofill="no"
           android:inputType="textFilter"
           android:maxLines="1"
+          android:text="@={viewmodel.filterUsersVal}"
           android:textColor="@color/secondary_color"
-          android:textColorHint="@color/light_gray"
+          android:textColorHint="@color/dark_gray"
           android:textSize="18sp" />
 
         <ImageView
@@ -93,7 +93,7 @@
           app:layout_constraintBottom_toBottomOf="@id/editTextFilter"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintTop_toTopOf="@id/editTextFilter"
-          app:tint="@color/light_gray"
+          app:tint="@color/dark_gray"
           tools:src="@drawable/ic_search" />
       </LinearLayout>
 
@@ -102,9 +102,9 @@
         android:layout_height="45dp"
         android:layout_marginStart="10dp"
         android:background="@drawable/button_selector"
-        android:onClick="@{() -> master.showAddUserDialog()}"
         android:clickable="true"
-        android:focusable="true">
+        android:focusable="true"
+        android:onClick="@{() -> master.showAddUserDialog()}">
 
         <ImageView
           android:layout_width="30dp"
@@ -128,9 +128,9 @@
       android:layout_marginStart="@dimen/app_padding"
       android:layout_marginTop="20dp"
       android:layout_marginEnd="@dimen/app_padding"
+      android:adapter="@{usersAdapter}"
       android:clipToPadding="false"
       android:overScrollMode="never"
-      android:adapter="@{usersAdapter}"
       app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
       app:layout_constraintTop_toBottomOf="@id/layoutHead"
       tools:listitem="@layout/item_user" />

@@ -29,27 +29,47 @@
       android:id="@+id/layoutHeader"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:background="@drawable/bg_profile"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent">
 
+      <View
+        android:id="@+id/viewSupporter"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="60dp"
+        app:layout_constraintBottom_toBottomOf="@id/imageViewProfile"
+        app:layout_constraintEnd_toEndOf="@id/imageViewProfile"
+        app:layout_constraintStart_toStartOf="@id/imageViewProfile"
+        app:layout_constraintTop_toTopOf="@id/imageViewProfile" />
+
       <ImageView
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_example"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="@id/viewSupporter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+      <ImageView
+        android:layout_width="22dp"
+        android:layout_height="22dp"
         android:layout_marginEnd="20dp"
         android:onClick="@{() -> master.logout()}"
         android:src="@drawable/ic_exit"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/text_on_primary" />
+        app:layout_constraintBottom_toBottomOf="@id/textViewEmail"
+        app:layout_constraintTop_toTopOf="@id/textViewUserName"
+        app:tint="@color/secondary_color" />
 
       <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageViewProfile"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="100dp"
         android:src="@drawable/profile_placeholder"
         app:civ_border_color="@color/text_on_primary"
         app:civ_border_width="4dp"
@@ -83,7 +103,7 @@
         android:gravity="center"
         android:onClick="@{() -> master.showCreateChangeUserFullNameDialog()}"
         android:text="@{viewModel.currentUserProfile.fullName}"
-        android:textColor="@color/text_on_primary"
+        android:textColor="@color/secondary_color"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -91,12 +111,13 @@
         tools:text="Иванов Иван Иванович" />
 
       <TextView
+        android:id="@+id/textViewEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:fontFamily="@font/montserrat_regular"
         android:text="@{viewModel.currentUserProfile.email}"
-        android:textColor="@color/text_on_primary_light"
+        android:textColor="@color/secondary_color"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -111,7 +132,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/app_padding"
-      android:layout_marginTop="30dp"
+      android:layout_marginTop="5dp"
       android:layout_marginEnd="@dimen/app_padding"
       android:gravity="center"
       android:orientation="horizontal"

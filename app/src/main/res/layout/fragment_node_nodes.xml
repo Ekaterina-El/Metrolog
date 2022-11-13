@@ -38,9 +38,8 @@
         android:layout_marginTop="20dp"
         android:fontFamily="@font/montserrat_regular"
         android:text="@{@string/nodes_with_name(viewmodel.currentNode.name)}"
-        android:textColor="@color/primary_dark_color"
+        android:textColor="@color/secondary_color"
         android:textSize="18sp"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Отдел кадров: Узлы" />
@@ -88,8 +87,8 @@
             android:maxLines="1"
             android:text="@={viewmodel.filter}"
             android:textColor="@color/secondary_color"
-            android:textColorHint="@color/light_gray"
-            android:textSize="18sp" />
+            android:textColorHint="@color/dark_gray"
+            android:textSize="16sp" />
 
           <ImageView
             android:id="@+id/imageSearchClear"
@@ -101,7 +100,7 @@
             app:layout_constraintBottom_toBottomOf="@id/editTextFilter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/editTextFilter"
-            app:tint="@color/light_gray"
+            app:tint="@color/dark_gray"
             tools:src="@drawable/ic_search" />
         </LinearLayout>
 
