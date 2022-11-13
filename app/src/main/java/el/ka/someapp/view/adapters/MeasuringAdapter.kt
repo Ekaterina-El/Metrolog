@@ -4,32 +4,34 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import el.ka.someapp.data.model.Node
+import el.ka.someapp.data.model.measuring.Measuring
 import el.ka.someapp.databinding.ItemCompanyBinding
+import el.ka.someapp.databinding.ItemMesuringBinding
 import el.ka.someapp.generated.callback.OnClickListener
 
-class NodesAdapter(val listener: ItemListener? = null) : RecyclerView.Adapter<NodesAdapter.ViewHolder>() {
-  inner class ViewHolder(val binding: ItemCompanyBinding) : RecyclerView.ViewHolder(binding.root) {
+class MeasuringAdapter(val listener: ItemListener? = null) : RecyclerView.Adapter<MeasuringAdapter.ViewHolder>() {
+  inner class ViewHolder(val binding: ItemMesuringBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(node: Node) {
       binding.textName.text = node.name
       binding.textName
     }
   }
 
-  private val items = mutableListOf<Node>()
+  private val items = mutableListOf<Measuring>()
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-    val binding = ItemCompanyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    val binding = ItemMesuringBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     return ViewHolder(binding)
   }
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-    holder.binding.node = items[position]
+    holder.binding.measuring = items[position]
   }
 
   override fun onViewAttachedToWindow(holder: ViewHolder) {
     super.onViewAttachedToWindow(holder)
     holder.itemView.setOnClickListener {
-      listener?.onClick(items[holder.adapterPosition].id)
+      listener?.onClick(items[holder.adapterPosition].measuringID)
     }
   }
 
@@ -40,9 +42,9 @@ class NodesAdapter(val listener: ItemListener? = null) : RecyclerView.Adapter<No
 
   override fun getItemCount(): Int = items.size
 
-  fun setNodes(nodes: List<Node>) {
+  fun setMeasuring(measuringItems: List<Measuring>) {
     clearList()
-    nodes.forEach { addNode(it) }
+    measuringItems.forEach { addNode(it) }
   }
 
   private fun clearList() {
@@ -54,8 +56,8 @@ class NodesAdapter(val listener: ItemListener? = null) : RecyclerView.Adapter<No
     notifyItemRemoved(pos)
   }
 
-  private fun addNode(node: Node) {
-    items.add(node)
+  private fun addNode(measuring: Measuring) {
+    items.add(measuring)
     notifyItemInserted(items.size)
   }
 

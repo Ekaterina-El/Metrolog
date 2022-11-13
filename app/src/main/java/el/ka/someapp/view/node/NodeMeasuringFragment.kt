@@ -5,9 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import el.ka.someapp.R
+import el.ka.someapp.data.model.measuring.Measuring
 import el.ka.someapp.databinding.FragmentNodeMeasuringBinding
 import el.ka.someapp.view.BaseFragment
+import el.ka.someapp.view.adapters.MeasuringAdapter
 import el.ka.someapp.viewmodel.NodesViewModel
 import el.ka.someapp.viewmodel.VisibleViewModel
 
@@ -15,6 +18,12 @@ class NodeMeasuringFragment: BaseFragment() {
   private lateinit var binding: FragmentNodeMeasuringBinding
   private val viewModel: NodesViewModel by activityViewModels()
   private val visibleViewModel: VisibleViewModel by activityViewModels()
+
+  private lateinit var measuringAdapter: MeasuringAdapter
+
+  private val measuringObserver = Observer<List<Measuring>> {
+    measuringAdapter.setMeasuring(it)
+  }
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -27,6 +36,7 @@ class NodeMeasuringFragment: BaseFragment() {
 
   override fun initFunctionalityParts() {
     binding = FragmentNodeMeasuringBinding.inflate(layoutInflater)
+    measuringAdapter = MeasuringAdapter()
   }
 
   override fun inflateBindingVariables() {
@@ -34,7 +44,19 @@ class NodeMeasuringFragment: BaseFragment() {
       viewmodel = this@NodeMeasuringFragment.viewModel
       master = this@NodeMeasuringFragment
       lifecycleOwner = viewLifecycleOwner
+      measuringAdapter = this@NodeMeasuringFragment.measuringAdapter
     }
+  }
+
+  override fun onResume() {
+    super.onResume()
+    viewModel.loadMeasuring()
+    viewModel.measuringFiltered.observe(viewLifecycleOwner, measuringObserver)
+  }
+
+  override fun onDestroy() {
+    super.onDestroy()
+    viewModel.measuringFiltered.removeObserver(measuringObserver)
   }
 
   override fun onBackPressed() {

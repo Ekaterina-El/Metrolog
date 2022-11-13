@@ -5,8 +5,8 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import el.ka.someapp.data.model.*
 import el.ka.someapp.data.repository.UsersDatabaseService.loadCompanyAllUsers
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.tasks.asDeferred
 
 object NodesDatabaseService {
   // region New Node
@@ -85,12 +85,8 @@ object NodesDatabaseService {
     }
   }
 
-  fun getNodesByIDs(
-    nodeIds: List<String>
-  ): List<kotlinx.coroutines.Deferred<DocumentSnapshot>> =
-    nodeIds.map { nodeId ->
-      FirebaseServices.databaseNodes.document(nodeId).get().asDeferred()
-    }
+  fun getNodesByIDs(nodeIds: List<String>): List<Deferred<DocumentSnapshot>> =
+    FirebaseServices.getDocumentsByIDs(nodeIds, collectionRef = FirebaseServices.databaseNodes)
 
   suspend fun loadCompaniesJobsUsers(jobs: List<JobField>): List<LocalUser> {
     val usersIds = jobs.map { it.userId }
@@ -180,7 +176,8 @@ object NodesDatabaseService {
     nodeId: String,
     measuringId: String,
     onFailure: () -> Unit,
-    onSuccess: () -> Unit) {
+    onSuccess: () -> Unit
+  ) {
     FirebaseServices
       .databaseNodes
       .document(nodeId)

@@ -51,9 +51,7 @@ object UsersDatabaseService {
   fun loadCompanyAllUsers(
     listUsersID: List<String>
   ): List<kotlinx.coroutines.Deferred<DocumentSnapshot>> =
-    listUsersID.map { userId ->
-      FirebaseServices.databaseUsers.document(userId).get().asDeferred()
-    }
+    FirebaseServices.getDocumentsByIDs(listUsersID, FirebaseServices.databaseUsers)
 
   fun getUserByEmail(
     email: String,

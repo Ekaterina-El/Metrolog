@@ -7,13 +7,30 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import el.ka.someapp.data.model.*
+import el.ka.someapp.data.model.measuring.Measuring
 import el.ka.someapp.data.repository.AuthenticationService
+import el.ka.someapp.data.repository.MeasuringDatabaseService
 import el.ka.someapp.data.repository.NodesDatabaseService
 import el.ka.someapp.data.repository.UsersDatabaseService
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 
 class NodesViewModel(application: Application) : AndroidViewModel(application) {
+  private fun clearFields() {
+    filterFieldMeasuring.value = ""
+    _measuring.value = listOf()
+    _filteredNodes.value = listOf()
+    _nodesHistory.value = listOf()
+    _currentNode.value = null
+    _nodes.value = listOf()
+    filter.value = ""
+    _filteredNodes.value = listOf()
+    _companyAllUsers.value = listOf()
+    filterUsersVal.value = ""
+    _filteredUsers.value = listOf()
+    _localUsers.value = listOf()
+  }
+
   private val _state = MutableLiveData(State.VIEW)
   val state: LiveData<State>
     get() = _state
@@ -21,6 +38,44 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   fun toViewState() {
     _state.value = State.VIEW
   }
+
+  // region Measuring
+  val filterFieldMeasuring = MutableLiveData("")
+
+  private val _measuring = MutableLiveData<List<Measuring>>(listOf())
+
+  private val _measuringFiltered = MutableLiveData<List<Measuring>>(listOf())
+  val measuringFiltered: LiveData<List<Measuring>> get() = _measuringFiltered
+
+  fun loadMeasuring() {
+    _state.value = State.LOADING
+    viewModelScope.launch {
+      val measuringItems = MeasuringDatabaseService
+        .getMeasuringByIDs(_currentNode.value!!.measuring)
+        .awaitAll()
+        .mapNotNull {
+          val measuring = it.toObject(Measuring::class.java)
+          measuring!!.measuringID  = it.id
+          measuring
+        }
+
+      setMeasuring(measuringItems)
+    }
+  }
+
+  private fun  setMeasuring(measuringItems: List<Measuring>) {
+    _measuring.value = measuringItems
+    filterMeasuring()
+    _state.value = State.VIEW
+  }
+
+  fun filterMeasuring() {
+    val f = filterFieldMeasuring.value!!
+    _measuringFiltered.value =
+      if (f.isEmpty()) _measuring.value
+      else _measuring.value!!.filter { it.passport!!.name.contains(f, true) }
+  }
+  // endregion
 
   // region History
   private val _nodesHistory = MutableLiveData<List<Node>>(listOf())
@@ -47,6 +102,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     popupHistory()
 
     if (_nodesHistory.value!!.isEmpty()) {
+      clearFields()
       _state.value = State.BACK
     } else {
       loadNodeByID(_nodesHistory.value!!.last().id)
@@ -153,7 +209,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
         .getNodesByIDs(nodeIds = nodesIds)
         .awaitAll()
         .mapNotNull {
-           it.toObject(Node::class.java)
+          it.toObject(Node::class.java)
         }
       setNodes(a)
     }
@@ -182,7 +238,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
         nodeId,
         onFailure = {
           // TODO: handle error
-                    _state.value = State.ERROR
+          _state.value = State.ERROR
         },
         onSuccess = { afterLoadNode(it, saveToHistory) })
     }

@@ -4,7 +4,9 @@
   xmlns:tools="http://schemas.android.com/tools">
 
   <data>
-
+    <variable
+      name="measuring"
+      type="el.ka.someapp.data.model.measuring.Measuring" />
   </data>
 
   <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,6 +24,7 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintBottom_toBottomOf="parent"
       tools:text="СИ N"
+      android:text="@{measuring.passport.name}"
       android:layout_marginStart="20dp"
       android:layout_marginEnd="20dp"
       android:layout_marginTop="20dp"
