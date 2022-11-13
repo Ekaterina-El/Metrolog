@@ -19,11 +19,13 @@ import el.ka.someapp.databinding.FragmentAddMeasuringBinding
 import el.ka.someapp.view.BaseFragment
 import el.ka.someapp.viewmodel.AddMeasuringViewModel
 import el.ka.someapp.viewmodel.NodesViewModel
+import el.ka.someapp.viewmodel.VisibleViewModel
 import java.util.Calendar
 import java.util.Date
 
 
 class AddMeasuringFragment : BaseFragment() {
+  private val visibleViewModel: VisibleViewModel by activityViewModels()
   private lateinit var binding: FragmentAddMeasuringBinding
 
   private lateinit var viewModel: AddMeasuringViewModel
@@ -69,6 +71,7 @@ class AddMeasuringFragment : BaseFragment() {
   }
 
   private fun goBack() {
+    visibleViewModel.setNodeNavigationState(true)
     navigate(R.id.action_addMeasuringFragment_to_nodeMeasuringFragment)
   }
 
@@ -147,6 +150,53 @@ class AddMeasuringFragment : BaseFragment() {
       layout.error = null
       false
     }
+  }
+
+  override fun onBackPressed() {
+    if (viewModel.state.value != State.LOADING) viewModel.goBack()
+  }
+
+  override fun onResume() {
+    super.onResume()
+    // region add spinner listeners
+    binding.spinnerMeasuringType.setOnItemClickListener { _, _, position, _ ->
+      onMeasuringTypeSelected(position)
+    }
+
+    binding.spinnerMeasuringCategory.setOnItemClickListener { _, _, position, _ ->
+      onMeasuringCategorySelected(position)
+    }
+
+    binding.spinnerMeasurementType.setOnItemClickListener { _, _, position, _ ->
+      onMeasurementTypeSelected(position)
+    }
+
+    binding.spinnerMeasuremingStatus.setOnItemClickListener { _, _, position, _ ->
+      onMeasurementStateSelected(position)
+    }
+
+    binding.spinnerMeasuremingCondition.setOnItemClickListener { _, _, position, _ ->
+      onMeasurementConditionSelected(position)
+    }
+    // endregion
+
+    // Add state listener
+    viewModel.state.observe(viewLifecycleOwner, stateObserver)
+  }
+
+  override fun onStop() {
+    // region remove listeners
+    binding.spinnerMeasuringType.onItemClickListener = null
+    binding.spinnerMeasuringCategory.onItemClickListener = null
+    binding.spinnerMeasurementType.onItemClickListener = null
+    binding.spinnerMeasuremingStatus.onItemClickListener = null
+    binding.spinnerMeasuremingCondition.onItemClickListener = null
+    // endregion
+
+    // Remove  state listener
+    viewModel.state.removeObserver(stateObserver)
+
+    super.onStop()
   }
 
 
@@ -228,53 +278,6 @@ class AddMeasuringFragment : BaseFragment() {
   }
 
   // endregion Date Picker Dialog
-
-  override fun onBackPressed() {
-    if (viewModel.state.value != State.LOADING) viewModel.goBack()
-  }
-
-  override fun onResume() {
-    super.onResume()
-    // region add spinner listeners
-    binding.spinnerMeasuringType.setOnItemClickListener { _, _, position, _ ->
-      onMeasuringTypeSelected(position)
-    }
-
-    binding.spinnerMeasuringCategory.setOnItemClickListener { _, _, position, _ ->
-      onMeasuringCategorySelected(position)
-    }
-
-    binding.spinnerMeasurementType.setOnItemClickListener { _, _, position, _ ->
-      onMeasurementTypeSelected(position)
-    }
-
-    binding.spinnerMeasuremingStatus.setOnItemClickListener { _, _, position, _ ->
-      onMeasurementStateSelected(position)
-    }
-
-    binding.spinnerMeasuremingCondition.setOnItemClickListener { _, _, position, _ ->
-      onMeasurementConditionSelected(position)
-    }
-    // endregion
-
-    // Add state listener
-    viewModel.state.observe(viewLifecycleOwner, stateObserver)
-  }
-
-  override fun onStop() {
-    // region remove listeners
-    binding.spinnerMeasuringType.onItemClickListener = null
-    binding.spinnerMeasuringCategory.onItemClickListener = null
-    binding.spinnerMeasurementType.onItemClickListener = null
-    binding.spinnerMeasuremingStatus.onItemClickListener = null
-    binding.spinnerMeasuremingCondition.onItemClickListener = null
-    // endregion
-
-    // Remove  state listener
-    viewModel.state.removeObserver(stateObserver)
-
-    super.onStop()
-  }
 
   // region SpinnerListeners
   private fun onMeasuringTypeSelected(position: Int) {

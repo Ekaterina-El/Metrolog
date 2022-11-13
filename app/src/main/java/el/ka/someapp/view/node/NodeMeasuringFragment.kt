@@ -9,11 +9,12 @@ import el.ka.someapp.R
 import el.ka.someapp.databinding.FragmentNodeMeasuringBinding
 import el.ka.someapp.view.BaseFragment
 import el.ka.someapp.viewmodel.NodesViewModel
+import el.ka.someapp.viewmodel.VisibleViewModel
 
 class NodeMeasuringFragment: BaseFragment() {
   private lateinit var binding: FragmentNodeMeasuringBinding
   private val viewModel: NodesViewModel by activityViewModels()
-
+  private val visibleViewModel: VisibleViewModel by activityViewModels()
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -41,6 +42,7 @@ class NodeMeasuringFragment: BaseFragment() {
   }
 
   fun goAddMeasuring() {
+    visibleViewModel.setNodeNavigationState(false)
     navigate(R.id.action_nodeMeasuringFragment_to_addMeasuringFragment)
   }
 }

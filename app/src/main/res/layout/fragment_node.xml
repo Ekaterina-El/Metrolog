@@ -3,6 +3,11 @@
   xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <data>
+    <import type="android.view.View" />
+
+    <variable
+      name="visibleViewModel"
+      type="el.ka.someapp.viewmodel.VisibleViewModel" />
 
     <variable
       name="viewmodel"
@@ -35,6 +40,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       app:labelVisibilityMode="unlabeled"
+      android:visibility="@{visibleViewModel.showingNodeNavigation ? View.VISIBLE : View.GONE}"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"

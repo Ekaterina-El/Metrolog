@@ -14,10 +14,12 @@ import el.ka.someapp.data.model.State
 import el.ka.someapp.databinding.FragmentNodeBinding
 import el.ka.someapp.view.BaseFragment
 import el.ka.someapp.viewmodel.NodesViewModel
+import el.ka.someapp.viewmodel.VisibleViewModel
 
 class NodeFragment : BaseFragment() {
   private lateinit var binding: FragmentNodeBinding
   private val viewModel: NodesViewModel by activityViewModels()
+  private val visibleViewModel: VisibleViewModel by activityViewModels()
 
   private val stateObserver = Observer<State> {
      val a = it != State.LOADING
@@ -57,6 +59,7 @@ class NodeFragment : BaseFragment() {
       lifecycleOwner = viewLifecycleOwner
       master = this@NodeFragment
       viewmodel = this@NodeFragment.viewModel
+      visibleViewModel = this@NodeFragment.visibleViewModel
     }
   }
 
