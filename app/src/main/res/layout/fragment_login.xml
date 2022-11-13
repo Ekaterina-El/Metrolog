@@ -4,6 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+
     <variable
       name="errorAdapter"
       type="el.ka.someapp.view.adapters.ErrorAdapter" />
@@ -70,128 +71,66 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content">
 
-
-          <!--Edit text: Email - start-->
-          <LinearLayout
+          <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layoutEmail"
-            android:layout_width="0dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/app_padding"
-            android:layout_marginTop="100dp"
-            android:layout_marginEnd="@dimen/app_padding"
-            android:background="@drawable/input_wrapper"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingHorizontal="15dp"
-            android:paddingVertical="10dp"
+            android:layout_marginHorizontal="@dimen/app_padding"
+            android:layout_marginTop="45dp"
+            android:hint="@string/email"
+            app:boxStrokeColor="@color/primary_dark_color"
+            app:boxStrokeErrorColor="@color/attentionColor"
+            app:errorTextColor="@color/attentionColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:startIconDrawable="@drawable/ic_email">
 
-            <ImageView
-              android:layout_width="20dp"
-              android:layout_height="20dp"
-              android:contentDescription="@string/app_name"
-              android:src="@drawable/ic_email"
-              app:tint="@color/primary_color" />
-
-            <EditText
-              android:id="@+id/editTextEmail"
+            <com.google.android.material.textfield.TextInputEditText
+              android:id="@+id/inp1"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginHorizontal="10dp"
               android:autofillHints="emailAddress"
-              android:background="@null"
               android:ellipsize="end"
-              android:hint="@string/email_example"
+              android:fontFamily="@font/montserrat_regular"
+              android:imeOptions="actionNext"
               android:inputType="textEmailAddress"
               android:maxLines="1"
               android:text="@={viewModel.email}"
-              android:textColor="@color/secondary_color"
-              android:textColorHint="@color/hint_color" />
-          </LinearLayout>
+              android:textColor="#333"
+              android:textSize="14sp" />
+          </com.google.android.material.textfield.TextInputLayout>
 
-          <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:background="@color/background_color"
-            android:paddingHorizontal="10dp"
-            android:text="@string/email"
-            android:textAllCaps="true"
-            android:textColor="@color/primary_color"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/layoutEmail"
-            app:layout_constraintStart_toStartOf="@id/layoutEmail"
-            app:layout_constraintTop_toTopOf="@id/layoutEmail" />
-          <!--Edit text: Email - end-->
-
-          <!--Edit text: Password - start-->
-          <LinearLayout
+          <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layoutPassword"
-            android:layout_width="0dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/app_padding"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="@dimen/app_padding"
-            android:background="@drawable/input_wrapper"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingHorizontal="15dp"
-            android:paddingVertical="10dp"
+            android:layout_marginHorizontal="@dimen/app_padding"
+            android:layout_marginTop="15dp"
+            android:hint="@string/password"
+            app:boxStrokeColor="@color/primary_dark_color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layoutEmail">
+            app:layout_constraintTop_toBottomOf="@id/layoutEmail"
+            app:passwordToggleEnabled="true"
+            app:startIconDrawable="@drawable/ic_lock">
 
-            <ImageView
-              android:layout_width="20dp"
-              android:layout_height="20dp"
-              android:contentDescription="@string/app_name"
-              android:src="@drawable/ic_lock"
-              app:tint="@color/primary_color" />
-
-            <EditText
-              app:showPassword="@{viewModel.showPassword}"
-              android:id="@+id/editTextPassword"
-              android:layout_width="0dp"
-              android:layout_weight="1"
+            <com.google.android.material.textfield.TextInputEditText
+              android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginHorizontal="10dp"
               android:autofillHints="password"
-              android:background="@null"
               android:ellipsize="end"
-              android:hint="@string/password_example"
+              android:fontFamily="@font/montserrat_regular"
+              android:imeOptions="actionNext"
               android:inputType="textPassword"
               android:maxLines="1"
               android:text="@={viewModel.password}"
-              android:textColor="@color/secondary_color"
-              android:textColorHint="@color/hint_color" />
+              android:textColor="#333"
+              android:textSize="14sp" />
+          </com.google.android.material.textfield.TextInputLayout>
 
-            <ImageView
-              android:layout_width="20dp"
-              android:layout_height="20dp"
-              tools:src="@drawable/ic_close_eye"
-              android:onClick="@{() -> viewModel.changeShowPasswordState()}"
-              app:eyeState="@{viewModel.showPassword}"
-              app:tint="@color/primary_dark_color" />
-          </LinearLayout>
-
-          <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:background="@color/background_color"
-            android:paddingHorizontal="10dp"
-            android:text="@string/password"
-            android:textAllCaps="true"
-            android:textColor="@color/primary_color"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/layoutPassword"
-            app:layout_constraintStart_toStartOf="@id/layoutPassword"
-            app:layout_constraintTop_toTopOf="@id/layoutPassword" />
-          <!--Edit text: Password - end-->
 
           <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/layoutErrors"
@@ -226,16 +165,16 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/app_padding"
         android:layout_marginEnd="@dimen/app_padding"
-        android:clickable="true"
-        android:onClick="@{() -> master.resetPassword()}"
         android:layout_marginBottom="15dp"
+        android:clickable="true"
         android:fontFamily="@font/montserrat_regular"
         android:gravity="center"
+        android:onClick="@{() -> master.resetPassword()}"
         android:text="@string/reset_password"
         android:textColor="@color/secondary_color"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/buttonLogin"
+        app:layout_constraintEnd_toEndOf="parent"
 
         />
 

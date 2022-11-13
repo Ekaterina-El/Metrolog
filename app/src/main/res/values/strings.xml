@@ -108,4 +108,6 @@
 
   <string name="item_node_preview_info">Узлы: %1$d | СИ на узле: %2$d</string>
   <string name="ok_pin_error">Хорошо, исправлю</string>
+  <string name="reset_password_title">Восстановление пароля</string>
+  <string name="reset_password_hint">Для восстановления доступа к аккаунту введите привязанный адрес электронной почты.</string>
 </resources>

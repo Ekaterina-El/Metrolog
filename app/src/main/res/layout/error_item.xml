@@ -27,9 +27,9 @@
 
       <ImageView
         android:src="@drawable/ic_info"
-        android:layout_marginEnd="20dp"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_marginEnd="10dp"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
         app:tint="@color/white"
         android:contentDescription="@null" />
 
@@ -37,7 +37,7 @@
         app:loadText="@{error.textId}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
+        android:textSize="12sp"
         android:textColor="@color/white"
         android:fontFamily="@font/montserrat_regular"
         tools:text="No username found" />
