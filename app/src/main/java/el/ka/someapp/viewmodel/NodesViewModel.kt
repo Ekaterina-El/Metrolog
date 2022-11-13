@@ -182,6 +182,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
         nodeId,
         onFailure = {
           // TODO: handle error
+                    _state.value = State.ERROR
         },
         onSuccess = { afterLoadNode(it, saveToHistory) })
     }

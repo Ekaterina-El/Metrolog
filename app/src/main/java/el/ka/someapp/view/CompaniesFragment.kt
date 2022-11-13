@@ -141,10 +141,9 @@ class CompaniesFragment : BaseFragment() {
     }
   }
 
-
   private fun openNode(nodeId: String) {
-    viewModel.loadNodeByID(nodeId)
-    navigate(R.id.action_companiesFragment_to_nodeFragment)
+    val action = CompaniesFragmentDirections.actionCompaniesFragmentToNodeFragment(nodeId)
+    navigate(action)
   }
 
   fun logout() {

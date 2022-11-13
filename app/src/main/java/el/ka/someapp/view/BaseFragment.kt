@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import el.ka.someapp.R
 
@@ -21,18 +22,20 @@ abstract class BaseFragment : Fragment() {
 
   fun showLoadingDialog() {
     if (loadingDialog == null) createLoadingDialog()
-    loadingDialog!!.show()
+    if (!loadingDialog!!.isShowing) loadingDialog!!.show()
   }
 
-  fun hideLoadingDialog() = loadingDialog?.dismiss()
+  fun hideLoadingDialog() {
+    loadingDialog?.dismiss()
+  }
 
   private fun createLoadingDialog() {
     loadingDialog = Dialog(requireContext(), R.style.AppTheme_FullScreenDialog)
     loadingDialog?.let { loadingDialog ->
       loadingDialog.setContentView(R.layout.fragment_loading_progress_bar)
       loadingDialog.window!!.setLayout(
-        ViewGroup.LayoutParams.MATCH_PARENT,
-        ViewGroup.LayoutParams.MATCH_PARENT,
+        LayoutParams.MATCH_PARENT,
+        LayoutParams.MATCH_PARENT,
         )
       loadingDialog.window!!.setWindowAnimations(R.style.Slide)
       loadingDialog.setCancelable(false)
@@ -66,6 +69,18 @@ abstract class BaseFragment : Fragment() {
     Navigation
       .findNavController(requireView())
       .navigate(actionId)
+  }
+
+  fun navigate(action: NavDirections) {
+    Navigation
+      .findNavController(requireView())
+      .navigate(action)
+  }
+
+  fun popUp() {
+    Navigation
+      .findNavController(requireView())
+      .popBackStack()
   }
 
   fun getCurrentPassword() = sharedPreferences.getString(LOCAL_CURRENT_PASSWORD, "") ?: ""
