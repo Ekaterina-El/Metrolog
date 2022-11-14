@@ -34,8 +34,6 @@
       app:layout_constraintTop_toTopOf="parent"
       app:navGraph="@navigation/node_nav_graph" />
 
-<!--        app:labelVisibilityMode="unlabeled" -->
-<!--          style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"-->
     <com.google.android.material.bottomnavigation.BottomNavigationView
       android:id="@+id/bottom_nav_view"
       android:layout_width="match_parent"
