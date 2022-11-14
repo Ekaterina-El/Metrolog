@@ -97,3 +97,8 @@ fun showError(textView: TextView, error: ErrorApp?) {
   textView.text = if (error != null)
     textView.context.getString(error.textId) else ""
 }
+
+@BindingAdapter("app:showFieldError")
+fun showError2(view: TextInputLayout, error: ErrorApp?) {
+  view.error = if (error != null) view.context.getString(error.textId) else null
+}

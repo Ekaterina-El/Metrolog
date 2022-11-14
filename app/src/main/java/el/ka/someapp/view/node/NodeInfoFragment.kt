@@ -172,7 +172,7 @@ class NodeInfoFragment : BaseFragment() {
       bindingJobFieldDialog = JobFieldDialogBinding.inflate(LayoutInflater.from(requireContext()))
       dialog.setContentView(bindingJobFieldDialog.root)
 
-      bindingJobFieldDialog.spinner.adapter = spinnerUsersAdapter
+      bindingJobFieldDialog.spinner.setAdapter(spinnerUsersAdapter)
       bindingJobFieldDialog.spinner.onItemSelectedListener =
         object : AdapterView.OnItemSelectedListener {
           override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {

@@ -34,11 +34,11 @@ class JobFieldViewModel(application: Application) : AndroidViewModel(application
     get() = _nameError
 
   fun tryCreateJobField(nodeId: String) {
-    var withError = false
+    var errors = 0
 
     if (role.value == null) {
+      errors += 1
       hasRoleError.value = true
-      withError = true
     } else {
       hasRoleError.value = false
     }
@@ -46,19 +46,18 @@ class JobFieldViewModel(application: Application) : AndroidViewModel(application
     when (jobFieldName.value) {
       "" -> {
         _nameError.value = Errors.emptyFieldNameValue
-        withError = true
+        errors += 1
       }
       UserRole.HEAD.roleName -> {
         _nameError.value = Errors.reservedValue
-        withError = true
+        errors += 1
       }
       else -> {
         _nameError.value = null
-        withError = false
       }
     }
 
-    if (!withError) {
+    if (errors == 0) {
       _state.value = State.NEW_FIELD_JOB_ADDING
       _jobField.value = getJobField()
 
