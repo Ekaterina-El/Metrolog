@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.google.android.material.textfield.TextInputLayout
 import el.ka.someapp.R
 import el.ka.someapp.data.model.State
 import el.ka.someapp.data.model.User
@@ -108,12 +109,12 @@ class NodeUsersFragment : BaseFragment() {
 
   private fun clearAddUserDialog() {
     addUserDialog?.findViewById<EditText>(R.id.editTextUserEmail)?.setText("")
-    addUserDialog?.findViewById<TextView>(R.id.textError)?.text = ""
+    addUserDialog?.findViewById<TextInputLayout>(R.id.layoutEmail)?.error = null
 
   }
 
   private fun showAddUserDialogWithEmailAndError(error: String) {
-    addUserDialog?.findViewById<TextView>(R.id.textError)?.text = error
+    addUserDialog?.findViewById<TextInputLayout>(R.id.layoutEmail)?.error = error
     showAddUserDialog()
   }
   // endregion

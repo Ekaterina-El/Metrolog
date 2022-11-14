@@ -48,28 +48,34 @@
       android:textColor="@color/secondary_color"
       android:textSize="16sp" />
 
-    <TextView
-      android:id="@+id/textError"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:textColor="@color/attentionColor"
-      android:textSize="14sp"
-      tools:text="@string/nonUniqueName" />
-
-    <EditText
-      android:id="@+id/editTextUserEmail"
+    <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/layoutEmail"
+      style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="15dp"
-      android:background="@null"
-      android:fontFamily="@font/montserrat_regular"
-      android:hint="@string/email_example"
-      android:importantForAutofill="no"
-      android:inputType="textEmailAddress"
-      android:maxLines="1"
-      android:textColor="@color/secondary_color"
-      android:textColorHint="@color/light_gray"
-      android:textSize="20sp" />
+      android:hint="@string/email"
+      app:boxStrokeColor="@color/primary_dark_color"
+      app:boxStrokeErrorColor="@color/attentionColor"
+      app:errorEnabled="true"
+      app:errorTextColor="@color/attentionColor"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:startIconDrawable="@drawable/ic_email">
+
+      <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editTextUserEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/montserrat_regular"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:maxLines="1"
+        android:textColor="#333"
+        android:textSize="14sp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
       android:id="@+id/buttonOk"
@@ -77,13 +83,12 @@
       android:layout_height="wrap_content"
       android:layout_gravity="end"
       android:layout_marginTop="15dp"
-      android:background="@drawable/button_wrapper"
+      android:background="@drawable/button_selector"
       android:fontFamily="@font/montserrat_regular"
-      android:text="@string/add_button"
-      android:textColor="@color/primary_color"
+      android:text="@string/ok"
+      android:textColor="@color/text_on_primary"
       app:backgroundTint="@null"
       app:tint="@null" />
-
   </LinearLayout>
 
 </LinearLayout>
