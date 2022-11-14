@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.google.android.material.textfield.TextInputLayout
 import el.ka.someapp.R
 import el.ka.someapp.data.model.Errors
 import el.ka.someapp.data.model.Node
@@ -105,7 +106,7 @@ class NodeNodesFragment : BaseFragment() {
     )
     dialog.setCancelable(true)
 
-    val editTextNodeName: EditText = dialog.findViewById(R.id.editTextNodeName)
+    val editTextNodeName: EditText = dialog.findViewById(R.id.inp1)
     val buttonOk: Button = dialog.findViewById(R.id.buttonOk)
 
     buttonOk.setOnClickListener {
@@ -116,7 +117,7 @@ class NodeNodesFragment : BaseFragment() {
   }
 
   private fun showCreatedDialogWithError(error: String) {
-    dialog.findViewById<TextView>(R.id.textError).text = error
+    dialog.findViewById<TextInputLayout>(R.id.layoutName).error = error
     showAddNodeDialog()
   }
 
@@ -125,8 +126,8 @@ class NodeNodesFragment : BaseFragment() {
   }
 
   private fun clearDialog() {
-    dialog.findViewById<EditText>(R.id.editTextNodeName).setText("")
-    dialog.findViewById<TextView>(R.id.textError).text = null
+    dialog.findViewById<EditText>(R.id.inp1).setText("")
+    dialog.findViewById<TextInputLayout>(R.id.layoutName).error = null
   }
   // endregion
 }

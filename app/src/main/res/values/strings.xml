@@ -110,4 +110,5 @@
   <string name="ok_pin_error">Хорошо, исправлю</string>
   <string name="reset_password_title">Восстановление пароля</string>
   <string name="reset_password_hint">Для восстановления доступа к аккаунту введите привязанный адрес электронной почты.</string>
+  <string name="ok">OK</string>
 </resources>

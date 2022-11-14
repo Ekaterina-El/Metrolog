@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.textfield.TextInputLayout
 import el.ka.someapp.R
 import el.ka.someapp.data.model.*
 import el.ka.someapp.databinding.FragmentNodeInfoBinding
@@ -110,7 +111,7 @@ class NodeInfoFragment : BaseFragment() {
     )
     changeNameDialog!!.setCancelable(true)
     changeNameDialog!!.findViewById<TextView>(R.id.textTitle).text = getString(R.string.edit)
-    val editTextName = changeNameDialog!!.findViewById<EditText>(R.id.editTextNodeName)
+    val editTextName = changeNameDialog!!.findViewById<EditText>(R.id.inp1)
     //editTextName.setText(viewModel.currentNode.value!!.name)
 
     changeNameDialog!!.findViewById<Button>(R.id.buttonOk).setOnClickListener {
@@ -122,19 +123,19 @@ class NodeInfoFragment : BaseFragment() {
   }
 
   private fun clearDialog() {
-    changeNameDialog!!.findViewById<EditText>(R.id.editTextNodeName).setText("")
-    changeNameDialog!!.findViewById<TextView>(R.id.textError).text = ""
+    changeNameDialog!!.findViewById<EditText>(R.id.inp1).setText("")
+    changeNameDialog!!.findViewById<TextInputLayout>(R.id.layoutName).error = null
   }
 
   private fun showChangeNameDialogWithError(errorMessage: String) {
-    changeNameDialog?.findViewById<TextView>(R.id.textError)?.text = errorMessage
+    changeNameDialog?.findViewById<TextInputLayout>(R.id.layoutName)?.error = errorMessage
     showChangeNameDialog()
   }
 
   fun showChangeNameDialog() {
     if (changeNameDialog == null) createChangeNameDialog()
 
-    val editTextName = changeNameDialog!!.findViewById<EditText>(R.id.editTextNodeName)
+    val editTextName = changeNameDialog!!.findViewById<EditText>(R.id.inp1)
     editTextName.setText(viewModel.currentNode.value!!.name)
 
     changeNameDialog?.show()

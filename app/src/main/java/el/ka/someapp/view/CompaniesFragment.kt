@@ -20,6 +20,7 @@ import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputLayout
 import el.ka.someapp.R
 import el.ka.someapp.data.model.Errors
 import el.ka.someapp.data.model.Node
@@ -187,7 +188,7 @@ class CompaniesFragment : BaseFragment() {
     )
     dialog.setCancelable(true)
 
-    val editTextNodeName: EditText = dialog.findViewById(R.id.editTextNodeName)
+    val editTextNodeName: EditText = dialog.findViewById(R.id.inp1)
     val buttonOk: Button = dialog.findViewById(R.id.buttonOk)
 
     buttonOk.setOnClickListener {
@@ -202,7 +203,7 @@ class CompaniesFragment : BaseFragment() {
   }
 
   private fun showCreateDialogWithError(error: String) {
-    dialog.findViewById<TextView>(R.id.textError).text = error
+    dialog.findViewById<TextInputLayout>(R.id.layoutName).error = error
     showAddCompanyDialog()
   }
 
@@ -211,8 +212,8 @@ class CompaniesFragment : BaseFragment() {
   }
 
   private fun clearDialog() {
-    dialog.findViewById<EditText>(R.id.editTextNodeName).setText("")
-    dialog.findViewById<TextView>(R.id.textError).text = null
+    dialog.findViewById<EditText>(R.id.inp1).setText("")
+    dialog.findViewById<TextInputLayout>(R.id.layoutName).error = null
   }
 
 
