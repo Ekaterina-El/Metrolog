@@ -55,7 +55,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
         .awaitAll()
         .mapNotNull {
           val measuring = it.toObject(Measuring::class.java)
-          measuring!!.measuringID  = it.id
+          measuring!!.measuringID = it.id
           measuring
         }
 
@@ -63,7 +63,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     }
   }
 
-  private fun  setMeasuring(measuringItems: List<Measuring>) {
+  private fun setMeasuring(measuringItems: List<Measuring>) {
     _measuring.value = measuringItems
     filterMeasuring()
     _state.value = State.VIEW
