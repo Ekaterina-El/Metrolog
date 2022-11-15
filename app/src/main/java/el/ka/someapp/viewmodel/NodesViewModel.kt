@@ -92,6 +92,12 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     }
   }
 
+  private fun updateHistoryItem(node: Node, nodeId: String) {
+    _nodesHistory.value = _nodesHistory.value!!.map {
+      return@map if (it.id == nodeId) node else it
+    }
+  }
+
   private fun popupHistory() {
     val history = _nodesHistory.value!!.toMutableList()
     history.removeLastOrNull()
@@ -222,9 +228,10 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     filterNodes()
   }
 
-  private fun updateCurrentNodeDate() {
+  private fun updateCurrentNodeDate(node: Node) {
     val id = currentNode.value!!.id
     loadNodeByID(nodeId = id, saveToHistory = false)
+    updateHistoryItem(node = node, nodeId = id)
   }
 
   fun loadNodeByID(nodeId: String?, saveToHistory: Boolean = true) {
@@ -336,7 +343,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       NodesDatabaseService.changeNodeName(nodeId = node.id, newName = node.name, onFailure = {
         // todo: handle error
       }, onSuccess = {
-        updateCurrentNodeDate()
+        updateCurrentNodeDate(node = node)
       })
     })
   }
