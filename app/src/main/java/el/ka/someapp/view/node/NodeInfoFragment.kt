@@ -5,10 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -38,12 +35,22 @@ class NodeInfoFragment : BaseFragment() {
     }
   }
 
+
   private lateinit var localUsersAdapter: JobsAdapter
   private val localUsersObserver = Observer<List<LocalUser>> {
     localUsersAdapter.setLocalUser(it)
   }
   private val localUsersListener = object : JobsAdapter.ItemListener {
-    override fun onClick(userId: String) {}
+    override fun onClick(userId: String) {
+      Toast.makeText(requireContext(), "OnClick: $userId", Toast.LENGTH_SHORT).show()
+    }
+    override fun onEdit(userId: String) {
+      Toast.makeText(requireContext(), "OnEdit: $userId", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onDelete(userId: String) {
+      Toast.makeText(requireContext(), "OnDelete: $userId", Toast.LENGTH_SHORT).show()
+    }
 
   }
 
@@ -68,7 +75,7 @@ class NodeInfoFragment : BaseFragment() {
   override fun initFunctionalityParts() {
     binding = FragmentNodeInfoBinding.inflate(layoutInflater)
     hierarchyAdapter = HierarchyNodesAdapter(listener = hierarchyNodeListener)
-    localUsersAdapter = JobsAdapter(listener = localUsersListener)
+    localUsersAdapter = JobsAdapter(context = requireContext(), listener = localUsersListener)
   }
 
   override fun inflateBindingVariables() {

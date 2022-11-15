@@ -111,4 +111,6 @@
   <string name="reset_password_title">Восстановление пароля</string>
   <string name="reset_password_hint">Для восстановления доступа к аккаунту введите привязанный адрес электронной почты.</string>
   <string name="ok">OK</string>
+  <string name="edit2">Редактировать</string>
+  <string name="delete">Удалить</string>
 </resources>

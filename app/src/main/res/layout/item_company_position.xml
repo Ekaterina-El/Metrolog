@@ -67,6 +67,9 @@
     </LinearLayout>
 
     <ImageView
+      android:id="@+id/viewOptions"
+      android:clickable="true"
+      android:focusable="true"
       android:layout_width="25dp"
       android:layout_height="25dp"
       android:src="@drawable/ic_vert_more"
