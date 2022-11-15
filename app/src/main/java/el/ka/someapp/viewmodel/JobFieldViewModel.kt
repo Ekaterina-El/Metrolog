@@ -13,7 +13,6 @@ class JobFieldViewModel(application: Application) : AndroidViewModel(application
   val role = MutableLiveData<UserRole?>(null)
 
   private val _selectedUser = MutableLiveData<User?>(null)
-  val selectedUser: LiveData<User?> = _selectedUser
 
   val hasRoleError = MutableLiveData(false)
 
@@ -33,7 +32,7 @@ class JobFieldViewModel(application: Application) : AndroidViewModel(application
   val nameError: LiveData<ErrorApp?>
     get() = _nameError
 
-  fun tryCreateJobField(nodeId: String) {
+  private fun checkErrors(): Int {
     var errors = 0
 
     if (role.value == null) {
@@ -56,6 +55,30 @@ class JobFieldViewModel(application: Application) : AndroidViewModel(application
         _nameError.value = null
       }
     }
+
+    return errors
+  }
+
+
+  private val _oldJobField = MutableLiveData<JobField?>()
+  val oldJobField: LiveData<JobField?> get() = _oldJobField
+
+  fun editJobField(nodeId: String) {
+    val errors = checkErrors()
+    if (errors == 0) {
+      _oldJobField.value = _jobField.value
+      _state.value = State.JOB_FIELD_EDITING
+      _jobField.value = getJobField()
+
+      NodesDatabaseService.editJobField(nodeId, _oldJobField.value!!, _jobField.value!!, onFailure = {}) {
+        clearJobField()
+        _state.value = State.JOB_FIELD_EDITED
+      }
+    }
+  }
+
+  fun tryCreateJobField(nodeId: String) {
+    val errors = checkErrors()
 
     if (errors == 0) {
       _state.value = State.NEW_FIELD_JOB_ADDING
@@ -82,6 +105,10 @@ class JobFieldViewModel(application: Application) : AndroidViewModel(application
 
   fun setUser(user: User) {
     _selectedUser.value = user
+  }
+
+  fun setJobField(jobField: JobField) {
+    _jobField.value = jobField
   }
 
   private fun getJobField() = JobField(

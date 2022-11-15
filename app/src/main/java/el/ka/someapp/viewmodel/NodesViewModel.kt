@@ -364,6 +364,8 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   val companyAllUsers: LiveData<List<User>>
     get() = _companyAllUsers
 
+  fun getUserById(id: String) = _companyAllUsers.value!!.first { it.uid == id }
+
   private fun loadCompanyAllUsers() {
     if (_currentNode.value!!.level != 0) return
 
@@ -427,6 +429,15 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     _state.value = State.VIEW
   }
 
+  fun updateJobField(oldJobField: JobField, jobField: JobField) {
+    _currentNode.value!!.jobs = _currentNode.value!!.jobs.map {
+      return@map if (it == oldJobField) jobField else it
+    }
+
+    loadLocalUsers()
+    _state.value = State.VIEW
+  }
+
   fun deleteJobField(jobField: JobField) {
     NodesDatabaseService.deleterJobField(
       _currentNode.value!!.id,
@@ -450,6 +461,14 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       _localUsers.value = users
       _state.value = State.VIEW
     }
+  }
+
+  private val _editJobField = MutableLiveData<JobField?>()
+  val editJobField: LiveData<JobField?> get() = _editJobField
+
+  fun setToEditJobField(jobField: JobField) {
+    _editJobField.value = jobField
+    _state.value = State.EDIT_JOB_FIELD
   }
   // endregion
 
@@ -479,5 +498,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       }
     )
   }
+
+
   // endregion
 }

@@ -207,6 +207,18 @@ object NodesDatabaseService {
       onFailure
     )
   }
+
+  fun editJobField(
+    nodeId: String,
+    oldJobField: JobField,
+    jobField: JobField,
+    onFailure: () -> Unit,
+    onSuccess: () -> Unit
+  ) {
+    deleterJobField(nodeId, oldJobField, onFailure) {
+      addJobField(nodeId, jobField, onFailure, onSuccess)
+    }
+  }
   // endregion
 
   private const val LEVEL_FIELD = "level"

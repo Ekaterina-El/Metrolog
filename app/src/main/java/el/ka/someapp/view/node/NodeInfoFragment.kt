@@ -35,23 +35,14 @@ class NodeInfoFragment : BaseFragment() {
     }
   }
 
-
   private lateinit var localUsersAdapter: JobsAdapter
   private val localUsersObserver = Observer<List<LocalUser>> {
     localUsersAdapter.setLocalUser(it)
   }
   private val localUsersListener = object : JobsAdapter.ItemListener {
-    override fun onClick(jobField: JobField) {
-      Toast.makeText(requireContext(), "OnClick: ${jobField.jobName}", Toast.LENGTH_SHORT).show()
-    }
-    override fun onEdit(jobField: JobField) {
-      Toast.makeText(requireContext(), "OnEdit: ${jobField.jobName}", Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onDelete(jobField: JobField) {
-      viewModel.deleteJobField(jobField)
-//      Toast.makeText(requireContext(), "OnDelete: $userId", Toast.LENGTH_SHORT).show()
-    }
+    override fun onClick(jobField: JobField) {}
+    override fun onEdit(jobField: JobField) { viewModel.setToEditJobField(jobField) }
+    override fun onDelete(jobField: JobField) { viewModel.deleteJobField(jobField) }
 
   }
 
@@ -60,6 +51,9 @@ class NodeInfoFragment : BaseFragment() {
     when (it) {
       State.NON_UNIQUE_NAME ->
         showChangeNameDialogWithError(getString(Errors.nonUniqueName.textId))
+
+      State.EDIT_JOB_FIELD ->
+        openJobFieldDialogToEdit(viewModel.editJobField.value!!)
       else -> {}
     }
   }
@@ -164,6 +158,15 @@ class NodeInfoFragment : BaseFragment() {
         val jobField = jobFieldViewModel!!.jobField.value!!
         viewModel.addJobField(jobField)
       }
+
+      State.JOB_FIELD_EDITED -> {
+        val jobField =  jobFieldViewModel!!.jobField.value!!
+        val oldJobField = jobFieldViewModel!!.oldJobField.value!!
+
+          jobFieldViewModel!!.afterNotifiedOfNewFieldJob()
+        jobFieldDialog?.dismiss()
+        viewModel.updateJobField(oldJobField, jobField)
+      }
       else -> {}
     }
   }
@@ -181,7 +184,7 @@ class NodeInfoFragment : BaseFragment() {
       bindingJobFieldDialog = JobFieldDialogBinding.inflate(LayoutInflater.from(requireContext()))
       dialog.setContentView(bindingJobFieldDialog.root)
 
-      bindingJobFieldDialog.spinner.setAdapter(spinnerUsersAdapter)
+      bindingJobFieldDialog.spinner.adapter = spinnerUsersAdapter
       bindingJobFieldDialog.spinner.onItemSelectedListener =
         object : AdapterView.OnItemSelectedListener {
           override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -200,13 +203,35 @@ class NodeInfoFragment : BaseFragment() {
       dialog.setCancelable(true)
 
       bindingJobFieldDialog.buttonOk.setOnClickListener {
-        jobFieldViewModel!!.tryCreateJobField(viewModel.currentNode.value!!.id)
+        val nodeId = viewModel.currentNode.value!!.id
+
+        if (viewModel.state.value == State.EDIT_JOB_FIELD)
+          jobFieldViewModel!!.editJobField(nodeId)
+        else jobFieldViewModel!!.tryCreateJobField(nodeId)
       }
     }
   }
 
   fun showJobFieldDialog() {
     if (jobFieldDialog == null) createJobFieldDialog()
+    jobFieldDialog!!.show()
+  }
+
+  private fun openJobFieldDialogToEdit(jobField: JobField) {
+    // todo: change title
+
+    if (jobFieldDialog == null) createJobFieldDialog()
+
+    jobFieldViewModel!!.setJobField(jobField)
+    jobFieldViewModel!!.jobFieldName.value = jobField.jobName
+    jobFieldViewModel!!.role.value = jobField.jobRole
+
+    val user = viewModel.getUserById(jobField.userId)
+    jobFieldViewModel!!.setUser(user)
+
+    val pos = spinnerUsersAdapter!!.getPosition(user)
+    bindingJobFieldDialog.spinner.setSelection(pos)
+
     jobFieldDialog!!.show()
   }
   // endregion
