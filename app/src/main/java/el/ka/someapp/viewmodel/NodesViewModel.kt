@@ -414,13 +414,16 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     jobs.add(jobField)
     _currentNode.value!!.jobs = jobs
     loadLocalUsers()
+    _state.value = State.VIEW
   }
 
   private fun loadLocalUsers() {
+    _state.value = State.LOADING
     viewModelScope.launch {
       val users = NodesDatabaseService
         .loadCompaniesJobsUsers(_currentNode.value!!.jobs)
       _localUsers.value = users
+      _state.value = State.VIEW
     }
   }
   // endregion

@@ -22,7 +22,6 @@ class NodeFragment : BaseFragment() {
   private val visibleViewModel: VisibleViewModel by activityViewModels()
 
   private val stateObserver = Observer<State> {
-     val a = it != State.LOADING
     if (it != State.LOADING) hideLoadingDialog()
 
     when (it) {

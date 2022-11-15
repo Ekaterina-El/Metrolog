@@ -89,4 +89,8 @@ class JobFieldViewModel(application: Application) : AndroidViewModel(application
     jobRole = role.value!!,
     userId = _selectedUser.value!!.uid
   )
+
+  fun afterNotifiedOfNewFieldJob() {
+    _state.value = State.VIEW
+  }
 }

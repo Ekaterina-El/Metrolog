@@ -151,6 +151,7 @@ class NodeInfoFragment : BaseFragment() {
   private val jobFieldStateObserver = Observer<State> {
     when (it) {
       State.NEW_FIELD_JOB_ADDED -> {
+        jobFieldViewModel!!.afterNotifiedOfNewFieldJob()
         jobFieldDialog?.dismiss()
         val jobField = jobFieldViewModel!!.jobField.value!!
         viewModel.addJobField(jobField)
