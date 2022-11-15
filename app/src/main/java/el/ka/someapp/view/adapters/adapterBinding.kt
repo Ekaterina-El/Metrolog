@@ -67,12 +67,20 @@ fun showResetPasswordText(textView: TextView, state: State) {
 
 @BindingAdapter("app:userUrl")
 fun showUserUrl(imageView: ImageView, user: User?) {
+  loadInto(imageView, url = user?.profileImageUrl, placeholder = R.drawable.profile_placeholder)
+}
+
+@BindingAdapter("app:backgroundUrl")
+fun showBackground(imageView: ImageView, user: User?) {
+  loadInto(imageView, url = user?.backgroundImageUrl, placeholder = R.drawable.placeholder)
+}
+
+fun loadInto(imageView: ImageView, url: String?, placeholder: Int) {
   Glide
     .with(imageView.context)
-    .load(user?.profileImageUrl)
-    .placeholder(R.drawable.profile_placeholder)
+    .load(url)
+    .placeholder(placeholder)
     .into(imageView)
-
 }
 
 @BindingAdapter("app:imageUrl")

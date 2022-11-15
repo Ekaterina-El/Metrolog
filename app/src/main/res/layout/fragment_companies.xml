@@ -37,22 +37,24 @@
         android:id="@+id/viewSupporter"
         android:layout_width="1dp"
         android:layout_height="1dp"
-        android:layout_marginTop="60dp"
         app:layout_constraintBottom_toBottomOf="@id/imageViewProfile"
         app:layout_constraintEnd_toEndOf="@id/imageViewProfile"
         app:layout_constraintStart_toStartOf="@id/imageViewProfile"
         app:layout_constraintTop_toTopOf="@id/imageViewProfile" />
 
+
       <ImageView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/bg_example"
+        android:background="@drawable/placeholder"
         android:scaleType="centerCrop"
+        app:backgroundUrl="@{viewModel.currentUserProfile}"
         app:layout_constraintBottom_toBottomOf="@id/viewSupporter"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
       <ImageView
         android:layout_width="22dp"
@@ -60,8 +62,8 @@
         android:layout_marginEnd="20dp"
         android:onClick="@{() -> master.logout()}"
         android:src="@drawable/ic_exit"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/textViewEmail"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/textViewUserName"
         app:tint="@color/secondary_color" />
 
@@ -134,12 +136,12 @@
       android:layout_marginStart="@dimen/app_padding"
       android:layout_marginTop="5dp"
       android:layout_marginEnd="@dimen/app_padding"
+      android:baselineAligned="false"
       android:gravity="center"
       android:orientation="horizontal"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/layoutHeader"
-      android:baselineAligned="false">
+      app:layout_constraintTop_toBottomOf="@id/layoutHeader">
 
       <LinearLayout
         android:id="@+id/layoutSearchForm"
