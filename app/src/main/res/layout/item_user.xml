@@ -54,6 +54,7 @@
     </LinearLayout>
 
     <ImageView
+      android:id="@+id/viewOptions"
       android:layout_marginTop="6dp"
       android:contentDescription="@null"
       android:layout_width="20dp"

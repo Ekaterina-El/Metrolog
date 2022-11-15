@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.google.android.material.textfield.TextInputLayout
@@ -28,6 +29,12 @@ class NodeUsersFragment : BaseFragment() {
   private lateinit var usersAdapter: AllUsersAdapter
   private val userObserver = Observer<List<User>> {
     usersAdapter.setUsers(it)
+  }
+  private val usersListener = object: AllUsersAdapter.ItemListener {
+    override fun onDelete(userId: String) {
+      Toast.makeText(requireContext(), "onDelete: $userId", Toast.LENGTH_SHORT).show()
+    }
+
   }
 
   private val stateObserver = Observer<State> {
@@ -52,7 +59,10 @@ class NodeUsersFragment : BaseFragment() {
 
   override fun initFunctionalityParts() {
     binding = FragmentNodeUsersBinding.inflate(layoutInflater)
-    usersAdapter = AllUsersAdapter()
+    usersAdapter = AllUsersAdapter(
+      context = requireContext(),
+      listener = usersListener
+    )
   }
 
   override fun inflateBindingVariables() {

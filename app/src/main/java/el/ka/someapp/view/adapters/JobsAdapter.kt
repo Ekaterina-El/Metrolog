@@ -29,7 +29,6 @@ class JobsAdapter(val context: Context, val listener: ItemListener? = null) :
 
   override fun onViewAttachedToWindow(holder: ViewHolder) {
     super.onViewAttachedToWindow(holder)
-
     val uid = items[holder.adapterPosition].user.uid
 
     holder.itemView.setOnClickListener {
@@ -59,6 +58,7 @@ class JobsAdapter(val context: Context, val listener: ItemListener? = null) :
   override fun onViewDetachedFromWindow(holder: ViewHolder) {
     super.onViewDetachedFromWindow(holder)
     holder.itemView.setOnClickListener(null)
+    holder.binding.viewOptions.setOnClickListener(null)
   }
 
   override fun getItemCount(): Int = items.size
