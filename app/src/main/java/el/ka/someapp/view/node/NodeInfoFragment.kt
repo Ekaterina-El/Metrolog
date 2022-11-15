@@ -41,15 +41,16 @@ class NodeInfoFragment : BaseFragment() {
     localUsersAdapter.setLocalUser(it)
   }
   private val localUsersListener = object : JobsAdapter.ItemListener {
-    override fun onClick(userId: String) {
-      Toast.makeText(requireContext(), "OnClick: $userId", Toast.LENGTH_SHORT).show()
+    override fun onClick(jobField: JobField) {
+      Toast.makeText(requireContext(), "OnClick: ${jobField.jobName}", Toast.LENGTH_SHORT).show()
     }
-    override fun onEdit(userId: String) {
-      Toast.makeText(requireContext(), "OnEdit: $userId", Toast.LENGTH_SHORT).show()
+    override fun onEdit(jobField: JobField) {
+      Toast.makeText(requireContext(), "OnEdit: ${jobField.jobName}", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onDelete(userId: String) {
-      Toast.makeText(requireContext(), "OnDelete: $userId", Toast.LENGTH_SHORT).show()
+    override fun onDelete(jobField: JobField) {
+      viewModel.deleteJobField(jobField)
+//      Toast.makeText(requireContext(), "OnDelete: $userId", Toast.LENGTH_SHORT).show()
     }
 
   }

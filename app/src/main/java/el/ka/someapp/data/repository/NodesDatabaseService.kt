@@ -4,6 +4,8 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import el.ka.someapp.data.model.*
+import el.ka.someapp.data.repository.FirebaseServices.changeField
+import el.ka.someapp.data.repository.FirebaseServices.changeFieldArray
 import el.ka.someapp.data.repository.UsersDatabaseService.loadCompanyAllUsers
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.awaitAll
@@ -110,9 +112,14 @@ object NodesDatabaseService {
   fun changeNodeName(
     nodeId: String, newName: String, onFailure: (ErrorApp) -> Unit, onSuccess: () -> Unit
   ) {
-    FirebaseServices.databaseNodes.document(nodeId).update(NODE_NAME_FIELD, newName)
-      .addOnFailureListener { onFailure(Errors.somethingWrong) }
-      .addOnSuccessListener { onSuccess() }
+    val ref = FirebaseServices.databaseNodes.document(nodeId)
+    changeField(
+      ref,
+      NODE_NAME_FIELD,
+      newName,
+      onFailure = { onFailure(Errors.somethingWrong) },
+      onSuccess
+    )
   }
 
   private fun addUserIDToAllowedForProject(
@@ -121,10 +128,14 @@ object NodesDatabaseService {
     onFailure: (ErrorApp) -> Unit,
     onSuccess: () -> Unit
   ) {
-    FirebaseServices.databaseNodes.document(nodeId)
-      .update(USERS_HAVE_ACCESS, FieldValue.arrayUnion(userId))
-      .addOnFailureListener { onFailure(Errors.somethingWrong) }
-      .addOnSuccessListener { onSuccess() }
+    val ref = FirebaseServices.databaseNodes.document(nodeId)
+    changeFieldArray(
+      ref,
+      isAdding = true,
+      field = USERS_HAVE_ACCESS,
+      userId,
+      onSuccess,
+      onFailure = { onFailure(Errors.somethingWrong) })
   }
 
   fun addUserToProjectByEmail(
@@ -166,10 +177,18 @@ object NodesDatabaseService {
     onFailure: () -> Unit = {},
     onSuccess: () -> Unit
   ) {
-    FirebaseServices.databaseNodes.document(nodeId)
-      .update(JOBS_FIELD, FieldValue.arrayUnion(jobField))
-      .addOnFailureListener { onFailure() }
-      .addOnSuccessListener { onSuccess() }
+    val ref = FirebaseServices.databaseNodes.document(nodeId)
+    changeFieldArray(ref, isAdding = true, field = JOBS_FIELD, jobField, onSuccess, onFailure)
+  }
+
+  fun deleterJobField(
+    nodeId: String,
+    jobField: JobField,
+    onFailure: () -> Unit = {},
+    onSuccess: () -> Unit = {}
+  ) {
+    val ref = FirebaseServices.databaseNodes.document(nodeId)
+    changeFieldArray(ref, isAdding = false, field = JOBS_FIELD, jobField, onSuccess, onFailure)
   }
 
   fun addMeasuringId(
@@ -178,12 +197,15 @@ object NodesDatabaseService {
     onFailure: () -> Unit,
     onSuccess: () -> Unit
   ) {
-    FirebaseServices
-      .databaseNodes
-      .document(nodeId)
-      .update(MEASURING_FIELD, FieldValue.arrayUnion(measuringId))
-      .addOnFailureListener { onFailure() }
-      .addOnSuccessListener { onSuccess() }
+    val ref = FirebaseServices.databaseNodes.document(nodeId)
+    changeFieldArray(
+      ref,
+      isAdding = true,
+      field = MEASURING_FIELD,
+      measuringId,
+      onSuccess,
+      onFailure
+    )
   }
   // endregion
 

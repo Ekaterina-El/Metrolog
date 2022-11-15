@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import el.ka.someapp.R
+import el.ka.someapp.data.model.JobField
 import el.ka.someapp.data.model.LocalUser
 import el.ka.someapp.databinding.ItemCompanyPositionBinding
 
@@ -29,10 +30,10 @@ class JobsAdapter(val context: Context, val listener: ItemListener? = null) :
 
   override fun onViewAttachedToWindow(holder: ViewHolder) {
     super.onViewAttachedToWindow(holder)
-    val uid = items[holder.adapterPosition].user.uid
+    val jobField = items[holder.adapterPosition].jobField
 
     holder.itemView.setOnClickListener {
-      listener?.onClick(uid)
+      listener?.onClick(jobField)
     }
 
     val popupMenu = PopupMenu(context, holder.binding.viewOptions)
@@ -43,8 +44,8 @@ class JobsAdapter(val context: Context, val listener: ItemListener? = null) :
 
     popupMenu.setOnMenuItemClickListener {
       when (it.itemId) {
-        EDIT_ITEM -> listener?.onEdit(uid)
-        DELETE_ITEM -> listener?.onEdit(uid)
+        EDIT_ITEM -> listener?.onEdit(jobField)
+        DELETE_ITEM -> listener?.onDelete(jobField)
       }
       return@setOnMenuItemClickListener true
     }
@@ -88,8 +89,8 @@ class JobsAdapter(val context: Context, val listener: ItemListener? = null) :
   }
 
   interface ItemListener {
-    fun onClick(userId: String)
-    fun onEdit(userId: String)
-    fun onDelete(userId: String)
+    fun onClick(jobField: JobField)
+    fun onEdit(jobField: JobField)
+    fun onDelete(jobField: JobField)
   }
 }

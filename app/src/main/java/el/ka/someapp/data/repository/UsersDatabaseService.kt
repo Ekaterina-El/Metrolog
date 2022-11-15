@@ -7,6 +7,8 @@ import com.google.firebase.storage.StorageReference
 import el.ka.someapp.data.model.ErrorApp
 import el.ka.someapp.data.model.Errors
 import el.ka.someapp.data.model.User
+import el.ka.someapp.data.repository.FirebaseServices.changeField
+import el.ka.someapp.data.repository.FirebaseServices.changeFieldArray
 
 object UsersDatabaseService {
   fun saveUser(
@@ -22,12 +24,8 @@ object UsersDatabaseService {
     onFailure: () -> Unit,
     onSuccess: () -> Unit
   ) {
-    FirebaseServices
-      .databaseUsers
-      .document(uid)
-      .update(ALLOWED_PROJECTS, FieldValue.arrayUnion(nodeId))
-      .addOnFailureListener { onFailure() }
-      .addOnSuccessListener { onSuccess() }
+    val ref = FirebaseServices.databaseUsers.document(uid)
+    changeFieldArray(ref, isAdding = true, field = ALLOWED_PROJECTS, nodeId, onSuccess, onFailure)
   }
 
   fun loadCurrentUserProfile(
@@ -101,24 +99,19 @@ object UsersDatabaseService {
       }
   }
 
-  private fun changeField(field: String, value: Any, onFailure: () -> Unit, onSuccess: () -> Unit) {
-    FirebaseServices.databaseUsers
-      .document(AuthenticationService.getUserUid()!!)
-      .update(field, value)
-      .addOnFailureListener { onFailure() }
-      .addOnSuccessListener { onSuccess() }
-  }
-
   private fun changeUserProfileURL(url: String, onFailure: () -> Unit, onSuccess: () -> Unit) {
-    changeField(field = PROFILE_IMAGE_URL_FIELD, value = url, onFailure, onSuccess)
+    val ref = FirebaseServices.databaseUsers.document(AuthenticationService.getUserUid()!!)
+    changeField(ref, field = PROFILE_IMAGE_URL_FIELD, value = url, onFailure, onSuccess)
   }
 
   private fun changeBackgroundProfileURL(url: String, onFailure: () -> Unit, onSuccess: () -> Unit) {
-    changeField(field = BACKGROUND_IMAGE_URL_FIELD, value = url, onFailure, onSuccess)
+    val ref = FirebaseServices.databaseUsers.document(AuthenticationService.getUserUid()!!)
+    changeField(ref, field = BACKGROUND_IMAGE_URL_FIELD, value = url, onFailure, onSuccess)
   }
 
   fun changeProfileFullName(newFullName: String, onFailure: () -> Unit, onSuccess: () -> Unit) {
-    changeField(field = FULL_NAME_FIELD, value = newFullName, onFailure, onSuccess)
+    val ref = FirebaseServices.databaseUsers.document(AuthenticationService.getUserUid()!!)
+    changeField(ref, field = FULL_NAME_FIELD, value = newFullName, onFailure, onSuccess)
   }
 
   private const val FULL_NAME_FIELD = "fullName"

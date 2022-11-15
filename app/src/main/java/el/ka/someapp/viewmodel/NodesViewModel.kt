@@ -427,6 +427,21 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     _state.value = State.VIEW
   }
 
+  fun deleteJobField(jobField: JobField) {
+    NodesDatabaseService.deleterJobField(
+      _currentNode.value!!.id,
+      jobField = jobField,
+      onFailure = {},
+      onSuccess = {
+        _localUsers.value = _localUsers.value!!.filter {
+          it.jobField != jobField
+        }
+//         удалить из локального состояния currentNode
+      }
+    )
+
+  }
+
   private fun loadLocalUsers() {
     _state.value = State.LOADING
     viewModelScope.launch {
