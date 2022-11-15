@@ -21,9 +21,13 @@ object FirebaseServices {
   private const val MEASURING_COLLECTION = "measuring"
   val databaseMeasuring = Firebase.firestore.collection(MEASURING_COLLECTION)
 
-  private const val USERS_PROFILES_COLLECTION = "users_profiles"
   private val storage = FirebaseStorage.getInstance()
+
+  private const val USERS_PROFILES_COLLECTION = "users_profiles"
   val usersProfilesStore = storage.getReference(USERS_PROFILES_COLLECTION)
+
+  private const val USERS_BACKGROUND = "users_background"
+  val usersBackgroundsStore = storage.getReference(USERS_BACKGROUND)
 
 
   fun getDocumentsByIDs(docNodes: List<String>, collectionRef: CollectionReference): List<Deferred<DocumentSnapshot>> =

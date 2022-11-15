@@ -3,10 +3,10 @@ package el.ka.someapp.data.repository
 import android.net.Uri
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
+import com.google.firebase.storage.StorageReference
 import el.ka.someapp.data.model.ErrorApp
 import el.ka.someapp.data.model.Errors
 import el.ka.someapp.data.model.User
-import kotlinx.coroutines.tasks.asDeferred
 
 object UsersDatabaseService {
   fun saveUser(
@@ -72,36 +72,58 @@ object UsersDatabaseService {
       }
   }
 
+  fun changeBackgroundImage(uri: Uri, onFailure: () -> Unit, onSuccess: (String) -> Unit) {
+    val ref = FirebaseServices.usersBackgroundsStore.child(AuthenticationService.getUserUid()!!)
+    loadImageToStore(ref, uri, onFailure, onSuccess = {
+      changeBackgroundProfileURL(url = it, onFailure, onSuccess = { onSuccess(it) })
+    })
+  }
+
   fun changeProfileImage(uri: Uri, onFailure: () -> Unit, onSuccess: (String) -> Unit) {
     val ref = FirebaseServices.usersProfilesStore.child(AuthenticationService.getUserUid()!!)
+    loadImageToStore(ref, uri, onFailure, onSuccess = {
+      changeUserProfileURL(url = it, onFailure, onSuccess = { onSuccess(it) })
+    })
+  }
+
+  private fun loadImageToStore(
+    ref: StorageReference,
+    uri: Uri,
+    onFailure: () -> Unit,
+    onSuccess: (String) -> Unit
+  ) {
     ref.putFile(uri)
       .addOnFailureListener { onFailure() }
       .addOnSuccessListener {
         ref.downloadUrl
           .addOnFailureListener { onFailure() }
-          .addOnSuccessListener {
-            changeUserProfileURL(url = it, onFailure = { onFailure() }, onSuccess = { onSuccess(it.toString()) })
-          }
+          .addOnSuccessListener { onSuccess(it.toString()) }
       }
   }
 
-  private fun changeUserProfileURL(url: Uri, onFailure: () -> Unit, onSuccess: () -> Unit) {
-    FirebaseServices.databaseUsers.document(AuthenticationService.getUserUid()!!)
-      .update(PROFILE_IMAGE_URL_FIELD, url)
+  private fun changeField(field: String, value: Any, onFailure: () -> Unit, onSuccess: () -> Unit) {
+    FirebaseServices.databaseUsers
+      .document(AuthenticationService.getUserUid()!!)
+      .update(field, value)
       .addOnFailureListener { onFailure() }
       .addOnSuccessListener { onSuccess() }
   }
 
+  private fun changeUserProfileURL(url: String, onFailure: () -> Unit, onSuccess: () -> Unit) {
+    changeField(field = PROFILE_IMAGE_URL_FIELD, value = url, onFailure, onSuccess)
+  }
+
+  private fun changeBackgroundProfileURL(url: String, onFailure: () -> Unit, onSuccess: () -> Unit) {
+    changeField(field = BACKGROUND_IMAGE_URL_FIELD, value = url, onFailure, onSuccess)
+  }
+
   fun changeProfileFullName(newFullName: String, onFailure: () -> Unit, onSuccess: () -> Unit) {
-    FirebaseServices.databaseUsers
-      .document(AuthenticationService.getUserUid()!!)
-      .update(FULL_NAME_FIELD, newFullName)
-      .addOnSuccessListener { onSuccess() }
-      .addOnFailureListener { onFailure() }
+    changeField(field = FULL_NAME_FIELD, value = newFullName, onFailure, onSuccess)
   }
 
   private const val FULL_NAME_FIELD = "fullName"
   private const val EMAIL_FIELD = "email"
   private const val PROFILE_IMAGE_URL_FIELD = "profileImageUrl"
+  private const val BACKGROUND_IMAGE_URL_FIELD = "backgroundImageUrl"
   private const val ALLOWED_PROJECTS = "allowedProjects"
 }

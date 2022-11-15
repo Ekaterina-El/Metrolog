@@ -15,6 +15,7 @@ import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.load.ImageHeaderParser
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
@@ -22,11 +23,13 @@ import com.canhub.cropper.CropImageView
 import com.google.android.material.textfield.TextInputLayout
 import el.ka.someapp.R
 import el.ka.someapp.data.model.Errors
+import el.ka.someapp.data.model.ImageType
 import el.ka.someapp.data.model.Node
 import el.ka.someapp.data.model.State
 import el.ka.someapp.databinding.ChangeUserDialogBinding
 import el.ka.someapp.databinding.FragmentCompaniesBinding
 import el.ka.someapp.view.adapters.NodesAdapter
+import el.ka.someapp.viewmodel.ChangeImageViewModel
 import el.ka.someapp.viewmodel.ChangeUserFullNameViewModel
 import el.ka.someapp.viewmodel.NodesViewModel
 
@@ -34,6 +37,9 @@ import el.ka.someapp.viewmodel.NodesViewModel
 class CompaniesFragment : BaseFragment() {
   private lateinit var binding: FragmentCompaniesBinding
   private lateinit var adapter: NodesAdapter
+
+  private lateinit var changeImageViewModel: ChangeImageViewModel
+
   private val viewModel: NodesViewModel by activityViewModels()
   private val nodesObserver = Observer<List<Node>> {
     adapter.setNodes(it)
@@ -70,6 +76,7 @@ class CompaniesFragment : BaseFragment() {
     viewModel.loadNodeByID(null)
 
     binding = FragmentCompaniesBinding.inflate(layoutInflater)
+    changeImageViewModel = ViewModelProvider(this)[ChangeImageViewModel::class.java]
     adapter = NodesAdapter(
       listener = object : NodesAdapter.ItemListener {
         override fun onClick(nodeId: String) {
@@ -108,7 +115,16 @@ class CompaniesFragment : BaseFragment() {
   override fun onBackPressed() {}
 
   fun changeProfileImage() {
+    changeImageViewModel.setCurrentChangeImageType(ImageType.PROFILE)
+    changeImage()
+  }
 
+  fun changeBackgroundImage() {
+    changeImageViewModel.setCurrentChangeImageType(ImageType.BACKGROUND)
+    changeImage()
+  }
+
+  private fun changeImage() {
     val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
     startActivityForResult(intent, PICK_IMAGE_REQUEST_CODE)
   }
@@ -116,13 +132,28 @@ class CompaniesFragment : BaseFragment() {
   private val cropImage = registerForActivityResult(CropImageContract()) { result ->
     if (result.isSuccessful) {
       val uriContent = result.uriContent!!
-      binding.imageViewProfile.setImageURI(uriContent)
-      viewModel.changeProfileImage(uri = uriContent)
+
+      when(changeImageViewModel.currentChangeImageType.value) {
+        ImageType.PROFILE -> setProfile(uriContent)
+        ImageType.BACKGROUND -> setBackground(uriContent)
+        else -> {}
+      }
     } else {
-      val exception = result.error
+//      val exception = result.error
     }
   }
 
+  private fun setProfile(uriContent: Uri) {
+    binding.imageViewProfile.setImageURI(uriContent)
+    viewModel.changeProfileImage(uri = uriContent)
+  }
+
+  private fun setBackground(uri: Uri) {
+    binding.profileBackground.setImageURI(uri)
+    viewModel.changeBackgroundImage(uri = uri)
+  }
+
+  @Deprecated("Deprecated in Java")
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     if (requestCode == PICK_IMAGE_REQUEST_CODE) {
       if (resultCode == Activity.RESULT_OK) {
@@ -132,8 +163,8 @@ class CompaniesFragment : BaseFragment() {
             uri = image,
             CropImageOptions(
               guidelines = CropImageView.Guidelines.ON,
-              aspectRatioX = 1,
-              aspectRatioY = 1,
+              aspectRatioX = changeImageViewModel.aspectRationX.value!!,
+              aspectRatioY = changeImageViewModel.aspectRationY.value!!,
               fixAspectRatio = true,
             )
           )

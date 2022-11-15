@@ -157,6 +157,16 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     )
   }
 
+  fun changeBackgroundImage(uri: Uri) {
+    UsersDatabaseService.changeBackgroundImage(
+      uri = uri,
+      onFailure = {},
+      onSuccess = { newUrl ->
+        _currentUserProfile.value!!.backgroundImageUrl = newUrl
+      }
+    )
+  }
+
   fun changeProfileFullName(newName: String) {
     UsersDatabaseService.changeProfileFullName(
       newFullName = newName,
