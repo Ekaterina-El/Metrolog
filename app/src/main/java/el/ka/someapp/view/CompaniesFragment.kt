@@ -19,7 +19,6 @@ import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import el.ka.someapp.R
 import el.ka.someapp.data.model.Errors
@@ -153,23 +152,34 @@ class CompaniesFragment : BaseFragment() {
   }
 
   // region Logout Dialog
-  private var logoutDialog: MaterialAlertDialogBuilder? = null
+  private var logoutDialog: Dialog? = null
+
+  private fun afterLogout() {
+    logoutDialog?.dismiss()
+    setPassword(null)
+    navigate(R.id.action_companiesFragment_to_welcomeFragment)
+  }
 
   private fun createLogoutDialog() {
-    logoutDialog = MaterialAlertDialogBuilder(requireContext())
-      .setTitle(resources.getString(R.string.are_you_sure))
-      .setMessage(resources.getString(R.string.are_you_sure_message))
-      .setCancelable(false)
-      .setNeutralButton(getString(R.string.cancel)) { dialog, _ ->
-        dialog.dismiss()
-      }
-      .setNegativeButton(getString(R.string.continue_text)) { dialog, _ ->
-        viewModel.logout {
-          dialog.dismiss()
-          setPassword(null)
-          navigate(R.id.action_companiesFragment_to_welcomeFragment)
-        }
-      }
+    logoutDialog = Dialog(requireContext())
+    logoutDialog?.let { loadingDialog ->
+      loadingDialog.setContentView(R.layout.confirm_dialog)
+      loadingDialog.window!!.setLayout(
+        ViewGroup.LayoutParams.MATCH_PARENT,
+        ViewGroup.LayoutParams.WRAP_CONTENT,
+      )
+      loadingDialog.window!!.setWindowAnimations(R.style.Slide)
+      loadingDialog.setCancelable(true)
+
+      loadingDialog.findViewById<TextView>(R.id.textViewMessage).text =
+        getString(R.string.exit_message)
+
+      val buttonYes = loadingDialog.findViewById<Button>(R.id.buttonYes)
+      buttonYes.setOnClickListener { viewModel.logout { afterLogout() } }
+
+      val buttonCancel = loadingDialog.findViewById<Button>(R.id.buttonCancel)
+      buttonCancel.setOnClickListener { loadingDialog.dismiss() }
+    }
   }
 
   private fun showLogoutDialog() {

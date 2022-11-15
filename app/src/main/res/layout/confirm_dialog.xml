@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  tools:background="@color/background_color">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg"
+    android:gravity="center"
+    android:paddingHorizontal="15dp"
+    android:paddingVertical="10dp">
+
+    <ImageView
+      android:layout_width="30dp"
+      android:layout_height="30dp"
+      android:contentDescription="@null"
+      android:src="@drawable/ic_question"
+      app:tint="@color/text_on_primary" />
+
+    <TextView
+      android:id="@+id/textTitle"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="20dp"
+      android:layout_weight="1"
+      android:fontFamily="@font/montserrat_regular"
+      android:text="@string/are_you_sure"
+      android:textColor="@color/text_on_primary"
+      android:textSize="16sp" />
+  </LinearLayout>
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+      android:id="@+id/textViewMessage"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:fontFamily="@font/montserrat_regular"
+      android:textColor="@color/secondary_color"
+      android:textSize="14sp"
+      android:layout_marginTop="10dp"
+      tools:text="@string/exit_message" />
+
+    <LinearLayout
+      android:layout_marginTop="30dp"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal">
+
+      <Button
+        android:id="@+id/buttonCancel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:textAllCaps="false"
+        android:layout_weight="1"
+        android:background="@drawable/button_selector_natural"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="@string/cancel"
+        android:textColor="@color/secondary_color"
+        app:backgroundTint="@null"
+        android:layout_marginEnd="10dp"
+        app:tint="@null"
+        style="?android:attr/buttonBarButtonStyle" />
+
+      <Button
+        android:id="@+id/buttonYes"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_weight="1"
+        android:background="@drawable/button_selector"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="@string/yes"
+        android:textAllCaps="false"
+        android:textColor="@color/text_on_primary"
+        app:backgroundTint="@null"
+        app:tint="@null" />
+
+    </LinearLayout>
+
+
+  </LinearLayout>
+
+</LinearLayout>
