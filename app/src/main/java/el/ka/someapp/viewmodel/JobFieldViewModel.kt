@@ -20,7 +20,7 @@ class JobFieldViewModel(application: Application) : AndroidViewModel(application
     role.value = userRole
   }
 
-  private val _state = MutableLiveData<State>(State.VIEW)
+  private val _state = MutableLiveData(State.VIEW)
   val state: LiveData<State>
     get() = _state
 

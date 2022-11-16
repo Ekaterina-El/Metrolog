@@ -126,13 +126,25 @@
             <RadioButton
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:checked="@{viewModel.role == UserRole.EDITOR}"
+              android:checked="@{viewModel.role == UserRole.EDITOR_1}"
               android:fontFamily="@font/montserrat_regular"
-              android:onClick="@{() -> viewModel.setRole(UserRole.EDITOR)}"
-              android:text="@string/role_editor"
+              android:onClick="@{() -> viewModel.setRole(UserRole.EDITOR_1)}"
+              android:text="@string/role_editor_1"
+              android:textColor="@color/secondary_color"
+              android:textSize="14sp" />
+
+            <RadioButton
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:checked="@{viewModel.role == UserRole.EDITOR_2}"
+              android:fontFamily="@font/montserrat_regular"
+              android:onClick="@{() -> viewModel.setRole(UserRole.EDITOR_2)}"
+              android:text="@string/role_editor_2"
               android:textColor="@color/secondary_color"
               android:textSize="14sp" />
           </RadioGroup>
+
+
         </LinearLayout>
 
         <TextView
