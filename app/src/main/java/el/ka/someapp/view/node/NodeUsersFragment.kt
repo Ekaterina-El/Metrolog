@@ -32,6 +32,7 @@ class NodeUsersFragment : BaseFragment() {
   }
   private val usersListener = object: AllUsersAdapter.ItemListener {
     override fun onDelete(userId: String) {
+      viewModel.denyAccessUser(userId)
       Toast.makeText(requireContext(), "onDelete: $userId", Toast.LENGTH_SHORT).show()
     }
 

@@ -138,6 +138,23 @@ object NodesDatabaseService {
       onFailure = { onFailure(Errors.somethingWrong) })
   }
 
+  fun denyAccessUserToProject(
+    rootNodeId: String,
+    userId: String,
+    onFailure: () -> Unit,
+    onSuccess: () -> Unit
+  ) {
+    val ref = FirebaseServices.databaseNodes.document(rootNodeId)
+    changeFieldArray(
+      ref,
+      isAdding = false,
+      field = USERS_HAVE_ACCESS,
+      userId,
+      onSuccess,
+      onFailure
+    )
+  }
+
   fun addUserToProjectByEmail(
     email: String,
     currentProjectId: String,

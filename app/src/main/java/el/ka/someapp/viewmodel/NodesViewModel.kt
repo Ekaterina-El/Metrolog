@@ -263,9 +263,10 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
 
   private fun afterLoadNode(node: Node, saveToHistory: Boolean) {
     _currentNode.value = node
+    if (saveToHistory) addToHistory(_currentNode.value!!)
+
     loadLocalUsers()
     loadCompanyAllUsers()
-    if (saveToHistory) addToHistory(_currentNode.value!!)
     _state.value = State.VIEW
   }
   // endregion
@@ -370,7 +371,8 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     if (_currentNode.value!!.level != 0) return
 
     _state.value = State.LOADING
-    val usersIds = _currentNode.value!!.usersHaveAccess
+//    val usersIds = _currentNode.value!!.usersHaveAccess
+    val usersIds = getRootNode()!!.usersHaveAccess
     viewModelScope.launch {
       val users = UsersDatabaseService
         .loadCompanyAllUsers(listUsersID = usersIds)
@@ -472,7 +474,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   }
   // endregion
 
-  // region Add User by Email
+  // region User access to project
   private val _addUserError = MutableLiveData<ErrorApp?>(null)
   val addUserError: LiveData<ErrorApp?>
     get() = _addUserError
@@ -499,6 +501,39 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     )
   }
 
+  private fun getRootNode() = _nodesHistory.value?.first()
 
+  fun denyAccessUser(userId: String) {
+    _state.value = State.LOADING
+    val rootId = getRootNode()?.id
+
+    // удалить из root_node usersHaveAccess id пользователя
+    if (rootId != null)
+      NodesDatabaseService.denyAccessUserToProject(
+        rootId, userId,
+        onFailure = {
+          State.VIEW
+        }
+      ) {
+        // у пользователя удалить из allowedProjects id проекта
+        UsersDatabaseService.denyAccessUserToProject(rootId, userId, onFailure = {
+          State.VIEW
+        }) {
+          _nodesHistory.value?.mapIndexed { index, node ->
+            if (index == 0) {
+              val users = node.usersHaveAccess.toMutableList()
+              users.remove(userId)
+              node.usersHaveAccess = users
+            }
+            return@mapIndexed node
+          }
+
+//          _companyAllUsers.value = _companyAllUsers.value
+          loadCompanyAllUsers()
+
+          _state.value = State.VIEW
+        }
+      }
+  }
   // endregion
 }

@@ -28,6 +28,16 @@ object UsersDatabaseService {
     changeFieldArray(ref, isAdding = true, field = ALLOWED_PROJECTS, nodeId, onSuccess, onFailure)
   }
 
+  fun denyAccessUserToProject(
+    nodeId: String,
+    uid: String,
+    onFailure: () -> Unit,
+    onSuccess: () -> Unit
+  ) {
+    val ref = FirebaseServices.databaseUsers.document(uid)
+    changeFieldArray(ref, isAdding = false, field = ALLOWED_PROJECTS, nodeId, onSuccess, onFailure)
+  }
+
   fun loadCurrentUserProfile(
     onSuccess: (User) -> Unit,
     onFailure: () -> Unit
