@@ -120,7 +120,7 @@
       </com.google.android.material.textfield.TextInputLayout>
 
       <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutMeasuringType"
+        android:id="@+id/layout_measuring_kind"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -163,6 +163,32 @@
           android:inputType="none"
           android:textSize="14sp"
           app:simpleItems="@array/measuringCategories" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutMeasuringType"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:hint="@string/measuring_type"
+        app:boxStrokeColor="@color/primary_dark_color"
+        app:boxStrokeErrorColor="@color/attentionColor"
+        app:errorEnabled="true"
+        app:errorTextColor="@color/attentionColor">
+
+        <com.google.android.material.textfield.TextInputEditText
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:ellipsize="end"
+          android:fontFamily="@font/montserrat_regular"
+          android:imeOptions="actionNext"
+          android:inputType="text"
+          android:maxLines="1"
+          android:text="@={viewmodel.type}"
+          android:textColor="#333"
+          android:textSize="14sp" />
+
       </com.google.android.material.textfield.TextInputLayout>
 
       <com.google.android.material.textfield.TextInputLayout

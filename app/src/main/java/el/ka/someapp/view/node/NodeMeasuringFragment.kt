@@ -25,6 +25,11 @@ class NodeMeasuringFragment: BaseFragment() {
     measuringAdapter.setMeasuring(it)
   }
 
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    viewModel.loadMeasuring()
+  }
+
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,

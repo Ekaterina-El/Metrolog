@@ -84,6 +84,8 @@
   <string name="measuring_name">Наименование <font color="#CC2D2D">*</font></string>
   <string name="type_measuring">Вид СИ <font color="#CC2D2D">*</font></string>
   <string name="category_measuring">Категория СИ <font color="#CC2D2D">*</font></string>
+  <string name="measuring_type">Тип <font color="#CC2D2D">*</font></string>
+
   <string name="inventory_number">Инв. номер</string>
   <string name="serial_number">Серийный номер</string>
   <string name="reg_number_GRSI">Рег. номер ГРСИ</string>

@@ -18,13 +18,15 @@ class AddMeasuringViewModel(application: Application) : AndroidViewModel(applica
 
   val name = MutableLiveData("")
 
-  private val _type = MutableLiveData<MeasuringType?>(null)
-  val measuringType: LiveData<MeasuringType?>
-    get() = _type
+  private val _kind = MutableLiveData<MeasuringKind?>(null)
+  val measuringKind: LiveData<MeasuringKind?>
+    get() = _kind
 
-  fun setMeasuringType(newType: MeasuringType) {
-    _type.value = newType
+  fun setMeasuringKind(newKind: MeasuringKind) {
+    _kind.value = newKind
   }
+
+  val type = MutableLiveData("")
 
   private val _category = MutableLiveData<MeasuringCategory?>(null)
   val measuringCategory: LiveData<MeasuringCategory?>
@@ -116,7 +118,7 @@ class AddMeasuringViewModel(application: Application) : AndroidViewModel(applica
     _locationIDNode.value = idNode
   }
 
-  fun saveMeasuring() {
+  fun saveMeasuring(after: (String) -> Unit) {
     _state.value = State.LOADING
     val measuringPassport = getMessingPassport()
     val measuring = Measuring(passport = measuringPassport)
@@ -124,7 +126,8 @@ class AddMeasuringViewModel(application: Application) : AndroidViewModel(applica
     MeasuringDatabaseService.createMeasuring(
       measuring = measuring,
       onSuccess = {
-        _state.value = State.BACK
+        after(it)
+        _state.value = State.MEASURING_ADDED
       },
       onFailure = {
         _state.value = State.VIEW
@@ -134,9 +137,10 @@ class AddMeasuringViewModel(application: Application) : AndroidViewModel(applica
 
   private fun getMessingPassport(): MeasuringPassport {
     return MeasuringPassport(
-      type = _type.value!!,
+      kind = _kind.value!!,
       category = _category.value!!,
       name = name.value!!,
+      type = type.value!!,
       inventoryNumber = inventoryNumber.value,
       serialNumber = serialNumber.value,
       registrationNumberGRSI = registrationNumberGRSI.value,
@@ -163,7 +167,7 @@ class AddMeasuringViewModel(application: Application) : AndroidViewModel(applica
 
   private fun clearAllFields() {
     name.value = ""
-    _type.value = null
+    _kind.value = null
     _category.value = null
     inventoryNumber.value = null
     serialNumber.value = null

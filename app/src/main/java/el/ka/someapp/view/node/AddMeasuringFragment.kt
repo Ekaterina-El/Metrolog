@@ -30,10 +30,12 @@ class AddMeasuringFragment : BaseFragment() {
 
   private lateinit var viewModel: AddMeasuringViewModel
   private val stateObserver = Observer<State> { state ->
+    if (state == State.LOADING) showLoadingDialog() else hideLoadingDialog()
     when (state) {
-      State.LOADING -> showLoadingDialog()
+      State.MEASURING_ADDED -> {
+        goBack()
+      }
       State.BACK -> {
-        hideLoadingDialog()
         goBack()
       }
       else -> {}
@@ -65,6 +67,10 @@ class AddMeasuringFragment : BaseFragment() {
     }
   }
 
+  override fun onBackPressed() {
+    if (viewModel.state.value != State.LOADING) viewModel.goBack()
+  }
+
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     viewModel.setLocationIDNode(nodesViewModel.currentNode.value!!.id)
@@ -78,7 +84,9 @@ class AddMeasuringFragment : BaseFragment() {
   fun tryAddMeasuring() {
     if (!checkFields()) {
       binding.textError.visibility = View.GONE
-      viewModel.saveMeasuring()
+      viewModel.saveMeasuring {
+        nodesViewModel.addMeasuringToLocal(it)
+      }
     } else {
       binding.textError.visibility = View.VISIBLE
     }
@@ -101,21 +109,26 @@ class AddMeasuringFragment : BaseFragment() {
     }
 
     // Вид СИ: обязательное
-    val measuringType = viewModel.measuringType.value
-    var layout = binding.layoutMeasuringType
-    if (checkIsNoEmpty(layout, measuringType, isRequireString)) hasErrors = true
+    val measuringKind = viewModel.measuringKind.value
+    var layout = binding.layoutMeasuringKind
+    if (checkIsNoEmpty(layout, measuringKind, isRequireString)) hasErrors = true
 
     // Категория СИ: обязательное
     val measuringCategory = viewModel.measuringCategory.value
     layout = binding.layoutMeasuringCategory
     if (checkIsNoEmpty(layout, measuringCategory, isRequireString)) hasErrors = true
 
+    // Тип: обязательно
+    val measuringType = viewModel.type.value
+    layout = binding.layoutMeasuringType
+    if (checkIsNoEmpty(layout, measuringType, isRequireString)) hasErrors = true
+
     // Вид измерений: обязательно
     val measurementType = viewModel.measurementType.value
     layout = binding.layoutMeasurementType
     if (checkIsNoEmpty(layout, measurementType, isRequireString)) hasErrors = true
 
-    // Предел измерения: обязательный
+    // Предел измерения: обязательно
     val range = viewModel.range.value
     layout = binding.layoutRange
     if (checkIsNoEmpty(layout, range, isRequireString)) hasErrors = true
@@ -150,10 +163,6 @@ class AddMeasuringFragment : BaseFragment() {
       layout.error = null
       false
     }
-  }
-
-  override fun onBackPressed() {
-    if (viewModel.state.value != State.LOADING) viewModel.goBack()
   }
 
   override fun onResume() {
@@ -282,7 +291,7 @@ class AddMeasuringFragment : BaseFragment() {
   // region SpinnerListeners
   private fun onMeasuringTypeSelected(position: Int) {
     val type = Fields.measuringTypeVariables[position]
-    viewModel.setMeasuringType(type)
+    viewModel.setMeasuringKind(type)
   }
 
   private fun onMeasuringCategorySelected(position: Int) {

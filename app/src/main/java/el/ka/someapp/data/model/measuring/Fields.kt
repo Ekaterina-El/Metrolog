@@ -2,10 +2,10 @@ package el.ka.someapp.data.model.measuring
 
 object Fields {
   val measuringTypeVariables = listOf(
-    MeasuringType.MEASURE,
-    MeasuringType.MEASURING_DEVICE,
-    MeasuringType.MEASURING_TRANSDUCERS,
-    MeasuringType.MEASURING_SYSTEM,
+    MeasuringKind.MEASURE,
+    MeasuringKind.MEASURING_DEVICE,
+    MeasuringKind.MEASURING_TRANSDUCERS,
+    MeasuringKind.MEASURING_SYSTEM,
   )
 
   val measuringCategoryVariables = listOf(

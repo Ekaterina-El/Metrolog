@@ -75,6 +75,12 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       if (f.isEmpty()) _measuring.value
       else _measuring.value!!.filter { it.passport!!.name.contains(f, true) }
   }
+
+  fun addMeasuringToLocal(measuringId: String) {
+    val measuringItems = _currentNode.value!!.measuring.toMutableList()
+    measuringItems.add(measuringId)
+    _currentNode.value!!.measuring = measuringItems
+  }
   // endregion
 
   // region History

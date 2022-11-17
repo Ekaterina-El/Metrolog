@@ -9,7 +9,7 @@ import kotlinx.coroutines.Deferred
 object MeasuringDatabaseService {
   fun createMeasuring(
     measuring: Measuring,
-    onSuccess: () -> Unit,
+    onSuccess: (String) -> Unit,
     onFailure: (ErrorApp) -> Unit
   ) {
     FirebaseServices.databaseMeasuring
@@ -21,7 +21,7 @@ object MeasuringDatabaseService {
           nodeId = measuring.passport!!.locationIDNode,
           measuringId = measuringId,
           onFailure = { onFailure(Errors.somethingWrong) },
-          onSuccess = { onSuccess() }
+          onSuccess = { onSuccess(measuringId) }
         )
       }
   }

@@ -1,6 +1,6 @@
 package el.ka.someapp.data.model.measuring
 
-enum class MeasuringType {
+enum class MeasuringKind {
   MEASURE,                   // мера
   MEASURING_DEVICE,          // измерительный прибор
   MEASURING_TRANSDUCERS,     // измерительный преобразователь

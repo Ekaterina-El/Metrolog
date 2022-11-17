@@ -3,9 +3,10 @@ package el.ka.someapp.data.model.measuring
 import java.util.Date
 
 data class MeasuringPassport(
-  var type: MeasuringType = MeasuringType.MEASURE,
+  var kind: MeasuringKind = MeasuringKind.MEASURE,
   var category: MeasuringCategory = MeasuringCategory.WORKING,
   var name: String = "",
+  val type: String = "",
   var inventoryNumber: String? = "",
   var serialNumber: String? = "",
   var registrationNumberGRSI: String? = "",
