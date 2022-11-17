@@ -24,65 +24,30 @@
     android:layout_height="match_parent"
     tools:background="@color/white">
 
-    <TextView
-      android:id="@+id/textTitle"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="@dimen/app_padding"
-      android:layout_marginTop="20dp"
-      android:fontFamily="@font/montserrat_regular"
-      android:text="@{@string/measuring_with_name(viewmodel.currentNode.name)}"
-      android:textColor="@color/secondary_color"
-      android:textSize="18sp"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      tools:text="Отдел кадров: СИ" />
-
     <!--  Search - start  -->
     <LinearLayout
+      android:gravity="center"
       android:id="@+id/layoutHead"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/app_padding"
-      android:layout_marginTop="20dp"
       android:layout_marginEnd="@dimen/app_padding"
       android:orientation="horizontal"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/textTitle">
+      app:layout_constraintTop_toTopOf="parent"
+      android:layout_marginTop="15dp"
+      >
 
       <LinearLayout
         android:id="@+id/layoutSearchForm"
         android:layout_width="0dp"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@drawable/search_wrapper"
         android:gravity="center"
-        android:paddingHorizontal="15dp"
-        android:paddingVertical="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textTitle">
-
-        <EditText
-          android:id="@+id/editTextFilter"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginEnd="10dp"
-          android:layout_weight="1"
-          android:background="@null"
-          android:text="@={viewmodel.filterFieldMeasuring}"
-          android:afterTextChanged="@{() -> viewmodel.filterMeasuring()}"
-          android:ellipsize="end"
-          android:fontFamily="@font/montserrat_regular"
-          android:hint="@string/search"
-          android:importantForAutofill="no"
-          android:inputType="textFilter"
-          android:maxLines="1"
-          android:textColor="@color/secondary_color"
-          android:textColorHint="@color/dark_gray"
-          android:textSize="16sp" />
-
+        app:layout_constraintTop_toTopOf="parent">
         <ImageView
           android:id="@+id/imageSearchClear"
           android:layout_width="30dp"
@@ -92,12 +57,47 @@
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintTop_toTopOf="@id/editTextFilter"
           app:tint="@color/dark_gray"
-          tools:src="@drawable/ic_search" />
+          android:src="@drawable/ic_search" />
+
+
+        <EditText
+          android:id="@+id/editTextFilter"
+          android:layout_width="0dp"
+          android:layout_height="match_parent"
+          android:layout_marginStart="10dp"
+          android:layout_weight="1"
+          android:afterTextChanged="@{() -> viewmodel.filterMeasuring()}"
+          android:background="@null"
+          android:ellipsize="end"
+          android:fontFamily="@font/montserrat_regular"
+          android:hint="@string/search"
+          android:importantForAutofill="no"
+          android:inputType="textFilter"
+          android:maxLines="1"
+          android:text="@={viewmodel.filterFieldMeasuring}"
+          android:textColor="@color/secondary_color"
+          android:textColorHint="@color/dark_gray"
+          android:textSize="16sp" />
+
+
+        <ImageView
+          android:layout_width="20dp"
+          android:visibility="@{viewmodel.filterFieldMeasuring.length() > 0 ? View.VISIBLE : View.GONE}"
+          android:layout_height="20dp"
+          android:onClick="@{() -> viewmodel.clearFilterMeasuring()}"
+          android:contentDescription="@null"
+          app:layout_constraintBottom_toBottomOf="@id/editTextFilter"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="@id/editTextFilter"
+          app:tint="@color/dark_gray"
+          android:src="@drawable/ic_close" />
+
+
       </LinearLayout>
 
       <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_marginStart="10dp"
         android:background="@drawable/button_selector"
         android:clickable="true"
@@ -105,8 +105,8 @@
         android:onClick="@{() -> master.goAddMeasuring()}">
 
         <ImageView
-          android:layout_width="30dp"
-          android:layout_height="30dp"
+          android:layout_width="25dp"
+          android:layout_height="25dp"
           android:contentDescription="@null"
           android:src="@drawable/ic_add"
           app:layout_constraintBottom_toBottomOf="parent"

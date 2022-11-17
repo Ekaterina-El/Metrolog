@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
 import el.ka.someapp.R
 import el.ka.someapp.data.model.measuring.Measuring
 import el.ka.someapp.databinding.FragmentNodeMeasuringBinding
@@ -41,7 +42,10 @@ class NodeMeasuringFragment: BaseFragment() {
 
   override fun initFunctionalityParts() {
     binding = FragmentNodeMeasuringBinding.inflate(layoutInflater)
+
     measuringAdapter = MeasuringAdapter()
+    val d = DividerItemDecoration(binding.listMeasuring.context, DividerItemDecoration.VERTICAL)
+    binding.listMeasuring.addItemDecoration(d)
   }
 
   override fun inflateBindingVariables() {

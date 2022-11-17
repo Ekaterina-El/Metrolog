@@ -1,5 +1,6 @@
 package el.ka.someapp.view.adapters
 
+import android.annotation.SuppressLint
 import android.text.Html
 import android.text.InputType
 import android.view.View
@@ -14,6 +15,9 @@ import el.ka.someapp.data.model.ErrorApp
 import el.ka.someapp.data.model.State
 import el.ka.someapp.data.model.User
 import el.ka.someapp.data.model.UserRole
+import el.ka.someapp.data.model.measuring.MeasuringCondition
+import el.ka.someapp.data.model.measuring.MeasuringKind
+import el.ka.someapp.data.model.measuring.MeasuringState
 import el.ka.someapp.viewmodel.StatePassword
 
 @BindingAdapter("app:isLoad")
@@ -73,6 +77,48 @@ fun showUserUrl(imageView: ImageView, user: User?) {
 @BindingAdapter("app:backgroundUrl")
 fun showBackground(imageView: ImageView, user: User?) {
   loadInto(imageView, url = user?.backgroundImageUrl, placeholder = R.drawable.placeholder)
+}
+
+@SuppressLint("SetTextI18n")
+@BindingAdapter("showKind")
+fun showKind(textView: TextView, kind: MeasuringKind) {
+  val context = textView.context
+  val kindString = when (kind) {
+    MeasuringKind.MEASURE -> context.getString(R.string.measure)
+    MeasuringKind.MEASURING_DEVICE -> context.getString(R.string.measure_device)
+    MeasuringKind.MEASURING_TRANSDUCERS -> context.getString(R.string.measuring_transducers)
+    MeasuringKind.MEASURING_SYSTEM -> context.getString(R.string.measuring_system)
+  }
+
+  textView.text = "${context.getString(R.string.kind)}: $kindString"
+}
+
+
+@SuppressLint("SetTextI18n")
+@BindingAdapter("showStatus")
+fun showStatus(textView: TextView, state: MeasuringState) {
+  val context = textView.context
+  val stateString = when (state) {
+    MeasuringState.CALIBRATION -> context.getString(R.string.calibration)
+    MeasuringState.VERIFICATION -> context.getString(R.string.verification)
+    MeasuringState.CERTIFICATION -> context.getString(R.string.certification)
+  }
+
+  textView.text = "${context.getString(R.string.state)}: $stateString"
+}
+
+
+@SuppressLint("SetTextI18n")
+@BindingAdapter("showCondition")
+fun showCondition(textView: TextView, condition: MeasuringCondition) {
+  val context = textView.context
+  val conditionString = when (condition) {
+    MeasuringCondition.IN_WORK -> context.getString(R.string.in_work)
+    MeasuringCondition.REPAIR -> context.getString(R.string.repair)
+    MeasuringCondition.MOTHBALLED -> context.getString(R.string.mothballed)
+  }
+
+  textView.text = "${context.getString(R.string.conditionTitle)}: $conditionString"
 }
 
 fun loadInto(imageView: ImageView, url: String?, placeholder: Int) {

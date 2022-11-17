@@ -8,10 +8,10 @@
 
   <!-- Последовательность должна соответсовать последовательности в массиве Field.measuringTypeVariables -->
   <string-array name="measuringTypes">
-    <item>Мера</item>
-    <item>Измерительный прибор</item>
-    <item>Измерительный преобразователь</item>
-    <item>Измерительная система</item>
+    <item>@string/measure</item>
+    <item>@string/measure_device</item>
+    <item>@string/measuring_transducers</item>
+    <item>@string/measuring_system</item>
   </string-array>
 
   <!-- Последовательность должна соответсовать последовательности в массиве Field.measuringCategoryVariables -->
@@ -39,9 +39,9 @@
 
   <!-- Последовательность должна соответсовать последовательности в массиве Field.measurementStatusVariables -->
   <string-array name="measurementStatus">
-    <item>Калибровка</item>
-    <item>Поверка</item>
-    <item>Аттестация</item>
+    <item>@string/calibration</item>
+    <item>@string/verification</item>
+    <item>@string/certification</item>
   </string-array>
 
   <!-- Последовательность должна соответсовать последовательности в массиве Field.measurementConditionVariables -->

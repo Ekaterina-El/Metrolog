@@ -11,10 +11,6 @@ import el.ka.someapp.generated.callback.OnClickListener
 
 class MeasuringAdapter(val listener: ItemListener? = null) : RecyclerView.Adapter<MeasuringAdapter.ViewHolder>() {
   inner class ViewHolder(val binding: ItemMesuringBinding) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(node: Node) {
-      binding.textName.text = node.name
-      binding.textName
-    }
   }
 
   private val items = mutableListOf<Measuring>()

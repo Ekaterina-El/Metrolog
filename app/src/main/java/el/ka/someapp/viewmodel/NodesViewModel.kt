@@ -81,6 +81,11 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     measuringItems.add(measuringId)
     _currentNode.value!!.measuring = measuringItems
   }
+
+  fun clearFilterMeasuring() {
+    filterFieldMeasuring.value = ""
+    filterMeasuring()
+  }
   // endregion
 
   // region History

@@ -81,6 +81,11 @@
   <string name="continue_text">Продолжить</string>
   <string name="add_measuring">Добавление СИ</string>
 
+  <string name="type">Тип: %1$s</string>
+  <string name="kind">Вид</string>
+  <string name="state">Статус</string>
+  <string name="conditionTitle">Состояние</string>
+
   <string name="measuring_name">Наименование <font color="#CC2D2D">*</font></string>
   <string name="type_measuring">Вид СИ <font color="#CC2D2D">*</font></string>
   <string name="category_measuring">Категория СИ <font color="#CC2D2D">*</font></string>
@@ -126,4 +131,17 @@
   <string name="yes">Да</string>
   <string name="measuring_value_adapter">Измеряемые величины</string>
   <string name="delete_measuring_value">Удаление величины</string>
+
+  <string name="measure">Мера</string>
+  <string name="measure_device">Измерительный прибор</string>
+  <string name="measuring_transducers">Измерительный преобразователь</string>
+  <string name="measuring_system">Измерительная система</string>
+  
+  <string name="calibration">Калибровка</string>
+  <string name="verification">Поверка</string>
+  <string name="certification">Аттестация</string>
+
+  <string name="in_work">В работе</string>
+  <string name="repair">Ремонт</string>
+  <string name="mothballed">На длительном хранении</string>
 </resources>
