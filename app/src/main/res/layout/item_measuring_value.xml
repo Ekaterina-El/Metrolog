@@ -173,7 +173,7 @@
           android:ellipsize="end"
           android:fontFamily="@font/montserrat_regular"
           android:imeOptions="actionNext"
-          android:inputType="text"
+          android:inputType="numberDecimal"
           android:maxLines="1"
           android:textColor="@color/secondary_color"
           android:textSize="14sp" />

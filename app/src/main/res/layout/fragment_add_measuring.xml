@@ -313,17 +313,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
       </LinearLayout>
 
-      <TextView
-        android:id="@+id/empty_values"
-        android:layout_marginBottom="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/app_padding"
-        android:fontFamily="@font/montserrat_regular"
-        android:text="@string/empty_data"
-        android:textColor="@color/secondary_color"
-        android:textSize="14sp" />
-
       <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -1,5 +1,6 @@
 package el.ka.someapp.view.adapters
 
+import android.view.View
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import el.ka.someapp.R
@@ -15,9 +16,15 @@ class MeasuringValueViewHolder(val binding: ItemMeasuringValueBinding) :
     binding.inpUnits.setText(measurementValue.units)
     binding.inpGraduationPoint.setText(measurementValue.graduationPoint)
     binding.inpAccuracyClass.setText(measurementValue.accuracyClass)
+
+    binding.delete.visibility = View.GONE
   }
 
-  fun checkFields(): Boolean {
+  fun setCanDelete(state: Boolean) {
+    binding.delete.visibility = if (state) View.VISIBLE else View.GONE
+  }
+
+  fun hasErrors(): Boolean {
     var errors = 0
     val isRequireString = binding.root.context.getString(R.string.is_required)
 
@@ -36,12 +43,14 @@ class MeasuringValueViewHolder(val binding: ItemMeasuringValueBinding) :
     value = binding.inpUnits.text.toString()
     if (BaseFragment.checkIsNoEmpty(layout, value, isRequireString)) errors += 1
 
-    return errors == 0
+    return errors != 0
   }
 
-  fun addListeners() {
-    binding.inpName.doAfterTextChanged {
-
-    }
-  }
+  fun getMeasuringValue() = MeasurementValue (
+    name = binding.inpName.text.toString(),
+    range = binding.inpRange.text.toString(),
+    units = binding.inpUnits.text.toString(),
+    accuracyClass = binding.inpAccuracyClass.text.toString(),
+    graduationPoint = binding.inpGraduationPoint.text.toString(),
+  )
 }

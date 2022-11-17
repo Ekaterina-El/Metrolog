@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.textfield.TextInputLayout
 import el.ka.someapp.R
 import el.ka.someapp.data.model.State
 import el.ka.someapp.data.model.measuring.DateType
@@ -47,12 +46,6 @@ class AddMeasuringFragment : BaseFragment() {
   private var datePickerDialog: DatePickerDialog? = null
 
   private lateinit var measuringValueAdapter: MeasuringValueAdapter
-  private val measuringValueListener = object: MeasuringValueAdapter.Companion.AdapterListener {
-    override fun onChangeSize(size: Int) {
-      binding.emptyValues.visibility = if (size == 0) View.VISIBLE else View.GONE
-    }
-
-  }
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -65,7 +58,10 @@ class AddMeasuringFragment : BaseFragment() {
 
   override fun initFunctionalityParts() {
     binding = FragmentAddMeasuringBinding.inflate(layoutInflater)
-    measuringValueAdapter = MeasuringValueAdapter(measuringValueListener)
+
+    measuringValueAdapter = MeasuringValueAdapter()
+    measuringValueAdapter.addNewItem()
+
     viewModel = ViewModelProvider(this)[AddMeasuringViewModel::class.java]
   }
 
@@ -95,6 +91,7 @@ class AddMeasuringFragment : BaseFragment() {
   fun tryAddMeasuring() {
     if (!checkFields()) {
       binding.textError.visibility = View.GONE
+      viewModel.setMeasurementValues(measuringValueAdapter.getMeasuringValues())
       viewModel.saveMeasuring {
         nodesViewModel.addMeasuringToLocal(it)
       }
@@ -139,20 +136,10 @@ class AddMeasuringFragment : BaseFragment() {
     layout = binding.layoutMeasurementType
     if (checkIsNoEmpty(layout, measurementType, isRequireString)) hasErrors = true
 
+    if (!measuringValueAdapter.checkAllFields()) {
+      hasErrors = true
+    }
 
-    // TODO: проверить что все поля в values без ошибок
-
-    /*
-    // Предел измерения: обязательно
-    val range = viewModel.range.value
-    layout = binding.layoutRange
-    if (checkIsNoEmpty(layout, range, isRequireString)) hasErrors = true
-
-    // Класс точности: обязательно
-    val accuracyClass = viewModel.accuracyClass.value
-    layout = binding.layoutAccuracyClass
-    if (checkIsNoEmpty(layout, accuracyClass, isRequireString)) hasErrors = true
-     */
 
     // Статус: обязательно
     val measuringState = viewModel.measuringState.value
