@@ -51,9 +51,12 @@ class AddMeasuringViewModel(application: Application) : AndroidViewModel(applica
     _measurementType.value = newType
   }
 
-  val range = MutableLiveData("")
-  val accuracyClass = MutableLiveData("")
-  val graduationPoint = MutableLiveData("")
+  private val _measurementValues = MutableLiveData<List<MeasurementValue>>(listOf())
+  val measurementValue: LiveData<List<MeasurementValue>> get() = _measurementValues
+
+  fun setMeasurementValues(measurementValue: List<MeasurementValue>) {
+    _measurementValues.value = measurementValue
+  }
 
   private val _measuringState = MutableLiveData<MeasuringState?>(null)
   val measuringState: LiveData<MeasuringState?>
@@ -148,9 +151,7 @@ class AddMeasuringViewModel(application: Application) : AndroidViewModel(applica
       supplier = supplier.value,
       sectorGROEI = sectorGROEI.value,
       measurementType = _measurementType.value!!,
-      range = range.value!!,
-      accuracyСlass = accuracyClass.value!!,
-      graduationPoint = graduationPoint.value!!,
+      measurementValues = _measurementValues.value!!,
       status = _measuringState.value!!,
       condition = _measuringCondition.value!!,
       conditionDate = _conditionDate.value,
@@ -174,9 +175,7 @@ class AddMeasuringViewModel(application: Application) : AndroidViewModel(applica
     registrationNumberGRSI.value = null
     manufacturer.value = null
     supplier.value = null
-    range.value = null
-    accuracyClass.value = null
-    graduationPoint.value = null
+    _measurementValues.value = listOf()
     _measuringState.value = null
     _measuringCondition.value = null
     _conditionDate.value = null

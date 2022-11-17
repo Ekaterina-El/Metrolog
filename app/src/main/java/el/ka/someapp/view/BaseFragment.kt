@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputLayout
 import el.ka.someapp.R
 import el.ka.someapp.data.model.ErrorApp
 
@@ -115,5 +116,19 @@ abstract class BaseFragment : Fragment() {
     const val sharedPreferencesName = "METROLOGY"
     const val LOCAL_CURRENT_PASSWORD = "local_current_password"
 
+
+    fun checkIsNoEmpty(
+      layout: TextInputLayout,
+      value: Any?,
+      isRequireString: String
+    ): Boolean {
+      return if (value == null || value == "") {
+        layout.error = isRequireString
+        true
+      } else {
+        layout.error = null
+        false
+      }
+    }
   }
 }

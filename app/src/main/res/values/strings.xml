@@ -102,6 +102,13 @@
   <string name="releaseDate">Дата выпуска</string>
   <string name="commissioningDate">Дата ввода в эксплутацию</string>
 
+  <string name="measuring_value_name">Величина <font color="#CC2D2D">*</font></string>
+  <string name="measuring_range">Предел <font color="#CC2D2D">*</font></string>
+  <string name="measuring_units">Единицы <font color="#CC2D2D">*</font></string>
+  <string name="measuring_accuracy_class">Класс точности</string>
+  <string name="measuring_graduation_point">Цена деления</string>
+
+
   <string name="is_required">Это обязательное поле</string>
   <string name="required_min_length">Минимальная длина: %1$d</string>
   <string name="creteMeasuringDescription">Для добавления нового СИ заполните форму</string>
@@ -117,4 +124,6 @@
   <string name="edit2">Редактировать</string>
   <string name="delete">Удалить</string>
   <string name="yes">Да</string>
+  <string name="measuring_value_adapter">Измеряемые величины</string>
+  <string name="delete_measuring_value">Удаление величины</string>
 </resources>

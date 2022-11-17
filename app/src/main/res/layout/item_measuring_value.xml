@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <data>
+
+  </data>
+
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="10dp"
+    android:background="@android:color/transparent"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/app_padding">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:baselineAligned="false"
+      android:orientation="horizontal">
+
+      <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutName"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="@string/measuring_value_name"
+        app:boxStrokeColor="@color/primary_dark_color"
+        app:boxStrokeErrorColor="@color/attentionColor"
+        app:errorEnabled="true"
+        app:errorTextColor="@color/attentionColor">
+
+        <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/inp_name"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:ellipsize="end"
+          android:fontFamily="@font/montserrat_regular"
+          android:imeOptions="actionNext"
+          android:inputType="text"
+          android:maxLines="1"
+          android:textColor="#333"
+          android:textSize="14sp" />
+
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <ImageView
+        android:id="@+id/delete"
+        android:layout_width="30dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_height="30dp"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_delete"
+        app:tint="@color/attentionColor"
+        android:contentDescription="@string/delete_measuring_value" />
+    </LinearLayout>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:baselineAligned="false"
+      android:orientation="horizontal">
+
+      <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutRange"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:layout_weight="1"
+        android:hint="@string/measuring_range"
+        app:boxStrokeColor="@color/primary_dark_color"
+        app:boxStrokeErrorColor="@color/attentionColor"
+        app:errorEnabled="true"
+        app:errorTextColor="@color/attentionColor">
+
+        <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/inp_range"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:ellipsize="end"
+          android:fontFamily="@font/montserrat_regular"
+          android:imeOptions="actionNext"
+          android:inputType="numberDecimal"
+          android:maxLines="1"
+          android:textColor="#333"
+          android:textSize="14sp" />
+
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutUnits"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_weight="1"
+        android:hint="@string/measuring_units"
+        app:boxStrokeColor="@color/primary_dark_color"
+        app:boxStrokeErrorColor="@color/attentionColor"
+        app:errorEnabled="true"
+        app:errorTextColor="@color/attentionColor">
+
+        <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/inp_units"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:ellipsize="end"
+          android:fontFamily="@font/montserrat_regular"
+          android:imeOptions="actionNext"
+          android:inputType="text"
+          android:maxLines="1"
+          android:textColor="#333"
+          android:textSize="14sp" />
+
+      </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:baselineAligned="false"
+      android:orientation="horizontal">
+
+      <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:layout_weight="1"
+        android:hint="@string/measuring_accuracy_class"
+        app:boxStrokeColor="@color/primary_dark_color"
+        app:boxStrokeErrorColor="@color/attentionColor"
+        app:errorEnabled="true"
+        app:errorTextColor="@color/attentionColor">
+
+        <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/inp_accuracy_class"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:ellipsize="end"
+          android:fontFamily="@font/montserrat_regular"
+          android:imeOptions="actionNext"
+          android:inputType="numberDecimal"
+          android:maxLines="1"
+          android:textColor="@color/secondary_color"
+          android:textSize="14sp" />
+
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_weight="1"
+        android:hint="@string/measuring_graduation_point"
+        app:boxStrokeColor="@color/primary_dark_color"
+        app:boxStrokeErrorColor="@color/attentionColor"
+        app:errorEnabled="true"
+        app:errorTextColor="@color/attentionColor">
+
+        <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/inp_graduation_point"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:ellipsize="end"
+          android:fontFamily="@font/montserrat_regular"
+          android:imeOptions="actionNext"
+          android:inputType="text"
+          android:maxLines="1"
+          android:textColor="@color/secondary_color"
+          android:textSize="14sp" />
+
+      </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+  </LinearLayout>
+</layout>

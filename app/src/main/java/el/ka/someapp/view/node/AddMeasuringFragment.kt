@@ -17,6 +17,7 @@ import el.ka.someapp.data.model.measuring.DateType
 import el.ka.someapp.data.model.measuring.Fields
 import el.ka.someapp.databinding.FragmentAddMeasuringBinding
 import el.ka.someapp.view.BaseFragment
+import el.ka.someapp.view.adapters.MeasuringValueAdapter
 import el.ka.someapp.viewmodel.AddMeasuringViewModel
 import el.ka.someapp.viewmodel.NodesViewModel
 import el.ka.someapp.viewmodel.VisibleViewModel
@@ -45,6 +46,14 @@ class AddMeasuringFragment : BaseFragment() {
   private val nodesViewModel: NodesViewModel by activityViewModels()
   private var datePickerDialog: DatePickerDialog? = null
 
+  private lateinit var measuringValueAdapter: MeasuringValueAdapter
+  private val measuringValueListener = object: MeasuringValueAdapter.Companion.AdapterListener {
+    override fun onChangeSize(size: Int) {
+      binding.emptyValues.visibility = if (size == 0) View.VISIBLE else View.GONE
+    }
+
+  }
+
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
@@ -56,12 +65,14 @@ class AddMeasuringFragment : BaseFragment() {
 
   override fun initFunctionalityParts() {
     binding = FragmentAddMeasuringBinding.inflate(layoutInflater)
+    measuringValueAdapter = MeasuringValueAdapter(measuringValueListener)
     viewModel = ViewModelProvider(this)[AddMeasuringViewModel::class.java]
   }
 
   override fun inflateBindingVariables() {
     binding.apply {
       viewmodel = this@AddMeasuringFragment.viewModel
+      measuringValueAdapter = this@AddMeasuringFragment.measuringValueAdapter
       lifecycleOwner = viewLifecycleOwner
       master = this@AddMeasuringFragment
     }
@@ -128,6 +139,10 @@ class AddMeasuringFragment : BaseFragment() {
     layout = binding.layoutMeasurementType
     if (checkIsNoEmpty(layout, measurementType, isRequireString)) hasErrors = true
 
+
+    // TODO: проверить что все поля в values без ошибок
+
+    /*
     // Предел измерения: обязательно
     val range = viewModel.range.value
     layout = binding.layoutRange
@@ -137,6 +152,7 @@ class AddMeasuringFragment : BaseFragment() {
     val accuracyClass = viewModel.accuracyClass.value
     layout = binding.layoutAccuracyClass
     if (checkIsNoEmpty(layout, accuracyClass, isRequireString)) hasErrors = true
+     */
 
     // Статус: обязательно
     val measuringState = viewModel.measuringState.value
@@ -151,18 +167,8 @@ class AddMeasuringFragment : BaseFragment() {
     return hasErrors
   }
 
-  private fun checkIsNoEmpty(
-    layout: TextInputLayout,
-    value: Any?,
-    isRequireString: String
-  ): Boolean {
-    return if (value == null || value == "") {
-      layout.error = isRequireString
-      true
-    } else {
-      layout.error = null
-      false
-    }
+  fun addMeasuringValue() {
+     measuringValueAdapter.addNewItem()
   }
 
   override fun onResume() {
