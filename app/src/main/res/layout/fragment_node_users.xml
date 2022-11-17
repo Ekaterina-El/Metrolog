@@ -25,54 +25,47 @@
     android:layout_height="match_parent"
     tools:background="@color/white">
 
-    <TextView
-      android:id="@+id/textTitle"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="@dimen/app_padding"
-      android:layout_marginTop="20dp"
-      android:layout_marginEnd="@dimen/app_padding"
-      android:fontFamily="@font/montserrat_regular"
-      android:text="@{@string/users_with_name(viewmodel.currentNode.name)}"
-      android:textColor="@color/secondary_color"
-      android:textSize="18sp"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      tools:text="Отдел кадров: Пользователи" />
-
     <!--  Search - start  -->
     <LinearLayout
       android:id="@+id/layoutHead"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/app_padding"
-      android:layout_marginTop="20dp"
+      android:layout_marginTop="@dimen/app_padding"
       android:layout_marginEnd="@dimen/app_padding"
       android:baselineAligned="false"
+      android:gravity="center"
       android:orientation="horizontal"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/textTitle">
+      app:layout_constraintTop_toTopOf="parent">
 
       <LinearLayout
         android:id="@+id/layoutSearchForm"
         android:layout_width="0dp"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@drawable/search_wrapper"
         android:gravity="center"
-        android:paddingHorizontal="15dp"
-        android:paddingVertical="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textTitle">
 
+        <ImageView
+          android:id="@+id/imageSearchClear"
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:contentDescription="@null"
+          app:layout_constraintBottom_toBottomOf="@id/editTextFilter"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="@id/editTextFilter"
+          app:tint="@color/dark_gray"
+          android:src="@drawable/ic_search" />
+
         <EditText
           android:id="@+id/editTextFilter"
           android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginEnd="10dp"
+          android:layout_height="match_parent"
+          android:layout_marginHorizontal="10dp"
           android:layout_weight="1"
           android:afterTextChanged="@{() -> viewmodel.filterUsers()}"
           android:background="@null"
@@ -85,23 +78,26 @@
           android:text="@={viewmodel.filterUsersVal}"
           android:textColor="@color/secondary_color"
           android:textColorHint="@color/dark_gray"
-          android:textSize="18sp" />
+          android:textSize="16sp"
+          tools:ignore="NestedWeights" />
 
         <ImageView
-          android:id="@+id/imageSearchClear"
-          android:layout_width="30dp"
-          android:layout_height="30dp"
+          android:layout_width="20dp"
+          android:layout_height="20dp"
           android:contentDescription="@null"
+          android:visibility="@{viewmodel.filterUsersVal.length() > 0 ? View.VISIBLE : View.GONE}"
+          android:onClick="@{() -> viewmodel.clearFilterUsers()}"
           app:layout_constraintBottom_toBottomOf="@id/editTextFilter"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintTop_toTopOf="@id/editTextFilter"
           app:tint="@color/dark_gray"
-          tools:src="@drawable/ic_search" />
+          android:src="@drawable/ic_close" />
+
       </LinearLayout>
 
       <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_marginStart="10dp"
         android:background="@drawable/button_selector"
         android:clickable="true"
@@ -109,8 +105,8 @@
         android:onClick="@{() -> master.showAddUserDialog()}">
 
         <ImageView
-          android:layout_width="30dp"
-          android:layout_height="30dp"
+          android:layout_width="25dp"
+          android:layout_height="25dp"
           android:contentDescription="@null"
           android:src="@drawable/ic_add"
           app:layout_constraintBottom_toBottomOf="parent"

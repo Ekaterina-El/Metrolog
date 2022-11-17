@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.android.material.textfield.TextInputLayout
 import el.ka.someapp.R
 import el.ka.someapp.data.model.State
@@ -64,6 +65,9 @@ class NodeUsersFragment : BaseFragment() {
       context = requireContext(),
       listener = usersListener
     )
+
+    val d = DividerItemDecoration(binding.listUsers.context, DividerItemDecoration.VERTICAL)
+    binding.listUsers.addItemDecoration(d)
   }
 
   override fun inflateBindingVariables() {
