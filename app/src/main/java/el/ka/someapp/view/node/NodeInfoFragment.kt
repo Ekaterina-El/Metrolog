@@ -227,9 +227,12 @@ class NodeInfoFragment : BaseFragment() {
 
   private fun clearJobFieldDialog() {
     bindingJobFieldDialog.textTitle.text = getString(R.string.add_job_field)
-    jobFieldViewModel!!.jobFieldName.value = ""
-    jobFieldViewModel!!.role.value = null
-    jobFieldViewModel!!.setState(State.VIEW)
+    jobFieldViewModel!!.clearFields()
+
+    val elementsState = View.VISIBLE
+    bindingJobFieldDialog.fieldJobName.visibility = elementsState
+    bindingJobFieldDialog.layoutJobFieldRole.visibility = elementsState
+    bindingJobFieldDialog.textViewRole.visibility = elementsState
   }
 
   private fun openJobFieldDialogToEdit(jobField: JobField) {
@@ -237,15 +240,16 @@ class NodeInfoFragment : BaseFragment() {
 
     bindingJobFieldDialog.textTitle.text = getString(R.string.edit_job_field)
 
-    jobFieldViewModel!!.setJobField(jobField)
-    jobFieldViewModel!!.jobFieldName.value = jobField.jobName
-    jobFieldViewModel!!.role.value = jobField.jobRole
-
     val user = viewModel.getUserById(jobField.userId)
-    jobFieldViewModel!!.setUser(user)
+    jobFieldViewModel!!.setJobField(jobField, user)
 
     val pos = spinnerUsersAdapter!!.getPosition(user)
     bindingJobFieldDialog.spinner.setSelection(pos)
+
+    val elementsState = if (jobField.jobRole == UserRole.HEAD) View.GONE else View.VISIBLE
+    bindingJobFieldDialog.fieldJobName.visibility = elementsState
+    bindingJobFieldDialog.layoutJobFieldRole.visibility = elementsState
+    bindingJobFieldDialog.textViewRole.visibility = elementsState
 
     jobFieldDialog!!.show()
   }

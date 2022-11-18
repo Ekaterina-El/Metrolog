@@ -24,10 +24,6 @@ class JobFieldViewModel(application: Application) : AndroidViewModel(application
   val state: LiveData<State>
     get() = _state
 
-  fun setState(newState: State) {
-    _state.value = newState
-  }
-
   private val _jobField = MutableLiveData<JobField?>(null)
   val jobField: LiveData<JobField?>
     get() = _jobField
@@ -39,27 +35,28 @@ class JobFieldViewModel(application: Application) : AndroidViewModel(application
   private fun checkErrors(): Int {
     var errors = 0
 
-    if (role.value == null) {
+    if (role.value == null && _state.value != State.EDIT_JOB_FIELD) {
       errors += 1
       hasRoleError.value = true
     } else {
       hasRoleError.value = false
     }
 
-    when (jobFieldName.value) {
-      "" -> {
-        _nameError.value = Errors.emptyFieldNameValue
-        errors += 1
-      }
-      UserRole.HEAD.roleName -> {
-        _nameError.value = Errors.reservedValue
-        errors += 1
-      }
-      else -> {
-        _nameError.value = null
+    if (_state.value != State.EDIT_JOB_FIELD) {
+      when (jobFieldName.value) {
+        "" -> {
+          _nameError.value = Errors.emptyFieldNameValue
+          errors += 1
+        }
+        UserRole.HEAD.roleName -> {
+          _nameError.value = Errors.reservedValue
+          errors += 1
+        }
+        else -> {
+          _nameError.value = null
+        }
       }
     }
-
     return errors
   }
 
@@ -74,7 +71,11 @@ class JobFieldViewModel(application: Application) : AndroidViewModel(application
       _state.value = State.JOB_FIELD_EDITING
       _jobField.value = getJobField()
 
-      NodesDatabaseService.editJobField(nodeId, _oldJobField.value!!, _jobField.value!!, onFailure = {}) {
+      NodesDatabaseService.editJobField(
+        nodeId,
+        _oldJobField.value!!,
+        _jobField.value!!,
+        onFailure = {}) {
         clearJobField()
         _state.value = State.JOB_FIELD_EDITED
       }
@@ -105,14 +106,15 @@ class JobFieldViewModel(application: Application) : AndroidViewModel(application
     _nameError.value = null
     role.value = null
     jobFieldName.value = ""
+    _selectedUser.value = null
   }
 
-  fun setUser(user: User) {
-    _selectedUser.value = user
-  }
-
-  fun setJobField(jobField: JobField) {
+  fun setJobField(jobField: JobField, user: User) {
     _jobField.value = jobField
+    jobFieldName.value = jobField.jobName
+    role.value = jobField.jobRole
+    _selectedUser.value = user
+    _state.value = State.EDIT_JOB_FIELD
   }
 
   private fun getJobField() = JobField(
@@ -123,5 +125,15 @@ class JobFieldViewModel(application: Application) : AndroidViewModel(application
 
   fun afterNotifiedOfNewFieldJob() {
     _state.value = State.VIEW
+  }
+
+  fun clearFields() {
+    jobFieldName.value = ""
+    role.value = null
+    _state.value = State.VIEW
+  }
+
+  fun setUser(user: User) {
+    _selectedUser.value = user
   }
 }
