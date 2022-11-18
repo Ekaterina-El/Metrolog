@@ -24,6 +24,10 @@ class JobFieldViewModel(application: Application) : AndroidViewModel(application
   val state: LiveData<State>
     get() = _state
 
+  fun setState(newState: State) {
+    _state.value = newState
+  }
+
   private val _jobField = MutableLiveData<JobField?>(null)
   val jobField: LiveData<JobField?>
     get() = _jobField

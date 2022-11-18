@@ -173,9 +173,6 @@ class NodeInfoFragment : BaseFragment() {
 
   private fun createJobFieldDialog() {
     jobFieldDialog = Dialog(requireContext())
-
-
-
     if (spinnerUsersAdapter == null)
       spinnerUsersAdapter = SpinnerUsersAdapter(requireContext(), viewModel.companyAllUsers.value!!)
 
@@ -187,7 +184,7 @@ class NodeInfoFragment : BaseFragment() {
       dialog.setContentView(bindingJobFieldDialog.root)
 
       dialog.setOnDismissListener {
-        bindingJobFieldDialog.textTitle.text = getString(R.string.add_job_field)
+        clearJobFieldDialog()
       }
 
       bindingJobFieldDialog.spinner.adapter = spinnerUsersAdapter
@@ -211,7 +208,7 @@ class NodeInfoFragment : BaseFragment() {
       bindingJobFieldDialog.buttonOk.setOnClickListener {
         val nodeId = viewModel.currentNode.value!!.id
 
-        if (viewModel.state.value == State.EDIT_JOB_FIELD)
+        if (jobFieldViewModel!!.state.value == State.EDIT_JOB_FIELD)
           jobFieldViewModel!!.editJobField(nodeId)
         else jobFieldViewModel!!.tryCreateJobField(nodeId)
       }
@@ -226,6 +223,13 @@ class NodeInfoFragment : BaseFragment() {
   private fun updateUsers() {
     spinnerUsersAdapter = SpinnerUsersAdapter(requireContext(), viewModel.companyAllUsers.value!!)
     bindingJobFieldDialog.spinner.adapter = spinnerUsersAdapter
+  }
+
+  private fun clearJobFieldDialog() {
+    bindingJobFieldDialog.textTitle.text = getString(R.string.add_job_field)
+    jobFieldViewModel!!.jobFieldName.value = ""
+    jobFieldViewModel!!.role.value = null
+    jobFieldViewModel!!.setState(State.VIEW)
   }
 
   private fun openJobFieldDialogToEdit(jobField: JobField) {
