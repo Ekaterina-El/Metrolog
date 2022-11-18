@@ -60,6 +60,7 @@
   <string name="user_profile_avatar">user_profile_avatar</string>
   <string name="add_user">Добавление пользователя</string>
   <string name="add_job_field">Добавление должности</string>
+  <string name="edit_job_field">Редактирование должности</string>
   <string name="enter_user_email">Для предоставление пользователю доступ к проекту введите его почту</string>
   <string name="add_button">Добавить</string>
   <string name="user_aready_has_access">У пользователя уже есть доступ к этому проекту</string>
