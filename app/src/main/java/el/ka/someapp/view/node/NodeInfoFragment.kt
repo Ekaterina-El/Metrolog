@@ -92,20 +92,22 @@ class NodeInfoFragment : BaseFragment() {
     }
   }
 
+
   override fun onBackPressed() {
     viewModel.goBack()
   }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
+
+  override fun onResume() {
+    super.onResume()
     viewModel.state.observe(viewLifecycleOwner, stateObserver)
     viewModel.nodesHistory.observe(viewLifecycleOwner, hierarchyObserver)
     viewModel.localUser.observe(viewLifecycleOwner, localUsersObserver)
     jobFieldViewModel?.state?.observe(viewLifecycleOwner, jobFieldStateObserver)
   }
 
-  override fun onDestroy() {
-    super.onDestroy()
+  override fun onStop() {
+    super.onStop()
     viewModel.state.removeObserver(stateObserver)
     viewModel.nodesHistory.removeObserver(hierarchyObserver)
     viewModel.localUser.removeObserver(localUsersObserver)
@@ -123,7 +125,6 @@ class NodeInfoFragment : BaseFragment() {
     changeNameDialog!!.setCancelable(true)
     changeNameDialog!!.findViewById<TextView>(R.id.textTitle).text = getString(R.string.edit)
     val editTextName = changeNameDialog!!.findViewById<EditText>(R.id.inp1)
-    //editTextName.setText(viewModel.currentNode.value!!.name)
 
     changeNameDialog!!.findViewById<Button>(R.id.buttonOk).setOnClickListener {
       val value = editTextName.text.toString()

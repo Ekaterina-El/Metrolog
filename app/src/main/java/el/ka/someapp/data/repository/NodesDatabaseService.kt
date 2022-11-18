@@ -198,7 +198,7 @@ object NodesDatabaseService {
     changeFieldArray(ref, isAdding = true, field = JOBS_FIELD, jobField, onSuccess, onFailure)
   }
 
-  fun deleterJobField(
+  fun deleteJobField(
     nodeId: String,
     jobField: JobField,
     onFailure: () -> Unit = {},
@@ -232,7 +232,7 @@ object NodesDatabaseService {
     onFailure: () -> Unit,
     onSuccess: () -> Unit
   ) {
-    deleterJobField(nodeId, oldJobField, onFailure) {
+    deleteJobField(nodeId, oldJobField, onFailure) {
       addJobField(nodeId, jobField, onFailure, onSuccess)
     }
   }

@@ -93,7 +93,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   val nodesHistory: LiveData<List<Node>>
     get() = _nodesHistory
 
-  private fun getCurrentRootNode() = _nodesHistory.value!![0].id
+  private fun getCurrentRootNode() = _nodesHistory.value!![0]
 
   private fun addToHistory(node: Node) {
     if (_nodesHistory.value!!.isEmpty() || _nodesHistory.value!!.last().id != node.id) {
@@ -276,8 +276,10 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     _currentNode.value = node
     if (saveToHistory) addToHistory(_currentNode.value!!)
 
-    loadLocalUsers()
-    loadCompanyAllUsers()
+    loadCompanyAllUsers {
+      loadLocalUsers()
+    }
+
     _state.value = State.VIEW
   }
   // endregion
@@ -378,11 +380,10 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
 
   fun getUserById(id: String) = _companyAllUsers.value!!.first { it.uid == id }
 
-  private fun loadCompanyAllUsers() {
+  private fun loadCompanyAllUsers(afterLoad: () -> Unit = {}) {
     if (_currentNode.value!!.level != 0) return
 
     _state.value = State.LOADING
-//    val usersIds = _currentNode.value!!.usersHaveAccess
     val usersIds = getRootNode()!!.usersHaveAccess
     viewModelScope.launch {
       val users = UsersDatabaseService
@@ -390,6 +391,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
         .awaitAll()
         .mapNotNull { it.toObject(User::class.java) }
       setUsers(users)
+      afterLoad()
     }
   }
 
@@ -443,27 +445,28 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   }
 
   fun updateJobField(oldJobField: JobField, jobField: JobField) {
-    _currentNode.value!!.jobs = _currentNode.value!!.jobs.map {
+    /*_currentNode.value!!.jobs = _currentNode.value!!.jobs.map {
       return@map if (it == oldJobField) jobField else it
-    }
+    }*/
+
+    val jobs = _currentNode.value!!.jobs.toMutableList()
+    jobs.remove(oldJobField)
+    jobs.add(jobField)
+    _currentNode.value!!.jobs = jobs
 
     loadLocalUsers()
     _state.value = State.VIEW
   }
 
   fun deleteJobField(jobField: JobField) {
-    NodesDatabaseService.deleterJobField(
+    NodesDatabaseService.deleteJobField(
       _currentNode.value!!.id,
       jobField = jobField,
       onFailure = {},
       onSuccess = {
-        _localUsers.value = _localUsers.value!!.filter {
-          it.jobField != jobField
-        }
-//         удалить из локального состояния currentNode
+        _localUsers.value = _localUsers.value!!.filter { it.jobField != jobField }
       }
     )
-
   }
 
   private fun loadLocalUsers() {
@@ -471,10 +474,55 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     viewModelScope.launch {
       val users = NodesDatabaseService
         .loadCompaniesJobsUsers(_currentNode.value!!.jobs)
+
       _localUsers.value = users
+      checkAliveJobField(
+        jobFields = _localUsers.value!!,
+        usersIds = getRootNode()!!.usersHaveAccess
+      )
       _state.value = State.VIEW
     }
   }
+
+  private fun checkAliveJobField(jobFields: List<LocalUser>, usersIds: List<String>) {
+    val deadJobFields = jobFields.filter { !usersIds.contains(it.jobField.userId) }
+    if (deadJobFields.isEmpty()) return
+
+    val nodeId = _currentNode.value!!.id
+
+    deadJobFields.forEach {
+      NodesDatabaseService.deleteJobField(
+        nodeId,
+        jobField = it.jobField,
+        onFailure = {},
+        onSuccess = {})
+
+    }
+    _localUsers.value!!.toMutableList().removeAll(deadJobFields)
+
+
+    val updatedLocalUsers = deadJobFields.map { localUser ->
+      val jobField = localUser.jobField
+
+
+      val projectRootUserId = getCurrentRootNode().jobs.first { it.jobRole == UserRole.HEAD }.userId
+      jobField.userId = projectRootUserId
+
+      localUser.jobField = jobField
+      return@map localUser
+    }
+
+    updatedLocalUsers.forEach {
+      NodesDatabaseService.addJobField(
+        nodeId,
+        jobField = it.jobField,
+        onFailure = {},
+        onSuccess = {})
+    }
+    _localUsers.value!!.toMutableList().addAll(updatedLocalUsers)
+
+    loadLocalUsers()
+   }
 
   private val _editJobField = MutableLiveData<JobField?>()
   val editJobField: LiveData<JobField?> get() = _editJobField
@@ -495,7 +543,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     _state.value = State.LOADING
     NodesDatabaseService.addUserToProjectByEmail(
       email = email,
-      currentProjectId = getCurrentRootNode(),
+      currentProjectId = getCurrentRootNode().id,
       onFailure = {
         _addUserError.value = it
         _state.value = State.ADD_USER_ERROR
@@ -518,8 +566,10 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
 
     if (isAdding) users.add(uid) else users.remove(uid)
     _nodesHistory.value!![0].usersHaveAccess = users
-    loadCompanyAllUsers()
-    filterNodes()
+    loadCompanyAllUsers() {
+      loadLocalUsers()
+      filterNodes()
+    }
   }
 
 
@@ -542,19 +592,6 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
           State.VIEW
         }) {
           updateProjectUsers(isAdding = false, userId)
-          /*_nodesHistory.value?.mapIndexed { index, node ->
-            if (index == 0) {
-              val users = node.usersHaveAccess.toMutableList()
-              users.remove(userId)
-              node.usersHaveAccess = users
-            }
-            return@mapIndexed node
-          }
-
-//          _companyAllUsers.value = _companyAllUsers.value
-          loadCompanyAllUsers()
-
-          _state.value = State.VIEW*/
         }
       }
   }
