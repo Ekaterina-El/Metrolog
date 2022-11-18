@@ -22,27 +22,13 @@
 
   <androidx.core.widget.NestedScrollView
     android:layout_width="match_parent"
-    android:overScrollMode="never"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:overScrollMode="never">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-      tools:background="@color/white"
       android:layout_width="match_parent"
-      android:layout_height="match_parent">
-
-      <TextView
-        android:id="@+id/textTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/app_padding"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/montserrat_regular"
-        android:text="@{@string/nodes_with_name(viewmodel.currentNode.name)}"
-        android:textColor="@color/secondary_color"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Отдел кадров: Узлы" />
+      android:layout_height="match_parent"
+      tools:background="@color/white">
 
       <!--  Search - start  -->
       <LinearLayout
@@ -50,32 +36,41 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/app_padding"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/app_padding"
         android:layout_marginEnd="@dimen/app_padding"
         android:baselineAligned="false"
+        android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textTitle">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
           android:id="@+id/layoutSearchForm"
           android:layout_width="0dp"
-          android:layout_height="45dp"
+          android:layout_height="wrap_content"
           android:layout_weight="1"
-          android:background="@drawable/search_wrapper"
           android:gravity="center"
-          android:paddingHorizontal="15dp"
-          android:paddingVertical="10dp"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@id/textTitle">
 
+          <ImageView
+            android:id="@+id/imageSearchClear"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_search"
+            app:layout_constraintBottom_toBottomOf="@id/editTextFilter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/editTextFilter"
+            app:tint="@color/dark_gray" />
+
           <EditText
             android:id="@+id/editTextFilter"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
             android:layout_weight="1"
             android:afterTextChanged="@{() -> viewmodel.filterNodes()}"
             android:background="@null"
@@ -88,25 +83,25 @@
             android:text="@={viewmodel.filter}"
             android:textColor="@color/secondary_color"
             android:textColorHint="@color/dark_gray"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            tools:ignore="NestedWeights" />
 
           <ImageView
-            android:id="@+id/imageSearchClear"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:contentDescription="@null"
+            android:visibility="@{viewmodel.filter.length() > 0 ? View.VISIBLE : View.GONE}"
             android:onClick="@{() -> viewmodel.clearFilter()}"
-            android:src="@{viewmodel.filter.length() == 0 ? @drawable/ic_search : @drawable/ic_close}"
+            android:src="@drawable/ic_close"
             app:layout_constraintBottom_toBottomOf="@id/editTextFilter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/editTextFilter"
-            app:tint="@color/dark_gray"
-            tools:src="@drawable/ic_search" />
+            app:tint="@color/dark_gray" />
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-          android:layout_width="45dp"
-          android:layout_height="45dp"
+          android:layout_width="35dp"
+          android:layout_height="35dp"
           android:layout_marginStart="10dp"
           android:background="@drawable/button_selector"
           android:clickable="true"
@@ -114,8 +109,8 @@
           android:onClick="@{() -> master.showAddNodeDialog()}">
 
           <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:contentDescription="@null"
             android:src="@drawable/ic_add"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -180,6 +175,7 @@
         app:layout_constraintTop_toBottomOf="@id/layoutHead"
         tools:listitem="@layout/item_company" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    >
   </androidx.core.widget.NestedScrollView>
 </layout>

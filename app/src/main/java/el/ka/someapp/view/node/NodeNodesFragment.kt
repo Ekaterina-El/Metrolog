@@ -10,6 +10,8 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout
 import el.ka.someapp.R
 import el.ka.someapp.data.model.Errors
@@ -72,6 +74,9 @@ class NodeNodesFragment : BaseFragment() {
 
   override fun initFunctionalityParts() {
     binding = FragmentNodeNodesBinding.inflate(layoutInflater)
+
+    val d = DividerItemDecoration(binding.listCompanies.context, DividerItemDecoration.VERTICAL)
+    binding.listCompanies.addItemDecoration(d)
     adapter = NodesAdapter(nodesAdapterListener)
     createAddNodeDialog()
   }

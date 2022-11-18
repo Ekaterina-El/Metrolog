@@ -15,6 +15,7 @@ import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.bumptech.glide.load.ImageHeaderParser
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageContractOptions

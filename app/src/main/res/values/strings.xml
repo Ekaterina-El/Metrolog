@@ -53,7 +53,7 @@
   <string name="users">Пользователи</string>
   <string name="measuring">СИ</string>
   <string name="company_positions_title">Должностные лица</string>
-  <string name="hierarchy_title">Иерархия узлов</string>
+  <string name="hierarchy_title">Структурное подразделение</string>
   <string name="delete_node">Удалить узел/предприятие</string>
   <string name="edit">Редактирование</string>
   <string name="head">Технический директор</string>
