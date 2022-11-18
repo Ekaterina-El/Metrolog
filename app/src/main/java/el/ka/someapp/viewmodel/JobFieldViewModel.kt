@@ -131,6 +131,7 @@ class JobFieldViewModel(application: Application) : AndroidViewModel(application
     jobFieldName.value = ""
     role.value = null
     _state.value = State.VIEW
+    _nameError.value = null
   }
 
   fun setUser(user: User) {

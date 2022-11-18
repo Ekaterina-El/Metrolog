@@ -114,9 +114,9 @@
             app:layout_constraintTop_toBottomOf="@id/textViewRole">
 
             <RadioButton
+              android:id="@+id/rb_reader"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:checked="@{viewModel.role == UserRole.READER}"
               android:fontFamily="@font/montserrat_regular"
               android:onClick="@{() -> viewModel.setRole(UserRole.READER)}"
               android:text="@string/role_reader"
@@ -124,9 +124,9 @@
               android:textSize="14sp" />
 
             <RadioButton
+              android:id="@+id/editor_1"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:checked="@{viewModel.role == UserRole.EDITOR_1}"
               android:fontFamily="@font/montserrat_regular"
               android:onClick="@{() -> viewModel.setRole(UserRole.EDITOR_1)}"
               android:text="@string/role_editor_1"
@@ -134,9 +134,9 @@
               android:textSize="14sp" />
 
             <RadioButton
+              android:id="@+id/editor_2"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:checked="@{viewModel.role == UserRole.EDITOR_2}"
               android:fontFamily="@font/montserrat_regular"
               android:onClick="@{() -> viewModel.setRole(UserRole.EDITOR_2)}"
               android:text="@string/role_editor_2"

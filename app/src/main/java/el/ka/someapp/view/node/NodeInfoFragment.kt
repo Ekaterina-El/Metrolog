@@ -5,7 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.Button
+import android.widget.EditText
+import android.widget.RadioButton
+import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -41,8 +45,13 @@ class NodeInfoFragment : BaseFragment() {
   }
   private val localUsersListener = object : JobsAdapter.ItemListener {
     override fun onClick(jobField: JobField) {}
-    override fun onEdit(jobField: JobField) { viewModel.setToEditJobField(jobField) }
-    override fun onDelete(jobField: JobField) { viewModel.deleteJobField(jobField) }
+    override fun onEdit(jobField: JobField) {
+      viewModel.setToEditJobField(jobField)
+    }
+
+    override fun onDelete(jobField: JobField) {
+      viewModel.deleteJobField(jobField)
+    }
 
   }
 
@@ -149,6 +158,7 @@ class NodeInfoFragment : BaseFragment() {
   private var jobFieldViewModel: JobFieldViewModel? = null
   private lateinit var bindingJobFieldDialog: JobFieldDialogBinding
   private var spinnerUsersAdapter: SpinnerUsersAdapter? = null
+  private var checked: RadioButton? = null
 
   private val jobFieldStateObserver = Observer<State> {
     when (it) {
@@ -160,10 +170,10 @@ class NodeInfoFragment : BaseFragment() {
       }
 
       State.JOB_FIELD_EDITED -> {
-        val jobField =  jobFieldViewModel!!.jobField.value!!
+        val jobField = jobFieldViewModel!!.jobField.value!!
         val oldJobField = jobFieldViewModel!!.oldJobField.value!!
 
-          jobFieldViewModel!!.afterNotifiedOfNewFieldJob()
+        jobFieldViewModel!!.afterNotifiedOfNewFieldJob()
         jobFieldDialog?.dismiss()
         viewModel.updateJobField(oldJobField, jobField)
       }
@@ -194,6 +204,7 @@ class NodeInfoFragment : BaseFragment() {
             val user = p0!!.selectedItem as User
             jobFieldViewModel!!.setUser(user)
           }
+
           override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
       bindingJobFieldDialog.viewModel = jobFieldViewModel
@@ -217,6 +228,11 @@ class NodeInfoFragment : BaseFragment() {
 
   fun showJobFieldDialog() {
     if (jobFieldDialog == null) createJobFieldDialog() else updateUsers()
+
+    // Установка роли по умолчанию "Читатель"
+    bindingJobFieldDialog.rbReader.isChecked = true
+    jobFieldViewModel!!.role.value = UserRole.READER
+
     jobFieldDialog!!.show()
   }
 
@@ -233,6 +249,8 @@ class NodeInfoFragment : BaseFragment() {
     bindingJobFieldDialog.fieldJobName.visibility = elementsState
     bindingJobFieldDialog.layoutJobFieldRole.visibility = elementsState
     bindingJobFieldDialog.textViewRole.visibility = elementsState
+
+//    checked?.isChecked = false
   }
 
   private fun openJobFieldDialogToEdit(jobField: JobField) {
@@ -250,6 +268,14 @@ class NodeInfoFragment : BaseFragment() {
     bindingJobFieldDialog.fieldJobName.visibility = elementsState
     bindingJobFieldDialog.layoutJobFieldRole.visibility = elementsState
     bindingJobFieldDialog.textViewRole.visibility = elementsState
+
+    checked = when (jobField.jobRole) {
+      UserRole.READER -> bindingJobFieldDialog.rbReader
+      UserRole.EDITOR_1 -> bindingJobFieldDialog.editor1
+      UserRole.EDITOR_2 -> bindingJobFieldDialog.editor2
+      else -> null
+    }
+    checked?.isChecked = true
 
     jobFieldDialog!!.show()
   }
