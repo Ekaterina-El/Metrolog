@@ -213,8 +213,13 @@ class NodeInfoFragment : BaseFragment() {
   }
 
   fun showJobFieldDialog() {
-    if (jobFieldDialog == null) createJobFieldDialog()
+    if (jobFieldDialog == null) createJobFieldDialog() else updateUsers()
     jobFieldDialog!!.show()
+  }
+
+  private fun updateUsers() {
+    spinnerUsersAdapter = SpinnerUsersAdapter(requireContext(), viewModel.companyAllUsers.value!!)
+    bindingJobFieldDialog.spinner.adapter = spinnerUsersAdapter
   }
 
   private fun openJobFieldDialogToEdit(jobField: JobField) {

@@ -503,14 +503,25 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       onSuccess = { user ->
         _state.value = State.ADD_USER_SUCCESS
 
-        val users = _companyAllUsers.value!!.toMutableList()
-        users.add(user)
-        _companyAllUsers.value = users
-        filterUsers()
 
+        if (getRootNode() != null) {
+          val uid = user.uid
+
+          updateProjectUsers(isAdding = true, uid)
+        }
       }
     )
   }
+
+  private fun updateProjectUsers(isAdding: Boolean, uid: String) {
+    val users = _nodesHistory.value!![0].usersHaveAccess.toMutableList()
+
+    if (isAdding) users.add(uid) else users.remove(uid)
+    _nodesHistory.value!![0].usersHaveAccess = users
+    loadCompanyAllUsers()
+    filterNodes()
+  }
+
 
   private fun getRootNode() = _nodesHistory.value?.first()
 
@@ -530,7 +541,8 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
         UsersDatabaseService.denyAccessUserToProject(rootId, userId, onFailure = {
           State.VIEW
         }) {
-          _nodesHistory.value?.mapIndexed { index, node ->
+          updateProjectUsers(isAdding = false, userId)
+          /*_nodesHistory.value?.mapIndexed { index, node ->
             if (index == 0) {
               val users = node.usersHaveAccess.toMutableList()
               users.remove(userId)
@@ -542,7 +554,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
 //          _companyAllUsers.value = _companyAllUsers.value
           loadCompanyAllUsers()
 
-          _state.value = State.VIEW
+          _state.value = State.VIEW*/
         }
       }
   }

@@ -50,4 +50,8 @@ class SpinnerUsersAdapter(context: Context, users: List<User>) :
 
     return binding.root
   }
+
+  fun setUsers(value: List<User>) {
+
+  }
 }
