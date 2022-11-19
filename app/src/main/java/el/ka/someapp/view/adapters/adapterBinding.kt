@@ -146,6 +146,23 @@ fun setJobPositionName(textView: TextView, positionName: String) {
     else positionName
 }
 
+@SuppressLint("SetTextI18n")
+@BindingAdapter("app:jobRole")
+fun setJobRole(textView: TextView, role: UserRole) {
+
+  val roleStringID = when (role) {
+    UserRole.READER -> R.string.role_reader
+    UserRole.EDITOR_2 -> R.string.role_editor_2
+    UserRole.EDITOR_1 -> R.string.role_editor_1
+    else -> null
+  }
+
+  if (roleStringID != null) {
+    val ctx = textView.context
+    textView.text = "[${ctx.getString(roleStringID)}]"
+  }
+}
+
 @BindingAdapter("app:showError")
 fun showError(textView: TextView, error: ErrorApp?) {
   textView.text = if (error != null)
