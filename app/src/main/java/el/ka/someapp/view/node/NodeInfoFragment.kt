@@ -43,6 +43,11 @@ class NodeInfoFragment : BaseFragment() {
   private val localUsersObserver = Observer<List<LocalUser>> {
     localUsersAdapter.setLocalUser(it)
   }
+
+  private val  currentNodeObserver = Observer<Node?> {
+    if (it != null) viewModel.updateLocalUsers()
+  }
+
   private val localUsersListener = object : JobsAdapter.ItemListener {
     override fun onClick(jobField: JobField) {}
     override fun onEdit(jobField: JobField) {
@@ -104,6 +109,7 @@ class NodeInfoFragment : BaseFragment() {
     viewModel.nodesHistory.observe(viewLifecycleOwner, hierarchyObserver)
     viewModel.localUser.observe(viewLifecycleOwner, localUsersObserver)
     jobFieldViewModel?.state?.observe(viewLifecycleOwner, jobFieldStateObserver)
+    viewModel.currentNode.observe(viewLifecycleOwner, currentNodeObserver)
   }
 
   override fun onStop() {

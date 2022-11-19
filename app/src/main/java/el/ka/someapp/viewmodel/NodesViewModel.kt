@@ -2,6 +2,7 @@ package el.ka.someapp.viewmodel
 
 import android.app.Application
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -113,6 +114,12 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     val history = _nodesHistory.value!!.toMutableList()
     history.removeLastOrNull()
     _nodesHistory.value = history
+
+    val roles = historyRole.value!!.toMutableList()
+    roles.removeLastOrNull()
+    historyRole.value = roles
+
+    updateCurrentNodeRole()
   }
 
   fun goBack() {
@@ -265,7 +272,6 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       NodesDatabaseService.getNodeById(
         nodeId,
         onFailure = {
-          // TODO: handle error
           _state.value = State.ERROR
         },
         onSuccess = { afterLoadNode(it, saveToHistory) })
@@ -277,10 +283,47 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     if (saveToHistory) addToHistory(_currentNode.value!!)
 
     loadCompanyAllUsers {
-      loadLocalUsers()
+      loadLocalUsers {
+        findUserRoleInCurrentNode()
+      }
     }
 
     _state.value = State.VIEW
+  }
+  // endregion
+
+  // region Node Role
+  private val historyRole = MutableLiveData<List<UserRole>>(listOf())
+  private val _currentRole = MutableLiveData<UserRole?>(null)
+
+  private fun findUserRoleInCurrentNode() {
+
+    if (historyRole.value!!.size == nodesHistory.value!!.size) return
+
+    val uid = currentUserProfile.value!!.uid
+    val userJobFields = _localUsers.value!!.filter { it.jobField.userId == uid }
+
+    var role = _currentRole.value ?: UserRole.READER
+    if (userJobFields.isNotEmpty()) {
+      userJobFields.forEach {
+        val jobFieldRolePriority = it.jobField.jobRole.priority
+        if (jobFieldRolePriority < role.priority) {
+          role = it.jobField.jobRole
+        }
+      }
+    }
+
+    val roles = historyRole.value!!.toMutableList()
+    roles.add(role)
+    historyRole.value = roles
+    updateCurrentNodeRole()
+  }
+
+  private fun updateCurrentNodeRole() {
+    _currentRole.value = if (historyRole.value!!.isEmpty()) null else historyRole.value!!.last()
+    Log.d("updateCurrentNodeRole", historyRole.value!!.joinToString(" "))
+    val a = 10
+
   }
   // endregion
 
@@ -381,7 +424,10 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   fun getUserById(id: String) = _companyAllUsers.value!!.first { it.uid == id }
 
   private fun loadCompanyAllUsers(afterLoad: () -> Unit = {}) {
-    if (_currentNode.value!!.level != 0) return
+    if (_currentNode.value!!.level != 0) {
+      afterLoad()
+      return
+    }
 
     _state.value = State.LOADING
     val usersIds = getRootNode()!!.usersHaveAccess
@@ -445,9 +491,6 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   }
 
   fun updateJobField(oldJobField: JobField, jobField: JobField) {
-    /*_currentNode.value!!.jobs = _currentNode.value!!.jobs.map {
-      return@map if (it == oldJobField) jobField else it
-    }*/
 
     val jobs = _currentNode.value!!.jobs.toMutableList()
     jobs.remove(oldJobField)
@@ -469,7 +512,13 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     )
   }
 
-  private fun loadLocalUsers() {
+  fun updateLocalUsers()  {
+    loadLocalUsers {
+      findUserRoleInCurrentNode()
+    }
+  }
+
+  private fun loadLocalUsers(afterLoad: () -> Unit = {}) {
     _state.value = State.LOADING
     viewModelScope.launch {
       val users = NodesDatabaseService
@@ -480,6 +529,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
         jobFields = _localUsers.value!!,
         usersIds = getRootNode()!!.usersHaveAccess
       )
+      afterLoad()
       _state.value = State.VIEW
     }
   }
@@ -522,7 +572,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     _localUsers.value!!.toMutableList().addAll(updatedLocalUsers)
 
     loadLocalUsers()
-   }
+  }
 
   private val _editJobField = MutableLiveData<JobField?>()
   val editJobField: LiveData<JobField?> get() = _editJobField
@@ -566,7 +616,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
 
     if (isAdding) users.add(uid) else users.remove(uid)
     _nodesHistory.value!![0].usersHaveAccess = users
-    loadCompanyAllUsers() {
+    loadCompanyAllUsers {
       loadLocalUsers()
       filterNodes()
     }
