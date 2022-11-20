@@ -97,6 +97,7 @@
 
       <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="35dp"
+        app:hasAccessToAddMeasuring="@{viewmodel.currentRole}"
         android:layout_height="35dp"
         android:layout_marginStart="10dp"
         android:background="@drawable/button_selector"

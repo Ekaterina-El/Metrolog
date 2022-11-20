@@ -17,6 +17,7 @@ import el.ka.someapp.data.model.UserRole
 import el.ka.someapp.data.model.measuring.MeasuringCondition
 import el.ka.someapp.data.model.measuring.MeasuringKind
 import el.ka.someapp.data.model.measuring.MeasuringState
+import el.ka.someapp.data.model.role.*
 import el.ka.someapp.viewmodel.StatePassword
 
 @BindingAdapter("app:isLoad")
@@ -181,6 +182,37 @@ fun showError(textView: TextView, error: ErrorApp?) {
   textView.text = if (error != null)
     textView.context.getString(error.textId) else ""
 }
+
+@BindingAdapter("app:hasAccessToEdit")
+fun hasAccessToEdit(view: View, role: UserRole?) {
+  hasAccess(view, role, AccessType.CHANGE_NODE_NAME)
+}
+
+@BindingAdapter("app:hasAccessToDelete")
+fun hasAccessToDelete(view: View, role: UserRole?) {
+  hasAccess(view, role, AccessType.DELETE_NODE)
+}
+
+@BindingAdapter("app:hasAccessToAddJobField")
+fun hasAccessToAddJobField(view: View, role: UserRole?) {
+  hasAccess(view, role, AccessType.ADD_JOB_FIELD)
+}
+
+@BindingAdapter("app:hasAccessToAddNode")
+fun hasAccessToAddNode(view: View, role: UserRole?) {
+  hasAccess(view, role, AccessType.CREATE_NODE)
+}
+
+@BindingAdapter("app:hasAccessToAddUser")
+fun hasAccessToAddUser(view: View, role: UserRole?) {
+  hasAccess(view, role, AccessType.ADD_USER)
+}
+
+@BindingAdapter("app:hasAccessToAddMeasuring")
+fun hasAccessToAddMeasuring(view: View, role: UserRole?) {
+  hasAccess(view, role, AccessType.ADD_MEASURING)
+}
+
 
 @BindingAdapter("app:showFieldError")
 fun showError2(view: TextInputLayout, error: ErrorApp?) {

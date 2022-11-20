@@ -3,29 +3,46 @@ package el.ka.someapp.view.adapters
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.Menu
+import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import el.ka.someapp.R
 import el.ka.someapp.data.model.JobField
 import el.ka.someapp.data.model.LocalUser
+import el.ka.someapp.data.model.UserRole
+import el.ka.someapp.data.model.role.AccessType
+import el.ka.someapp.data.model.role.hasRole
 import el.ka.someapp.databinding.ItemCompanyPositionBinding
 
 class JobsAdapter(val context: Context, val listener: ItemListener? = null) :
   RecyclerView.Adapter<JobsAdapter.ViewHolder>() {
   inner class ViewHolder(val binding: ItemCompanyPositionBinding) :
-    RecyclerView.ViewHolder(binding.root)
+    RecyclerView.ViewHolder(binding.root) {
+    var viewerRole: UserRole? = null
+  }
 
+  private var viewerRole: UserRole? = null
   private val items = mutableListOf<LocalUser>()
+  private val itemsHolders = mutableListOf<ViewHolder>()
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
     val binding =
       ItemCompanyPositionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-    return ViewHolder(binding)
+    val holder = ViewHolder(binding)
+    itemsHolders.add(holder)
+    return holder
   }
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-    holder.binding.user = items[position]
+    val localUser = items[position]
+    holder.binding.user = localUser
+
+    val role = viewerRole ?: UserRole.READER
+    val showMenu = accessToDelete(localUser.jobField, role) || accessToEdit(localUser.jobField, role)
+    holder.binding.viewOptions.visibility = if (showMenu) View.VISIBLE else View.GONE
+
+    holder.viewerRole = this.viewerRole
   }
 
   override fun onViewAttachedToWindow(holder: ViewHolder) {
@@ -37,10 +54,10 @@ class JobsAdapter(val context: Context, val listener: ItemListener? = null) :
     }
 
     val popupMenu = PopupMenu(context, holder.binding.viewOptions)
-    popupMenu.menu.add(0, EDIT_ITEM, Menu.NONE, context.getString(R.string.edit2))
-      .setIcon(R.drawable.ic_edit)
-    popupMenu.menu.add(0, DELETE_ITEM, Menu.NONE, context.getString(R.string.delete))
-      .setIcon(R.drawable.ic_delete)
+
+    popupMenu.setOnDismissListener {
+      it.menu.clear()
+    }
 
     popupMenu.setOnMenuItemClickListener {
       when (it.itemId) {
@@ -51,10 +68,34 @@ class JobsAdapter(val context: Context, val listener: ItemListener? = null) :
     }
 
     holder.binding.viewOptions.setOnClickListener {
+      val role = holder.viewerRole ?: UserRole.READER
+
+      val showEdit = accessToEdit(jobField, role)
+      if (showEdit) popupMenu.menu.add(0, EDIT_ITEM, Menu.NONE, context.getString(R.string.edit2))
+
+      val showDelete = accessToDelete(jobField, role)
+      if (showDelete) popupMenu.menu.add(0, DELETE_ITEM, Menu.NONE, context.getString(R.string.delete))
       popupMenu.show()
     }
   }
 
+  private fun accessToEdit(jobField: JobField, role: UserRole): Boolean {
+    return when(jobField.jobRole) {
+      UserRole.HEAD -> hasRole(role, AccessType.EDIT_HEAD)
+      UserRole.EDITOR_1 -> hasRole(role, AccessType.EDIT_EDITOR_1)
+      UserRole.EDITOR_2 -> hasRole(role, AccessType.EDIT_EDITOR_2)
+      UserRole.READER -> hasRole(role, AccessType.EDIT_READER)
+    }
+  }
+
+  private fun accessToDelete(jobField: JobField, role: UserRole): Boolean {
+    return when(jobField.jobRole) {
+      UserRole.HEAD -> hasRole(role, AccessType.DELETE_HEAD)
+      UserRole.EDITOR_1 -> hasRole(role, AccessType.DELETE_EDITOR_1)
+      UserRole.EDITOR_2 -> hasRole(role, AccessType.DELETE_EDITOR_2)
+      UserRole.READER -> hasRole(role, AccessType.DELETE_READER)
+    }
+  }
 
   override fun onViewDetachedFromWindow(holder: ViewHolder) {
     super.onViewDetachedFromWindow(holder)
@@ -64,12 +105,14 @@ class JobsAdapter(val context: Context, val listener: ItemListener? = null) :
 
   override fun getItemCount(): Int = items.size
 
-  fun setLocalUser(localUsers: List<LocalUser>) {
+  fun setLocalUser(localUsers: List<LocalUser>, viewerRole: UserRole? = null) {
     clearList()
+    this.viewerRole = viewerRole
     localUsers.forEach { addNode(it) }
   }
 
   private fun clearList() {
+    itemsHolders.clear()
     for (i in items.size - 1 downTo 0) deleteItem(i)
   }
 
@@ -81,6 +124,11 @@ class JobsAdapter(val context: Context, val listener: ItemListener? = null) :
   private fun addNode(localUser: LocalUser) {
     items.add(localUser)
     notifyItemInserted(items.size)
+  }
+
+  fun updateRole(role: UserRole?) {
+    itemsHolders.forEach { it.viewerRole = role }
+//    this.viewerRole = role
   }
 
   companion object {

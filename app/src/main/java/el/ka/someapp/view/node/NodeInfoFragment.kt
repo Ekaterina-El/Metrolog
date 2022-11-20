@@ -35,9 +35,14 @@ class NodeInfoFragment : BaseFragment() {
     }
   }
 
+  private val roleObserver = Observer<UserRole?> {
+    localUsersAdapter.updateRole(it)
+  }
+
+
   private lateinit var localUsersAdapter: JobsAdapter
   private val localUsersObserver = Observer<List<LocalUser>> {
-    localUsersAdapter.setLocalUser(it)
+    localUsersAdapter.setLocalUser(it, viewModel.currentRole.value)
   }
 
   private val currentNodeObserver = Observer<Node?> {
@@ -55,27 +60,6 @@ class NodeInfoFragment : BaseFragment() {
     }
   }
 
-  // region Delete Job Field
-  private val deleteJobFieldConfirmListener = object: ConfirmListener {
-    override fun onAgree(value: Any?) {
-      viewModel.deleteJobField(value as JobField)
-      closeConfirmDialog()
-    }
-
-    override fun onDisagree() {
-      closeConfirmDialog()
-    }
-
-  }
-
-  private fun showDeleteJobFieldConfirm(jobField: JobField) {
-    openConfirmDialog(
-      getString(R.string.delete_job_field_message),
-      deleteJobFieldConfirmListener,
-      jobField
-    )
-  }
-  // endregion
 
   private var changeNameDialog: Dialog? = null
   private var stateObserver = Observer<State> {
@@ -114,11 +98,9 @@ class NodeInfoFragment : BaseFragment() {
     }
   }
 
-
   override fun onBackPressed() {
     viewModel.goBack()
   }
-
 
   override fun onResume() {
     super.onResume()
@@ -127,6 +109,7 @@ class NodeInfoFragment : BaseFragment() {
     viewModel.localUser.observe(viewLifecycleOwner, localUsersObserver)
     jobFieldViewModel?.state?.observe(viewLifecycleOwner, jobFieldStateObserver)
     viewModel.currentNode.observe(viewLifecycleOwner, currentNodeObserver)
+    viewModel.currentRole.observe(viewLifecycleOwner, roleObserver)
   }
 
   override fun onStop() {
@@ -134,8 +117,31 @@ class NodeInfoFragment : BaseFragment() {
     viewModel.state.removeObserver(stateObserver)
     viewModel.nodesHistory.removeObserver(hierarchyObserver)
     viewModel.localUser.removeObserver(localUsersObserver)
+    viewModel.currentRole.removeObserver(roleObserver)
     jobFieldViewModel?.state?.removeObserver { jobFieldStateObserver }
   }
+
+  // region Delete Job Field
+  private val deleteJobFieldConfirmListener = object: ConfirmListener {
+    override fun onAgree(value: Any?) {
+      viewModel.deleteJobField(value as JobField)
+      closeConfirmDialog()
+    }
+
+    override fun onDisagree() {
+      closeConfirmDialog()
+    }
+
+  }
+
+  private fun showDeleteJobFieldConfirm(jobField: JobField) {
+    openConfirmDialog(
+      getString(R.string.delete_job_field_message),
+      deleteJobFieldConfirmListener,
+      jobField
+    )
+  }
+  // endregion
 
   // region Delete node
   fun deleteNode() {

@@ -14,6 +14,7 @@ import com.google.android.material.textfield.TextInputLayout
 import el.ka.someapp.R
 import el.ka.someapp.data.model.State
 import el.ka.someapp.data.model.User
+import el.ka.someapp.data.model.UserRole
 import el.ka.someapp.databinding.FragmentNodeUsersBinding
 import el.ka.someapp.view.BaseFragment
 import el.ka.someapp.view.adapters.AllUsersAdapter
@@ -23,11 +24,15 @@ class NodeUsersFragment : BaseFragment() {
   private lateinit var binding: FragmentNodeUsersBinding
   private val viewModel: NodesViewModel by activityViewModels()
 
+  private val roleObserver = Observer<UserRole?> {
+    usersAdapter.updateRole(it)
+  }
+
   private var addUserDialog: Dialog? = null
 
   private lateinit var usersAdapter: AllUsersAdapter
   private val userObserver = Observer<List<User>> {
-    usersAdapter.setUsers(it)
+    usersAdapter.setUsers(it, viewModel.currentRole.value!!)
   }
   private val usersListener = object: AllUsersAdapter.ItemListener {
     override fun onDelete(userId: String) {
@@ -100,17 +105,20 @@ class NodeUsersFragment : BaseFragment() {
     viewModel.goBack()
   }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
+  override fun onResume() {
+    super.onResume()
     viewModel.filteredUsers.observe(viewLifecycleOwner, userObserver)
     viewModel.state.observe(viewLifecycleOwner, stateObserver)
+    viewModel.currentRole.observe(viewLifecycleOwner, roleObserver)
   }
 
-  override fun onDestroy() {
-    super.onDestroy()
+  override fun onStop() {
+    super.onStop()
     viewModel.filteredUsers.removeObserver { userObserver }
     viewModel.state.removeObserver { stateObserver }
+    viewModel.currentRole.removeObserver { roleObserver }
   }
+
 
   // region Add User Dialog
   private fun createAddUserDialog() {
