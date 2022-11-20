@@ -5,11 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.Button
-import android.widget.EditText
-import android.widget.RadioButton
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -44,7 +40,7 @@ class NodeInfoFragment : BaseFragment() {
     localUsersAdapter.setLocalUser(it)
   }
 
-  private val  currentNodeObserver = Observer<Node?> {
+  private val currentNodeObserver = Observer<Node?> {
     if (it != null) viewModel.updateLocalUsers()
   }
 
@@ -120,9 +116,29 @@ class NodeInfoFragment : BaseFragment() {
     jobFieldViewModel?.state?.removeObserver { jobFieldStateObserver }
   }
 
+  // region Delete node
   fun deleteNode() {
-    viewModel.deleteNode()
+    showDeleteNodeConfirm()
   }
+
+  private val deleteNodeConfirmListener = object : ConfirmListener {
+    override fun onAgree() {
+      closeConfirmDialog()
+      viewModel.deleteNode()
+    }
+
+    override fun onDisagree() {
+      closeConfirmDialog()
+    }
+  }
+
+  private fun showDeleteNodeConfirm() {
+    openConfirmDialog(
+      getString(R.string.delete_node),
+      deleteNodeConfirmListener
+    )
+  }
+  // endregion
 
   // region Change Node Name Dialog
   private fun createChangeNameDialog() {
