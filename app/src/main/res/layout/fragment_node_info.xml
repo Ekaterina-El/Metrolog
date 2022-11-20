@@ -44,6 +44,7 @@
     <ImageView
       android:clickable="true"
       android:focusable="true"
+      android:onClick="@{() -> master.deleteNode()}"
       android:layout_width="25dp"
       android:layout_height="25dp"
       android:layout_marginEnd="@dimen/app_padding"

@@ -52,8 +52,12 @@ object UsersDatabaseService {
       .databaseUsers
       .document(uid)
       .get()
-      .addOnFailureListener { onFailure() }
-      .addOnSuccessListener { onSuccess(it.toObject(User::class.java)!!) }
+      .addOnFailureListener {
+        onFailure()
+      }
+      .addOnSuccessListener {
+        onSuccess(it.toObject(User::class.java)!!)
+      }
   }
 
   fun loadCompanyAllUsers(

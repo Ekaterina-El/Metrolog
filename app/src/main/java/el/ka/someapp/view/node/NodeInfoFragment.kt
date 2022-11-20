@@ -120,6 +120,10 @@ class NodeInfoFragment : BaseFragment() {
     jobFieldViewModel?.state?.removeObserver { jobFieldStateObserver }
   }
 
+  fun deleteNode() {
+    viewModel.deleteNode()
+  }
+
   // region Change Node Name Dialog
   private fun createChangeNameDialog() {
     changeNameDialog = Dialog(requireActivity())

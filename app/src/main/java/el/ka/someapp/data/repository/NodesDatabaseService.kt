@@ -236,6 +236,58 @@ object NodesDatabaseService {
       addJobField(nodeId, jobField, onFailure, onSuccess)
     }
   }
+
+  fun deleteNode(node: Node, onFailure: () -> Unit = {}, onSuccess: () -> Unit = {}) {
+    // удаление вложенных node рекурсией
+    node.children.forEach { it ->
+      getNodeById(nodeId = it, onFailure = {}, onSuccess = { node ->
+        deleteNode(node)
+      })
+    }
+
+    // удаление СИ узла
+    node.measuring.forEach { MeasuringDatabaseService.deleteMeasuring(measuringId = it) }
+
+    // Удаление текушего node
+    FirebaseServices
+      .databaseNodes
+      .document(node.id)
+      .delete()
+      .addOnFailureListener { onFailure() }
+      .addOnSuccessListener {}
+
+    // Если nodeLevel = 0
+    if (node.level == 0) {
+      // Удалить у всех пользователей id проекта
+      node.children.forEach {
+        UsersDatabaseService.denyAccessUserToProject(
+          nodeId = node.id,
+          uid = it,
+          onFailure, onSuccess = {})
+      }
+      onSuccess()
+    } else {
+      // У rootNode удалить из children id текущего node
+      deleteChildrenFromNode(nodeId = node.rootNodeId!!, childrenId = node.id, onFailure, onSuccess)
+    }
+  }
+
+  private fun deleteChildrenFromNode(
+    nodeId: String,
+    childrenId: String,
+    onFailure: () -> Unit = {},
+    onSuccess: () -> Unit = {}
+  ) {
+    val ref = FirebaseServices.databaseNodes.document(nodeId)
+    changeFieldArray(
+      ref,
+      isAdding = false,
+      CHILDREN_FIELD,
+      childrenId,
+      onSuccess,
+      onFailure
+    )
+  }
   // endregion
 
   private const val LEVEL_FIELD = "level"

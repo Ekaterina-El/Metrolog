@@ -319,7 +319,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       roles.add(role)
       historyRole.value = roles
     } else {
-      historyRole.value = historyRole.value!!.subList(0, navigateTo!!)
+      historyRole.value = historyRole.value!!.subList(0, navigateTo)
     }
 
     updateCurrentNodeRole()
@@ -328,8 +328,6 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   private fun updateCurrentNodeRole() {
     _currentRole.value = if (historyRole.value!!.isEmpty()) null else historyRole.value!!.last()
     Log.d("updateCurrentNodeRole", historyRole.value!!.joinToString(" "))
-    val a = 10
-
   }
   // endregion
 
@@ -361,7 +359,9 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   }
 
   fun deleteNode() {
+    _state.value = State.LOADING
     NodesDatabaseService.deleteNode(node = _currentNode.value!!, onFailure = {}) {
+      _state.value = State.VIEW
       goBack()
     }
   }
@@ -635,7 +635,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   }
 
 
-  private fun getRootNode() = _nodesHistory.value?.first()
+  private fun getRootNode() = _nodesHistory.value?.firstOrNull()
 
   fun denyAccessUser(userId: String) {
     _state.value = State.LOADING

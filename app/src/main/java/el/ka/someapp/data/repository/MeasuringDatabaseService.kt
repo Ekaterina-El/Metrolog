@@ -31,4 +31,13 @@ object MeasuringDatabaseService {
       measuringIds,
       collectionRef = FirebaseServices.databaseMeasuring
     )
+
+  fun deleteMeasuring(measuringId: String, onFailure: () -> Unit = {}, onSuccess: () -> Unit = {}) {
+    FirebaseServices.databaseMeasuring.document(measuringId)
+      .delete()
+      .addOnFailureListener { onFailure() }
+      .addOnSuccessListener { onSuccess() }
+  }
+
+
 }
