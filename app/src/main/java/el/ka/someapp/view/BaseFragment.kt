@@ -134,10 +134,10 @@ abstract class BaseFragment : Fragment() {
     }
   }
 
-  fun openConfirmDialog(message: String, confirmListener: ConfirmListener) {
+  fun openConfirmDialog(message: String, confirmListener: ConfirmListener, value: Any? = null) {
     if (confirmDialog == null) createConfirmDialog()
 
-    confirmDialogOk.setOnClickListener { confirmListener.onAgree() }
+    confirmDialogOk.setOnClickListener { confirmListener.onAgree(value) }
     confirmDialogCancel.setOnClickListener { confirmListener.onDisagree() }
     confirmDialogMessage.text = message
 
@@ -155,7 +155,7 @@ abstract class BaseFragment : Fragment() {
 
 
   interface ConfirmListener {
-    fun onAgree()
+    fun onAgree(value: Any? = null)
     fun onDisagree()
   }
 

@@ -51,10 +51,31 @@ class NodeInfoFragment : BaseFragment() {
     }
 
     override fun onDelete(jobField: JobField) {
-      viewModel.deleteJobField(jobField)
+      showDeleteJobFieldConfirm(jobField)
+    }
+  }
+
+  // region Delete Job Field
+  private val deleteJobFieldConfirmListener = object: ConfirmListener {
+    override fun onAgree(value: Any?) {
+      viewModel.deleteJobField(value as JobField)
+      closeConfirmDialog()
+    }
+
+    override fun onDisagree() {
+      closeConfirmDialog()
     }
 
   }
+
+  private fun showDeleteJobFieldConfirm(jobField: JobField) {
+    openConfirmDialog(
+      getString(R.string.delete_job_field_message),
+      deleteJobFieldConfirmListener,
+      jobField
+    )
+  }
+  // endregion
 
   private var changeNameDialog: Dialog? = null
   private var stateObserver = Observer<State> {
@@ -122,7 +143,7 @@ class NodeInfoFragment : BaseFragment() {
   }
 
   private val deleteNodeConfirmListener = object : ConfirmListener {
-    override fun onAgree() {
+    override fun onAgree(value: Any?) {
       closeConfirmDialog()
       viewModel.deleteNode()
     }

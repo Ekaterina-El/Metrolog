@@ -182,7 +182,7 @@ class CompaniesFragment : BaseFragment() {
 
   // region Logout Dialog
   private val logoutConfirmListener = object : ConfirmListener {
-    override fun onAgree() {
+    override fun onAgree(value: Any?) {
       viewModel.logout { afterLogout() }
     }
 
