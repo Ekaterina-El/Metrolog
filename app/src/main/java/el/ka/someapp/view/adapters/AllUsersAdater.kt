@@ -20,6 +20,7 @@ class AllUsersAdapter(val context: Context, val listener: ItemListener? = null) 
     var viewerRole: UserRole? = null
   }
 
+  private var currentNodeLevel: Int? = null
   private var viewerRole: UserRole? = null
   private val itemsHolders = mutableListOf<ViewHolder>()
   private val items = mutableListOf<User>()
@@ -44,9 +45,10 @@ class AllUsersAdapter(val context: Context, val listener: ItemListener? = null) 
 
   override fun getItemCount(): Int = items.size
 
-  fun setUsers(users: List<User>, viewerRole: UserRole) {
+  fun setUsers(users: List<User>, viewerRole: UserRole, level: Int) {
     clearList()
     this.viewerRole = viewerRole
+    this.currentNodeLevel = level
     users.forEach { addUser(it) }
   }
 
@@ -98,7 +100,7 @@ class AllUsersAdapter(val context: Context, val listener: ItemListener? = null) 
     }
   }
 
-  private fun accessToDelete(role: UserRole) = hasRole(role, AccessType.DELETE_USER)
+  private fun accessToDelete(role: UserRole) = currentNodeLevel == 0 && hasRole(role, AccessType.DELETE_USER)
 
   override fun onViewDetachedFromWindow(holder: ViewHolder) {
     super.onViewDetachedFromWindow(holder)

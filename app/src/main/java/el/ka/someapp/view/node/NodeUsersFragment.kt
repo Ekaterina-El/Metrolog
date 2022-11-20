@@ -32,7 +32,7 @@ class NodeUsersFragment : BaseFragment() {
 
   private lateinit var usersAdapter: AllUsersAdapter
   private val userObserver = Observer<List<User>> {
-    usersAdapter.setUsers(it, viewModel.currentRole.value!!)
+    usersAdapter.setUsers(it, viewModel.currentRole.value!!, viewModel.currentNode.value!!.level)
   }
   private val usersListener = object: AllUsersAdapter.ItemListener {
     override fun onDelete(userId: String) {
