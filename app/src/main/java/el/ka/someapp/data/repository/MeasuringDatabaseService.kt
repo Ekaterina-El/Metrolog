@@ -32,11 +32,14 @@ object MeasuringDatabaseService {
       collectionRef = FirebaseServices.databaseMeasuring
     )
 
-  fun deleteMeasuring(measuringId: String, onFailure: () -> Unit = {}, onSuccess: () -> Unit = {}) {
+  fun deleteMeasuring(measuringId: String, locationNodeId: String? = null, onFailure: () -> Unit = {}, onSuccess: () -> Unit = {}) {
     FirebaseServices.databaseMeasuring.document(measuringId)
       .delete()
       .addOnFailureListener { onFailure() }
-      .addOnSuccessListener { onSuccess() }
+      .addOnSuccessListener {
+        if (locationNodeId == null) onSuccess()
+        else NodesDatabaseService.deleteMeasuringIdFromNode(locationNodeId, measuringId, onFailure, onSuccess)
+      }
   }
 
 

@@ -37,10 +37,11 @@
         tools:text="Амперметр Aster AMP-991 10А AMP991-10" />
 
       <TextView
+        android:layout_gravity="start"
         android:id="@+id/vertical_menu"
+        android:paddingHorizontal="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
         android:clickable="true"
         android:focusable="true"
         android:textStyle="bold"
@@ -79,7 +80,8 @@
           android:layout_width="0dp"
           android:clickable="true"
           android:focusable="true"
-          app:cardCornerRadius="5dp"
+          app:cardCornerRadius="8dp"
+          android:foreground="?android:attr/selectableItemBackground"
           app:cardElevation="4dp"
           android:layout_height="match_parent"
           android:layout_weight="1"
@@ -121,7 +123,8 @@
           android:layout_weight="2"
           android:clickable="true"
           android:focusable="true"
-          app:cardCornerRadius="5dp"
+          app:cardCornerRadius="8dp"
+          android:foreground="?android:attr/selectableItemBackground"
           app:cardElevation="4dp"
           app:cardUseCompatPadding="true">
 
@@ -171,9 +174,10 @@
             android:layout_width="match_parent"
             android:clickable="true"
             android:focusable="true"
-            app:cardCornerRadius="5dp"
+            app:cardCornerRadius="8dp"
             app:cardElevation="4dp"
             android:layout_height="wrap_content"
+            android:foreground="?android:attr/selectableItemBackground"
             app:cardUseCompatPadding="true">
 
             <LinearLayout
@@ -210,8 +214,9 @@
             android:layout_width="match_parent"
             android:clickable="true"
             android:focusable="true"
-            app:cardCornerRadius="5dp"
+            app:cardCornerRadius="8dp"
             app:cardElevation="4dp"
+            android:foreground="?android:attr/selectableItemBackground"
             android:layout_height="wrap_content"
             app:cardUseCompatPadding="true">
 
@@ -253,8 +258,9 @@
           android:layout_weight="1"
           android:clickable="true"
           android:focusable="true"
-          app:cardCornerRadius="5dp"
+          app:cardCornerRadius="8dp"
           app:cardElevation="4dp"
+          android:foreground="?android:attr/selectableItemBackground"
           android:layout_height="match_parent"
           app:cardUseCompatPadding="true">
 

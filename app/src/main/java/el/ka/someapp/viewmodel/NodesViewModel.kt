@@ -670,5 +670,20 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   fun setCurrentMeasuring(measuring: Measuring?) {
     _currentMeasuring.value = measuring
   }
+
+  fun deleteMeasuring(measuring: Measuring) {
+    MeasuringDatabaseService.deleteMeasuring(
+      measuringId = measuring.measuringID,
+      locationNodeId = measuring.passport!!.locationIDNode,
+      onFailure = {},
+      onSuccess = {
+        val measuringItems = _currentNode.value!!.measuring.toMutableList()
+        measuringItems.remove(measuring.measuringID)
+        _currentNode.value!!.measuring = measuringItems
+
+        _state.value = State.MEASURING_DELETED
+      }
+    )
+  }
   // endregion
 }

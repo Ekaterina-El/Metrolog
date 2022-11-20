@@ -288,6 +288,11 @@ object NodesDatabaseService {
       onFailure
     )
   }
+
+  fun deleteMeasuringIdFromNode(locationNodeId: String, measuringId: String, onFailure: () -> Unit, onSuccess: () -> Unit) {
+    val ref = FirebaseServices.databaseNodes.document(locationNodeId)
+    changeFieldArray(ref, isAdding = false, MEASURING_FIELD, measuringId, onSuccess, onFailure)
+  }
   // endregion
 
   private const val LEVEL_FIELD = "level"
