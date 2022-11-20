@@ -7,8 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -33,10 +31,30 @@ class NodeUsersFragment : BaseFragment() {
   }
   private val usersListener = object: AllUsersAdapter.ItemListener {
     override fun onDelete(userId: String) {
-      viewModel.denyAccessUser(userId)
+      showDeleteUserConfirm(userId)
+    }
+  }
+
+  // region Delete User
+  private val deleteUserConfirmListener = object: ConfirmListener {
+    override fun onAgree(value: Any?) {
+      viewModel.denyAccessUser(value as String)
+      closeConfirmDialog()
     }
 
+    override fun onDisagree() {
+      closeConfirmDialog()
+    }
   }
+
+  private fun showDeleteUserConfirm(userId: String) {
+    openConfirmDialog(
+      getString(R.string.delete_user_message),
+      deleteUserConfirmListener,
+      userId
+    )
+  }
+  // endregion
 
   private val stateObserver = Observer<State> {
     when (it) {
