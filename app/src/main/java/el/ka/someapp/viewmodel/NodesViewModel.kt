@@ -135,6 +135,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
 
   fun navigateByHistoryTo(node: Node) {
     if (node.id == _currentNode.value!!.id) return
+
     _state.value = State.LOADING
 
     // получить индекс nodeID
@@ -142,6 +143,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
 
     // преобрзование списка истории узлов
     _nodesHistory.value = _nodesHistory.value!!.subList(0, idx + 1)
+    findUserRoleInCurrentNode(idx + 1)
 
     // загрузить данные о текущем node
     loadNodeByID(node.id, false)
@@ -296,26 +298,30 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   private val historyRole = MutableLiveData<List<UserRole>>(listOf())
   private val _currentRole = MutableLiveData<UserRole?>(null)
 
-  private fun findUserRoleInCurrentNode() {
-
+  private fun findUserRoleInCurrentNode(navigateTo: Int? = null) {
     if (historyRole.value!!.size == nodesHistory.value!!.size) return
 
-    val uid = currentUserProfile.value!!.uid
-    val userJobFields = _localUsers.value!!.filter { it.jobField.userId == uid }
+    if (navigateTo == null) {
+      val uid = currentUserProfile.value!!.uid
+      val userJobFields = _localUsers.value!!.filter { it.jobField.userId == uid }
 
-    var role = _currentRole.value ?: UserRole.READER
-    if (userJobFields.isNotEmpty()) {
-      userJobFields.forEach {
-        val jobFieldRolePriority = it.jobField.jobRole.priority
-        if (jobFieldRolePriority < role.priority) {
-          role = it.jobField.jobRole
+      var role = _currentRole.value ?: UserRole.READER
+      if (userJobFields.isNotEmpty()) {
+        userJobFields.forEach {
+          val jobFieldRolePriority = it.jobField.jobRole.priority
+          if (jobFieldRolePriority < role.priority) {
+            role = it.jobField.jobRole
+          }
         }
       }
+
+      val roles = historyRole.value!!.toMutableList()
+      roles.add(role)
+      historyRole.value = roles
+    } else {
+      historyRole.value = historyRole.value!!.subList(0, navigateTo!!)
     }
 
-    val roles = historyRole.value!!.toMutableList()
-    roles.add(role)
-    historyRole.value = roles
     updateCurrentNodeRole()
   }
 
@@ -352,6 +358,12 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   // region Edit Nodes
   fun addNodeWithName(name: String) {
     saveWithCheck(name)
+  }
+
+  fun deleteNode() {
+    NodesDatabaseService.deleteNode(node = _currentNode.value!!, onFailure = {}) {
+      goBack()
+    }
   }
 
   private fun saveWithCheck(name: String) {
@@ -512,7 +524,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     )
   }
 
-  fun updateLocalUsers()  {
+  fun updateLocalUsers() {
     loadLocalUsers {
       findUserRoleInCurrentNode()
     }
