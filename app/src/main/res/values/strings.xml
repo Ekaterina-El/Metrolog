@@ -148,4 +148,5 @@
   <string name="in_work">В работе</string>
   <string name="repair">Ремонт</string>
   <string name="mothballed">На длительном хранении</string>
+  <string name="role">Роль</string>
 </resources>

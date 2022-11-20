@@ -1,7 +1,6 @@
 package el.ka.someapp.view.adapters
 
 import android.annotation.SuppressLint
-import android.text.Html
 import android.text.InputType
 import android.view.View
 import android.widget.EditText
@@ -149,18 +148,32 @@ fun setJobPositionName(textView: TextView, positionName: String) {
 @SuppressLint("SetTextI18n")
 @BindingAdapter("app:jobRole")
 fun setJobRole(textView: TextView, role: UserRole) {
-
-  val roleStringID = when (role) {
-    UserRole.READER -> R.string.role_reader
-    UserRole.EDITOR_2 -> R.string.role_editor_2
-    UserRole.EDITOR_1 -> R.string.role_editor_1
-    else -> null
-  }
-
-  if (roleStringID != null) {
+  val roleStringID = roleToStringID(role)
+  if (role != UserRole.HEAD) {
     val ctx = textView.context
     textView.text = "[${ctx.getString(roleStringID)}]"
   }
+}
+
+fun roleToStringID(role: UserRole): Int {
+  return when (role) {
+    UserRole.READER -> R.string.role_reader
+    UserRole.EDITOR_2 -> R.string.role_editor_2
+    UserRole.EDITOR_1 -> R.string.role_editor_1
+    UserRole.HEAD -> R.string.head
+  }
+}
+
+@SuppressLint("SetTextI18n")
+@BindingAdapter("app:nodeRole")
+fun setUserNodeRole(textView: TextView, role: UserRole?) {
+  if (role == null) return
+
+  val roleStringID = roleToStringID(role)
+  val ctx = textView.context
+  val roleLabel = ctx.getString(R.string.role)
+  val roleString = ctx.getString(roleStringID)
+  textView.text = "$roleLabel: $roleString"
 }
 
 @BindingAdapter("app:showError")

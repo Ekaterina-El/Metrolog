@@ -296,7 +296,10 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
 
   // region Node Role
   private val historyRole = MutableLiveData<List<UserRole>>(listOf())
+
   private val _currentRole = MutableLiveData<UserRole?>(null)
+  val currentRole: LiveData<UserRole?>
+    get() = _currentRole
 
   private fun findUserRoleInCurrentNode(navigateTo: Int? = null) {
     if (historyRole.value!!.size == nodesHistory.value!!.size) return

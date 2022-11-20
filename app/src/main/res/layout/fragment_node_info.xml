@@ -71,9 +71,22 @@
       app:tint="@color/primary_dark_color" />
     <!-- Header - end -->
 
+    <TextView
+      android:id="@+id/textViewRole"
+      android:layout_marginTop="5dp"
+      android:layout_width="match_parent"
+      android:layout_marginHorizontal="@dimen/app_padding"
+      android:layout_height="wrap_content"
+      app:layout_constraintTop_toBottomOf="@id/textName"
+      android:fontFamily="@font/montserrat_regular"
+      android:textSize="14sp"
+      app:nodeRole="@{viewmodel.currentRole}"
+      tools:text="Роль: Читатель"
+      android:textColor="@color/secondary_color" />
+
     <!-- Company positions - start -->
     <TextView
-      android:layout_marginTop="30dp"
+      android:layout_marginTop="20dp"
       android:id="@+id/textCompanyPositionTitle"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -82,7 +95,7 @@
       android:text="@string/company_positions_title"
       android:textColor="@color/secondary_color"
       android:textSize="16sp"
-      app:layout_constraintTop_toBottomOf="@id/textName"
+      app:layout_constraintTop_toBottomOf="@id/textViewRole"
       app:layout_constraintStart_toStartOf="parent"
       />
 
