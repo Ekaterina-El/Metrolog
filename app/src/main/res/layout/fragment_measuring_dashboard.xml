@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+    <variable
+      name="viewModel"
+      type="el.ka.someapp.viewmodel.NodesViewModel" />
+
+    <variable
+      name="master"
+      type="el.ka.someapp.view.measuring.MeasuringDashboardFragment" />
+  </data>
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="20dp">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginHorizontal="@dimen/app_padding"
+      android:gravity="center"
+      android:orientation="horizontal">
+
+      <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="@{viewModel.currentMeasuring.passport.name}"
+        android:textColor="@color/secondary_color"
+        android:textSize="16sp"
+        tools:text="Амперметр Aster AMP-991 10А AMP991-10" />
+
+      <TextView
+        android:id="@+id/vertical_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:textStyle="bold"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="&#8942;"
+        android:textColor="@color/secondary_color"
+        android:textSize="20sp"
+        tools:ignore="HardcodedText" />
+    </LinearLayout>
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="30dp"
+      android:layout_marginHorizontal="@dimen/app_padding"
+      android:fontFamily="@font/montserrat_regular"
+      android:text="@string/control_panel"
+      android:textColor="@color/secondary_color"
+      android:textSize="14sp"
+      />
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginHorizontal="@dimen/app_padding"
+      android:layout_marginTop="10dp"
+      android:orientation="vertical">
+
+      <!--   region Row 1 [Start]  -->
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <!--- Card 1 [Start] -->
+        <androidx.cardview.widget.CardView
+          android:layout_width="0dp"
+          android:clickable="true"
+          android:focusable="true"
+          app:cardCornerRadius="5dp"
+          app:cardElevation="4dp"
+          android:layout_height="match_parent"
+          android:layout_weight="1"
+          app:cardUseCompatPadding="true">
+
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="20dp"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+              android:layout_width="wrap_content"
+              android:layout_height="@dimen/dashboard_size"
+              android:src="@drawable/ic_passport"
+              tools:ignore="ContentDescription" />
+
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="@dimen/dashboard_between_icon_text"
+              android:fontFamily="@font/montserrat_regular"
+              android:text="@string/passport"
+              android:gravity="center"
+              android:textColor="@color/secondary_color"
+              android:textSize="12sp" />
+
+          </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+        <!--- Card 1 [End]-->
+
+        <!--- Card 2 [Start] -->
+        <androidx.cardview.widget.CardView
+          android:layout_width="0dp"
+          android:layout_height="match_parent"
+          android:layout_weight="2"
+          android:clickable="true"
+          android:focusable="true"
+          app:cardCornerRadius="5dp"
+          app:cardElevation="4dp"
+          app:cardUseCompatPadding="true">
+
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="20dp"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+              android:layout_width="wrap_content"
+              android:layout_height="@dimen/dashboard_size"
+              android:src="@drawable/ic_repair_1"
+              tools:ignore="ContentDescription" />
+
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="@dimen/dashboard_between_icon_text"
+              android:fontFamily="@font/montserrat_regular"
+              android:gravity="center"
+              android:text="@string/maintenance_repair"
+              android:textColor="@color/secondary_color"
+              android:textSize="12sp" />
+          </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+        <!--- Card 2 [End]-->
+      </LinearLayout>
+      <!-- endregion   Row 1 [End]  -->
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!--   region Row 2 Left   -->
+        <LinearLayout
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:layout_weight="2">
+          <!--- Card 3 [Start] -->
+          <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="4dp"
+            android:layout_height="wrap_content"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:orientation="vertical"
+              android:padding="20dp"
+              tools:ignore="UseCompoundDrawables">
+
+              <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dashboard_size"
+                android:src="@drawable/ic_repair_2"
+                tools:ignore="ContentDescription" />
+
+              <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dashboard_between_icon_text"
+                android:fontFamily="@font/montserrat_regular"
+                android:text="@string/to"
+                android:gravity="center"
+                android:textColor="@color/secondary_color"
+                android:textSize="12sp" />
+
+            </LinearLayout>
+
+          </androidx.cardview.widget.CardView>
+          <!--- Card 3 [End]-->
+
+          <!--- Card 4 [Start] -->
+          <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="4dp"
+            android:layout_height="wrap_content"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:orientation="vertical"
+              android:padding="20dp"
+              tools:ignore="UseCompoundDrawables">
+
+              <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dashboard_size"
+                android:src="@drawable/ic_repair_3"
+                tools:ignore="ContentDescription" />
+
+              <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dashboard_between_icon_text"
+                android:fontFamily="@font/montserrat_regular"
+                android:text="@string/overhaul"
+                android:gravity="center"
+                android:textColor="@color/secondary_color"
+                android:textSize="12sp" />
+            </LinearLayout>
+
+          </androidx.cardview.widget.CardView>
+          <!--- Card 4 [End]-->
+        </LinearLayout>
+        <!--    endregion    -->
+
+        <!--- region Row 2 Right -->
+
+        <!--- Card 3 [Start] -->
+        <androidx.cardview.widget.CardView
+          android:layout_width="0dp"
+          android:layout_weight="1"
+          android:clickable="true"
+          android:focusable="true"
+          app:cardCornerRadius="5dp"
+          app:cardElevation="4dp"
+          android:layout_height="match_parent"
+          app:cardUseCompatPadding="true">
+
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="20dp"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+              android:layout_width="wrap_content"
+              android:layout_height="@dimen/dashboard_size"
+              android:src="@drawable/ic_verification"
+              tools:ignore="ContentDescription" />
+
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="@dimen/dashboard_between_icon_text"
+              android:fontFamily="@font/montserrat_regular"
+              android:text="@string/verification"
+              android:gravity="center"
+              android:textColor="@color/secondary_color"
+              android:textSize="12sp" />
+
+          </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+        <!--- Card 3 [End]-->
+
+        <!--- endregion -->
+
+      </LinearLayout>
+
+
+    </LinearLayout>
+
+  </LinearLayout>
+</layout>

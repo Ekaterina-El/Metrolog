@@ -27,7 +27,7 @@ class MeasuringAdapter(val listener: ItemListener? = null) : RecyclerView.Adapte
   override fun onViewAttachedToWindow(holder: ViewHolder) {
     super.onViewAttachedToWindow(holder)
     holder.itemView.setOnClickListener {
-      listener?.onClick(items[holder.adapterPosition].measuringID)
+      listener?.onClick(items[holder.adapterPosition])
     }
   }
 
@@ -58,6 +58,6 @@ class MeasuringAdapter(val listener: ItemListener? = null) : RecyclerView.Adapte
   }
 
   interface ItemListener {
-    fun onClick(nodeId: String)
+    fun onClick(measuring: Measuring)
   }
 }

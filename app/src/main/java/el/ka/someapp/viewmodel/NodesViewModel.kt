@@ -661,4 +661,14 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       }
   }
   // endregion
+
+  // region Current Measuring
+  private val _currentMeasuring = MutableLiveData<Measuring?>()
+  val currentMeasuring: LiveData<Measuring?>
+    get() = _currentMeasuring
+
+  fun setCurrentMeasuring(measuring: Measuring?) {
+    _currentMeasuring.value = measuring
+  }
+  // endregion
 }

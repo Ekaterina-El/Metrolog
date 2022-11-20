@@ -35,6 +35,9 @@
     <action
       android:id="@+id/action_nodeMeasuringFragment_to_addMeasuringFragment"
       app:destination="@id/addMeasuringFragment" />
+    <action
+      android:id="@+id/action_nodeMeasuringFragment_to_measuringDashboardFragment"
+      app:destination="@id/measuringDashboardFragment" />
   </fragment>
   <fragment
     android:id="@+id/addMeasuringFragment"
@@ -44,4 +47,8 @@
       android:id="@+id/action_addMeasuringFragment_to_nodeMeasuringFragment"
       app:destination="@id/nodeMeasuringFragment" />
   </fragment>
+  <fragment
+    android:id="@+id/measuringDashboardFragment"
+    android:name="el.ka.someapp.view.measuring.MeasuringDashboardFragment"
+    android:label="MeasuringDashboardFragment" />
 </navigation>

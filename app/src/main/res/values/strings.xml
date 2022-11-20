@@ -149,4 +149,9 @@
   <string name="repair">Ремонт</string>
   <string name="mothballed">На длительном хранении</string>
   <string name="role">Роль</string>
+  <string name="passport">Паспорт</string>
+  <string name="maintenance_repair">Текущий ремонт</string>
+  <string name="to">ТО</string>
+  <string name="overhaul">Капитальный ремонт</string>
+  <string name="control_panel">Панель управления</string>
 </resources>

@@ -40,10 +40,19 @@ class NodeMeasuringFragment: BaseFragment() {
     return binding.root
   }
 
+  private val measuringListener = object: MeasuringAdapter.ItemListener {
+    override fun onClick(measuring: Measuring) {
+      visibleViewModel.setNodeNavigationState(false)
+      viewModel.setCurrentMeasuring(measuring)
+      navigate(R.id.action_nodeMeasuringFragment_to_measuringDashboardFragment)
+    }
+
+  }
+
   override fun initFunctionalityParts() {
     binding = FragmentNodeMeasuringBinding.inflate(layoutInflater)
 
-    measuringAdapter = MeasuringAdapter()
+    measuringAdapter = MeasuringAdapter(measuringListener)
     val d = DividerItemDecoration(binding.listMeasuring.context, DividerItemDecoration.VERTICAL)
     binding.listMeasuring.addItemDecoration(d)
   }
