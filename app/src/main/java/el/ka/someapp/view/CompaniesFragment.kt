@@ -11,12 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView.ItemDecoration
-import com.bumptech.glide.load.ImageHeaderParser
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
@@ -134,7 +131,7 @@ class CompaniesFragment : BaseFragment() {
     if (result.isSuccessful) {
       val uriContent = result.uriContent!!
 
-      when(changeImageViewModel.currentChangeImageType.value) {
+      when (changeImageViewModel.currentChangeImageType.value) {
         ImageType.PROFILE -> setProfile(uriContent)
         ImageType.BACKGROUND -> setBackground(uriContent)
         else -> {}
@@ -184,41 +181,25 @@ class CompaniesFragment : BaseFragment() {
   }
 
   // region Logout Dialog
-  private var logoutDialog: Dialog? = null
+  private val logoutConfirmListener = object : ConfirmListener {
+    override fun onAgree() {
+      viewModel.logout { afterLogout() }
+    }
 
-  private fun afterLogout() {
-    logoutDialog?.dismiss()
-    setPassword(null)
-    navigate(R.id.action_companiesFragment_to_welcomeFragment)
-  }
-
-  private fun createLogoutDialog() {
-    logoutDialog = Dialog(requireContext())
-    logoutDialog?.let { loadingDialog ->
-      loadingDialog.setContentView(R.layout.confirm_dialog)
-      loadingDialog.window!!.setLayout(
-        ViewGroup.LayoutParams.MATCH_PARENT,
-        ViewGroup.LayoutParams.WRAP_CONTENT,
-      )
-      loadingDialog.window!!.setWindowAnimations(R.style.Slide)
-      loadingDialog.setCancelable(true)
-
-      loadingDialog.findViewById<TextView>(R.id.textViewMessage).text =
-        getString(R.string.exit_message)
-
-      val buttonYes = loadingDialog.findViewById<Button>(R.id.buttonYes)
-      buttonYes.setOnClickListener { viewModel.logout { afterLogout() } }
-
-      val buttonCancel = loadingDialog.findViewById<Button>(R.id.buttonCancel)
-      buttonCancel.setOnClickListener { loadingDialog.dismiss() }
+    override fun onDisagree() {
+      closeConfirmDialog()
     }
   }
 
   private fun showLogoutDialog() {
-    if (logoutDialog == null) createLogoutDialog()
-    logoutDialog!!.show()
+    openConfirmDialog(getString(R.string.exit_message), logoutConfirmListener)
   }
 
+  private fun afterLogout() {
+    closeConfirmDialog()
+    setPassword(null)
+    navigate(R.id.action_companiesFragment_to_welcomeFragment)
+  }
   // endregion
 
   // region Add Company Dialog

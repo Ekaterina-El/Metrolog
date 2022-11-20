@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
+import android.widget.Button
+import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
@@ -16,6 +18,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import el.ka.someapp.R
 import el.ka.someapp.data.model.ErrorApp
+import org.w3c.dom.Text
 
 abstract class BaseFragment : Fragment() {
 
@@ -111,6 +114,52 @@ abstract class BaseFragment : Fragment() {
   }
   // endregion
 
+  // region Confirm Dialog
+  private var confirmDialog: Dialog? = null
+  private lateinit var confirmDialogMessage: TextView
+  private lateinit var confirmDialogOk: Button
+  private lateinit var confirmDialogCancel: Button
+
+  private fun createConfirmDialog() {
+    confirmDialog = Dialog(requireContext())
+    confirmDialog?.let { dialog ->
+      dialog.setContentView(R.layout.confirm_dialog)
+      dialog.window!!.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+      dialog.window!!.setWindowAnimations(R.style.Slide)
+      dialog.setCancelable(true)
+
+      confirmDialogMessage = dialog.findViewById<TextView>(R.id.textViewMessage)
+      confirmDialogOk = dialog.findViewById<Button>(R.id.buttonYes)
+      confirmDialogCancel = dialog.findViewById<Button>(R.id.buttonCancel)
+    }
+  }
+
+  fun openConfirmDialog(message: String, confirmListener: ConfirmListener) {
+    if (confirmDialog == null) createConfirmDialog()
+
+    confirmDialogOk.setOnClickListener { confirmListener.onAgree() }
+    confirmDialogCancel.setOnClickListener { confirmListener.onDisagree() }
+    confirmDialogMessage.text = message
+
+    confirmDialog!!.show()
+  }
+
+  fun closeConfirmDialog() {
+    if (confirmDialog == null) return
+
+    confirmDialogOk.setOnClickListener(null)
+    confirmDialogCancel.setOnClickListener(null)
+    confirmDialogMessage.text = ""
+    confirmDialog!!.dismiss()
+  }
+
+
+  interface ConfirmListener {
+    fun onAgree()
+    fun onDisagree()
+  }
+
+  // endregion
 
   companion object {
     const val sharedPreferencesName = "METROLOGY"
