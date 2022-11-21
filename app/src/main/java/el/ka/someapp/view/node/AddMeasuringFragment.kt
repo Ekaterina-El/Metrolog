@@ -43,7 +43,6 @@ class AddMeasuringFragment : BaseFragment() {
   }
 
   private val nodesViewModel: NodesViewModel by activityViewModels()
-  private var datePickerDialog: DatePickerDialog? = null
 
   private lateinit var measuringValueAdapter: MeasuringValueAdapter
 
@@ -203,52 +202,11 @@ class AddMeasuringFragment : BaseFragment() {
 
 
   // region Date Picker Dialog
-  private var isOkayClicked = false
-
-  private fun createDatePickerDialog() {
-    val calendar = Calendar.getInstance()
-
-    val datePickerListener =
-      DatePickerDialog.OnDateSetListener { datePicker, year, m, day ->
-        if (isOkayClicked) {
-          calendar.set(year, m, day)
-          val date = calendar.time
-
-          viewModel.saveDate(date)
-
-          val month = m + 1
-          val dateString = makeDateString(day, month, year)
-          Toast.makeText(requireContext(), dateString, Toast.LENGTH_SHORT).show()
-          isOkayClicked = false
-        }
-
-      }
-
-    val year = calendar.get(Calendar.YEAR)
-    val month = calendar.get(Calendar.MONTH)
-    val day = calendar.get(Calendar.DAY_OF_MONTH)
-
-    datePickerDialog = DatePickerDialog(requireContext(), datePickerListener, year, month, day)
-
-    datePickerDialog!!.setButton(
-      DialogInterface.BUTTON_POSITIVE,
-      "OK"
-    ) { _, which ->
-      if (which == DialogInterface.BUTTON_POSITIVE) {
-        isOkayClicked = true
-        val datePicker = datePickerDialog!!.datePicker
-        datePickerListener.onDateSet(
-          datePicker,
-          datePicker.year,
-          datePicker.month,
-          datePicker.dayOfMonth
-        )
-      }
+  private val datePickerListener = object: Companion.DatePickerListener {
+    override fun onPick(date: Date) {
+      viewModel.saveDate(date)
     }
-  }
 
-  private fun makeDateString(day: Int, month: Int, year: Int): String {
-    return "$day/$month/$year"
   }
 
   fun showDatePicker(type: DateType) {
@@ -258,27 +216,8 @@ class AddMeasuringFragment : BaseFragment() {
       DateType.COMMISSION -> viewModel.commissioningDate.value
       DateType.CONDITION -> viewModel.conditionDate.value
     }
-    showDatePickerDialog(date = date)
+    showDatePickerDialog(date, datePickerListener)
   }
-
-  private fun showDatePickerDialog(date: Date? = null) {
-    if (datePickerDialog == null) createDatePickerDialog()
-    updateDatePickerDate(date)
-
-    datePickerDialog!!.show()
-  }
-
-  private fun updateDatePickerDate(date: Date?) {
-    val cal = Calendar.getInstance()
-    if (date != null) cal.time = date
-
-    val year = cal.get(Calendar.YEAR)
-    val month = cal.get(Calendar.MONTH)
-    val day = cal.get(Calendar.DAY_OF_MONTH)
-
-    datePickerDialog!!.datePicker.updateDate(year, month, day)
-  }
-
   // endregion Date Picker Dialog
 
   // region SpinnerListeners

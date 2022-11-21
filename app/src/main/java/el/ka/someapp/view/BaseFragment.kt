@@ -1,7 +1,9 @@
 package el.ka.someapp.view
 
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.app.Dialog
+import android.content.DialogInterface
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +12,7 @@ import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
@@ -19,6 +22,7 @@ import com.google.android.material.textfield.TextInputLayout
 import el.ka.someapp.R
 import el.ka.someapp.data.model.ErrorApp
 import org.w3c.dom.Text
+import java.util.*
 
 abstract class BaseFragment : Fragment() {
 
@@ -158,13 +162,79 @@ abstract class BaseFragment : Fragment() {
     fun onAgree(value: Any? = null)
     fun onDisagree()
   }
+  // endregion
 
+  // region Date Picker
+  private var datePickerDialog: DatePickerDialog? = null
+  private var datePickerListener: DatePickerListener? = null
+  private var isOkayClicked = false
+
+  fun showDatePickerDialog(date: Date? = null, listener: DatePickerListener?) {
+    if (datePickerDialog == null) createDatePickerDialog()
+    updateDatePickerDate(date)
+
+    datePickerListener = listener
+    datePickerDialog!!.show()
+  }
+
+  private fun createDatePickerDialog() {
+    val calendar = Calendar.getInstance()
+
+    val datePickerListener =
+      DatePickerDialog.OnDateSetListener { _, year, m, day ->
+        if (isOkayClicked) {
+          calendar.set(year, m, day)
+
+          val date = calendar.time
+          datePickerListener?.onPick(date)
+
+          isOkayClicked = false
+        }
+
+      }
+
+    val year = calendar.get(Calendar.YEAR)
+    val month = calendar.get(Calendar.MONTH)
+    val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+    datePickerDialog = DatePickerDialog(requireContext(), datePickerListener, year, month, day)
+
+    datePickerDialog!!.setButton(
+      DialogInterface.BUTTON_POSITIVE,
+      "OK"
+    ) { _, which ->
+      if (which == DialogInterface.BUTTON_POSITIVE) {
+        isOkayClicked = true
+        val datePicker = datePickerDialog!!.datePicker
+        datePickerListener.onDateSet(
+          datePicker,
+          datePicker.year,
+          datePicker.month,
+          datePicker.dayOfMonth
+        )
+      }
+    }
+  }
+
+  private fun updateDatePickerDate(date: Date?) {
+    val cal = Calendar.getInstance()
+    if (date != null) cal.time = date
+
+    val year = cal.get(Calendar.YEAR)
+    val month = cal.get(Calendar.MONTH)
+    val day = cal.get(Calendar.DAY_OF_MONTH)
+
+    datePickerDialog!!.datePicker.updateDate(year, month, day)
+  }
   // endregion
 
   companion object {
     const val sharedPreferencesName = "METROLOGY"
     const val LOCAL_CURRENT_PASSWORD = "local_current_password"
 
+    interface DatePickerListener {
+      fun onPick(date: Date)
+    }
 
     fun checkIsNoEmpty(
       layout: TextInputLayout,
