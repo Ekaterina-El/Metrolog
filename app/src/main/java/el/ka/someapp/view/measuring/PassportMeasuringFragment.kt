@@ -10,9 +10,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import el.ka.someapp.R
 import el.ka.someapp.data.model.SpinnerItem
-import el.ka.someapp.data.model.measuring.DateType
-import el.ka.someapp.data.model.measuring.Fields
-import el.ka.someapp.data.model.measuring.MeasurementType
+import el.ka.someapp.data.model.addListener
+import el.ka.someapp.data.model.measuring.*
 import el.ka.someapp.databinding.FragmentPassportMeasuringBinding
 import el.ka.someapp.view.BaseFragment
 import el.ka.someapp.view.adapters.MeasuringValueAdapter
@@ -63,86 +62,86 @@ class PassportMeasuringFragment : BaseFragment() {
   }
 
   // region Spinner Adapters
-
   private fun createSpinners() {
-    createMeasurementKindSpinner()
-    createMeasurementTypeSpinner()
+    createSpinner(MeasuringPassportPart.KIND)
+    createSpinner(MeasuringPassportPart.CATEGORY)
+    createSpinner(MeasuringPassportPart.MEASUREMENT_TYPE)
+    createSpinner(MeasuringPassportPart.STATUS)
+    createSpinner(MeasuringPassportPart.CONDITION)
   }
 
-  private fun createMeasurementKindSpinner() {
+  private fun createSpinner(passportPart: MeasuringPassportPart) {
+    val array = getPartVariants(passportPart)
+    val values = getPartValues(passportPart)
+    val spinner = getPartSpinner(passportPart)
+    val currentValue = getCurrentValue(passportPart)
 
+    createSpinner(array, values, spinner, currentValue)
   }
 
+  private fun getCurrentValue(part: MeasuringPassportPart) =
+    when (part) {
+      MeasuringPassportPart.KIND -> passportViewModel!!.measuringKind
+      MeasuringPassportPart.CATEGORY -> passportViewModel!!.measuringCategory
+      MeasuringPassportPart.MEASUREMENT_TYPE -> passportViewModel!!.measurementType
+      MeasuringPassportPart.STATUS -> passportViewModel!!.measuringState
+      MeasuringPassportPart.CONDITION -> passportViewModel!!.conditionDate
+    }
 
-  private fun createMeasurementTypeSpinner() {
-    createSpinner(
-      R.array.measurementType,
-      Fields.measurementTypeVariables,
-      binding.spinnerMeasurementType, passportViewModel!!.measurementType.value!!
-    )
-  }
+  private fun getPartSpinner(part: MeasuringPassportPart) =
+    when (part) {
+      MeasuringPassportPart.KIND -> binding.spinnerMeasurementKind
+      MeasuringPassportPart.CATEGORY -> binding.spinnerMeasurementCategory
+      MeasuringPassportPart.MEASUREMENT_TYPE -> binding.spinnerMeasurementType
+      MeasuringPassportPart.STATUS -> binding.spinnerMeasurementStatus
+      MeasuringPassportPart.CONDITION -> binding.spinnerMeasurementCondition
+    }
   // endregion
 
   override fun onResume() {
     super.onResume()
-
     // TODO: если нет доступа на изменения не добавлять
 
-    binding.spinnerMeasuringType.setOnItemClickListener { _, _, position, _ ->
-      onMeasuringTypeSelected(position)
+    binding.spinnerMeasurementKind.addListener {
+      val kind = (it as SpinnerItem).value as MeasuringKind
+      passportViewModel!!.setMeasuringKind(kind)
     }
 
-    binding.spinnerMeasuringCategory.setOnItemClickListener { _, _, position, _ ->
-      onMeasuringCategorySelected(position)
+    binding.spinnerMeasurementCategory.addListener {
+      val category = (it as SpinnerItem).value as MeasuringCategory
+      passportViewModel!!.setCategory(category)
     }
 
-    binding.spinnerMeasurementType.onItemSelectedListener =
-      object : AdapterView.OnItemSelectedListener {
-        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-          val type = p0!!.selectedItem as SpinnerItem
-          onMeasurementTypeSelected(type.value as MeasurementType)
-        }
-
-        override fun onNothingSelected(p0: AdapterView<*>?) {}
-      }
-
-    binding.spinnerMeasuremingStatus.setOnItemClickListener { _, _, position, _ ->
-      onMeasurementStateSelected(position)
+    binding.spinnerMeasurementStatus.addListener {
+      val state = (it as SpinnerItem).value as MeasuringState
+      passportViewModel!!.setMeasuringState(state)
     }
 
-    binding.spinnerMeasuremingCondition.setOnItemClickListener { _, _, position, _ ->
-      onMeasurementConditionSelected(position)
+    binding.spinnerMeasurementCondition.addListener {
+      val condition = (it as SpinnerItem).value as MeasuringCondition
+      passportViewModel!!.setMeasuringCondition(condition)
     }
+
+    binding.spinnerMeasurementType.addListener {
+      val type = (it as SpinnerItem).value as MeasurementType
+      passportViewModel!!.setMeasurementType(type)
+    }
+
   }
 
-  // region SpinnerListeners
-  private fun onMeasuringTypeSelected(position: Int) {
-    val type = Fields.measuringTypeVariables[position]
-    passportViewModel!!.setMeasuringKind(type)
+  override fun onStop() {
+    super.onStop()
+
+    binding.spinnerMeasurementKind.onItemSelectedListener = null
+    binding.spinnerMeasurementCategory.onItemSelectedListener = null
+    binding.spinnerMeasurementStatus.onItemSelectedListener = null
+    binding.spinnerMeasurementCondition.onItemSelectedListener = null
+    binding.spinnerMeasurementType.onItemSelectedListener = null
   }
 
-  private fun onMeasuringCategorySelected(position: Int) {
-    val category = Fields.measuringCategoryVariables[position]
-    passportViewModel!!.setCategory(category)
-  }
-
-  private fun onMeasurementTypeSelected(type: MeasurementType) {
-    passportViewModel!!.setMeasurementType(type)
-  }
-
-  private fun onMeasurementStateSelected(position: Int) {
-    val status = Fields.measurementStatusVariables[position]
-    passportViewModel!!.setMeasuringState(status)
-  }
-
-  private fun onMeasurementConditionSelected(position: Int) {
-    val condition = Fields.measurementConditionVariables[position]
-    passportViewModel!!.setMeasuringCondition(condition)
-  }
-  // endregion
 
   fun addMeasuringValue() {
-
+    measuringValueAdapter.addNewItem()
   }
 
   fun trySaveMeasuring() {

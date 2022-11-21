@@ -23,8 +23,11 @@ import com.google.android.material.textfield.TextInputLayout
 import el.ka.someapp.R
 import el.ka.someapp.data.model.ErrorApp
 import el.ka.someapp.data.model.SpinnerItem
+import el.ka.someapp.data.model.measuring.Fields
 import el.ka.someapp.data.model.measuring.MeasurementType
+import el.ka.someapp.data.model.measuring.MeasuringPassportPart
 import el.ka.someapp.view.adapters.SpinnerAdapter
+import el.ka.someapp.view.measuring.PassportMeasuringFragment
 import org.w3c.dom.Text
 import java.util.*
 
@@ -235,7 +238,7 @@ abstract class BaseFragment : Fragment() {
   // region Spinner
   fun createSpinner(
     itemsArrayRes: Int,
-    arrayValues: List<MeasurementType>,
+    arrayValues: List<Any>,
     spinner: Spinner,
     value: Any
   ) {
@@ -248,6 +251,25 @@ abstract class BaseFragment : Fragment() {
 
   private fun getSpinnerItems(arrayId: Int, types: List<Any>) =
     resources.getStringArray(arrayId).mapIndexed { idx, s -> SpinnerItem(s, types[idx]) }
+
+
+  fun getPartVariants(part: MeasuringPassportPart) =
+    when (part) {
+      MeasuringPassportPart.KIND -> R.array.measuringTypes
+      MeasuringPassportPart.CATEGORY -> R.array.measuringCategories
+      MeasuringPassportPart.MEASUREMENT_TYPE -> R.array.measurementType
+      MeasuringPassportPart.STATUS -> R.array.measurementStatus
+      MeasuringPassportPart.CONDITION -> R.array.measurementCondition
+    }
+
+  fun getPartValues(part: MeasuringPassportPart) =
+    when (part) {
+      MeasuringPassportPart.KIND -> Fields.measuringTypeVariables
+      MeasuringPassportPart.CATEGORY -> Fields.measuringCategoryVariables
+      MeasuringPassportPart.MEASUREMENT_TYPE -> Fields.measurementTypeVariables
+      MeasuringPassportPart.STATUS -> Fields.measurementStatusVariables
+      MeasuringPassportPart.CONDITION -> Fields.measurementConditionVariables
+    }
   // endregion
 
   companion object {
