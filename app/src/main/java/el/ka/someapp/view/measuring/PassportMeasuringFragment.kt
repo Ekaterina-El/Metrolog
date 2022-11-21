@@ -9,7 +9,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import el.ka.someapp.R
 import el.ka.someapp.data.model.SpinnerItem
-import el.ka.someapp.data.model.User
 import el.ka.someapp.data.model.measuring.DateType
 import el.ka.someapp.data.model.measuring.Fields
 import el.ka.someapp.data.model.measuring.MeasurementType
@@ -62,39 +61,30 @@ class PassportMeasuringFragment : BaseFragment() {
     popUp()
   }
 
-  private lateinit var measurementTypeItems: List<SpinnerItem>
+  // region Adapters
   private lateinit var measurementTypeAdapter: SpinnerAdapter
 
   private fun createSpinners() {
+    createMeasurementTypeSpinner()
+  }
 
-    measurementTypeItems =
-      resources.getStringArray(R.array.measurementType).mapIndexed { idx, s ->
-        SpinnerItem(s, Fields.measurementTypeVariables[idx])
-      }
-    measurementTypeAdapter = SpinnerAdapter(requireContext(), measurementTypeItems)
+  private fun createMeasurementTypeSpinner() {
+    measurementTypeAdapter = SpinnerAdapter(
+      requireContext(),
+      getSpinnerItems(R.array.measurementType, Fields.measurementTypeVariables)
+    )
+
     binding.spinnerMeasurementType.adapter = measurementTypeAdapter
 
-
+    measurementTypeAdapter.selectItem(
+      passportViewModel!!.measurementType.value!!,
+      binding.spinnerMeasurementType
+    )
   }
 
-  private fun updateSpinners() {
-    val passport = passportViewModel!!.passport
-
-    val m = passportViewModel!!.measurementType.value!!
-    val selected = measurementTypeItems.firstOrNull { it.value == m }
-
-    val p = measurementTypeAdapter.getPosition(selected)
-    binding.spinnerMeasurementType.setSelection(p)
-
-    /*val measurementTypePos = Fields.measurementTypeVariables.indexOf(passport.measurementType)
-    val a = binding.spinnerMeasurementType.adapter.count*/
-//    binding.spinnerMeasurementType.setSelection(2)
-  }
-
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
-    updateSpinners()
-  }
+  private fun getSpinnerItems(arrayId: Int, types: List<MeasurementType>) =
+    resources.getStringArray(arrayId).mapIndexed { idx, s -> SpinnerItem(s, types[idx]) }
+  // endregion
 
   override fun onResume() {
     super.onResume()

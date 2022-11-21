@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.databinding.DataBindingUtil
 import el.ka.someapp.R
 import el.ka.someapp.data.model.SpinnerItem
@@ -14,10 +15,19 @@ import el.ka.someapp.databinding.DropdownSpinnerItemUserBinding
 import el.ka.someapp.databinding.SpinnerItemBinding
 import el.ka.someapp.databinding.SpinnerItemUserBinding
 
-class SpinnerAdapter(context: Context, items: List<SpinnerItem>) :
+class SpinnerAdapter(context: Context, private val items: List<SpinnerItem>) :
   ArrayAdapter<SpinnerItem>(context, 0, items) {
 
   private val layoutInflater: LayoutInflater = LayoutInflater.from(context)
+
+  fun selectItem(
+    currentValue: Any,
+    spinnerMeasurementType: Spinner
+  ) {
+    val selected = items.firstOrNull { it.value == currentValue }
+    val p = getPosition(selected)
+    spinnerMeasurementType.setSelection(p)
+  }
 
   override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
     val binding: SpinnerItemBinding = if (convertView == null) {
