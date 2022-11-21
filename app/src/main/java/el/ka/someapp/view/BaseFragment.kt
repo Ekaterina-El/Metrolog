@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
 import android.widget.Button
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.addCallback
@@ -21,6 +22,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import el.ka.someapp.R
 import el.ka.someapp.data.model.ErrorApp
+import el.ka.someapp.data.model.SpinnerItem
+import el.ka.someapp.data.model.measuring.MeasurementType
+import el.ka.someapp.view.adapters.SpinnerAdapter
 import org.w3c.dom.Text
 import java.util.*
 
@@ -226,6 +230,24 @@ abstract class BaseFragment : Fragment() {
 
     datePickerDialog!!.datePicker.updateDate(year, month, day)
   }
+  // endregion
+
+  // region Spinner
+  fun createSpinner(
+    itemsArrayRes: Int,
+    arrayValues: List<MeasurementType>,
+    spinner: Spinner,
+    value: Any
+  ) {
+    val measurementTypeAdapter =
+      SpinnerAdapter(requireContext(), getSpinnerItems(itemsArrayRes, arrayValues))
+
+    spinner.adapter = measurementTypeAdapter
+    measurementTypeAdapter.selectItem(value, spinner)
+  }
+
+  private fun getSpinnerItems(arrayId: Int, types: List<Any>) =
+    resources.getStringArray(arrayId).mapIndexed { idx, s -> SpinnerItem(s, types[idx]) }
   // endregion
 
   companion object {

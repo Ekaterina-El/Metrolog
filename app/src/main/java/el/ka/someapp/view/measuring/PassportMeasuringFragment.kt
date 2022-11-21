@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.Spinner
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import el.ka.someapp.R
@@ -61,29 +62,25 @@ class PassportMeasuringFragment : BaseFragment() {
     popUp()
   }
 
-  // region Adapters
-  private lateinit var measurementTypeAdapter: SpinnerAdapter
+  // region Spinner Adapters
 
   private fun createSpinners() {
+    createMeasurementKindSpinner()
     createMeasurementTypeSpinner()
   }
 
-  private fun createMeasurementTypeSpinner() {
-    measurementTypeAdapter = SpinnerAdapter(
-      requireContext(),
-      getSpinnerItems(R.array.measurementType, Fields.measurementTypeVariables)
-    )
+  private fun createMeasurementKindSpinner() {
 
-    binding.spinnerMeasurementType.adapter = measurementTypeAdapter
-
-    measurementTypeAdapter.selectItem(
-      passportViewModel!!.measurementType.value!!,
-      binding.spinnerMeasurementType
-    )
   }
 
-  private fun getSpinnerItems(arrayId: Int, types: List<MeasurementType>) =
-    resources.getStringArray(arrayId).mapIndexed { idx, s -> SpinnerItem(s, types[idx]) }
+
+  private fun createMeasurementTypeSpinner() {
+    createSpinner(
+      R.array.measurementType,
+      Fields.measurementTypeVariables,
+      binding.spinnerMeasurementType, passportViewModel!!.measurementType.value!!
+    )
+  }
   // endregion
 
   override fun onResume() {

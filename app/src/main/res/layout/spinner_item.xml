@@ -17,6 +17,5 @@
         android:textSize="14sp"
         android:textColor="@color/secondary_color"
         android:fontFamily="@font/montserrat_regular"
-        android:textStyle="bold"
         tools:text="Пользователь N" />
 </layout>
