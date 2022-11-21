@@ -397,27 +397,32 @@
 
       </com.google.android.material.textfield.TextInputLayout>
 
-      <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutMeasurementType"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+      <TextView
+        android:id="@+id/textViewUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:background="@color/background_color"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="@string/measurement_type"
+        android:textColor="@color/secondary_color"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textErrorRole" />
+
+
+      <Spinner
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:id="@+id/spinnerMeasurementType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/app_padding"
-        android:hint="@string/measurement_type"
-        app:boxStrokeColor="@color/primary_dark_color"
-        app:boxStrokeErrorColor="@color/attentionColor"
-        app:errorEnabled="true"
-        app:errorTextColor="@color/attentionColor">
-
-        <AutoCompleteTextView
-          android:id="@+id/spinnerMeasurementType"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:fontFamily="@font/montserrat_regular"
-          android:inputType="none"
-          android:textSize="14sp"
-          app:simpleItems="@array/measurementType" />
-      </com.google.android.material.textfield.TextInputLayout>
+        android:layout_marginBottom="10dp"
+        android:spinnerMode="dropdown"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewUser"
+        tools:listitem="@layout/spinner_item" />
 
       <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layoutMeasuringState"

@@ -4,15 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import el.ka.someapp.R
+import el.ka.someapp.data.model.SpinnerItem
+import el.ka.someapp.data.model.User
 import el.ka.someapp.data.model.measuring.DateType
 import el.ka.someapp.data.model.measuring.Fields
-import el.ka.someapp.databinding.FragmentAddMeasuringBinding
+import el.ka.someapp.data.model.measuring.MeasurementType
 import el.ka.someapp.databinding.FragmentPassportMeasuringBinding
 import el.ka.someapp.view.BaseFragment
 import el.ka.someapp.view.adapters.MeasuringValueAdapter
+import el.ka.someapp.view.adapters.SpinnerAdapter
 import el.ka.someapp.viewmodel.NodesViewModel
 import el.ka.someapp.viewmodel.PassportViewModel
 import java.util.*
@@ -33,15 +37,7 @@ class PassportMeasuringFragment : BaseFragment() {
 
     measuringValueAdapter = MeasuringValueAdapter()
     measuringValueAdapter.setItems(passportViewModel!!.measurementValue.value!!)
-    updateSpinners()
-  }
-
-  private fun updateSpinners() {
-    val passport = passportViewModel!!.passport
-
-    val measurementTypePos = Fields.measurementTypeVariables.indexOf(passport.measurementType)
-    binding.spinnerMeasurementType.setText("123")
-    val b = 10
+    createSpinners()
   }
 
   override fun inflateBindingVariables() {
@@ -66,6 +62,40 @@ class PassportMeasuringFragment : BaseFragment() {
     popUp()
   }
 
+  private lateinit var measurementTypeItems: List<SpinnerItem>
+  private lateinit var measurementTypeAdapter: SpinnerAdapter
+
+  private fun createSpinners() {
+
+    measurementTypeItems =
+      resources.getStringArray(R.array.measurementType).mapIndexed { idx, s ->
+        SpinnerItem(s, Fields.measurementTypeVariables[idx])
+      }
+    measurementTypeAdapter = SpinnerAdapter(requireContext(), measurementTypeItems)
+    binding.spinnerMeasurementType.adapter = measurementTypeAdapter
+
+
+  }
+
+  private fun updateSpinners() {
+    val passport = passportViewModel!!.passport
+
+    val m = passportViewModel!!.measurementType.value!!
+    val selected = measurementTypeItems.firstOrNull { it.value == m }
+
+    val p = measurementTypeAdapter.getPosition(selected)
+    binding.spinnerMeasurementType.setSelection(p)
+
+    /*val measurementTypePos = Fields.measurementTypeVariables.indexOf(passport.measurementType)
+    val a = binding.spinnerMeasurementType.adapter.count*/
+//    binding.spinnerMeasurementType.setSelection(2)
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    updateSpinners()
+  }
+
   override fun onResume() {
     super.onResume()
 
@@ -79,9 +109,15 @@ class PassportMeasuringFragment : BaseFragment() {
       onMeasuringCategorySelected(position)
     }
 
-    binding.spinnerMeasurementType.setOnItemClickListener { _, _, position, _ ->
-      onMeasurementTypeSelected(position)
-    }
+    binding.spinnerMeasurementType.onItemSelectedListener =
+      object : AdapterView.OnItemSelectedListener {
+        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+          val type = p0!!.selectedItem as SpinnerItem
+          onMeasurementTypeSelected(type.value as MeasurementType)
+        }
+
+        override fun onNothingSelected(p0: AdapterView<*>?) {}
+      }
 
     binding.spinnerMeasuremingStatus.setOnItemClickListener { _, _, position, _ ->
       onMeasurementStateSelected(position)
@@ -91,6 +127,7 @@ class PassportMeasuringFragment : BaseFragment() {
       onMeasurementConditionSelected(position)
     }
   }
+
   // region SpinnerListeners
   private fun onMeasuringTypeSelected(position: Int) {
     val type = Fields.measuringTypeVariables[position]
@@ -102,8 +139,7 @@ class PassportMeasuringFragment : BaseFragment() {
     passportViewModel!!.setCategory(category)
   }
 
-  private fun onMeasurementTypeSelected(position: Int) {
-    val type = Fields.measurementTypeVariables[position]
+  private fun onMeasurementTypeSelected(type: MeasurementType) {
     passportViewModel!!.setMeasurementType(type)
   }
 
@@ -132,7 +168,7 @@ class PassportMeasuringFragment : BaseFragment() {
   }
 
   // region Date Picker Dialog
-  private val datePickerListener = object: Companion.DatePickerListener {
+  private val datePickerListener = object : Companion.DatePickerListener {
     override fun onPick(date: Date) {
       passportViewModel!!.saveDate(date)
     }

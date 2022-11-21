@@ -199,14 +199,11 @@ class AddMeasuringFragment : BaseFragment() {
 
     super.onStop()
   }
-
-
   // region Date Picker Dialog
   private val datePickerListener = object: Companion.DatePickerListener {
     override fun onPick(date: Date) {
       viewModel.saveDate(date)
     }
-
   }
 
   fun showDatePicker(type: DateType) {

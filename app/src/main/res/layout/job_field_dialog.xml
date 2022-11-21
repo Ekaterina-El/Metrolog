@@ -190,10 +190,10 @@
           android:id="@+id/spinner"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:spinnerMode="dropdown"
           android:layout_marginTop="10dp"
-          app:layout_constraintStart_toStartOf="parent"
+          android:spinnerMode="dropdown"
           app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@id/textViewUser"
           tools:listitem="@layout/spinner_item_user" />
 
