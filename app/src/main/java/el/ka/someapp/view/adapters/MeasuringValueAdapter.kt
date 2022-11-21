@@ -70,6 +70,12 @@ class MeasuringValueAdapter(val listener: AdapterListener? = null): RecyclerView
 
   fun getMeasuringValues() = holders.map { it.getMeasuringValue() }
 
+  fun setItems(measurementValue: List<MeasurementValue>) {
+    items.clear()
+    items.addAll(measurementValue)
+    notifyDataSetChanged()
+  }
+
 
   companion object {
     interface AdapterListener {

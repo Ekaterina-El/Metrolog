@@ -11,6 +11,8 @@ import androidx.lifecycle.Observer
 import el.ka.someapp.R
 import el.ka.someapp.data.model.State
 import el.ka.someapp.data.model.UserRole
+import el.ka.someapp.data.model.measuring.DateType
+import el.ka.someapp.data.model.measuring.MeasuringPart
 import el.ka.someapp.data.model.role.AccessType
 import el.ka.someapp.data.model.role.hasRole
 import el.ka.someapp.databinding.FragmentMeasuringDashboardBinding
@@ -104,6 +106,16 @@ class MeasuringDashboardFragment : BaseFragment() {
   private fun deleteMeasuring() {
     nodesViewModel.deleteMeasuring(nodesViewModel.currentMeasuring.value!!)
   }
+
+  fun navigateTo(part: MeasuringPart) {
+    val action = when(part) {
+      MeasuringPart.PASSPORT -> R.id.action_measuringDashboardFragment_to_passportMeasuringFragment
+      else -> null
+    }
+    if (action != null) navigate(action)
+  }
+
+
 
   companion object {
     const val DELETE_ITEM = 1

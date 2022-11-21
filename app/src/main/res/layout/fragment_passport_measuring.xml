@@ -1,0 +1,649 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+    <import type="el.ka.someapp.data.model.measuring.DateType" />
+
+    <variable
+      name="viewmodel"
+      type="el.ka.someapp.viewmodel.PassportViewModel" />
+
+    <variable
+      name="measuringValueAdapter"
+      type="el.ka.someapp.view.adapters.MeasuringValueAdapter" />
+
+    <variable
+      name="master"
+      type="el.ka.someapp.view.measuring.PassportMeasuringFragment" />
+  </data>
+
+  <androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:layout_marginTop="20dp"
+        android:gravity="center_vertical">
+
+        <TextView
+          android:id="@+id/textName"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:fontFamily="@font/montserrat_regular"
+          android:text="@string/passport_measuring"
+          android:textColor="@color/secondary_color"
+          android:textSize="18sp"
+          android:textStyle="bold"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+          android:layout_width="35dp"
+          android:layout_height="35dp"
+          android:layout_marginStart="10dp"
+          android:background="@drawable/button_selector"
+          android:clickable="true"
+          android:focusable="true"
+          android:onClick="@{() -> master.trySaveMeasuring()}">
+
+          <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_add"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/text_on_primary" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+      </LinearLayout>
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="@string/passportMeasuringDescription"
+        android:textColor="@color/secondary_color"
+        android:textSize="14sp" />
+
+      <TextView
+        android:id="@+id/textError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="@string/createMeasuringError"
+        android:textColor="@color/attentionColor"
+        android:textSize="14sp"
+        android:visibility="gone" />
+
+
+      <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutName"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:layout_marginTop="20dp"
+        android:hint="@string/measuring_name"
+        app:boxStrokeColor="@color/primary_dark_color"
+        app:boxStrokeErrorColor="@color/attentionColor"
+        app:errorEnabled="true"
+        app:errorTextColor="@color/attentionColor">
+
+        <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/inp1"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:ellipsize="end"
+          android:fontFamily="@font/montserrat_regular"
+          android:imeOptions="actionNext"
+          android:inputType="text"
+          android:maxLines="1"
+          android:text="@={viewmodel.name}"
+          android:textColor="#333"
+          android:textSize="14sp" />
+
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout_measuring_kind"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:hint="@string/type_measuring"
+        app:boxStrokeColor="@color/primary_dark_color"
+        app:boxStrokeErrorColor="@color/attentionColor"
+        app:errorEnabled="true"
+        app:errorTextColor="@color/attentionColor">
+
+        <AutoCompleteTextView
+          android:id="@+id/spinnerMeasuringType"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fontFamily="@font/montserrat_regular"
+          android:imeOptions="actionNext"
+          android:inputType="none"
+          android:textSize="14sp"
+          app:simpleItems="@array/measuringTypes" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutMeasuringCategory"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:hint="@string/category_measuring"
+        app:boxStrokeColor="@color/primary_dark_color"
+        app:boxStrokeErrorColor="@color/attentionColor"
+        app:errorEnabled="true"
+        app:errorTextColor="@color/attentionColor">
+
+        <AutoCompleteTextView
+          android:id="@+id/spinnerMeasuringCategory"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fontFamily="@font/montserrat_regular"
+          android:imeOptions="actionNext"
+          android:inputType="none"
+          android:textSize="14sp"
+          app:simpleItems="@array/measuringCategories" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutMeasuringType"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:hint="@string/measuring_type"
+        app:boxStrokeColor="@color/primary_dark_color"
+        app:boxStrokeErrorColor="@color/attentionColor"
+        app:errorEnabled="true"
+        app:errorTextColor="@color/attentionColor">
+
+        <com.google.android.material.textfield.TextInputEditText
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:ellipsize="end"
+          android:fontFamily="@font/montserrat_regular"
+          android:imeOptions="actionNext"
+          android:inputType="text"
+          android:maxLines="1"
+          android:text="@={viewmodel.type}"
+          android:textColor="#333"
+          android:textSize="14sp" />
+
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:hint="@string/inventory_number"
+        app:boxStrokeColor="@color/primary_dark_color"
+        app:boxStrokeErrorColor="@color/attentionColor"
+        app:errorEnabled="true"
+        app:errorTextColor="@color/attentionColor">
+
+        <com.google.android.material.textfield.TextInputEditText
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:ellipsize="end"
+          android:fontFamily="@font/montserrat_regular"
+          android:imeOptions="actionNext"
+          android:inputType="text"
+          android:maxLines="1"
+          android:text="@={viewmodel.inventoryNumber}"
+          android:textColor="#333"
+          android:textSize="14sp" />
+
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:hint="@string/serial_number"
+        app:boxStrokeColor="@color/primary_dark_color"
+        app:boxStrokeErrorColor="@color/attentionColor"
+        app:errorEnabled="true"
+        app:errorTextColor="@color/attentionColor">
+
+        <com.google.android.material.textfield.TextInputEditText
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:ellipsize="end"
+          android:fontFamily="@font/montserrat_regular"
+          android:imeOptions="actionNext"
+          android:inputType="text"
+          android:maxLines="1"
+          android:text="@={viewmodel.serialNumber}"
+          android:textColor="#333"
+          android:textSize="14sp" />
+
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:hint="@string/reg_number_GRSI"
+        app:boxStrokeColor="@color/primary_dark_color"
+        app:boxStrokeErrorColor="@color/attentionColor"
+        app:errorEnabled="true"
+        app:errorTextColor="@color/attentionColor">
+
+        <com.google.android.material.textfield.TextInputEditText
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:ellipsize="end"
+          android:fontFamily="@font/montserrat_regular"
+          android:imeOptions="actionNext"
+          android:inputType="text"
+          android:maxLines="1"
+          android:text="@={viewmodel.registrationNumberGRSI}"
+          android:textColor="#333"
+          android:textSize="14sp" />
+
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginEnd="10dp"
+          android:layout_weight="1"
+          android:fontFamily="@font/montserrat_regular"
+          android:text="@string/measuring_value_adapter"
+          android:textColor="@color/secondary_color"
+          android:textSize="16sp"
+          android:textStyle="bold" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+          android:layout_width="35dp"
+          android:layout_height="35dp"
+          android:layout_marginStart="10dp"
+          android:background="@drawable/button_selector"
+          android:clickable="true"
+          android:focusable="true"
+          android:onClick="@{() -> master.addMeasuringValue()}">
+
+          <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_add"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/text_on_primary" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+      </LinearLayout>
+
+      <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:adapter="@{measuringValueAdapter}"
+        android:nestedScrollingEnabled="false"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="3"
+        tools:listitem="@layout/item_measuring_value" />
+
+      <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:hint="@string/manufacturer"
+        app:boxStrokeColor="@color/primary_dark_color"
+        app:boxStrokeErrorColor="@color/attentionColor"
+        app:errorEnabled="true"
+        app:errorTextColor="@color/attentionColor">
+
+        <com.google.android.material.textfield.TextInputEditText
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:ellipsize="end"
+          android:fontFamily="@font/montserrat_regular"
+          android:imeOptions="actionNext"
+          android:inputType="text"
+          android:maxLines="1"
+          android:text="@={viewmodel.manufacturer}"
+          android:textColor="#333"
+          android:textSize="14sp" />
+
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:hint="@string/supplier"
+        app:boxStrokeColor="@color/primary_dark_color"
+        app:boxStrokeErrorColor="@color/attentionColor"
+        app:errorEnabled="true"
+        app:errorTextColor="@color/attentionColor">
+
+        <com.google.android.material.textfield.TextInputEditText
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:ellipsize="end"
+          android:fontFamily="@font/montserrat_regular"
+          android:imeOptions="actionNext"
+          android:inputType="text"
+          android:maxLines="1"
+          android:text="@={viewmodel.supplier}"
+          android:textColor="#333"
+          android:textSize="14sp" />
+
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:hint="@string/sector_GROEI"
+        app:boxStrokeColor="@color/primary_dark_color"
+        app:boxStrokeErrorColor="@color/attentionColor"
+        app:errorEnabled="true"
+        app:errorTextColor="@color/attentionColor">
+
+        <com.google.android.material.textfield.TextInputEditText
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:ellipsize="end"
+          android:fontFamily="@font/montserrat_regular"
+          android:imeOptions="actionNext"
+          android:inputType="text"
+          android:maxLines="1"
+          android:text="@={viewmodel.sectorGROEI}"
+          android:textColor="#333"
+          android:textSize="14sp" />
+
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutMeasurementType"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:hint="@string/measurement_type"
+        app:boxStrokeColor="@color/primary_dark_color"
+        app:boxStrokeErrorColor="@color/attentionColor"
+        app:errorEnabled="true"
+        app:errorTextColor="@color/attentionColor">
+
+        <AutoCompleteTextView
+          android:id="@+id/spinnerMeasurementType"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fontFamily="@font/montserrat_regular"
+          android:inputType="none"
+          android:textSize="14sp"
+          app:simpleItems="@array/measurementType" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutMeasuringState"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:hint="@string/status"
+        app:boxStrokeColor="@color/primary_dark_color"
+        app:boxStrokeErrorColor="@color/attentionColor"
+        app:errorEnabled="true"
+        app:errorTextColor="@color/attentionColor">
+
+        <AutoCompleteTextView
+          android:id="@+id/spinnerMeasuremingStatus"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fontFamily="@font/montserrat_regular"
+          android:inputType="none"
+          android:textSize="14sp"
+          app:simpleItems="@array/measurementStatus" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutMeasuringCondition"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:hint="@string/condition"
+        app:boxStrokeColor="@color/primary_dark_color"
+        app:boxStrokeErrorColor="@color/attentionColor"
+        app:errorEnabled="true"
+        app:errorTextColor="@color/attentionColor">
+
+        <AutoCompleteTextView
+          android:id="@+id/spinnerMeasuremingCondition"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fontFamily="@font/montserrat_regular"
+          android:inputType="none"
+          android:textSize="14sp"
+          app:simpleItems="@array/measurementCondition" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:clickable="true"
+        android:onClick="@{() -> master.showDatePicker(DateType.CONDITION)}">
+
+        <LinearLayout
+          android:id="@+id/layoutUserFullName"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:background="@drawable/input_wrapper_secondary"
+          android:gravity="center"
+          android:orientation="horizontal"
+          android:paddingHorizontal="15dp"
+          android:paddingVertical="15dp"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent">
+
+          <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_calendar"
+            app:tint="@color/secondary_color" />
+
+          <TextView
+            android:id="@+id/editTextFullName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:background="@null"
+            android:ellipsize="end"
+            android:fontFamily="@font/montserrat_regular"
+            android:maxLines="1"
+            android:text="@{viewmodel.conditionDateFormatted}"
+            android:textColor="@color/secondary_color"
+            android:textColorHint="@color/hint_color"
+            android:textSize="14sp"
+            tools:text="12/12/2023" />
+        </LinearLayout>
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="10dp"
+          android:background="@color/background_color"
+          android:fontFamily="@font/montserrat_regular"
+          android:paddingHorizontal="10dp"
+          android:text="@string/conditionDate"
+          android:textColor="@color/secondary_color"
+          android:textSize="12sp"
+          android:textStyle="bold"
+          app:layout_constraintBottom_toTopOf="@id/layoutUserFullName"
+          app:layout_constraintStart_toStartOf="@id/layoutUserFullName"
+          app:layout_constraintTop_toTopOf="@id/layoutUserFullName" />
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:layout_marginTop="20dp"
+        android:clickable="true"
+        android:onClick="@{() -> master.showDatePicker(DateType.COMMISSION)}">
+
+        <LinearLayout
+          android:id="@+id/layoutCD"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:background="@drawable/input_wrapper_secondary"
+          android:gravity="center"
+          android:orientation="horizontal"
+          android:paddingHorizontal="15dp"
+          android:paddingVertical="15dp"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent">
+
+          <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_calendar"
+            app:tint="@color/secondary_color" />
+
+          <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:background="@null"
+            android:ellipsize="end"
+            android:fontFamily="@font/montserrat_regular"
+            android:maxLines="1"
+            android:text="@{viewmodel.commissioningDateFormatted}"
+            android:textColor="@color/secondary_color"
+            android:textColorHint="@color/hint_color"
+            android:textSize="14sp"
+            tools:text="12/12/2023" />
+        </LinearLayout>
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="10dp"
+          android:background="@color/background_color"
+          android:fontFamily="@font/montserrat_regular"
+          android:paddingHorizontal="10dp"
+          android:text="@string/commissioningDate"
+          android:textColor="@color/secondary_color"
+          android:textSize="12sp"
+          android:textStyle="bold"
+          app:layout_constraintBottom_toTopOf="@id/layoutCD"
+          app:layout_constraintStart_toStartOf="@id/layoutCD"
+          app:layout_constraintTop_toTopOf="@id/layoutCD" />
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:clickable="true"
+        android:onClick="@{() -> master.showDatePicker(DateType.RELEASE)}">
+
+        <LinearLayout
+          android:id="@+id/layoutReleaseDate"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:background="@drawable/input_wrapper_secondary"
+          android:gravity="center"
+          android:orientation="horizontal"
+          android:paddingHorizontal="15dp"
+          android:paddingVertical="15dp"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent">
+
+          <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_calendar"
+            app:tint="@color/secondary_color" />
+
+          <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:background="@null"
+            android:ellipsize="end"
+            android:fontFamily="@font/montserrat_regular"
+            android:maxLines="1"
+            android:text="@{viewmodel.releaseDateFormatted}"
+            android:textColor="@color/secondary_color"
+            android:textColorHint="@color/hint_color"
+            android:textSize="14sp"
+            tools:text="12/12/2023" />
+        </LinearLayout>
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="10dp"
+          android:background="@color/background_color"
+          android:fontFamily="@font/montserrat_regular"
+          android:paddingHorizontal="10dp"
+          android:text="@string/releaseDate"
+          android:textColor="@color/secondary_color"
+          android:textSize="12sp"
+          android:textStyle="bold"
+          app:layout_constraintBottom_toTopOf="@id/layoutReleaseDate"
+          app:layout_constraintStart_toStartOf="@id/layoutReleaseDate"
+          app:layout_constraintTop_toTopOf="@id/layoutReleaseDate" />
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+  </androidx.core.widget.NestedScrollView>
+</layout>

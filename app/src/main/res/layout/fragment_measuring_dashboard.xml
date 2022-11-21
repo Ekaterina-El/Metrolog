@@ -4,6 +4,8 @@
   xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+    <import type="el.ka.someapp.data.model.measuring.MeasuringPart" />
+
     <variable
       name="viewModel"
       type="el.ka.someapp.viewmodel.NodesViewModel" />
@@ -83,6 +85,7 @@
           app:cardCornerRadius="8dp"
           android:foreground="?android:attr/selectableItemBackground"
           app:cardElevation="4dp"
+          android:onClick="@{() -> master.navigateTo(MeasuringPart.PASSPORT)}"
           android:layout_height="match_parent"
           android:layout_weight="1"
           app:cardUseCompatPadding="true">

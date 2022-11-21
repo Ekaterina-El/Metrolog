@@ -50,5 +50,13 @@
   <fragment
     android:id="@+id/measuringDashboardFragment"
     android:name="el.ka.someapp.view.measuring.MeasuringDashboardFragment"
-    android:label="MeasuringDashboardFragment" />
+    android:label="MeasuringDashboardFragment" >
+    <action
+      android:id="@+id/action_measuringDashboardFragment_to_passportMeasuringFragment"
+      app:destination="@id/passportMeasuringFragment" />
+  </fragment>
+  <fragment
+    android:id="@+id/passportMeasuringFragment"
+    android:name="el.ka.someapp.view.measuring.PassportMeasuringFragment"
+    android:label="PassportMeasuringFragment" />
 </navigation>
