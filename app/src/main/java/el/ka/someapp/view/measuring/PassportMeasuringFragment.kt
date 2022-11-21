@@ -15,6 +15,7 @@ import el.ka.someapp.view.BaseFragment
 import el.ka.someapp.view.adapters.MeasuringValueAdapter
 import el.ka.someapp.viewmodel.NodesViewModel
 import el.ka.someapp.viewmodel.PassportViewModel
+import java.util.*
 
 class PassportMeasuringFragment : BaseFragment() {
   private lateinit var binding: FragmentPassportMeasuringBinding
@@ -117,11 +118,6 @@ class PassportMeasuringFragment : BaseFragment() {
   }
   // endregion
 
-
-
-  fun showDatePicker(dateType: DateType) {
-  }
-
   fun addMeasuringValue() {
 
   }
@@ -134,4 +130,22 @@ class PassportMeasuringFragment : BaseFragment() {
     super.onDestroy()
     passportViewModel = null
   }
+
+  // region Date Picker Dialog
+  private val datePickerListener = object: Companion.DatePickerListener {
+    override fun onPick(date: Date) {
+      passportViewModel!!.saveDate(date)
+    }
+  }
+
+  fun showDatePicker(type: DateType) {
+    passportViewModel!!.setEditTime(type)
+    val date = when (type) {
+      DateType.RELEASE -> passportViewModel!!.releaseDate.value
+      DateType.COMMISSION -> passportViewModel!!.commissioningDate.value
+      DateType.CONDITION -> passportViewModel!!.conditionDate.value
+    }
+    showDatePickerDialog(date, datePickerListener)
+  }
+  // endregion Date Picker Dialog
 }
