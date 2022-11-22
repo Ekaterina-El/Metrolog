@@ -139,7 +139,6 @@ class AddMeasuringFragment : BaseFragment() {
       hasErrors = true
     }
 
-
     // Статус: обязательно
     val measuringState = viewModel.measuringState.value
     layout = binding.layoutMeasuringState

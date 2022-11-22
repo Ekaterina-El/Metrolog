@@ -21,9 +21,10 @@ class SpinnerAdapter(context: Context, private val items: List<SpinnerItem>) :
   private val layoutInflater: LayoutInflater = LayoutInflater.from(context)
 
   fun selectItem(
-    currentValue: Any,
+    currentValue: Any?,
     spinnerMeasurementType: Spinner
   ) {
+    if (currentValue == null) return
     val selected = items.firstOrNull { it.value == currentValue }
     val p = getPosition(selected)
     spinnerMeasurementType.setSelection(p)

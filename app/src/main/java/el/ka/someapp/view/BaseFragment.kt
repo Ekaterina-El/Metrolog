@@ -240,7 +240,7 @@ abstract class BaseFragment : Fragment() {
     itemsArrayRes: Int,
     arrayValues: List<Any>,
     spinner: Spinner,
-    value: Any
+    value: Any?
   ) {
     val measurementTypeAdapter =
       SpinnerAdapter(requireContext(), getSpinnerItems(itemsArrayRes, arrayValues))
@@ -292,6 +292,21 @@ abstract class BaseFragment : Fragment() {
         layout.error = null
         false
       }
+    }
+
+    fun checkSpinner(
+      layout: TextView,
+      value: Any?,
+      secondaryColor: Int,
+      attentionColor: Int
+    ): Boolean {
+      val isNull = value == null
+      if (isNull) {
+        layout.setTextColor(attentionColor)
+      } else {
+        layout.setTextColor(secondaryColor)
+      }
+      return isNull
     }
   }
 }

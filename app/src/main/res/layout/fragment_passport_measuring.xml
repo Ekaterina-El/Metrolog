@@ -124,6 +124,7 @@
       </com.google.android.material.textfield.TextInputLayout>
 
       <TextView
+        android:id="@+id/labelSpinnerKind"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -150,6 +151,7 @@
         tools:listitem="@layout/spinner_item" />
 
       <TextView
+        android:id="@+id/labelSpinnerCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -404,11 +406,11 @@
       </com.google.android.material.textfield.TextInputLayout>
 
       <TextView
-        android:id="@+id/textViewUser"
+        android:id="@+id/labelSpinnerMeasurementType"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_height="14dp"
         android:layout_marginHorizontal="@dimen/app_padding"
+        android:layout_marginTop="10dp"
         android:background="@color/background_color"
         android:fontFamily="@font/montserrat_regular"
         android:text="@string/measurement_type"
@@ -432,6 +434,7 @@
         tools:listitem="@layout/spinner_item" />
 
       <TextView
+        android:id="@+id/labelSpinnerMeasurementStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -458,6 +461,7 @@
         tools:listitem="@layout/spinner_item" />
 
       <TextView
+        android:id="@+id/labelSpinnerMeasurementCondition"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"

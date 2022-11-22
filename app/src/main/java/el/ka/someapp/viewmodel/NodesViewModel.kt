@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import el.ka.someapp.data.model.*
-import el.ka.someapp.data.model.measuring.Measuring
+import el.ka.someapp.data.model.measuring.*
 import el.ka.someapp.data.repository.AuthenticationService
 import el.ka.someapp.data.repository.MeasuringDatabaseService
 import el.ka.someapp.data.repository.NodesDatabaseService
@@ -684,6 +684,46 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
         _state.value = State.MEASURING_DELETED
       }
     )
+  }
+
+  fun updateMeasuringPart(part: MeasuringPart, value: Any) {
+    when(part) {
+      MeasuringPart.PASSPORT -> updatePassport(value as MeasuringPassport)
+      MeasuringPart.MAINTENANCE_REPAIR -> updateMaintenanceRepair(value as MaintenanceRepair)
+      MeasuringPart.OVERHAUL -> updateOverhaul(value as Overhaul)
+      MeasuringPart.TO -> updateTO(value as TO)
+      MeasuringPart.VERIFICATION -> updateVerification(value as Verification)
+    }
+  }
+
+  private fun updateVerification(verification: Verification) {
+    val measuring = _currentMeasuring.value!!
+    measuring.verification = verification
+    _currentMeasuring.value = measuring
+  }
+
+  private fun updateTO(TO: TO) {
+    val measuring = _currentMeasuring.value!!
+    measuring.TO = TO
+    _currentMeasuring.value = measuring
+  }
+
+  private fun updateOverhaul(overhaul: Overhaul) {
+    val measuring = _currentMeasuring.value!!
+    measuring.overhaul = overhaul
+    _currentMeasuring.value = measuring
+  }
+
+  private fun updateMaintenanceRepair(maintenanceRepair: MaintenanceRepair) {
+    val measuring = _currentMeasuring.value!!
+    measuring.maintenanceRepair = maintenanceRepair
+    _currentMeasuring.value = measuring
+  }
+
+  private fun updatePassport(passport: MeasuringPassport) {
+    val measuring = _currentMeasuring.value!!
+    measuring.passport = passport
+    _currentMeasuring.value = measuring
   }
   // endregion
 }

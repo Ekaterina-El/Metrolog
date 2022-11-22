@@ -1,6 +1,7 @@
 package el.ka.someapp.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,8 +14,10 @@ import java.util.*
 
 class PassportViewModel(application: Application) : AndroidViewModel(application) {
   lateinit var passport: MeasuringPassport
+  lateinit var measuring: Measuring
 
   fun loadMeasuring(measuring: Measuring) {
+    this@PassportViewModel.measuring = measuring
     passport = measuring.passport!!
 
     name.value = passport.name
@@ -141,10 +144,29 @@ class PassportViewModel(application: Application) : AndroidViewModel(application
     }
   }
 
-  fun saveMeasuring(after: (String) -> Unit) {
+  fun saveMeasuring(after: (MeasuringPassport) -> Unit) {
     _state.value = State.LOADING
     val measuringPassport = getMessingPassport()
 
+    // Если изменния не былои внесены - вернутся назад
+    if (measuringPassport == passport) {
+      _state.value = State.BACK
+      return
+    }
+
+    // Сохранение изменнений на сервере
+    MeasuringDatabaseService.updateMeasuringPart(
+      measuringID = measuring.measuringID,
+      part = MeasuringPart.PASSPORT,
+      value = measuringPassport,
+      onFailure = {
+        _state.value = State.VIEW
+      },
+      onSuccess = {
+        after(measuringPassport)
+        _state.value = State.BACK
+      }
+    )
     /*
     MeasuringDatabaseService.createMeasuring(
       measuring = measuring,

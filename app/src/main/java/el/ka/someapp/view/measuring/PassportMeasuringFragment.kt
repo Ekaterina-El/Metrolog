@@ -6,10 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Spinner
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import el.ka.someapp.R
 import el.ka.someapp.data.model.SpinnerItem
+import el.ka.someapp.data.model.State
 import el.ka.someapp.data.model.addListener
 import el.ka.someapp.data.model.measuring.*
 import el.ka.someapp.databinding.FragmentPassportMeasuringBinding
@@ -26,6 +29,16 @@ class PassportMeasuringFragment : BaseFragment() {
 
   private lateinit var measuringValueAdapter: MeasuringValueAdapter
   private var passportViewModel: PassportViewModel? = null
+
+  private var stateObserver = androidx.lifecycle.Observer<State> {
+    if (it != State.LOADING) hideLoadingDialog()
+
+    when (it) {
+      State.LOADING -> showLoadingDialog()
+      State.BACK -> goBack()
+      else -> {}
+    }
+  }
 
 
   override fun initFunctionalityParts() {
@@ -58,6 +71,10 @@ class PassportMeasuringFragment : BaseFragment() {
   }
 
   override fun onBackPressed() {
+    goBack()
+  }
+
+  private fun goBack() {
     popUp()
   }
 
@@ -81,11 +98,11 @@ class PassportMeasuringFragment : BaseFragment() {
 
   private fun getCurrentValue(part: MeasuringPassportPart) =
     when (part) {
-      MeasuringPassportPart.KIND -> passportViewModel!!.measuringKind
-      MeasuringPassportPart.CATEGORY -> passportViewModel!!.measuringCategory
-      MeasuringPassportPart.MEASUREMENT_TYPE -> passportViewModel!!.measurementType
-      MeasuringPassportPart.STATUS -> passportViewModel!!.measuringState
-      MeasuringPassportPart.CONDITION -> passportViewModel!!.conditionDate
+      MeasuringPassportPart.KIND -> passportViewModel!!.measuringKind.value
+      MeasuringPassportPart.CATEGORY -> passportViewModel!!.measuringCategory.value
+      MeasuringPassportPart.MEASUREMENT_TYPE -> passportViewModel!!.measurementType.value
+      MeasuringPassportPart.STATUS -> passportViewModel!!.measuringState.value
+      MeasuringPassportPart.CONDITION -> passportViewModel!!.conditionDate.value
     }
 
   private fun getPartSpinner(part: MeasuringPassportPart) =
@@ -100,6 +117,9 @@ class PassportMeasuringFragment : BaseFragment() {
 
   override fun onResume() {
     super.onResume()
+
+    passportViewModel!!.state.observe(viewLifecycleOwner, stateObserver)
+
     // TODO: если нет доступа на изменения не добавлять
 
     binding.spinnerMeasurementKind.addListener {
@@ -132,6 +152,8 @@ class PassportMeasuringFragment : BaseFragment() {
   override fun onStop() {
     super.onStop()
 
+    passportViewModel!!.state.removeObserver(stateObserver)
+
     binding.spinnerMeasurementKind.onItemSelectedListener = null
     binding.spinnerMeasurementCategory.onItemSelectedListener = null
     binding.spinnerMeasurementStatus.onItemSelectedListener = null
@@ -139,18 +161,80 @@ class PassportMeasuringFragment : BaseFragment() {
     binding.spinnerMeasurementType.onItemSelectedListener = null
   }
 
+  override fun onDestroy() {
+    super.onDestroy()
+    passportViewModel = null
+  }
 
   fun addMeasuringValue() {
     measuringValueAdapter.addNewItem()
   }
 
   fun trySaveMeasuring() {
-
+    if (allFieldsRight()) {
+      binding.textError.visibility = View.GONE
+      passportViewModel!!.setMeasurementValues(measuringValueAdapter.getMeasuringValues())
+      passportViewModel!!.saveMeasuring {
+        nodesViewModel.updateMeasuringPart(MeasuringPart.PASSPORT, it)
+      }
+    } else {
+      binding.textError.visibility = View.VISIBLE
+    }
   }
 
-  override fun onDestroy() {
-    super.onDestroy()
-    passportViewModel = null
+  private fun allFieldsRight(): Boolean {
+    var errors = 0
+    val isRequireString = getString(R.string.is_required)
+
+    // Наиминование: обязательное && length >= 3
+    val name = passportViewModel!!.name.value
+    if (name == null || name == "") {
+      binding.layoutName.error = isRequireString
+      errors += 1
+    } else if (name.length < 3) {
+      binding.layoutName.error = getString(R.string.required_min_length, 3)
+    } else {
+      binding.layoutName.error = null
+    }
+
+    val attentionColor = ContextCompat.getColor(requireContext(), R.color.attentionColor)
+    val secondaryColor = ContextCompat.getColor(requireContext(), R.color.secondary_color)
+
+    // Вид СИ: обязательное
+    val measuringKind = passportViewModel!!.measuringKind.value
+    var layout = binding.labelSpinnerKind
+    if (checkSpinner(layout, measuringKind, secondaryColor, attentionColor)) errors += 1
+
+    // Категория СИ: обязательное
+    val measuringCategory = passportViewModel!!.measuringCategory.value
+    layout = binding.labelSpinnerCategory
+    if (checkSpinner(layout, measuringCategory, secondaryColor, attentionColor)) errors += 1
+
+    // Тип: обязательно
+    val measuringType = passportViewModel!!.type.value
+    val field = binding.layoutMeasuringType
+    if (checkIsNoEmpty(field, measuringType, isRequireString)) errors += 1
+//    if (checkIsNoEmpty(layout, measuringType, isRequireString)) hasErrors = true
+
+    // Вид измерений: обязательно
+    val measurementType = passportViewModel!!.measurementType.value
+    layout = binding.labelSpinnerMeasurementType
+    if (checkSpinner(layout, measurementType, secondaryColor, attentionColor)) errors += 1
+
+    // Статус: обязательно
+    val measuringState = passportViewModel!!.measuringState.value
+    layout = binding.labelSpinnerMeasurementStatus
+    if (checkSpinner(layout, measuringState, secondaryColor, attentionColor)) errors += 1
+//    if (checkIsNoEmpty(layout, measuringState, isRequireString)) hasErrors = true
+
+    // Состояние: обязательно
+    val measuringCondition = passportViewModel!!.measuringCondition.value
+    layout = binding.labelSpinnerMeasurementCondition
+    if (checkSpinner(layout, measuringCondition, secondaryColor, attentionColor)) errors += 1
+
+    if (!measuringValueAdapter.checkAllFields()) errors += 1
+
+    return errors == 0
   }
 
   // region Date Picker Dialog
