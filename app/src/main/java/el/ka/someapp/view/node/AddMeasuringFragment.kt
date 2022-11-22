@@ -211,6 +211,7 @@ class AddMeasuringFragment : BaseFragment() {
       DateType.RELEASE -> viewModel.releaseDate.value
       DateType.COMMISSION -> viewModel.commissioningDate.value
       DateType.CONDITION -> viewModel.conditionDate.value
+      else -> null
     }
     showDatePickerDialog(date, datePickerListener)
   }

@@ -110,6 +110,7 @@ class MeasuringDashboardFragment : BaseFragment() {
   fun navigateTo(part: MeasuringPart) {
     val action = when(part) {
       MeasuringPart.PASSPORT -> R.id.action_measuringDashboardFragment_to_passportMeasuringFragment
+      MeasuringPart.OVERHAUL -> R.id.action_measuringDashboardFragment_to_overhaulMeasuringFragment
       else -> null
     }
     if (action != null) navigate(action)

@@ -173,19 +173,6 @@ class PassportViewModel(application: Application) : AndroidViewModel(application
         _state.value = State.BACK
       }
     )
-    /*
-    MeasuringDatabaseService.createMeasuring(
-      measuring = measuring,
-      onSuccess = {
-        after(it)
-        _state.value = State.MEASURING_ADDED
-      },
-      onFailure = {
-        _state.value = State.VIEW
-      }
-    )
-
-     */
   }
 
   private fun getMessingPassport(): MeasuringPassport {

@@ -75,9 +75,6 @@ class PassportMeasuringFragment : BaseFragment() {
     ).forEach { it.isEnabled = hasAccess }
 
     measuringValueAdapter.setAccessToEdit(hasAccess)
-
-    // data
-    /// recycler view
   }
 
   override fun inflateBindingVariables() {
@@ -282,12 +279,13 @@ class PassportMeasuringFragment : BaseFragment() {
     }
   }
 
-  fun showDatePicker(type: DateType) {
+  private fun showDatePicker(type: DateType) {
     passportViewModel!!.setEditTime(type)
     val date = when (type) {
       DateType.RELEASE -> passportViewModel!!.releaseDate.value
       DateType.COMMISSION -> passportViewModel!!.commissioningDate.value
       DateType.CONDITION -> passportViewModel!!.conditionDate.value
+      else -> null
     }
     showDatePickerDialog(date, datePickerListener)
   }

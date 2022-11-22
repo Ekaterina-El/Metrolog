@@ -122,6 +122,7 @@
   <string name="required_min_length">Минимальная длина: %1$d</string>
   <string name="creteMeasuringDescription">Для добавления нового СИ заполните форму</string>
   <string name="passportMeasuringDescription">Вы можете просмотреть паспорт СИ и при наличи прав на изменение отредактировать его</string>
+  <string name="overhaulMeasuringDescription">Вы можете просмотреть данные о капительное ремонте СИ и при наличи прав на изменение отредактировать</string>
   <string name="createMeasuringError">При заполнении формы допущенны ошибки. Проверьте ещё раз и попробуйте вновь</string>
   <string name="error_pin">Пароль не верный</string>
   <string name="error">Ошибка</string>
@@ -156,4 +157,10 @@
   <string name="overhaul">Капитальный ремонт</string>
   <string name="control_panel">Панель управления СИ</string>
   <string name="passport_measuring">Паспорт СИ</string>
+  <string name="lastDate">Дата последней (-его)</string>
+  <string name="nextDate">Дата следующего (-ей)</string>
+  <string name="interval">Интервал (дни)</string>
+  <string name="laboratory">Лаборатория</string>
+  <string name="placeInKIP">Лаборатория в цехе КИП</string>
+  <string name="repairPlace">Место ремонта</string>
 </resources>
