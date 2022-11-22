@@ -208,6 +208,12 @@ fun hasAccessToAddUser(view: View, role: UserRole?) {
   hasAccess(view, role, AccessType.ADD_USER)
 }
 
+@BindingAdapter("app:hasAccessToEditMeasuring")
+fun hasAccessToEditMeasuring(view: View, role: UserRole?) {
+  hasAccess(view, role, AccessType.EDIT_MEASURING)
+}
+
+
 @BindingAdapter("app:hasAccessToAddMeasuring")
 fun hasAccessToAddMeasuring(view: View, role: UserRole?) {
   hasAccess(view, role, AccessType.ADD_MEASURING)

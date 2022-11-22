@@ -4,6 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+
     <import type="el.ka.someapp.data.model.measuring.DateType" />
 
     <variable
@@ -56,7 +57,8 @@
           android:background="@drawable/button_selector"
           android:clickable="true"
           android:focusable="true"
-          android:onClick="@{() -> master.trySaveMeasuring()}">
+          android:onClick="@{() -> master.trySaveMeasuring()}"
+          app:hasAccessToEditMeasuring="@{viewmodel.viewerRole}">
 
           <ImageView
             android:layout_width="25dp"
@@ -127,8 +129,8 @@
         android:id="@+id/labelSpinnerKind"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_marginHorizontal="@dimen/app_padding"
+        android:layout_marginTop="10dp"
         android:background="@color/background_color"
         android:fontFamily="@font/montserrat_regular"
         android:text="@string/type_measuring"
@@ -138,11 +140,11 @@
         app:layout_constraintTop_toBottomOf="@+id/textErrorRole" />
 
       <Spinner
-        android:layout_marginTop="5dp"
-        android:layout_marginHorizontal="@dimen/app_padding"
         android:id="@+id/spinnerMeasurementKind"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:layout_marginTop="5dp"
         android:layout_marginBottom="10dp"
         android:spinnerMode="dropdown"
         app:layout_constraintEnd_toEndOf="parent"
@@ -154,8 +156,8 @@
         android:id="@+id/labelSpinnerCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_marginHorizontal="@dimen/app_padding"
+        android:layout_marginTop="10dp"
         android:background="@color/background_color"
         android:fontFamily="@font/montserrat_regular"
         android:text="@string/category_measuring"
@@ -165,11 +167,11 @@
         app:layout_constraintTop_toBottomOf="@+id/textErrorRole" />
 
       <Spinner
-        android:layout_marginTop="5dp"
-        android:layout_marginHorizontal="@dimen/app_padding"
         android:id="@+id/spinnerMeasurementCategory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:layout_marginTop="5dp"
         android:layout_marginBottom="10dp"
         android:spinnerMode="dropdown"
         app:layout_constraintEnd_toEndOf="parent"
@@ -204,6 +206,7 @@
       </com.google.android.material.textfield.TextInputLayout>
 
       <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutInventoryName"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -229,6 +232,7 @@
       </com.google.android.material.textfield.TextInputLayout>
 
       <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutSerialName"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -254,6 +258,7 @@
       </com.google.android.material.textfield.TextInputLayout>
 
       <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutRegNameGRSI"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -304,7 +309,8 @@
           android:background="@drawable/button_selector"
           android:clickable="true"
           android:focusable="true"
-          android:onClick="@{() -> master.addMeasuringValue()}">
+          android:onClick="@{() -> master.addMeasuringValue()}"
+          app:hasAccessToEditMeasuring="@{viewmodel.viewerRole}">
 
           <ImageView
             android:layout_width="25dp"
@@ -331,6 +337,7 @@
         tools:listitem="@layout/item_measuring_value" />
 
       <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutManufacturer"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -356,6 +363,7 @@
       </com.google.android.material.textfield.TextInputLayout>
 
       <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutSupplier"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -381,6 +389,7 @@
       </com.google.android.material.textfield.TextInputLayout>
 
       <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutSectorGROEI"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -421,11 +430,11 @@
 
 
       <Spinner
-        android:layout_marginTop="5dp"
-        android:layout_marginHorizontal="@dimen/app_padding"
         android:id="@+id/spinnerMeasurementType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:layout_marginTop="5dp"
         android:layout_marginBottom="10dp"
         android:spinnerMode="dropdown"
         app:layout_constraintEnd_toEndOf="parent"
@@ -437,8 +446,8 @@
         android:id="@+id/labelSpinnerMeasurementStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_marginHorizontal="@dimen/app_padding"
+        android:layout_marginTop="10dp"
         android:background="@color/background_color"
         android:fontFamily="@font/montserrat_regular"
         android:text="@string/status"
@@ -448,11 +457,11 @@
         app:layout_constraintTop_toBottomOf="@+id/textErrorRole" />
 
       <Spinner
-        android:layout_marginTop="5dp"
-        android:layout_marginHorizontal="@dimen/app_padding"
         android:id="@+id/spinnerMeasurementStatus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:layout_marginTop="5dp"
         android:layout_marginBottom="10dp"
         android:spinnerMode="dropdown"
         app:layout_constraintEnd_toEndOf="parent"
@@ -464,8 +473,8 @@
         android:id="@+id/labelSpinnerMeasurementCondition"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_marginHorizontal="@dimen/app_padding"
+        android:layout_marginTop="10dp"
         android:background="@color/background_color"
         android:fontFamily="@font/montserrat_regular"
         android:text="@string/condition"
@@ -475,11 +484,11 @@
         app:layout_constraintTop_toBottomOf="@+id/textErrorRole" />
 
       <Spinner
-        android:layout_marginTop="5dp"
-        android:layout_marginHorizontal="@dimen/app_padding"
         android:id="@+id/spinnerMeasurementCondition"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:layout_marginTop="5dp"
         android:layout_marginBottom="10dp"
         android:spinnerMode="dropdown"
         app:layout_constraintEnd_toEndOf="parent"
@@ -488,11 +497,11 @@
         tools:listitem="@layout/spinner_item" />
 
       <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/datePickerCondition"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/app_padding"
-        android:clickable="true"
-        android:onClick="@{() -> master.showDatePicker(DateType.CONDITION)}">
+        android:clickable="true">
 
         <LinearLayout
           android:id="@+id/layoutUserFullName"
@@ -548,12 +557,12 @@
       </androidx.constraintlayout.widget.ConstraintLayout>
 
       <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/datePickerCommission"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/app_padding"
         android:layout_marginTop="20dp"
-        android:clickable="true"
-        android:onClick="@{() -> master.showDatePicker(DateType.COMMISSION)}">
+        android:clickable="true">
 
         <LinearLayout
           android:id="@+id/layoutCD"
@@ -608,13 +617,13 @@
       </androidx.constraintlayout.widget.ConstraintLayout>
 
       <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/datePickerRelease"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/app_padding"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        android:clickable="true"
-        android:onClick="@{() -> master.showDatePicker(DateType.RELEASE)}">
+        android:clickable="true">
 
         <LinearLayout
           android:id="@+id/layoutReleaseDate"

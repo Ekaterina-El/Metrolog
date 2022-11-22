@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import el.ka.someapp.data.model.State
+import el.ka.someapp.data.model.UserRole
 import el.ka.someapp.data.model.convertDate
 import el.ka.someapp.data.model.measuring.*
 import el.ka.someapp.data.repository.MeasuringDatabaseService
@@ -16,26 +17,31 @@ class PassportViewModel(application: Application) : AndroidViewModel(application
   lateinit var passport: MeasuringPassport
   lateinit var measuring: Measuring
 
-  fun loadMeasuring(measuring: Measuring) {
+  private val _viewerRole = MutableLiveData<UserRole?>(null)
+  val viewerRole: LiveData<UserRole?> get() = _viewerRole
+
+  fun loadMeasuring(measuring: Measuring, viewerRole: UserRole) {
     this@PassportViewModel.measuring = measuring
     passport = measuring.passport!!
 
+    _viewerRole.value = viewerRole
+
     name.value = passport.name
-    _kind.value = passport.kind                           // *
+    _kind.value = passport.kind
     type.value = passport.type
-    _category.value = passport.category                   // *
+    _category.value = passport.category
     inventoryNumber.value = passport.inventoryNumber
     serialNumber.value = passport.serialNumber
     registrationNumberGRSI.value = passport.registrationNumberGRSI
     manufacturer.value = passport.manufacturer
     supplier.value = passport.supplier
     sectorGROEI.value = passport.sectorGROEI
-    _measurementType.value = passport.measurementType       // *
-    _measurementValues.value = passport.measurementValues   // *
-    _measuringState.value = passport.status                 // *
-    _measuringCondition.value = passport.condition          // *
-    _conditionDate.value = passport.conditionDate           // *
-    _releaseDate.value = passport.releaseDate               // *
+    _measurementType.value = passport.measurementType
+    _measurementValues.value = passport.measurementValues
+    _measuringState.value = passport.status
+    _measuringCondition.value = passport.condition
+    _conditionDate.value = passport.conditionDate
+    _releaseDate.value = passport.releaseDate
     _commissioningDate.value = passport.commissioningDate
   }
 

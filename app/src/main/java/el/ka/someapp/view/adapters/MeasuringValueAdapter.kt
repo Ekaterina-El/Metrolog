@@ -24,6 +24,7 @@ class MeasuringValueAdapter(val listener: AdapterListener? = null): RecyclerView
 
   override fun onBindViewHolder(holder: MeasuringValueViewHolder, position: Int) {
     holder.bind(items[position])
+    holder.setAccessToEdit(hasAccessToEdit)
   }
 
   override fun onViewAttachedToWindow(holder: MeasuringValueViewHolder) {
@@ -74,6 +75,13 @@ class MeasuringValueAdapter(val listener: AdapterListener? = null): RecyclerView
     items.clear()
     items.addAll(measurementValue)
     notifyDataSetChanged()
+  }
+
+  private var hasAccessToEdit = false
+
+  fun setAccessToEdit(hasAccess: Boolean) {
+    hasAccessToEdit = hasAccess
+    holders.forEach { it.setAccessToEdit(hasAccess) }
   }
 
 

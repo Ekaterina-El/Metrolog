@@ -4,9 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.Spinner
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
@@ -15,10 +12,11 @@ import el.ka.someapp.data.model.SpinnerItem
 import el.ka.someapp.data.model.State
 import el.ka.someapp.data.model.addListener
 import el.ka.someapp.data.model.measuring.*
+import el.ka.someapp.data.model.role.AccessType
+import el.ka.someapp.data.model.role.hasRole
 import el.ka.someapp.databinding.FragmentPassportMeasuringBinding
 import el.ka.someapp.view.BaseFragment
 import el.ka.someapp.view.adapters.MeasuringValueAdapter
-import el.ka.someapp.view.adapters.SpinnerAdapter
 import el.ka.someapp.viewmodel.NodesViewModel
 import el.ka.someapp.viewmodel.PassportViewModel
 import java.util.*
@@ -45,11 +43,41 @@ class PassportMeasuringFragment : BaseFragment() {
     binding = FragmentPassportMeasuringBinding.inflate(layoutInflater)
 
     passportViewModel = ViewModelProvider(this)[PassportViewModel::class.java]
-    passportViewModel!!.loadMeasuring(nodesViewModel.currentMeasuring.value!!)
+    passportViewModel!!.loadMeasuring(
+      measuring = nodesViewModel.currentMeasuring.value!!,
+      viewerRole = nodesViewModel.currentRole.value!!
+    )
 
     measuringValueAdapter = MeasuringValueAdapter()
     measuringValueAdapter.setItems(passportViewModel!!.measurementValue.value!!)
+
     createSpinners()
+    updateAccessToEditFields()
+  }
+
+  private fun updateAccessToEditFields() {
+    val hasAccess = hasRole(passportViewModel!!.viewerRole.value!!, AccessType.EDIT_MEASURING)
+
+    listOf<View>(
+      binding.layoutName,
+      binding.spinnerMeasurementKind,
+      binding.spinnerMeasurementCategory,
+      binding.layoutMeasuringType,
+      binding.layoutInventoryName,
+      binding.layoutSerialName,
+      binding.layoutRegNameGRSI,
+      binding.layoutManufacturer,
+      binding.layoutSupplier,
+      binding.layoutSectorGROEI,
+      binding.spinnerMeasurementType,
+      binding.spinnerMeasurementStatus,
+      binding.spinnerMeasurementCondition,
+    ).forEach { it.isEnabled = hasAccess }
+
+    measuringValueAdapter.setAccessToEdit(hasAccess)
+
+    // data
+    /// recycler view
   }
 
   override fun inflateBindingVariables() {
@@ -120,31 +148,41 @@ class PassportMeasuringFragment : BaseFragment() {
 
     passportViewModel!!.state.observe(viewLifecycleOwner, stateObserver)
 
-    // TODO: если нет доступа на изменения не добавлять
+    val hasAccess = hasRole(passportViewModel!!.viewerRole.value!!, AccessType.EDIT_MEASURING)
+    if (hasAccess) {
 
-    binding.spinnerMeasurementKind.addListener {
-      val kind = (it as SpinnerItem).value as MeasuringKind
-      passportViewModel!!.setMeasuringKind(kind)
-    }
+      // region Date Pickers Listeners
+      binding.datePickerCondition.setOnClickListener { showDatePicker(DateType.CONDITION) }
+      binding.datePickerCommission.setOnClickListener { showDatePicker(DateType.COMMISSION) }
+      binding.datePickerRelease.setOnClickListener { showDatePicker(DateType.RELEASE) }
+      // endregion
 
-    binding.spinnerMeasurementCategory.addListener {
-      val category = (it as SpinnerItem).value as MeasuringCategory
-      passportViewModel!!.setCategory(category)
-    }
+      // region Spinners Listeners
+      binding.spinnerMeasurementKind.addListener {
+        val kind = (it as SpinnerItem).value as MeasuringKind
+        passportViewModel!!.setMeasuringKind(kind)
+      }
 
-    binding.spinnerMeasurementStatus.addListener {
-      val state = (it as SpinnerItem).value as MeasuringState
-      passportViewModel!!.setMeasuringState(state)
-    }
+      binding.spinnerMeasurementCategory.addListener {
+        val category = (it as SpinnerItem).value as MeasuringCategory
+        passportViewModel!!.setCategory(category)
+      }
 
-    binding.spinnerMeasurementCondition.addListener {
-      val condition = (it as SpinnerItem).value as MeasuringCondition
-      passportViewModel!!.setMeasuringCondition(condition)
-    }
+      binding.spinnerMeasurementStatus.addListener {
+        val state = (it as SpinnerItem).value as MeasuringState
+        passportViewModel!!.setMeasuringState(state)
+      }
 
-    binding.spinnerMeasurementType.addListener {
-      val type = (it as SpinnerItem).value as MeasurementType
-      passportViewModel!!.setMeasurementType(type)
+      binding.spinnerMeasurementCondition.addListener {
+        val condition = (it as SpinnerItem).value as MeasuringCondition
+        passportViewModel!!.setMeasuringCondition(condition)
+      }
+
+      binding.spinnerMeasurementType.addListener {
+        val type = (it as SpinnerItem).value as MeasurementType
+        passportViewModel!!.setMeasurementType(type)
+      }
+      // endregion
     }
 
   }

@@ -53,4 +53,14 @@ class MeasuringValueViewHolder(val binding: ItemMeasuringValueBinding) :
     accuracyClass = binding.inpAccuracyClass.text.toString(),
     graduationPoint = binding.inpGraduationPoint.text.toString(),
   )
+
+  fun setAccessToEdit(hasAccess: Boolean) {
+    listOf(
+      binding.inpName,
+      binding.inpRange,
+      binding.inpUnits,
+      binding.inpAccuracyClass,
+      binding.inpGraduationPoint
+    ).forEach { it.isEnabled = hasAccess }
+  }
 }

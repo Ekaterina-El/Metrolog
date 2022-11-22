@@ -121,7 +121,7 @@
   <string name="is_required">Это обязательное поле</string>
   <string name="required_min_length">Минимальная длина: %1$d</string>
   <string name="creteMeasuringDescription">Для добавления нового СИ заполните форму</string>
-  <string name="passportMeasuringDescription">Вы можете просмотреть паспорт СИ и при налии прав на изменение отредактировать его</string>
+  <string name="passportMeasuringDescription">Вы можете просмотреть паспорт СИ и при наличи прав на изменение отредактировать его</string>
   <string name="createMeasuringError">При заполнении формы допущенны ошибки. Проверьте ещё раз и попробуйте вновь</string>
   <string name="error_pin">Пароль не верный</string>
   <string name="error">Ошибка</string>
