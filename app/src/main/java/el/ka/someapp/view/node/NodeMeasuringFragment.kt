@@ -9,6 +9,8 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import el.ka.someapp.R
 import el.ka.someapp.data.model.measuring.Measuring
+import el.ka.someapp.data.model.role.AccessType
+import el.ka.someapp.data.model.role.hasRole
 import el.ka.someapp.databinding.FragmentNodeMeasuringBinding
 import el.ka.someapp.view.BaseFragment
 import el.ka.someapp.view.adapters.MeasuringAdapter
@@ -42,11 +44,12 @@ class NodeMeasuringFragment: BaseFragment() {
 
   private val measuringListener = object: MeasuringAdapter.ItemListener {
     override fun onClick(measuring: Measuring) {
-      visibleViewModel.setNodeNavigationState(false)
-      viewModel.setCurrentMeasuring(measuring)
-      navigate(R.id.action_nodeMeasuringFragment_to_measuringDashboardFragment)
+      if (hasRole(viewModel.currentRole.value!!, AccessType.VIEW_MEASURING)) {
+        visibleViewModel.setNodeNavigationState(false)
+        viewModel.setCurrentMeasuring(measuring)
+        navigate(R.id.action_nodeMeasuringFragment_to_measuringDashboardFragment)
+      }
     }
-
   }
 
   override fun initFunctionalityParts() {
