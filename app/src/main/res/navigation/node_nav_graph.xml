@@ -57,6 +57,9 @@
     <action
       android:id="@+id/action_measuringDashboardFragment_to_overhaulMeasuringFragment"
       app:destination="@id/overhaulMeasuringFragment" />
+    <action
+      android:id="@+id/action_measuringDashboardFragment_to_TOMeasuringFragment"
+      app:destination="@id/TOMeasuringFragment" />
   </fragment>
   <fragment
     android:id="@+id/passportMeasuringFragment"
@@ -66,4 +69,8 @@
     android:id="@+id/overhaulMeasuringFragment"
     android:name="el.ka.someapp.view.measuring.OverhaulMeasuringFragment"
     android:label="OverhaulMeasuringFragment" />
+  <fragment
+    android:id="@+id/TOMeasuringFragment"
+    android:name="el.ka.someapp.view.measuring.TOMeasuringFragment"
+    android:label="TOMeasuringFragment" />
 </navigation>
