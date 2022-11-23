@@ -112,6 +112,7 @@ class MeasuringDashboardFragment : BaseFragment() {
       MeasuringPart.PASSPORT -> R.id.action_measuringDashboardFragment_to_passportMeasuringFragment
       MeasuringPart.OVERHAUL -> R.id.action_measuringDashboardFragment_to_overhaulMeasuringFragment
       MeasuringPart.TO -> R.id.action_measuringDashboardFragment_to_TOMeasuringFragment
+      MeasuringPart.MAINTENANCE_REPAIR -> R.id.action_measuringDashboardFragment_to_maintenanceRepairMeasuringFragment
       else -> null
     }
     if (action != null) navigate(action)

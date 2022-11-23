@@ -4,6 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+
     <import type="el.ka.someapp.data.model.measuring.MeasuringPart" />
 
     <variable
@@ -39,31 +40,30 @@
         tools:text="Амперметр Aster AMP-991 10А AMP991-10" />
 
       <TextView
-        android:layout_gravity="start"
         android:id="@+id/vertical_menu"
-        android:paddingHorizontal="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="start"
         android:clickable="true"
         android:focusable="true"
-        android:textStyle="bold"
         android:fontFamily="@font/montserrat_regular"
+        android:paddingHorizontal="20dp"
         android:text="&#8942;"
         android:textColor="@color/secondary_color"
         android:textSize="20sp"
+        android:textStyle="bold"
         tools:ignore="HardcodedText" />
     </LinearLayout>
 
     <TextView
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginTop="30dp"
       android:layout_marginHorizontal="@dimen/app_padding"
+      android:layout_marginTop="30dp"
       android:fontFamily="@font/montserrat_regular"
       android:text="@string/control_panel"
       android:textColor="@color/secondary_color"
-      android:textSize="14sp"
-      />
+      android:textSize="14sp" />
 
     <LinearLayout
       android:layout_width="match_parent"
@@ -80,14 +80,14 @@
         <!--- Card 1 [Start] -->
         <androidx.cardview.widget.CardView
           android:layout_width="0dp"
-          android:clickable="true"
-          android:focusable="true"
-          app:cardCornerRadius="8dp"
-          android:foreground="?android:attr/selectableItemBackground"
-          app:cardElevation="4dp"
-          android:onClick="@{() -> master.navigateTo(MeasuringPart.PASSPORT)}"
           android:layout_height="match_parent"
           android:layout_weight="1"
+          android:clickable="true"
+          android:focusable="true"
+          android:foreground="?android:attr/selectableItemBackground"
+          android:onClick="@{() -> master.navigateTo(MeasuringPart.PASSPORT)}"
+          app:cardCornerRadius="8dp"
+          app:cardElevation="4dp"
           app:cardUseCompatPadding="true">
 
           <LinearLayout
@@ -109,8 +109,8 @@
               android:layout_height="wrap_content"
               android:layout_marginTop="@dimen/dashboard_between_icon_text"
               android:fontFamily="@font/montserrat_regular"
-              android:text="@string/passport"
               android:gravity="center"
+              android:text="@string/passport"
               android:textColor="@color/secondary_color"
               android:textSize="12sp" />
 
@@ -126,8 +126,9 @@
           android:layout_weight="2"
           android:clickable="true"
           android:focusable="true"
-          app:cardCornerRadius="8dp"
           android:foreground="?android:attr/selectableItemBackground"
+          android:onClick="@{() -> master.navigateTo(MeasuringPart.MAINTENANCE_REPAIR)}"
+          app:cardCornerRadius="8dp"
           app:cardElevation="4dp"
           app:cardUseCompatPadding="true">
 
@@ -170,18 +171,18 @@
         <LinearLayout
           android:layout_width="0dp"
           android:layout_height="wrap_content"
-          android:orientation="vertical"
-          android:layout_weight="2">
+          android:layout_weight="2"
+          android:orientation="vertical">
           <!--- Card 3 [Start] -->
           <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="@{() -> master.navigateTo(MeasuringPart.TO)}"
             app:cardCornerRadius="8dp"
             app:cardElevation="4dp"
-            android:onClick="@{() -> master.navigateTo(MeasuringPart.TO)}"
-            android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
             app:cardUseCompatPadding="true">
 
             <LinearLayout
@@ -203,8 +204,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dashboard_between_icon_text"
                 android:fontFamily="@font/montserrat_regular"
-                android:text="@string/to"
                 android:gravity="center"
+                android:text="@string/to"
                 android:textColor="@color/secondary_color"
                 android:textSize="12sp" />
 
@@ -216,13 +217,13 @@
           <!--- Card 4 [Start] -->
           <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="@{() -> master.navigateTo(MeasuringPart.OVERHAUL)}"
             app:cardCornerRadius="8dp"
             app:cardElevation="4dp"
-            android:onClick="@{() -> master.navigateTo(MeasuringPart.OVERHAUL)}"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:layout_height="wrap_content"
             app:cardUseCompatPadding="true">
 
             <LinearLayout
@@ -244,8 +245,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dashboard_between_icon_text"
                 android:fontFamily="@font/montserrat_regular"
-                android:text="@string/overhaul"
                 android:gravity="center"
+                android:text="@string/overhaul"
                 android:textColor="@color/secondary_color"
                 android:textSize="12sp" />
             </LinearLayout>
@@ -260,13 +261,13 @@
         <!--- Card 3 [Start] -->
         <androidx.cardview.widget.CardView
           android:layout_width="0dp"
+          android:layout_height="match_parent"
           android:layout_weight="1"
           android:clickable="true"
           android:focusable="true"
+          android:foreground="?android:attr/selectableItemBackground"
           app:cardCornerRadius="8dp"
           app:cardElevation="4dp"
-          android:foreground="?android:attr/selectableItemBackground"
-          android:layout_height="match_parent"
           app:cardUseCompatPadding="true">
 
           <LinearLayout
@@ -288,8 +289,8 @@
               android:layout_height="wrap_content"
               android:layout_marginTop="@dimen/dashboard_between_icon_text"
               android:fontFamily="@font/montserrat_regular"
-              android:text="@string/verification"
               android:gravity="center"
+              android:text="@string/verification"
               android:textColor="@color/secondary_color"
               android:textSize="12sp" />
 

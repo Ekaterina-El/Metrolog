@@ -60,6 +60,9 @@
     <action
       android:id="@+id/action_measuringDashboardFragment_to_TOMeasuringFragment"
       app:destination="@id/TOMeasuringFragment" />
+    <action
+      android:id="@+id/action_measuringDashboardFragment_to_maintenanceRepairMeasuringFragment"
+      app:destination="@id/maintenanceRepairMeasuringFragment" />
   </fragment>
   <fragment
     android:id="@+id/passportMeasuringFragment"
@@ -73,4 +76,8 @@
     android:id="@+id/TOMeasuringFragment"
     android:name="el.ka.someapp.view.measuring.TOMeasuringFragment"
     android:label="TOMeasuringFragment" />
+  <fragment
+    android:id="@+id/maintenanceRepairMeasuringFragment"
+    android:name="el.ka.someapp.view.measuring.MaintenanceRepairMeasuringFragment"
+    android:label="MaintenanceRepairMeasuringFragment" />
 </navigation>
