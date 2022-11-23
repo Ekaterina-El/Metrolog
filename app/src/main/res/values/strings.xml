@@ -124,10 +124,13 @@
   <string name="passportMeasuringDescription">Вы можете просмотреть паспорт СИ и при наличи прав на изменение отредактировать его</string>
   <string name="overhaulMeasuringDescription">Вы можете просмотреть данные о капительное ремонте СИ и при наличи прав на изменение отредактировать</string>
   <string name="maintenanceRepairMeasuringDescription">Вы можете просмотреть данные о текущем ремонте СИ и при наличи прав на изменение отредактировать</string>
+  <string name="verificationRepairMeasuringDescription">Вы можете просмотреть данные о поверке СИ и при наличи прав на изменение отредактировать</string>
   <string name="TOMeasuringDescription">Вы можете просмотреть данные о ТО средства измерения и при наличи прав на изменение отредактировать</string>
   <string name="createMeasuringError">При заполнении формы допущенны ошибки. Проверьте ещё раз и попробуйте вновь</string>
   <string name="error_pin">Пароль не верный</string>
   <string name="error">Ошибка</string>
+
+  <string name="finalCost">Сохранено как: %1$d руб.</string>
 
   <string name="item_node_preview_info">Узлы: %1$d | СИ на узле: %2$d</string>
   <string name="ok_pin_error">Хорошо, исправлю</string>
@@ -165,4 +168,6 @@
   <string name="laboratory">Лаборатория</string>
   <string name="placeInKIP">Лаборатория в цехе КИП</string>
   <string name="repairPlace">Место ремонта</string>
+  <string name="verificationCodeCSM">Код поверки ЦСМ</string>
+  <string name="cost">Стоимость (руб.)</string>
 </resources>
