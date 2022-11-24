@@ -479,12 +479,10 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     if (filterUsersVal.value == "") {
       _filteredUsers.value = _companyAllUsers.value
     } else {
+      val filter = filterUsersVal.value!!
       _filteredUsers.value =
         _companyAllUsers.value!!.filter {
-          it.fullName.contains(
-            filterUsersVal.value!!,
-            ignoreCase = true
-          )
+          it.fullName.contains(filter, true) || it.email.contains(filter, true)
         }
     }
   }
@@ -687,7 +685,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   }
 
   fun updateMeasuringPart(part: MeasuringPart, value: Any) {
-    when(part) {
+    when (part) {
       MeasuringPart.PASSPORT -> updatePassport(value as MeasuringPassport)
       MeasuringPart.MAINTENANCE_REPAIR -> updateMaintenanceRepair(value as MaintenanceRepair)
       MeasuringPart.OVERHAUL -> updateOverhaul(value as Overhaul)

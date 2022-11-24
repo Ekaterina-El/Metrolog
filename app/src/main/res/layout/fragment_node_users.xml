@@ -165,6 +165,7 @@
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/app_padding"
       android:layout_marginTop="20dp"
+      android:animateLayoutChanges="false"
       android:layout_marginEnd="@dimen/app_padding"
       android:adapter="@{usersAdapter}"
       android:clipToPadding="false"
