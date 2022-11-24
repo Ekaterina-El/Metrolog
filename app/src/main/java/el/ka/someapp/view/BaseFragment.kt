@@ -242,11 +242,11 @@ abstract class BaseFragment : Fragment() {
     spinner: Spinner,
     value: Any?
   ) {
-    val measurementTypeAdapter =
+    val adapter =
       SpinnerAdapter(requireContext(), getSpinnerItems(itemsArrayRes, arrayValues))
 
-    spinner.adapter = measurementTypeAdapter
-    measurementTypeAdapter.selectItem(value, spinner)
+    spinner.adapter = adapter
+    adapter.selectItem(value, spinner)
   }
 
   private fun getSpinnerItems(arrayId: Int, types: List<Any>) =

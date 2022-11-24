@@ -12,6 +12,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputLayout
 import el.ka.someapp.R
 import el.ka.someapp.data.model.*
+import el.ka.someapp.data.model.measuring.Fields
+import el.ka.someapp.data.model.measuring.MeasuringState
 import el.ka.someapp.databinding.FragmentNodeInfoBinding
 import el.ka.someapp.databinding.JobFieldDialogBinding
 import el.ka.someapp.view.BaseFragment
@@ -122,7 +124,7 @@ class NodeInfoFragment : BaseFragment() {
   }
 
   // region Delete Job Field
-  private val deleteJobFieldConfirmListener = object: ConfirmListener {
+  private val deleteJobFieldConfirmListener = object : ConfirmListener {
     override fun onAgree(value: Any?) {
       viewModel.deleteJobField(value as JobField)
       closeConfirmDialog()
@@ -251,6 +253,11 @@ class NodeInfoFragment : BaseFragment() {
         clearJobFieldDialog()
       }
 
+      bindingJobFieldDialog.spinnerRole.addListener {
+        val role = (it as SpinnerItem).value as UserRole
+        jobFieldViewModel!!.setRole(role)
+      }
+
       bindingJobFieldDialog.spinner.adapter = spinnerUsersAdapter
       bindingJobFieldDialog.spinner.onItemSelectedListener =
         object : AdapterView.OnItemSelectedListener {
@@ -284,7 +291,10 @@ class NodeInfoFragment : BaseFragment() {
     if (jobFieldDialog == null) createJobFieldDialog() else updateUsers()
 
     // Установка роли по умолчанию "Читатель"
-    bindingJobFieldDialog.rbReader.isChecked = true
+    createSpinner(
+      R.array.rolesTypes, Fields.rolesTypeVariables,
+      bindingJobFieldDialog.spinnerRole, UserRole.READER
+    )
     jobFieldViewModel!!.role.value = UserRole.READER
 
     jobFieldDialog!!.show()
@@ -303,8 +313,6 @@ class NodeInfoFragment : BaseFragment() {
     bindingJobFieldDialog.fieldJobName.visibility = elementsState
     bindingJobFieldDialog.layoutJobFieldRole.visibility = elementsState
     bindingJobFieldDialog.textViewRole.visibility = elementsState
-
-//    checked?.isChecked = false
   }
 
   private fun openJobFieldDialogToEdit(jobField: JobField) {
@@ -323,13 +331,10 @@ class NodeInfoFragment : BaseFragment() {
     bindingJobFieldDialog.layoutJobFieldRole.visibility = elementsState
     bindingJobFieldDialog.textViewRole.visibility = elementsState
 
-    checked = when (jobField.jobRole) {
-      UserRole.READER -> bindingJobFieldDialog.rbReader
-      UserRole.EDITOR_1 -> bindingJobFieldDialog.editor1
-      UserRole.EDITOR_2 -> bindingJobFieldDialog.editor2
-      else -> null
-    }
-    checked?.isChecked = true
+    createSpinner(
+      R.array.rolesTypes, Fields.rolesTypeVariables,
+      bindingJobFieldDialog.spinnerRole, jobField.jobRole
+    )
 
     jobFieldDialog!!.show()
   }

@@ -1,5 +1,7 @@
 package el.ka.someapp.data.model.measuring
 
+import el.ka.someapp.data.model.UserRole
+
 object Fields {
   val measuringTypeVariables = listOf(
     MeasuringKind.MEASURE,
@@ -40,4 +42,11 @@ object Fields {
     MeasuringCondition.REPAIR,
     MeasuringCondition.MOTHBALLED
   )
+
+  val rolesTypeVariables = listOf(
+    UserRole.READER,
+    UserRole.EDITOR_2,
+    UserRole.EDITOR_1,
+  )
+
 }

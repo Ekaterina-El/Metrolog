@@ -55,7 +55,7 @@
           android:textSize="16sp" />
       </LinearLayout>
 
-      <androidx.constraintlayout.widget.ConstraintLayout
+      <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -93,84 +93,44 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <!--Edit text: Job Field Role - start-->
-        <LinearLayout
-          android:id="@+id/layoutJobFieldRole"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="20dp"
-          android:gravity="center"
-          android:orientation="horizontal"
-          android:paddingHorizontal="15dp"
-          android:paddingVertical="10dp"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/fieldJobName">
+        <androidx.constraintlayout.widget.ConstraintLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
 
-          <RadioGroup
+          <LinearLayout
+            android:id="@+id/layoutJobFieldRole"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingVertical="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewRole">
+            app:layout_constraintTop_toTopOf="parent">
 
-            <RadioButton
-              android:id="@+id/rb_reader"
+
+            <Spinner
+              android:id="@+id/spinnerRole"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:fontFamily="@font/montserrat_regular"
-              android:onClick="@{() -> viewModel.setRole(UserRole.READER)}"
-              android:text="@string/role_reader"
-              android:textColor="@color/secondary_color"
-              android:textSize="14sp" />
+              android:spinnerMode="dropdown"
+              tools:listitem="@layout/spinner_item" />
+          </LinearLayout>
 
-            <RadioButton
-              android:id="@+id/editor_1"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:fontFamily="@font/montserrat_regular"
-              android:onClick="@{() -> viewModel.setRole(UserRole.EDITOR_1)}"
-              android:text="@string/role_editor_1"
-              android:textColor="@color/secondary_color"
-              android:textSize="14sp" />
-
-            <RadioButton
-              android:id="@+id/editor_2"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:fontFamily="@font/montserrat_regular"
-              android:onClick="@{() -> viewModel.setRole(UserRole.EDITOR_2)}"
-              android:text="@string/role_editor_2"
-              android:textColor="@color/secondary_color"
-              android:textSize="14sp" />
-          </RadioGroup>
-
-
-        </LinearLayout>
-
-        <TextView
-          android:id="@+id/textViewRole"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:background="@color/background_color"
-          android:fontFamily="@font/montserrat_regular"
-          android:text="@string/job_field_role"
-          android:textColor="@color/secondary_color"
-          android:textSize="14sp"
-          app:layout_constraintBottom_toTopOf="@id/layoutJobFieldRole"
-          app:layout_constraintStart_toStartOf="@id/layoutJobFieldRole"
-          app:layout_constraintTop_toTopOf="@id/layoutJobFieldRole" />
-
-        <TextView
-          android:id="@+id/textErrorRole"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="15dp"
-          android:text="@string/field_job_role_error"
-          android:textColor="@color/attentionColor"
-          android:textSize="12sp"
-          android:visibility="@{viewModel.hasRoleError ? View.VISIBLE : View.GONE}"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/layoutJobFieldRole" />
+          <TextView
+            android:id="@+id/textViewRole"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/background_color"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="@string/job_field_role"
+            android:textColor="@color/secondary_color"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@id/layoutJobFieldRole"
+            app:layout_constraintStart_toStartOf="@id/layoutJobFieldRole"
+            app:layout_constraintTop_toTopOf="@id/layoutJobFieldRole" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!--Edit text: Job Field Role - end-->
         <TextView
@@ -213,7 +173,7 @@
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintTop_toBottomOf="@id/spinner"
           app:tint="@null" />
-      </androidx.constraintlayout.widget.ConstraintLayout>
+      </LinearLayout>
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

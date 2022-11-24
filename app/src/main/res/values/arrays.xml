@@ -50,4 +50,10 @@
     <item>Ремонт</item>
     <item>На длительном хранении</item>
   </string-array>
+
+  <string-array name="rolesTypes">
+    <item>Читатель</item>
+    <item>Редактор 2</item>
+    <item>Редактор 1</item>
+  </string-array>
 </resources>
