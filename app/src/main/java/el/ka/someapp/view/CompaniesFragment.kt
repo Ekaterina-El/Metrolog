@@ -1,7 +1,6 @@
 package el.ka.someapp.view
 
 import android.app.Activity
-import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -17,14 +16,11 @@ import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
 import el.ka.someapp.R
-import el.ka.someapp.data.model.Errors
-import el.ka.someapp.data.model.ImageType
-import el.ka.someapp.data.model.Node
-import el.ka.someapp.data.model.State
-import el.ka.someapp.databinding.ChangeUserDialogBinding
+import el.ka.someapp.data.model.*
 import el.ka.someapp.databinding.FragmentCompaniesBinding
 import el.ka.someapp.view.adapters.NodesAdapter
 import el.ka.someapp.view.dialog.AddCompanyDialog
+import el.ka.someapp.view.dialog.ChangeUserFullNameDialog
 import el.ka.someapp.viewmodel.ChangeImageViewModel
 import el.ka.someapp.viewmodel.ChangeUserFullNameViewModel
 import el.ka.someapp.viewmodel.NodesViewModel
@@ -230,47 +226,40 @@ class CompaniesFragment : BaseFragment() {
   // endregion
 
   // region Change user full name dialog
-  private var changeUserFullNameDialog: Dialog? = null
+  private var changeUserFullNameDialog: ChangeUserFullNameDialog? = null
   private var changeUserFullNameViewModel: ChangeUserFullNameViewModel? = null
-  private lateinit var bindingChangeUserFullNameDialog: ChangeUserDialogBinding
 
   private val changeUserObserverState = Observer<State> {
     when (it) {
       State.FULL_NAME_CHANGED -> {
-        changeUserFullNameDialog!!.dismiss()
+        changeUserFullNameDialog!!.dismissDialog()
         viewModel.loadCurrentUserProfile()
       }
       else -> {}
     }
   }
 
-  private fun createChangeUserFullNameDialog() {
-    changeUserFullNameDialog = Dialog(requireContext())
-
-    changeUserFullNameViewModel = ViewModelProvider(this)[ChangeUserFullNameViewModel::class.java]
-    changeUserFullNameViewModel?.state?.observe(viewLifecycleOwner, changeUserObserverState)
-
-    changeUserFullNameDialog?.let { dialog ->
-      bindingChangeUserFullNameDialog =
-        ChangeUserDialogBinding.inflate(LayoutInflater.from(requireContext()))
-      dialog.setContentView(bindingChangeUserFullNameDialog.root)
-
-
-      bindingChangeUserFullNameDialog.viewModel = changeUserFullNameViewModel
-      bindingChangeUserFullNameDialog.lifecycleOwner = viewLifecycleOwner
-
-      dialog.window!!.setLayout(
-        ViewGroup.LayoutParams.MATCH_PARENT,
-        ViewGroup.LayoutParams.WRAP_CONTENT
-      )
-      dialog.setCancelable(true)
-    }
+  private val changeUserObserverError = Observer<ErrorApp?> {
+    changeUserFullNameDialog?.showDialogWithError(getString(it.textId))
   }
 
   fun showCreateChangeUserFullNameDialog() {
-    if (changeUserFullNameDialog == null) createChangeUserFullNameDialog()
+    if (changeUserFullNameDialog == null) {
+      changeUserFullNameViewModel = ViewModelProvider(this)[ChangeUserFullNameViewModel::class.java]
+      changeUserFullNameViewModel?.state?.observe(viewLifecycleOwner, changeUserObserverState)
+      changeUserFullNameViewModel?.error?.observe(viewLifecycleOwner, changeUserObserverError)
+    }
     changeUserFullNameViewModel!!.newFullName.value = viewModel.currentUserProfile.value!!.fullName
-    changeUserFullNameDialog!!.show()
+
+    if (changeUserFullNameDialog == null) {
+      changeUserFullNameDialog = ChangeUserFullNameDialog.getInstance(
+        requireContext(),
+        changeUserFullNameViewModel!!, viewLifecycleOwner
+      )
+    }
+
+    changeUserFullNameDialog!!.clearDialog()
+    changeUserFullNameDialog!!.showDialog()
   }
   // endregion
 

@@ -53,101 +53,59 @@
           android:textSize="16sp" />
       </LinearLayout>
 
-      <androidx.constraintlayout.widget.ConstraintLayout
+      <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!--Edit text: Job Field Name - start-->
-        <LinearLayout
-          android:id="@+id/layoutUserFullName"
-          android:layout_width="0dp"
+        <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/layoutFullName"
+          style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginTop="10dp"
-          android:background="@drawable/input_wrapper"
-          android:gravity="center"
-          android:orientation="horizontal"
-          android:paddingHorizontal="15dp"
-          android:paddingVertical="10dp"
+          android:layout_marginTop="15dp"
+          android:hint="@string/fullname"
+          app:boxStrokeColor="@color/primary_dark_color"
+          app:boxStrokeErrorColor="@color/attentionColor"
+          app:errorEnabled="true"
+          app:errorTextColor="@color/attentionColor"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent">
+          app:layout_constraintTop_toTopOf="parent"
+          app:startIconDrawable="@drawable/ic_person">
 
-          <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_person"
-            app:tint="@color/primary_color" />
-
-          <EditText
-            android:id="@+id/editTextFullName"
+          <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:autofillHints="emailAddress"
-            android:background="@null"
             android:ellipsize="end"
+            android:text="@={viewModel.newFullName}"
             android:fontFamily="@font/montserrat_regular"
-            android:hint="@string/fullname_example"
+            android:imeOptions="actionDone"
             android:inputType="textPersonName"
             android:maxLines="1"
-            android:text="@={viewModel.newFullName}"
-            android:textColor="@color/secondary_color"
-            android:textColorHint="@color/hint_color"
+            android:textColor="#333"
             android:textSize="14sp" />
-        </LinearLayout>
-
-        <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="40dp"
-          android:background="@color/background_color"
-          android:fontFamily="@font/montserrat_regular"
-          android:paddingHorizontal="10dp"
-          android:text="@string/fullname"
-          android:textAllCaps="true"
-          android:textColor="@color/primary_color"
-          android:textSize="10sp"
-          android:textStyle="bold"
-          app:layout_constraintBottom_toTopOf="@id/layoutUserFullName"
-          app:layout_constraintStart_toStartOf="@id/layoutUserFullName"
-          app:layout_constraintTop_toTopOf="@id/layoutUserFullName" />
-
-        <TextView
-          android:id="@+id/textErrorName"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="10dp"
-          android:layout_marginTop="5dp"
-          android:textColor="@color/attentionColor"
-          android:textSize="14sp"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/layoutUserFullName"
-          app:showError="@{viewModel.error}"
-          tools:text="@string/field_job_name_error"
-          tools:visibility="visible" />
-        <!--Edit text: Job Field Name - end-->
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
           android:id="@+id/buttonOk"
-          android:onClick="@{() -> viewModel.truChangeFullName()}"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_gravity="end"
-          android:layout_marginTop="25dp"
-          android:background="@drawable/button_wrapper"
+          android:layout_marginTop="5dp"
+          android:background="@drawable/button_selector"
           android:fontFamily="@font/montserrat_regular"
+          android:onClick="@{() -> viewModel.truChangeFullName()}"
           android:text="@string/save"
           android:textAllCaps="false"
-          android:textColor="@color/primary_color"
+          android:textColor="@color/text_on_primary"
           android:textSize="12sp"
           app:backgroundTint="@null"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintTop_toBottomOf="@id/layoutUserFullName"
           app:tint="@null" />
-      </androidx.constraintlayout.widget.ConstraintLayout>
+      </LinearLayout>
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
