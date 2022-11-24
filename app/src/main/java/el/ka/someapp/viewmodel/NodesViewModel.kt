@@ -56,7 +56,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
         .awaitAll()
         .mapNotNull {
           val measuring = it.toObject(Measuring::class.java)
-          measuring!!.measuringID = it.id
+          if (measuring != null) measuring.measuringID = it.id
           measuring
         }
 
@@ -74,7 +74,11 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     val f = filterFieldMeasuring.value!!
     _measuringFiltered.value =
       if (f.isEmpty()) _measuring.value
-      else _measuring.value!!.filter { it.passport!!.name.contains(f, true) }
+      else _measuring.value!!.filter {
+        return@filter it.passport!!.name.contains(f, true) ||
+            it.passport!!.type.contains(f, true) ||
+            it.passport!!.inventoryNumber!!.contains(f, true)
+      }
   }
 
   fun addMeasuringToLocal(measuringId: String) {

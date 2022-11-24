@@ -36,6 +36,19 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:fontFamily="@font/montserrat_regular"
+      android:text="@{!measuring.passport.inventoryNumber.isEmpty() ? @string/inv_number(measuring.passport.inventoryNumber) : @string/inv_number('-')}"
+      android:textColor="@color/secondary_color"
+      android:textSize="14sp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:text="Инвентарный номер: 121G5F3232" />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:fontFamily="@font/montserrat_regular"
       android:text="@{@string/type(measuring.passport.type)}"
       android:textColor="@color/secondary_color"
       android:textSize="14sp"
