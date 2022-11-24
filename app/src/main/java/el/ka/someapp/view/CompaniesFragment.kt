@@ -110,32 +110,27 @@ class CompaniesFragment : BaseFragment() {
     viewModel.state.removeObserver { stateObserver }
   }
 
-  fun changeProfileImage() {
-    changeImageViewModel.setCurrentChangeImageType(ImageType.PROFILE)
-    changeImage()
+  private fun openNode(nodeId: String) {
+    val action = CompaniesFragmentDirections.actionCompaniesFragmentToNodeFragment(nodeId)
+    navigate(action)
   }
 
-  fun changeBackgroundImage() {
-    changeImageViewModel.setCurrentChangeImageType(ImageType.BACKGROUND)
-    changeImage()
-  }
+  // region Change Image (Profile & BG)
+  fun changeImage(imageType: ImageType) {
+    changeImageViewModel.setCurrentChangeImageType(imageType)
 
-  private fun changeImage() {
     val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
     startActivityForResult(intent, PICK_IMAGE_REQUEST_CODE)
   }
 
   private val cropImage = registerForActivityResult(CropImageContract()) { result ->
-    if (result.isSuccessful) {
-      val uriContent = result.uriContent!!
+    if (!result.isSuccessful) return@registerForActivityResult
 
-      when (changeImageViewModel.currentChangeImageType.value) {
-        ImageType.PROFILE -> setProfile(uriContent)
-        ImageType.BACKGROUND -> setBackground(uriContent)
-        else -> {}
-      }
-    } else {
-//      val exception = result.error
+    val uriContent = result.uriContent!!
+    when (changeImageViewModel.currentChangeImageType.value) {
+      ImageType.PROFILE -> setProfile(uriContent)
+      ImageType.BACKGROUND -> setBackground(uriContent)
+      else -> {}
     }
   }
 
@@ -151,32 +146,21 @@ class CompaniesFragment : BaseFragment() {
 
   @Deprecated("Deprecated in Java")
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-    if (requestCode == PICK_IMAGE_REQUEST_CODE) {
-      if (resultCode == Activity.RESULT_OK) {
-        val image: Uri = data!!.data!!
-        cropImage.launch(
-          CropImageContractOptions(
-            uri = image,
-            CropImageOptions(
-              guidelines = CropImageView.Guidelines.ON,
-              aspectRatioX = changeImageViewModel.aspectRationX.value!!,
-              aspectRatioY = changeImageViewModel.aspectRationY.value!!,
-              fixAspectRatio = true,
-            )
+    if (requestCode == PICK_IMAGE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+      cropImage.launch(
+        CropImageContractOptions(
+          uri = data!!.data!!,
+          CropImageOptions(
+            guidelines = CropImageView.Guidelines.ON,
+            aspectRatioX = changeImageViewModel.aspectRationX.value!!,
+            aspectRatioY = changeImageViewModel.aspectRationY.value!!,
+            fixAspectRatio = true,
           )
         )
-      }
+      )
     }
   }
-
-  private fun openNode(nodeId: String) {
-    val action = CompaniesFragmentDirections.actionCompaniesFragmentToNodeFragment(nodeId)
-    navigate(action)
-  }
-
-  fun logout() {
-    showLogoutDialog()
-  }
+  // endregion
 
   // region Logout Dialog
   private val logoutConfirmListener = object : ConfirmListener {
@@ -197,6 +181,10 @@ class CompaniesFragment : BaseFragment() {
     closeConfirmDialog()
     setPassword(null)
     navigate(R.id.action_companiesFragment_to_welcomeFragment)
+  }
+
+  fun logout() {
+    showLogoutDialog()
   }
   // endregion
 
@@ -245,11 +233,13 @@ class CompaniesFragment : BaseFragment() {
 
   fun showCreateChangeUserFullNameDialog() {
     if (changeUserFullNameDialog == null) {
-      changeUserFullNameViewModel = ViewModelProvider(this)[ChangeUserFullNameViewModel::class.java]
+      changeUserFullNameViewModel =
+        ViewModelProvider(this)[ChangeUserFullNameViewModel::class.java]
       changeUserFullNameViewModel?.state?.observe(viewLifecycleOwner, changeUserObserverState)
       changeUserFullNameViewModel?.error?.observe(viewLifecycleOwner, changeUserObserverError)
     }
-    changeUserFullNameViewModel!!.newFullName.value = viewModel.currentUserProfile.value!!.fullName
+    changeUserFullNameViewModel!!.newFullName.value =
+      viewModel.currentUserProfile.value!!.fullName
 
     if (changeUserFullNameDialog == null) {
       changeUserFullNameDialog = ChangeUserFullNameDialog.getInstance(
