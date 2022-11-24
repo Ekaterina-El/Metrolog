@@ -31,7 +31,7 @@
       android:fontFamily="@font/montserrat_regular"
       android:text="@string/add"
       android:textColor="@color/text_on_primary"
-      android:textSize="18sp" />
+      android:textSize="16sp" />
   </LinearLayout>
 
   <LinearLayout
@@ -83,7 +83,6 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="end"
-      android:layout_marginTop="15dp"
       android:background="@drawable/button_selector"
       android:fontFamily="@font/montserrat_regular"
       android:text="@string/ok"

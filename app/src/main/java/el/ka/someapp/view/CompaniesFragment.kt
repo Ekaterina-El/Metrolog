@@ -9,8 +9,6 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -18,7 +16,6 @@ import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
-import com.google.android.material.textfield.TextInputLayout
 import el.ka.someapp.R
 import el.ka.someapp.data.model.Errors
 import el.ka.someapp.data.model.ImageType
@@ -27,6 +24,7 @@ import el.ka.someapp.data.model.State
 import el.ka.someapp.databinding.ChangeUserDialogBinding
 import el.ka.someapp.databinding.FragmentCompaniesBinding
 import el.ka.someapp.view.adapters.NodesAdapter
+import el.ka.someapp.view.dialog.AddCompanyDialog
 import el.ka.someapp.viewmodel.ChangeImageViewModel
 import el.ka.someapp.viewmodel.ChangeUserFullNameViewModel
 import el.ka.someapp.viewmodel.NodesViewModel
@@ -59,7 +57,6 @@ class CompaniesFragment : BaseFragment() {
     }
   }
 
-  private lateinit var dialog: Dialog
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -82,7 +79,6 @@ class CompaniesFragment : BaseFragment() {
         }
       }
     )
-    createAddCompanyDialog()
   }
 
   override fun inflateBindingVariables() {
@@ -111,6 +107,12 @@ class CompaniesFragment : BaseFragment() {
   }
 
   override fun onBackPressed() {}
+
+  override fun onDestroy() {
+    super.onDestroy()
+    viewModel.filteredNodes.removeObserver { nodesObserver }
+    viewModel.state.removeObserver { stateObserver }
+  }
 
   fun changeProfileImage() {
     changeImageViewModel.setCurrentChangeImageType(ImageType.PROFILE)
@@ -203,48 +205,27 @@ class CompaniesFragment : BaseFragment() {
   // endregion
 
   // region Add Company Dialog
-  private fun createAddCompanyDialog() {
-    dialog = Dialog(requireActivity())
-    dialog.setContentView(R.layout.add_node_dialog)
-    dialog.window!!.setLayout(
-      ViewGroup.LayoutParams.MATCH_PARENT,
-      ViewGroup.LayoutParams.WRAP_CONTENT
-    )
-    dialog.setCancelable(true)
-
-    val editTextNodeName: EditText = dialog.findViewById(R.id.inp1)
-    val buttonOk: Button = dialog.findViewById(R.id.buttonOk)
-
-    buttonOk.setOnClickListener {
-      val value = editTextNodeName.text.toString()
-      if (value.isNotEmpty()) {
-        viewModel.addNodeWithName(value)
-      } else {
-        clearDialog()
-      }
-      dialog.dismiss()
+  private var addCompanyDialog: AddCompanyDialog? = null
+  private var addCompanyListener = object : AddCompanyDialog.Companion.Listener {
+    override fun saveNode(value: String) {
+      viewModel.addNodeWithName(value)
     }
   }
 
-  private fun showCreateDialogWithError(error: String) {
-    dialog.findViewById<TextInputLayout>(R.id.layoutName).error = error
-    showAddCompanyDialog()
+  fun showAddCompanyDialog() {
+    if (addCompanyDialog == null) addCompanyDialog =
+      AddCompanyDialog.getInstance(requireContext(), addCompanyListener)
+    addCompanyDialog!!.showDialog()
   }
 
-  fun showAddCompanyDialog() {
-    dialog.show()
+  private fun showCreateDialogWithError(error: String) {
+    if (addCompanyDialog == null) addCompanyDialog =
+      AddCompanyDialog.getInstance(requireContext(), addCompanyListener)
+    addCompanyDialog!!.showWithError(error)
   }
 
   private fun clearDialog() {
-    dialog.findViewById<EditText>(R.id.inp1).setText("")
-    dialog.findViewById<TextInputLayout>(R.id.layoutName).error = null
-  }
-
-
-  override fun onDestroy() {
-    super.onDestroy()
-    viewModel.filteredNodes.removeObserver { nodesObserver }
-    viewModel.state.removeObserver { stateObserver }
+    addCompanyDialog?.clearDialog()
   }
   // endregion
 
