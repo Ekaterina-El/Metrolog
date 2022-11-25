@@ -17,6 +17,9 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 
 class NodesViewModel(application: Application) : AndroidViewModel(application) {
+  private val _loads = MutableLiveData<List<Int>>(mutableListOf())
+  val loads: LiveData<List<Int>> get() = _loads
+
   private fun clearFields() {
     filterFieldMeasuring.value = ""
     _measuring.value = listOf()
@@ -159,14 +162,28 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   val currentUserProfile: LiveData<User?>
     get() = _currentUserProfile
 
+  companion object {
+    const val LOAD_CURRENT_USER_PROFILE = 1
+    const val LOAD_NODES_FROM_DB_BY_ID_LIST = 2
+    const val SET_NODES = 3
+    const val SAVE_NODE_WITH_CHECK = 4
+    const val ADD_NODE = 5
+  }
+
+  private fun changeLoads(state: Int, isAdding: Boolean = true) {
+    val states = _loads.value!!.toMutableList()
+    if (isAdding) states.add(state) else states.remove(state)
+    _loads.value = states
+  }
+
   fun loadCurrentUserProfile(onSuccess: () -> Unit = {}) {
-    _state.value = State.LOADING
+    changeLoads(LOAD_CURRENT_USER_PROFILE)
     UsersDatabaseService.loadCurrentUserProfile(
       onFailure = {},
       onSuccess = {
         _currentUserProfile.value = it
-        _state.value = State.VIEW
         onSuccess()
+        changeLoads(LOAD_CURRENT_USER_PROFILE, isAdding = false)
       }
     )
   }
@@ -243,7 +260,8 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   }
 
   private fun loadNodesFromDBByIDList(nodesIds: List<String>) {
-    _state.value = State.LOADING
+    changeLoads(LOAD_NODES_FROM_DB_BY_ID_LIST)
+//    _state.value = State.LOADING
     viewModelScope.launch {
       val a = NodesDatabaseService
         .getNodesByIDs(nodeIds = nodesIds)
@@ -252,14 +270,18 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
           it.toObject(Node::class.java)
         }
       setNodes(a)
+      changeLoads(LOAD_NODES_FROM_DB_BY_ID_LIST, isAdding = false)
     }
   }
 
   private fun setNodes(list: List<Node>) {
+    changeLoads(SET_NODES)
     _nodes.value = list
-    _state.value = State.VIEW
+//    _state.value = State.VIEW
     filter.value = ""
     filterNodes()
+    changeLoads(SET_NODES, isAdding = false)
+
   }
 
   private fun updateCurrentNodeDate(node: Node) {
@@ -374,6 +396,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   }
 
   private fun saveWithCheck(name: String) {
+    changeLoads(SAVE_NODE_WITH_CHECK)
     val uid = AuthenticationService.getUserUid()!!
 
     val node = Node(
@@ -384,19 +407,23 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       jobs = listOf(JobField.getDefaultHead(uid))
     )
 
-    _state.value = State.LOADING
+//    _state.value = State.LOADING
     NodesDatabaseService.checkUniqueNodeName(node = node, onFailure = {
       if (it == Errors.nonUniqueName) {
         _state.value = State.NON_UNIQUE_NAME
+        changeLoads(SAVE_NODE_WITH_CHECK, false)
       }
     }, onSuccess = {
       _state.value = State.NEW_NODE_ADDED
       addNode(node)
+      changeLoads(SAVE_NODE_WITH_CHECK, false)
+
     })
   }
 
   private fun addNode(node: Node) {
-    _state.value = State.LOADING
+    changeLoads(ADD_NODE)
+//    _state.value = State.LOADING
     NodesDatabaseService.saveNode(
       node,
       onFailure = {
@@ -416,6 +443,8 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
         }
 
         loadNodes()
+        changeLoads(ADD_NODE, false)
+
       })
   }
 

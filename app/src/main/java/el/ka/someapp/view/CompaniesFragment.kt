@@ -39,7 +39,7 @@ class CompaniesFragment : BaseFragment() {
   }
 
   private val stateObserver = Observer<State> {
-    if (it != State.LOADING) hideLoadingDialog()
+//    if (it != State.LOADING) hideLoadingDialog()
 
     when (it) {
       State.NON_UNIQUE_NAME -> {
@@ -49,9 +49,13 @@ class CompaniesFragment : BaseFragment() {
         clearDialog()
         viewModel.toViewState()
       }
-      State.LOADING -> showLoadingDialog()
+//      State.LOADING -> showLoadingDialog()
       else -> {}
     }
+  }
+
+  private val loadsObserver = Observer<List<Int>> {
+    if (it.isNotEmpty()) showLoadingDialog() else hideLoadingDialog()
   }
 
 
@@ -93,6 +97,7 @@ class CompaniesFragment : BaseFragment() {
     super.onResume()
     viewModel.filteredNodes.observe(viewLifecycleOwner, nodesObserver)
     viewModel.state.observe(viewLifecycleOwner, stateObserver)
+    viewModel.loads.observe(viewLifecycleOwner, loadsObserver)
     viewModel.loadNodes()
   }
 
@@ -101,6 +106,7 @@ class CompaniesFragment : BaseFragment() {
     changeUserFullNameViewModel?.state?.removeObserver(changeUserObserverState)
     viewModel.filteredNodes.removeObserver(nodesObserver)
     viewModel.state.removeObserver(stateObserver)
+    viewModel.loads.removeObserver(loadsObserver)
   }
 
   override fun onBackPressed() {}
