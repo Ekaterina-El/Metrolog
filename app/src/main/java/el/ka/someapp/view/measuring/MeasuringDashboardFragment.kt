@@ -11,12 +11,13 @@ import androidx.lifecycle.Observer
 import el.ka.someapp.R
 import el.ka.someapp.data.model.State
 import el.ka.someapp.data.model.UserRole
-import el.ka.someapp.data.model.measuring.DateType
+import el.ka.someapp.data.model.measuring.Measuring
 import el.ka.someapp.data.model.measuring.MeasuringPart
 import el.ka.someapp.data.model.role.AccessType
 import el.ka.someapp.data.model.role.hasRole
 import el.ka.someapp.databinding.FragmentMeasuringDashboardBinding
 import el.ka.someapp.view.BaseFragment
+import el.ka.someapp.view.dialog.ConfirmDialog
 import el.ka.someapp.viewmodel.NodesViewModel
 import el.ka.someapp.viewmodel.VisibleViewModel
 
@@ -27,6 +28,8 @@ class MeasuringDashboardFragment : BaseFragment() {
   private val visibleViewModel: VisibleViewModel by activityViewModels()
 
   private val stateObserver = Observer<State> {
+    if (it != State.LOADING) hideLoadingDialog() else showLoadingDialog()
+
     when (it) {
       State.MEASURING_DELETED -> goBack()
       else -> {}
@@ -103,12 +106,31 @@ class MeasuringDashboardFragment : BaseFragment() {
     popUp()
   }
 
+  // region Delete measuring
   private fun deleteMeasuring() {
-    nodesViewModel.deleteMeasuring(nodesViewModel.currentMeasuring.value!!)
+    val measuring = nodesViewModel.currentMeasuring.value!!
+    openConfirmDialog(
+      getString(R.string.delete_user_message),
+      deleteMeasuringConfirmListener,
+      measuring
+    )
   }
 
+  private val deleteMeasuringConfirmListener = object : ConfirmDialog.Companion.ConfirmListener {
+    override fun onAgree(value: Any?) {
+      nodesViewModel.deleteMeasuring(value as Measuring)
+      closeConfirmDialog()
+    }
+
+    override fun onDisagree() {
+      closeConfirmDialog()
+    }
+  }
+  // endregion
+
+
   fun navigateTo(part: MeasuringPart) {
-    val action = when(part) {
+    val action = when (part) {
       MeasuringPart.PASSPORT -> R.id.action_measuringDashboardFragment_to_passportMeasuringFragment
       MeasuringPart.OVERHAUL -> R.id.action_measuringDashboardFragment_to_overhaulMeasuringFragment
       MeasuringPart.TO -> R.id.action_measuringDashboardFragment_to_TOMeasuringFragment
@@ -118,8 +140,6 @@ class MeasuringDashboardFragment : BaseFragment() {
     }
     if (action != null) navigate(action)
   }
-
-
 
   companion object {
     const val DELETE_ITEM = 1

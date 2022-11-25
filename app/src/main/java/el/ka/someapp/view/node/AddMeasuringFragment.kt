@@ -60,6 +60,8 @@ class AddMeasuringFragment : BaseFragment() {
 
     measuringValueAdapter = MeasuringValueAdapter()
     measuringValueAdapter.addNewItem()
+    measuringValueAdapter.setAccessToEdit(true)
+
 
     viewModel = ViewModelProvider(this)[AddMeasuringViewModel::class.java]
   }

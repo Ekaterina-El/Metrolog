@@ -676,6 +676,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   }
 
   fun deleteMeasuring(measuring: Measuring) {
+    _state.value = State.LOADING
     MeasuringDatabaseService.deleteMeasuring(
       measuringId = measuring.measuringID,
       locationNodeId = measuring.passport!!.locationIDNode,
