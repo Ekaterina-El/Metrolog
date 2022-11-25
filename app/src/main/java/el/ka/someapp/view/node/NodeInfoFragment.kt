@@ -21,6 +21,7 @@ import el.ka.someapp.view.adapters.JobsAdapter
 import el.ka.someapp.view.adapters.SpinnerUsersAdapter
 import el.ka.someapp.view.dialog.AddCompanyDialog
 import el.ka.someapp.view.dialog.ConfirmDialog
+import el.ka.someapp.view.dialog.JobFieldDialog
 import el.ka.someapp.viewmodel.JobFieldViewModel
 import el.ka.someapp.viewmodel.NodesViewModel
 
@@ -110,7 +111,7 @@ class NodeInfoFragment : BaseFragment() {
     viewModel.state.observe(viewLifecycleOwner, stateObserver)
     viewModel.nodesHistory.observe(viewLifecycleOwner, hierarchyObserver)
     viewModel.localUser.observe(viewLifecycleOwner, localUsersObserver)
-    jobFieldViewModel?.state?.observe(viewLifecycleOwner, jobFieldStateObserver)
+//    jobFieldViewModel?.state?.observe(viewLifecycleOwner, jobFieldStateObserver)
     viewModel.currentNode.observe(viewLifecycleOwner, currentNodeObserver)
     viewModel.currentRole.observe(viewLifecycleOwner, roleObserver)
   }
@@ -121,7 +122,7 @@ class NodeInfoFragment : BaseFragment() {
     viewModel.nodesHistory.removeObserver(hierarchyObserver)
     viewModel.localUser.removeObserver(localUsersObserver)
     viewModel.currentRole.removeObserver(roleObserver)
-    jobFieldViewModel?.state?.removeObserver { jobFieldStateObserver }
+//    jobFieldViewModel?.state?.removeObserver { jobFieldStateObserver }
   }
 
   // region Delete Job Field
@@ -193,25 +194,25 @@ class NodeInfoFragment : BaseFragment() {
   // endregion
 
   // region Job Field Dialog
-  private var jobFieldDialog: Dialog? = null
-  private var jobFieldViewModel: JobFieldViewModel? = null
   private lateinit var bindingJobFieldDialog: JobFieldDialogBinding
   private var spinnerUsersAdapter: SpinnerUsersAdapter? = null
+  private var jobFieldDialog: JobFieldDialog? = null
+  private lateinit var jobFieldViewModel: JobFieldViewModel
 
   private val jobFieldStateObserver = Observer<State> {
     when (it) {
       State.NEW_FIELD_JOB_ADDED -> {
-        jobFieldViewModel!!.afterNotifiedOfNewFieldJob()
+        jobFieldViewModel.afterNotifiedOfNewFieldJob()
         jobFieldDialog?.dismiss()
-        val jobField = jobFieldViewModel!!.jobField.value!!
+        val jobField = jobFieldViewModel.jobField.value!!
         viewModel.addJobField(jobField)
       }
 
       State.JOB_FIELD_EDITED -> {
-        val jobField = jobFieldViewModel!!.jobField.value!!
-        val oldJobField = jobFieldViewModel!!.oldJobField.value!!
+        val jobField = jobFieldViewModel.jobField.value!!
+        val oldJobField = jobFieldViewModel.oldJobField.value!!
 
-        jobFieldViewModel!!.afterNotifiedOfNewFieldJob()
+        jobFieldViewModel.afterNotifiedOfNewFieldJob()
         jobFieldDialog?.dismiss()
         viewModel.updateJobField(oldJobField, jobField)
       }
@@ -219,106 +220,67 @@ class NodeInfoFragment : BaseFragment() {
     }
   }
 
-  private fun createJobFieldDialog() {
-    jobFieldDialog = Dialog(requireContext())
-    if (spinnerUsersAdapter == null)
-      spinnerUsersAdapter = SpinnerUsersAdapter(requireContext(), viewModel.companyAllUsers.value!!)
-
-    jobFieldViewModel = ViewModelProvider(this)[JobFieldViewModel::class.java]
-    jobFieldViewModel?.state?.observe(viewLifecycleOwner, jobFieldStateObserver)
-
-    jobFieldDialog?.let { dialog ->
-      bindingJobFieldDialog = JobFieldDialogBinding.inflate(LayoutInflater.from(requireContext()))
-      dialog.setContentView(bindingJobFieldDialog.root)
-
-      dialog.setOnDismissListener {
-        clearJobFieldDialog()
-      }
-
-      bindingJobFieldDialog.spinnerRole.addListener {
-        val role = (it as SpinnerItem).value as UserRole
-        jobFieldViewModel!!.setRole(role)
-      }
-
-      bindingJobFieldDialog.spinner.adapter = spinnerUsersAdapter
-      bindingJobFieldDialog.spinner.onItemSelectedListener =
-        object : AdapterView.OnItemSelectedListener {
-          override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-            val user = p0!!.selectedItem as User
-            jobFieldViewModel!!.setUser(user)
-          }
-
-          override fun onNothingSelected(p0: AdapterView<*>?) {}
-        }
-      bindingJobFieldDialog.viewModel = jobFieldViewModel
-      bindingJobFieldDialog.lifecycleOwner = viewLifecycleOwner
-
-      dialog.window!!.setLayout(
-        ViewGroup.LayoutParams.MATCH_PARENT,
-        ViewGroup.LayoutParams.WRAP_CONTENT
-      )
-      dialog.setCancelable(true)
-
-      bindingJobFieldDialog.buttonOk.setOnClickListener {
-        val nodeId = viewModel.currentNode.value!!.id
-
-        if (jobFieldViewModel!!.state.value == State.EDIT_JOB_FIELD)
-          jobFieldViewModel!!.editJobField(nodeId)
-        else jobFieldViewModel!!.tryCreateJobField(nodeId)
-      }
+  private val jobFieldDialogListener = object: JobFieldDialog.Companion.Listener {
+    override fun selectRole(userRole: UserRole) {
+      jobFieldViewModel.setRole(userRole)
     }
+
+    override fun selectUser(user: User) {
+      jobFieldViewModel.setUser(user)
+    }
+
+    override fun onSave() {
+      val nodeId = viewModel.currentNode.value!!.id
+
+      if (jobFieldViewModel.state.value == State.EDIT_JOB_FIELD)
+        jobFieldViewModel.editJobField(nodeId)
+      else jobFieldViewModel.tryCreateJobField(nodeId)
+    }
+
+  }
+
+  private fun createJobFieldDialog() {
+    jobFieldViewModel = ViewModelProvider(this)[JobFieldViewModel::class.java]
+    jobFieldViewModel.state.observe(viewLifecycleOwner, jobFieldStateObserver)
+    spinnerUsersAdapter = SpinnerUsersAdapter(requireContext(), viewModel.companyAllUsers.value!!)
+    bindingJobFieldDialog = JobFieldDialogBinding.inflate(LayoutInflater.from(requireContext()))
+
+
+    jobFieldDialog = JobFieldDialog.getInstance(
+      requireContext(),
+      viewModel.companyAllUsers.value!!,
+      jobFieldDialogListener,
+      jobFieldViewModel,
+      viewLifecycleOwner,
+      spinnerUsersAdapter,
+      bindingJobFieldDialog
+    )
   }
 
   fun showJobFieldDialog() {
-    if (jobFieldDialog == null) createJobFieldDialog() else updateUsers()
+    if (jobFieldDialog == null) createJobFieldDialog()
 
-    // Установка роли по умолчанию "Читатель"
     createSpinner(
       R.array.rolesTypes, Fields.rolesTypeVariables,
       bindingJobFieldDialog.spinnerRole, UserRole.READER
     )
-    jobFieldViewModel!!.role.value = UserRole.READER
-
-    jobFieldDialog!!.show()
-  }
-
-  private fun updateUsers() {
-    spinnerUsersAdapter = SpinnerUsersAdapter(requireContext(), viewModel.companyAllUsers.value!!)
-    bindingJobFieldDialog.spinner.adapter = spinnerUsersAdapter
-  }
-
-  private fun clearJobFieldDialog() {
-    bindingJobFieldDialog.textTitle.text = getString(R.string.add_job_field)
-    jobFieldViewModel!!.clearFields()
-
-    val elementsState = View.VISIBLE
-    bindingJobFieldDialog.fieldJobName.visibility = elementsState
-    bindingJobFieldDialog.layoutJobFieldRole.visibility = elementsState
-    bindingJobFieldDialog.textViewRole.visibility = elementsState
+    jobFieldDialog!!.showJobFieldDialog(viewModel.companyAllUsers.value!!)
   }
 
   private fun openJobFieldDialogToEdit(jobField: JobField) {
     if (jobFieldDialog == null) createJobFieldDialog()
 
-    bindingJobFieldDialog.textTitle.text = getString(R.string.edit_job_field)
-
     val user = viewModel.getUserById(jobField.userId)
-    jobFieldViewModel!!.setJobField(jobField, user)
+    jobFieldViewModel.setJobField(jobField, user)
 
     val pos = spinnerUsersAdapter!!.getPosition(user)
-    bindingJobFieldDialog.spinner.setSelection(pos)
-
-    val elementsState = if (jobField.jobRole == UserRole.HEAD) View.GONE else View.VISIBLE
-    bindingJobFieldDialog.fieldJobName.visibility = elementsState
-    bindingJobFieldDialog.layoutJobFieldRole.visibility = elementsState
-    bindingJobFieldDialog.textViewRole.visibility = elementsState
 
     createSpinner(
       R.array.rolesTypes, Fields.rolesTypeVariables,
       bindingJobFieldDialog.spinnerRole, jobField.jobRole
     )
 
-    jobFieldDialog!!.show()
+    jobFieldDialog!!.openJobFieldDialogToEdit(pos, jobField.jobRole)
   }
   // endregion
 }
