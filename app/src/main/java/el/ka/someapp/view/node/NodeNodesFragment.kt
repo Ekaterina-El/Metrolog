@@ -5,21 +5,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.textfield.TextInputLayout
-import el.ka.someapp.R
 import el.ka.someapp.data.model.Errors
 import el.ka.someapp.data.model.Node
 import el.ka.someapp.data.model.State
 import el.ka.someapp.databinding.FragmentNodeNodesBinding
 import el.ka.someapp.view.BaseFragment
 import el.ka.someapp.view.adapters.NodesAdapter
+import el.ka.someapp.view.dialog.AddCompanyDialog
 import el.ka.someapp.viewmodel.NodesViewModel
 
 class NodeNodesFragment : BaseFragment() {
@@ -43,18 +38,16 @@ class NodeNodesFragment : BaseFragment() {
         showCreatedDialogWithError(getString(Errors.nonUniqueName.textId))
       }
       State.NEW_NODE_ADDED -> {
-        clearDialog()
+        addNodeDialog!!.dismiss()
         viewModel.toViewState()
       }
       else -> {}
     }
   }
-  private lateinit var dialog: Dialog
 
   private val currentNodeObserver = Observer<Node?> {
     viewModel.loadNodes()
   }
-
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -65,20 +58,12 @@ class NodeNodesFragment : BaseFragment() {
     return binding.root
   }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
-    viewModel.filteredNodes.observe(viewLifecycleOwner, nodesObserver)
-    viewModel.state.observe(viewLifecycleOwner, stateObserver)
-    viewModel.currentNode.observe(viewLifecycleOwner, currentNodeObserver)
-  }
-
   override fun initFunctionalityParts() {
     binding = FragmentNodeNodesBinding.inflate(layoutInflater)
 
     val d = DividerItemDecoration(binding.listCompanies.context, DividerItemDecoration.VERTICAL)
     binding.listCompanies.addItemDecoration(d)
     adapter = NodesAdapter(nodesAdapterListener)
-    createAddNodeDialog()
   }
 
   override fun inflateBindingVariables() {
@@ -88,6 +73,20 @@ class NodeNodesFragment : BaseFragment() {
       lifecycleOwner = viewLifecycleOwner
       adapter = this@NodeNodesFragment.adapter
     }
+  }
+
+  override fun onResume() {
+    super.onResume()
+    viewModel.filteredNodes.observe(viewLifecycleOwner, nodesObserver)
+    viewModel.state.observe(viewLifecycleOwner, stateObserver)
+    viewModel.currentNode.observe(viewLifecycleOwner, currentNodeObserver)
+  }
+
+  override fun onStop() {
+    super.onStop()
+    viewModel.filteredNodes.removeObserver(nodesObserver)
+    viewModel.state.removeObserver(stateObserver)
+    viewModel.currentNode.removeObserver(currentNodeObserver)
   }
 
   override fun onBackPressed() {
@@ -102,37 +101,24 @@ class NodeNodesFragment : BaseFragment() {
   }
 
   // region Dialog Add Node
-  private fun createAddNodeDialog() {
-    dialog = Dialog(requireActivity())
-    dialog.setContentView(R.layout.add_node_dialog)
-    dialog.window!!.setLayout(
-      ViewGroup.LayoutParams.MATCH_PARENT,
-      ViewGroup.LayoutParams.WRAP_CONTENT
-    )
-    dialog.setCancelable(true)
-
-    val editTextNodeName: EditText = dialog.findViewById(R.id.inp1)
-    val buttonOk: Button = dialog.findViewById(R.id.buttonOk)
-
-    buttonOk.setOnClickListener {
-      val value = editTextNodeName.text.toString()
-      if (value.isNotEmpty()) viewModel.addNodeWithName(value) else clearDialog()
-      dialog.dismiss()
+  private var addNodeDialog: AddCompanyDialog? = null
+  private val addNodeDialogListener = object: AddCompanyDialog.Companion.Listener {
+    override fun saveNode(value: String) {
+      if (value.isNotEmpty()) viewModel.addNodeWithName(value) else addNodeDialog!!.clearDialog()
+      addNodeDialog!!.dismiss()
     }
   }
 
-  private fun showCreatedDialogWithError(error: String) {
-    dialog.findViewById<TextInputLayout>(R.id.layoutName).error = error
-    showAddNodeDialog()
-  }
-
   fun showAddNodeDialog() {
-    dialog.show()
+    if (addNodeDialog == null) addNodeDialog =  AddCompanyDialog(requireContext())
+    addNodeDialog!!.setListener(addNodeDialogListener)
+    addNodeDialog!!.showDialog()
   }
 
-  private fun clearDialog() {
-    dialog.findViewById<EditText>(R.id.inp1).setText("")
-    dialog.findViewById<TextInputLayout>(R.id.layoutName).error = null
+  private fun showCreatedDialogWithError(error: String) {
+    if (addNodeDialog == null) addNodeDialog =  AddCompanyDialog(requireContext())
+    addNodeDialog!!.setListener(addNodeDialogListener)
+    addNodeDialog!!.showWithError(error, currentName = "")
   }
   // endregion
 }

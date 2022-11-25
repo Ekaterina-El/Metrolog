@@ -538,15 +538,17 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   private fun loadLocalUsers(afterLoad: () -> Unit = {}) {
     _state.value = State.LOADING
     viewModelScope.launch {
-      val users = NodesDatabaseService
-        .loadCompaniesJobsUsers(_currentNode.value!!.jobs)
+      if (_currentNode.value != null) {
+        val users = NodesDatabaseService
+          .loadCompaniesJobsUsers(_currentNode.value!!.jobs)
 
-      _localUsers.value = users
-      checkAliveJobField(
-        jobFields = _localUsers.value!!,
-        usersIds = getRootNode()!!.usersHaveAccess
-      )
-      afterLoad()
+        _localUsers.value = users
+        checkAliveJobField(
+          jobFields = _localUsers.value!!,
+          usersIds = getRootNode()!!.usersHaveAccess
+        )
+        afterLoad()
+      }
       _state.value = State.VIEW
     }
   }
