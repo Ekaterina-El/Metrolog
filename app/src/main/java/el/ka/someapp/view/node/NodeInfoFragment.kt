@@ -20,6 +20,7 @@ import el.ka.someapp.view.adapters.HierarchyNodesAdapter
 import el.ka.someapp.view.adapters.JobsAdapter
 import el.ka.someapp.view.adapters.SpinnerUsersAdapter
 import el.ka.someapp.view.dialog.AddCompanyDialog
+import el.ka.someapp.view.dialog.ConfirmDialog
 import el.ka.someapp.viewmodel.JobFieldViewModel
 import el.ka.someapp.viewmodel.NodesViewModel
 
@@ -124,7 +125,7 @@ class NodeInfoFragment : BaseFragment() {
   }
 
   // region Delete Job Field
-  private val deleteJobFieldConfirmListener = object : ConfirmListener {
+  private val deleteJobFieldConfirmListener = object : ConfirmDialog.Companion.ConfirmListener {
     override fun onAgree(value: Any?) {
       viewModel.deleteJobField(value as JobField)
       closeConfirmDialog()
@@ -150,7 +151,7 @@ class NodeInfoFragment : BaseFragment() {
     showDeleteNodeConfirm()
   }
 
-  private val deleteNodeConfirmListener = object : ConfirmListener {
+  private val deleteNodeConfirmListener = object : ConfirmDialog.Companion.ConfirmListener {
     override fun onAgree(value: Any?) {
       closeConfirmDialog()
       viewModel.deleteNode()

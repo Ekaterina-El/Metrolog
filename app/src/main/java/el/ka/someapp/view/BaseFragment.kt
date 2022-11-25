@@ -27,6 +27,7 @@ import el.ka.someapp.data.model.measuring.Fields
 import el.ka.someapp.data.model.measuring.MeasurementType
 import el.ka.someapp.data.model.measuring.MeasuringPassportPart
 import el.ka.someapp.view.adapters.SpinnerAdapter
+import el.ka.someapp.view.dialog.ConfirmDialog
 import el.ka.someapp.view.measuring.PassportMeasuringFragment
 import org.w3c.dom.Text
 import java.util.*
@@ -126,48 +127,15 @@ abstract class BaseFragment : Fragment() {
   // endregion
 
   // region Confirm Dialog
-  private var confirmDialog: Dialog? = null
-  private lateinit var confirmDialogMessage: TextView
-  private lateinit var confirmDialogOk: Button
-  private lateinit var confirmDialogCancel: Button
+  private var confirmDialog: ConfirmDialog? = null
 
-  private fun createConfirmDialog() {
-    confirmDialog = Dialog(requireContext())
-    confirmDialog?.let { dialog ->
-      dialog.setContentView(R.layout.confirm_dialog)
-      dialog.window!!.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-      dialog.window!!.setWindowAnimations(R.style.Slide)
-      dialog.setCancelable(true)
-
-      confirmDialogMessage = dialog.findViewById<TextView>(R.id.textViewMessage)
-      confirmDialogOk = dialog.findViewById<Button>(R.id.buttonYes)
-      confirmDialogCancel = dialog.findViewById<Button>(R.id.buttonCancel)
-    }
-  }
-
-  fun openConfirmDialog(message: String, confirmListener: ConfirmListener, value: Any? = null) {
-    if (confirmDialog == null) createConfirmDialog()
-
-    confirmDialogOk.setOnClickListener { confirmListener.onAgree(value) }
-    confirmDialogCancel.setOnClickListener { confirmListener.onDisagree() }
-    confirmDialogMessage.text = message
-
-    confirmDialog!!.show()
+  fun openConfirmDialog(message: String, confirmListener: ConfirmDialog.Companion.ConfirmListener, value: Any? = null) {
+    if (confirmDialog == null) confirmDialog = ConfirmDialog.getInstance(requireContext())
+    confirmDialog!!.openConfirmDialog(message, confirmListener, value)
   }
 
   fun closeConfirmDialog() {
-    if (confirmDialog == null) return
-
-    confirmDialogOk.setOnClickListener(null)
-    confirmDialogCancel.setOnClickListener(null)
-    confirmDialogMessage.text = ""
-    confirmDialog!!.dismiss()
-  }
-
-
-  interface ConfirmListener {
-    fun onAgree(value: Any? = null)
-    fun onDisagree()
+    confirmDialog?.closeConfirmDialog()
   }
   // endregion
 

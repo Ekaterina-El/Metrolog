@@ -21,6 +21,7 @@ import el.ka.someapp.databinding.FragmentCompaniesBinding
 import el.ka.someapp.view.adapters.NodesAdapter
 import el.ka.someapp.view.dialog.AddCompanyDialog
 import el.ka.someapp.view.dialog.ChangeUserFullNameDialog
+import el.ka.someapp.view.dialog.ConfirmDialog
 import el.ka.someapp.viewmodel.ChangeImageViewModel
 import el.ka.someapp.viewmodel.ChangeUserFullNameViewModel
 import el.ka.someapp.viewmodel.NodesViewModel
@@ -163,7 +164,7 @@ class CompaniesFragment : BaseFragment() {
   // endregion
 
   // region Logout Dialog
-  private val logoutConfirmListener = object : ConfirmListener {
+  private val logoutConfirmListener = object : ConfirmDialog.Companion.ConfirmListener {
     override fun onAgree(value: Any?) {
       viewModel.logout { afterLogout() }
     }

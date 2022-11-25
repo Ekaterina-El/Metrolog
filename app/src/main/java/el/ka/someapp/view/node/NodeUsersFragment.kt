@@ -15,6 +15,7 @@ import el.ka.someapp.databinding.FragmentNodeUsersBinding
 import el.ka.someapp.view.BaseFragment
 import el.ka.someapp.view.adapters.AllUsersAdapter
 import el.ka.someapp.view.dialog.AddUserDialog
+import el.ka.someapp.view.dialog.ConfirmDialog
 import el.ka.someapp.viewmodel.NodesViewModel
 
 class NodeUsersFragment : BaseFragment() {
@@ -27,7 +28,7 @@ class NodeUsersFragment : BaseFragment() {
 
   private lateinit var usersAdapter: AllUsersAdapter
   private val userObserver = Observer<List<User>> {
-    usersAdapter.setUsers(it, viewModel.currentRole.value!!, viewModel.currentNode.value!!.level)
+    usersAdapter.setUsers(it, viewModel.currentRole.value ?: UserRole.READER, viewModel.currentNode.value?.level ?: 0)
   }
   private val usersListener = object : AllUsersAdapter.ItemListener {
     override fun onDelete(userId: String) {
@@ -36,7 +37,7 @@ class NodeUsersFragment : BaseFragment() {
   }
 
   // region Delete User
-  private val deleteUserConfirmListener = object : ConfirmListener {
+  private val deleteUserConfirmListener = object : ConfirmDialog.Companion.ConfirmListener {
     override fun onAgree(value: Any?) {
       viewModel.denyAccessUser(value as String)
       closeConfirmDialog()
