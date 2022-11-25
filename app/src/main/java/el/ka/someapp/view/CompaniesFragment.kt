@@ -199,13 +199,17 @@ class CompaniesFragment : BaseFragment() {
   fun showAddCompanyDialog() {
     if (addCompanyDialog == null) addCompanyDialog =
       AddCompanyDialog.getInstance(requireContext(), addCompanyListener)
+
+    addCompanyDialog!!.setListener(addCompanyListener)
     addCompanyDialog!!.showDialog()
   }
 
   private fun showCreateDialogWithError(error: String) {
     if (addCompanyDialog == null) addCompanyDialog =
       AddCompanyDialog.getInstance(requireContext(), addCompanyListener)
-    addCompanyDialog!!.showWithError(error)
+
+    addCompanyDialog!!.setListener(addCompanyListener)
+    addCompanyDialog!!.showDialog(error, showError = true)
   }
 
   private fun clearDialog() {

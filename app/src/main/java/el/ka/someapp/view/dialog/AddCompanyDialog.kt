@@ -5,10 +5,11 @@ import android.content.Context
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import com.google.android.material.textfield.TextInputLayout
 import el.ka.someapp.R
 
-class AddCompanyDialog(context: Context, val listener: Listener? = null): Dialog(context) {
+class AddCompanyDialog(context: Context, private var listener: Listener? = null) : Dialog(context) {
 
   init {
     initDialog()
@@ -34,17 +35,34 @@ class AddCompanyDialog(context: Context, val listener: Listener? = null): Dialog
   }
 
   fun clearDialog() {
+    findViewById<TextView>(R.id.textTitle).text = context.getString(R.string.add)
     findViewById<EditText>(R.id.inp1).setText("")
     findViewById<TextInputLayout>(R.id.layoutName).error = null
   }
 
-  fun showWithError(error: String) {
-    findViewById<TextInputLayout>(R.id.layoutName).error = error
+  fun showDialog(error: String, showError: Boolean = true) {
+    findViewById<TextInputLayout>(R.id.layoutName).error = if (showError) error else null
     showDialog()
   }
 
+  fun showWithError(error: String, currentName: String) {
+    findViewById<TextInputLayout>(R.id.layoutName).error = error
+    showDialog(currentName)
+  }
+
   fun showDialog() {
+    findViewById<TextView>(R.id.textTitle).text = context.getString(R.string.add)
     show()
+  }
+
+  fun showDialog(currentName: String) {
+    findViewById<TextView>(R.id.textTitle).text = context.getString(R.string.edit)
+    findViewById<EditText>(R.id.inp1).setText(currentName)
+    show()
+  }
+
+  fun setListener(listener: Listener) {
+    this@AddCompanyDialog.listener = listener
   }
 
   companion object {

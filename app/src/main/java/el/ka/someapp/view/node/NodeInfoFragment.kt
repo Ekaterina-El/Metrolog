@@ -5,21 +5,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.RadioButton
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.textfield.TextInputLayout
 import el.ka.someapp.R
 import el.ka.someapp.data.model.*
 import el.ka.someapp.data.model.measuring.Fields
-import el.ka.someapp.data.model.measuring.MeasuringState
 import el.ka.someapp.databinding.FragmentNodeInfoBinding
 import el.ka.someapp.databinding.JobFieldDialogBinding
 import el.ka.someapp.view.BaseFragment
 import el.ka.someapp.view.adapters.HierarchyNodesAdapter
 import el.ka.someapp.view.adapters.JobsAdapter
 import el.ka.someapp.view.adapters.SpinnerUsersAdapter
+import el.ka.someapp.view.dialog.AddCompanyDialog
 import el.ka.someapp.viewmodel.JobFieldViewModel
 import el.ka.someapp.viewmodel.NodesViewModel
 
@@ -170,42 +170,24 @@ class NodeInfoFragment : BaseFragment() {
   // endregion
 
   // region Change Node Name Dialog
-  private fun createChangeNameDialog() {
-    changeNameDialog = Dialog(requireActivity())
-    changeNameDialog!!.setContentView(R.layout.add_node_dialog)
-    changeNameDialog!!.window!!.setLayout(
-      ViewGroup.LayoutParams.MATCH_PARENT,
-      ViewGroup.LayoutParams.WRAP_CONTENT
-    )
-    changeNameDialog!!.setCancelable(true)
-    changeNameDialog!!.findViewById<TextView>(R.id.textTitle).text = getString(R.string.edit)
-    val editTextName = changeNameDialog!!.findViewById<EditText>(R.id.inp1)
-
-    changeNameDialog!!.findViewById<Button>(R.id.buttonOk).setOnClickListener {
-      val value = editTextName.text.toString()
+  private var nodeNameCompanyDialog: AddCompanyDialog? = null
+  private val nodeNameCompanyDialogListener = object : AddCompanyDialog.Companion.Listener {
+    override fun saveNode(value: String) {
       viewModel.changeNodeName(value)
-      clearDialog()
-      changeNameDialog!!.dismiss()
+      nodeNameCompanyDialog!!.clearDialog()
+      nodeNameCompanyDialog!!.dismiss()
     }
   }
 
-  private fun clearDialog() {
-    changeNameDialog!!.findViewById<EditText>(R.id.inp1).setText("")
-    changeNameDialog!!.findViewById<TextInputLayout>(R.id.layoutName).error = null
+  fun showChangeNameDialog() {
+    if (nodeNameCompanyDialog == null) nodeNameCompanyDialog =
+      AddCompanyDialog.getInstance(requireContext(), nodeNameCompanyDialogListener)
+    nodeNameCompanyDialog!!.setListener(nodeNameCompanyDialogListener)
+    nodeNameCompanyDialog!!.showDialog(currentName = viewModel.currentNode.value!!.name)
   }
 
   private fun showChangeNameDialogWithError(errorMessage: String) {
-    changeNameDialog?.findViewById<TextInputLayout>(R.id.layoutName)?.error = errorMessage
-    showChangeNameDialog()
-  }
-
-  fun showChangeNameDialog() {
-    if (changeNameDialog == null) createChangeNameDialog()
-
-    val editTextName = changeNameDialog!!.findViewById<EditText>(R.id.inp1)
-    editTextName.setText(viewModel.currentNode.value!!.name)
-
-    changeNameDialog?.show()
+    nodeNameCompanyDialog!!.showWithError(errorMessage, currentName = viewModel.currentNode.value!!.name)
   }
   // endregion
 
@@ -214,7 +196,6 @@ class NodeInfoFragment : BaseFragment() {
   private var jobFieldViewModel: JobFieldViewModel? = null
   private lateinit var bindingJobFieldDialog: JobFieldDialogBinding
   private var spinnerUsersAdapter: SpinnerUsersAdapter? = null
-  private var checked: RadioButton? = null
 
   private val jobFieldStateObserver = Observer<State> {
     when (it) {
