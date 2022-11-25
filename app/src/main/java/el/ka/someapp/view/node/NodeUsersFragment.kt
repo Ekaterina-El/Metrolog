@@ -1,16 +1,12 @@
 package el.ka.someapp.view.node
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
-import com.google.android.material.textfield.TextInputLayout
 import el.ka.someapp.R
 import el.ka.someapp.data.model.State
 import el.ka.someapp.data.model.User
@@ -18,6 +14,7 @@ import el.ka.someapp.data.model.UserRole
 import el.ka.someapp.databinding.FragmentNodeUsersBinding
 import el.ka.someapp.view.BaseFragment
 import el.ka.someapp.view.adapters.AllUsersAdapter
+import el.ka.someapp.view.dialog.AddUserDialog
 import el.ka.someapp.viewmodel.NodesViewModel
 
 class NodeUsersFragment : BaseFragment() {
@@ -28,20 +25,18 @@ class NodeUsersFragment : BaseFragment() {
     usersAdapter.updateRole(it)
   }
 
-  private var addUserDialog: Dialog? = null
-
   private lateinit var usersAdapter: AllUsersAdapter
   private val userObserver = Observer<List<User>> {
     usersAdapter.setUsers(it, viewModel.currentRole.value!!, viewModel.currentNode.value!!.level)
   }
-  private val usersListener = object: AllUsersAdapter.ItemListener {
+  private val usersListener = object : AllUsersAdapter.ItemListener {
     override fun onDelete(userId: String) {
       showDeleteUserConfirm(userId)
     }
   }
 
   // region Delete User
-  private val deleteUserConfirmListener = object: ConfirmListener {
+  private val deleteUserConfirmListener = object : ConfirmListener {
     override fun onAgree(value: Any?) {
       viewModel.denyAccessUser(value as String)
       closeConfirmDialog()
@@ -64,10 +59,10 @@ class NodeUsersFragment : BaseFragment() {
   private val stateObserver = Observer<State> {
     when (it) {
       State.ADD_USER_ERROR ->
-        showAddUserDialogWithEmailAndError(
-          error = getString(viewModel.addUserError.value!!.textId)
-        )
-      State.ADD_USER_SUCCESS -> clearAddUserDialog()
+        showAddUserDialogWithEmailAndError(error = getString(viewModel.addUserError.value!!.textId))
+
+      State.ADD_USER_SUCCESS -> addUserDialog!!.clearDialog()
+
       else -> {}
     }
   }
@@ -121,6 +116,27 @@ class NodeUsersFragment : BaseFragment() {
 
 
   // region Add User Dialog
+  private var addUserDialog: AddUserDialog? = null
+  private val addUserDialogListener = object : AddUserDialog.Companion.Listener {
+    override fun addUser(email: String) {
+      viewModel.addUserToProjectByEmail(email)
+      addUserDialog!!.dismiss()
+    }
+  }
+
+  private fun showAddUserDialogWithEmailAndError(error: String) {
+    if (addUserDialog == null) addUserDialog = AddUserDialog(requireContext())
+    addUserDialog!!.setListener(addUserDialogListener)
+    addUserDialog!!.show(error)
+  }
+
+  fun showAddUserDialog() {
+    if (addUserDialog == null) addUserDialog = AddUserDialog(requireContext())
+    addUserDialog!!.setListener(addUserDialogListener)
+    addUserDialog!!.show()
+  }
+
+  /*
   private fun createAddUserDialog() {
     addUserDialog = Dialog(requireActivity())
     addUserDialog?.let { dialog ->
@@ -157,5 +173,7 @@ class NodeUsersFragment : BaseFragment() {
     addUserDialog?.findViewById<TextInputLayout>(R.id.layoutEmail)?.error = error
     showAddUserDialog()
   }
+
+   */
   // endregion
 }
