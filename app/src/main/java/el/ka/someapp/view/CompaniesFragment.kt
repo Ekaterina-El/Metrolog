@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
@@ -80,6 +81,9 @@ class CompaniesFragment : BaseFragment() {
         }
       }
     )
+
+    val d = DividerItemDecoration(binding.listCompanies.context, DividerItemDecoration.VERTICAL)
+    binding.listCompanies.addItemDecoration(d)
   }
 
   override fun inflateBindingVariables() {
@@ -110,12 +114,6 @@ class CompaniesFragment : BaseFragment() {
   }
 
   override fun onBackPressed() {}
-
-  override fun onDestroy() {
-    super.onDestroy()
-    viewModel.filteredNodes.removeObserver { nodesObserver }
-    viewModel.state.removeObserver { stateObserver }
-  }
 
   private fun openNode(nodeId: String) {
     val action = CompaniesFragmentDirections.actionCompaniesFragmentToNodeFragment(nodeId)
