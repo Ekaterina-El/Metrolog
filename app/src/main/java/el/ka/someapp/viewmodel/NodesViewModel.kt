@@ -175,9 +175,8 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   }
 
   fun navigateByHistoryTo(node: Node) {
-    changeLoads(NAVIGATE_BY_HISTORY_TO)
     if (node.id == _currentNode.value!!.id) return
-
+    changeLoads(NAVIGATE_BY_HISTORY_TO)
 //    _state.value = State.LOADING
 
     // получить индекс nodeID
