@@ -23,6 +23,9 @@ class NodeUsersFragment : BaseFragment() {
   private val viewModel: NodesViewModel by activityViewModels()
 
   private val roleObserver = Observer<UserRole?> {
+    if (viewModel.currentNode.value!!.level == 0) usersAdapter.setHeadId(
+      viewModel.getLocalUserHeadID() ?: ""
+    )
     usersAdapter.updateRole(it)
   }
 

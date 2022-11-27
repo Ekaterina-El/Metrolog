@@ -17,6 +17,14 @@ import el.ka.someapp.databinding.ItemUserBinding
 class AllUsersAdapter(val context: Context, val listener: ItemListener? = null) :
   RecyclerView.Adapter<AllUsersAdapter.ViewHolder>() {
   inner class ViewHolder(val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root) {
+    private var user: User? = null
+    fun getUser() = user
+
+    fun setUser(user: User) {
+      binding.user = user
+      this.user = user
+    }
+
     var viewerRole: UserRole? = null
   }
 
@@ -34,12 +42,12 @@ class AllUsersAdapter(val context: Context, val listener: ItemListener? = null) 
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     val user = items[position]
-    holder.binding.user = user
+    holder.setUser(user)
 
     val role = viewerRole ?: UserRole.READER
     holder.viewerRole = this.viewerRole
 
-    val showMenu = accessToDelete(role)
+    val showMenu = accessToDelete(role, user)
     holder.binding.viewOptions.visibility = if (showMenu) View.VISIBLE else View.GONE
   }
 
@@ -73,34 +81,43 @@ class AllUsersAdapter(val context: Context, val listener: ItemListener? = null) 
     notifyItemInserted(items.size)
   }
 
+  private var headNodeId: String = ""
+  fun setHeadId(id: String) {
+    this.headNodeId = id
+  }
+
   override fun onViewAttachedToWindow(holder: ViewHolder) {
     super.onViewAttachedToWindow(holder)
 
     val uid = items[holder.adapterPosition].uid
-
     val popupMenu = PopupMenu(context, holder.binding.viewOptions)
+    popupMenu.setOnDismissListener { it.menu.clear() }
 
-    popupMenu.setOnDismissListener {
-      it.menu.clear()
-    }
+    val role = holder.viewerRole ?: UserRole.READER
+    val accessToDelete = accessToDelete(role, holder.getUser()!!)
 
     popupMenu.setOnMenuItemClickListener {
       when (it.itemId) {
-        DELETE_ITEM -> listener?.onDelete(uid)
+        DELETE_ITEM -> if (accessToDelete) listener?.onDelete(uid)
       }
       return@setOnMenuItemClickListener true
     }
 
     holder.binding.viewOptions.setOnClickListener {
-      val role = holder.viewerRole ?: UserRole.READER
-
-      val showDelete = accessToDelete(role)
-      if (showDelete) popupMenu.menu.add(0, DELETE_ITEM, Menu.NONE, context.getString(R.string.delete))
+      if (accessToDelete) popupMenu.menu.add(
+        0,
+        DELETE_ITEM,
+        Menu.NONE,
+        context.getString(R.string.delete)
+      )
       popupMenu.show()
     }
   }
 
-  private fun accessToDelete(role: UserRole) = currentNodeLevel == 0 && hasRole(role, AccessType.DELETE_USER)
+  private fun accessToDelete(role: UserRole, user: User) =
+    currentNodeLevel == 0
+        && hasRole(role, AccessType.DELETE_USER)
+        && user.uid != headNodeId
 
   override fun onViewDetachedFromWindow(holder: ViewHolder) {
     super.onViewDetachedFromWindow(holder)

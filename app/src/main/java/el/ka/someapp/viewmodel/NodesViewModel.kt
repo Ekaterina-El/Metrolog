@@ -807,5 +807,9 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     measuring.passport = passport
     _currentMeasuring.value = measuring
   }
+
+  fun getLocalUserHeadID(): String? {
+    return _localUsers.value!!.firstOrNull { it.jobField.jobRole == UserRole.HEAD }?.user?.uid
+  }
   // endregion
 }
