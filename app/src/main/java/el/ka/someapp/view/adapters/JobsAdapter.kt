@@ -17,32 +17,43 @@ import el.ka.someapp.databinding.ItemCompanyPositionBinding
 
 class JobsAdapter(val context: Context, val listener: ItemListener? = null) :
   RecyclerView.Adapter<JobsAdapter.ViewHolder>() {
+
   inner class ViewHolder(val binding: ItemCompanyPositionBinding) :
     RecyclerView.ViewHolder(binding.root) {
-    var viewerRole: UserRole? = null
+    private var viewerRole: UserRole? = null
+    fun getViewerRole() = viewerRole
+
+    var user: LocalUser? = null
+
+    fun updateViewerRole(viewerRole: UserRole, localUser: LocalUser) {
+      this.viewerRole = viewerRole
+      this.user = localUser
+
+      val showMenu = accessToDelete(localUser.jobField, viewerRole) || accessToEdit(
+        localUser.jobField,
+        viewerRole
+      )
+      binding.viewOptions.visibility = if (showMenu) View.VISIBLE else View.GONE
+      binding.user = localUser
+    }
   }
 
   private var viewerRole: UserRole? = null
   private val items = mutableListOf<LocalUser>()
-  private val itemsHolders = mutableListOf<ViewHolder>()
+  private val itemsHolders = mutableSetOf<ViewHolder>()
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
     val binding =
       ItemCompanyPositionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     val holder = ViewHolder(binding)
-    itemsHolders.add(holder)
     return holder
   }
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     val localUser = items[position]
-    holder.binding.user = localUser
-
     val role = viewerRole ?: UserRole.READER
-    val showMenu = accessToDelete(localUser.jobField, role) || accessToEdit(localUser.jobField, role)
-    holder.binding.viewOptions.visibility = if (showMenu) View.VISIBLE else View.GONE
-
-    holder.viewerRole = this.viewerRole
+    itemsHolders.add(holder)
+    holder.updateViewerRole(role, localUser)
   }
 
   override fun onViewAttachedToWindow(holder: ViewHolder) {
@@ -68,19 +79,24 @@ class JobsAdapter(val context: Context, val listener: ItemListener? = null) :
     }
 
     holder.binding.viewOptions.setOnClickListener {
-      val role = holder.viewerRole ?: UserRole.READER
+      val role = holder.getViewerRole() ?: UserRole.READER
 
       val showEdit = accessToEdit(jobField, role)
       if (showEdit) popupMenu.menu.add(0, EDIT_ITEM, Menu.NONE, context.getString(R.string.edit2))
 
       val showDelete = accessToDelete(jobField, role)
-      if (showDelete) popupMenu.menu.add(0, DELETE_ITEM, Menu.NONE, context.getString(R.string.delete))
+      if (showDelete) popupMenu.menu.add(
+        0,
+        DELETE_ITEM,
+        Menu.NONE,
+        context.getString(R.string.delete)
+      )
       popupMenu.show()
     }
   }
 
   private fun accessToEdit(jobField: JobField, role: UserRole): Boolean {
-    return when(jobField.jobRole) {
+    return when (jobField.jobRole) {
       UserRole.HEAD -> hasRole(role, AccessType.EDIT_HEAD)
       UserRole.EDITOR_1 -> hasRole(role, AccessType.EDIT_EDITOR_1)
       UserRole.EDITOR_2 -> hasRole(role, AccessType.EDIT_EDITOR_2)
@@ -89,7 +105,7 @@ class JobsAdapter(val context: Context, val listener: ItemListener? = null) :
   }
 
   private fun accessToDelete(jobField: JobField, role: UserRole): Boolean {
-    return when(jobField.jobRole) {
+    return when (jobField.jobRole) {
       UserRole.HEAD -> hasRole(role, AccessType.DELETE_HEAD)
       UserRole.EDITOR_1 -> hasRole(role, AccessType.DELETE_EDITOR_1)
       UserRole.EDITOR_2 -> hasRole(role, AccessType.DELETE_EDITOR_2)
@@ -127,7 +143,9 @@ class JobsAdapter(val context: Context, val listener: ItemListener? = null) :
   }
 
   fun updateRole(role: UserRole?) {
-    itemsHolders.forEach { it.viewerRole = role }
+    val mRole = role ?: UserRole.READER
+    this.viewerRole = mRole
+    itemsHolders.forEach { it.updateViewerRole(mRole, it.user!!) }
 //    this.viewerRole = role
   }
 
