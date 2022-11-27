@@ -27,12 +27,14 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     _nodesHistory.value = listOf()
     _currentNode.value = null
     _nodes.value = listOf()
+    _currentMeasuring.value = null
     filter.value = ""
     _filteredNodes.value = listOf()
     _companyAllUsers.value = listOf()
     filterUsersVal.value = ""
     _filteredUsers.value = listOf()
     _localUsers.value = listOf()
+    _loads.value
   }
 
   private val _state = MutableLiveData(State.VIEW)
@@ -50,6 +52,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     const val SET_NODES = 3
     const val SAVE_NODE_WITH_CHECK = 4
     const val ADD_NODE = 5
+    const val LOAD_NODE_BY_ID = 6
   }
 
   private fun changeLoads(state: Int, isAdding: Boolean = true) {
@@ -292,19 +295,26 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     updateHistoryItem(node = node, nodeId = id)
   }
 
-  fun loadNodeByID(nodeId: String?, saveToHistory: Boolean = true) {
+  fun
+      loadNodeByID(nodeId: String?, saveToHistory: Boolean = true) {
     if (nodeId == null) {
       _currentNode.value = null
       _nodesHistory.value = listOf()
       _companyAllUsers.value = listOf()
     } else {
-      _state.value = State.LOADING
+      changeLoads(LOAD_NODE_BY_ID)
+//      _state.value = State.LOADING
       NodesDatabaseService.getNodeById(
         nodeId,
         onFailure = {
-          _state.value = State.ERROR
+          changeLoads(LOAD_NODE_BY_ID, false)
+//          _state.value = State.ERROR
         },
-        onSuccess = { afterLoadNode(it, saveToHistory) })
+        onSuccess = {
+          afterLoadNode(it, saveToHistory)
+          changeLoads(LOAD_NODE_BY_ID, false )
+        }
+      )
     }
   }
 
@@ -567,6 +577,10 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   }
 
   private fun loadLocalUsers(afterLoad: () -> Unit = {}) {
+    if (getRootNode() == null) {
+      afterLoad()
+      return
+    }
     _state.value = State.LOADING
     viewModelScope.launch {
       if (_currentNode.value != null) {

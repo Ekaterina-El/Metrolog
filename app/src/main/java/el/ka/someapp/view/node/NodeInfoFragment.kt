@@ -111,7 +111,6 @@ class NodeInfoFragment : BaseFragment() {
     viewModel.state.observe(viewLifecycleOwner, stateObserver)
     viewModel.nodesHistory.observe(viewLifecycleOwner, hierarchyObserver)
     viewModel.localUser.observe(viewLifecycleOwner, localUsersObserver)
-//    jobFieldViewModel?.state?.observe(viewLifecycleOwner, jobFieldStateObserver)
     viewModel.currentNode.observe(viewLifecycleOwner, currentNodeObserver)
     viewModel.currentRole.observe(viewLifecycleOwner, roleObserver)
   }
@@ -122,7 +121,6 @@ class NodeInfoFragment : BaseFragment() {
     viewModel.nodesHistory.removeObserver(hierarchyObserver)
     viewModel.localUser.removeObserver(localUsersObserver)
     viewModel.currentRole.removeObserver(roleObserver)
-//    jobFieldViewModel?.state?.removeObserver { jobFieldStateObserver }
   }
 
   // region Delete Job Field
@@ -135,7 +133,6 @@ class NodeInfoFragment : BaseFragment() {
     override fun onDisagree() {
       closeConfirmDialog()
     }
-
   }
 
   private fun showDeleteJobFieldConfirm(jobField: JobField) {

@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import el.ka.someapp.R
+import el.ka.someapp.data.model.Node
 import el.ka.someapp.data.model.State
 import el.ka.someapp.databinding.FragmentNodeBinding
 import el.ka.someapp.view.BaseFragment
@@ -22,13 +23,17 @@ class NodeFragment : BaseFragment() {
   private val visibleViewModel: VisibleViewModel by activityViewModels()
 
   private val stateObserver = Observer<State> {
-    if (it != State.LOADING) hideLoadingDialog()
-
     when (it) {
-      State.LOADING -> showLoadingDialog()
-      State.BACK -> navigateBack()
+      State.BACK -> {
+        viewModel.toViewState()
+        navigateBack()
+      }
       else -> {}
     }
+  }
+
+  private val loadsObserver = Observer<Set<Int>> {
+    if (it.isNotEmpty()) showLoadingDialog() else hideLoadingDialog()
   }
 
 
@@ -62,8 +67,8 @@ class NodeFragment : BaseFragment() {
     }
   }
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
     loadNode()
   }
 
@@ -74,17 +79,18 @@ class NodeFragment : BaseFragment() {
     viewModel.loadNodeByID(nodeId)
   }
 
-  // todo: to  OnResume
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
+  override fun onResume() {
+    super.onResume()
     viewModel.state.observe(viewLifecycleOwner, stateObserver)
+    viewModel.loads.observe(viewLifecycleOwner, loadsObserver)
   }
 
-  // todo: to OnStop
-  override fun onDestroy() {
-    super.onDestroy()
+  override fun onStop() {
+    super.onStop()
     viewModel.state.removeObserver(stateObserver)
+    viewModel.loads.removeObserver(loadsObserver)
   }
 
-  override fun onBackPressed() {}
+  override fun onBackPressed() {
+  }
 }
