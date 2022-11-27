@@ -68,7 +68,7 @@ class JobFieldViewModel(application: Application) : AndroidViewModel(application
     val errors = checkErrors()
     if (errors == 0) {
       _oldJobField.value = _jobField.value
-      _state.value = State.JOB_FIELD_EDITING
+//      _state.value = State.JOB_FIELD_EDITING
       _jobField.value = getJobField()
 
       NodesDatabaseService.editJobField(

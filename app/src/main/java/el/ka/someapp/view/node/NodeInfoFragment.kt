@@ -1,12 +1,9 @@
 package el.ka.someapp.view.node
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.RadioButton
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -57,6 +54,7 @@ class NodeInfoFragment : BaseFragment() {
     override fun onClick(jobField: JobField) {}
     override fun onEdit(jobField: JobField) {
       viewModel.setToEditJobField(jobField)
+
     }
 
     override fun onDelete(jobField: JobField) {
@@ -64,15 +62,15 @@ class NodeInfoFragment : BaseFragment() {
     }
   }
 
-
-  private var changeNameDialog: Dialog? = null
   private var stateObserver = Observer<State> {
     when (it) {
       State.NON_UNIQUE_NAME ->
         showChangeNameDialogWithError(getString(Errors.nonUniqueName.textId))
 
-      State.EDIT_JOB_FIELD ->
+      State.EDIT_JOB_FIELD -> {
         openJobFieldDialogToEdit(viewModel.editJobField.value!!)
+        viewModel.toViewState()
+      }
       else -> {}
     }
   }
@@ -186,7 +184,10 @@ class NodeInfoFragment : BaseFragment() {
   }
 
   private fun showChangeNameDialogWithError(errorMessage: String) {
-    nodeNameCompanyDialog!!.showWithError(errorMessage, currentName = viewModel.currentNode.value!!.name)
+    nodeNameCompanyDialog!!.showWithError(
+      errorMessage,
+      currentName = viewModel.currentNode.value!!.name
+    )
   }
   // endregion
 
@@ -208,7 +209,6 @@ class NodeInfoFragment : BaseFragment() {
       State.JOB_FIELD_EDITED -> {
         val jobField = jobFieldViewModel.jobField.value!!
         val oldJobField = jobFieldViewModel.oldJobField.value!!
-
         jobFieldViewModel.afterNotifiedOfNewFieldJob()
         jobFieldDialog?.dismiss()
         viewModel.updateJobField(oldJobField, jobField)
@@ -217,7 +217,7 @@ class NodeInfoFragment : BaseFragment() {
     }
   }
 
-  private val jobFieldDialogListener = object: JobFieldDialog.Companion.Listener {
+  private val jobFieldDialogListener = object : JobFieldDialog.Companion.Listener {
     override fun selectRole(userRole: UserRole) {
       jobFieldViewModel.setRole(userRole)
     }
@@ -228,6 +228,7 @@ class NodeInfoFragment : BaseFragment() {
 
     override fun onSave() {
       val nodeId = viewModel.currentNode.value!!.id
+
 
       if (jobFieldViewModel.state.value == State.EDIT_JOB_FIELD)
         jobFieldViewModel.editJobField(nodeId)

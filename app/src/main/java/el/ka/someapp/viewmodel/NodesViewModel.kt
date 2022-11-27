@@ -590,6 +590,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       onFailure = {},
       onSuccess = {
         _localUsers.value = _localUsers.value!!.filter { it.jobField != jobField }
+        _currentNode.value!!.jobs = _currentNode.value!!.jobs.filter { it != jobField }
       }
     )
   }
