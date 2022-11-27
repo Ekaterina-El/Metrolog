@@ -10,54 +10,56 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
-import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
+import el.ka.someapp.MainActivity
 import el.ka.someapp.R
 import el.ka.someapp.data.model.ErrorApp
 import el.ka.someapp.data.model.SpinnerItem
 import el.ka.someapp.data.model.measuring.Fields
-import el.ka.someapp.data.model.measuring.MeasurementType
 import el.ka.someapp.data.model.measuring.MeasuringPassportPart
 import el.ka.someapp.view.adapters.SpinnerAdapter
 import el.ka.someapp.view.dialog.ConfirmDialog
-import el.ka.someapp.view.measuring.PassportMeasuringFragment
-import org.w3c.dom.Text
 import java.util.*
 
 abstract class BaseFragment : Fragment() {
 
   private lateinit var sharedPreferences: SharedPreferences
 
-  private var loadingDialog: Dialog? = null
+  private fun getLoadingDialog(): Dialog {
+    val activity = requireActivity() as MainActivity
+    if (activity.loadingDialog == null) createLoadingDialog()
+    return activity.loadingDialog!!
+  }
 
   fun showLoadingDialog() {
-    if (loadingDialog == null) createLoadingDialog()
-    if (!loadingDialog!!.isShowing) loadingDialog!!.show()
+    val dialog = getLoadingDialog()
+    if (!dialog.isShowing) dialog.show()
   }
 
   fun hideLoadingDialog() {
-    loadingDialog?.dismiss()
+    val dialog = getLoadingDialog()
+    dialog.dismiss()
   }
 
   private fun createLoadingDialog() {
-    loadingDialog = Dialog(requireContext(), R.style.AppTheme_FullScreenDialog)
-    loadingDialog?.let { loadingDialog ->
-      loadingDialog.setContentView(R.layout.fragment_loading_progress_bar)
-      loadingDialog.window!!.setLayout(
-        LayoutParams.MATCH_PARENT,
-        LayoutParams.MATCH_PARENT,
-        )
-      loadingDialog.window!!.setWindowAnimations(R.style.Slide)
-      loadingDialog.setCancelable(false)
-    }
+    val loadingDialog = Dialog(requireContext(), R.style.AppTheme_FullScreenDialog)
+    loadingDialog.setContentView(R.layout.fragment_loading_progress_bar)
+    loadingDialog.window!!.setLayout(
+      LayoutParams.MATCH_PARENT,
+      LayoutParams.MATCH_PARENT,
+    )
+    loadingDialog.window!!.setWindowAnimations(R.style.Slide)
+    loadingDialog.setCancelable(false)
+
+    val activity = requireActivity() as MainActivity
+    activity.loadingDialog = loadingDialog
   }
 
   override fun onCreateView(
@@ -129,7 +131,11 @@ abstract class BaseFragment : Fragment() {
   // region Confirm Dialog
   private var confirmDialog: ConfirmDialog? = null
 
-  fun openConfirmDialog(message: String, confirmListener: ConfirmDialog.Companion.ConfirmListener, value: Any? = null) {
+  fun openConfirmDialog(
+    message: String,
+    confirmListener: ConfirmDialog.Companion.ConfirmListener,
+    value: Any? = null
+  ) {
     if (confirmDialog == null) confirmDialog = ConfirmDialog.getInstance(requireContext())
     confirmDialog!!.openConfirmDialog(message, confirmListener, value)
   }

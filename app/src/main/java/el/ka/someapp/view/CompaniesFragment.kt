@@ -55,7 +55,7 @@ class CompaniesFragment : BaseFragment() {
     }
   }
 
-  private val loadsObserver = Observer<List<Int>> {
+  private val loadsObserver = Observer<MutableSet<Int>> {
     if (it.isNotEmpty()) showLoadingDialog() else hideLoadingDialog()
   }
 
