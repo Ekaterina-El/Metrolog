@@ -17,8 +17,8 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 
 class NodesViewModel(application: Application) : AndroidViewModel(application) {
-  private val _loads = MutableLiveData<List<Int>>(mutableListOf())
-  val loads: LiveData<List<Int>> get() = _loads
+  private val _loads = MutableLiveData<MutableSet<Int>>(mutableSetOf())
+  val loads: LiveData<MutableSet<Int>> get() = _loads
 
   private fun clearFields() {
     filterFieldMeasuring.value = ""
@@ -42,6 +42,22 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   fun toViewState() {
     _state.value = State.VIEW
   }
+
+  // region Loads
+  companion object {
+    const val LOAD_CURRENT_USER_PROFILE = 1
+    const val LOAD_NODES_FROM_DB_BY_ID_LIST = 2
+    const val SET_NODES = 3
+    const val SAVE_NODE_WITH_CHECK = 4
+    const val ADD_NODE = 5
+  }
+
+  private fun changeLoads(state: Int, isAdding: Boolean = true) {
+    val states = _loads.value!!.toMutableSet()
+    if (isAdding) states.add(state) else states.remove(state)
+    _loads.value = states
+  }
+  // endregion
 
   // region Measuring
   val filterFieldMeasuring = MutableLiveData("")
@@ -161,20 +177,6 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   private val _currentUserProfile = MutableLiveData<User?>(null)
   val currentUserProfile: LiveData<User?>
     get() = _currentUserProfile
-
-  companion object {
-    const val LOAD_CURRENT_USER_PROFILE = 1
-    const val LOAD_NODES_FROM_DB_BY_ID_LIST = 2
-    const val SET_NODES = 3
-    const val SAVE_NODE_WITH_CHECK = 4
-    const val ADD_NODE = 5
-  }
-
-  private fun changeLoads(state: Int, isAdding: Boolean = true) {
-    val states = _loads.value!!.toMutableList()
-    if (isAdding) states.add(state) else states.remove(state)
-    _loads.value = states
-  }
 
   fun loadCurrentUserProfile(onSuccess: () -> Unit = {}) {
     changeLoads(LOAD_CURRENT_USER_PROFILE)
