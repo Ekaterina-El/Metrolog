@@ -1,6 +1,5 @@
 package el.ka.someapp.view.node
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -36,6 +35,7 @@ class NodeNodesFragment : BaseFragment() {
     when (it) {
       State.NON_UNIQUE_NAME -> {
         showCreatedDialogWithError(getString(Errors.nonUniqueName.textId))
+        viewModel.toViewState()
       }
       State.NEW_NODE_ADDED -> {
         addNodeDialog!!.dismiss()
