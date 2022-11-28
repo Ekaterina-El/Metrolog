@@ -63,7 +63,13 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
 
 
   private val _loadMeasuringState =
-    MutableLiveData(LoadMeasuringState.ALL)   /* TODO: TEMP (CURRENT in prod) */
+    MutableLiveData(LoadMeasuringState.CURRENT)
+  val loadMeasuringState: LiveData<LoadMeasuringState> get() = _loadMeasuringState
+
+  fun setLoadMeasuringState(loadMeasuringState: LoadMeasuringState) {
+    _loadMeasuringState.value = loadMeasuringState
+    loadMeasuringByState()
+  }
 
   fun loadMeasuringByState() {
     val node = _currentNode.value!!

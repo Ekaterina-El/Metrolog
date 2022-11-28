@@ -8,6 +8,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import el.ka.someapp.R
+import el.ka.someapp.data.model.Node
+import el.ka.someapp.data.model.measuring.LoadMeasuringState
 import el.ka.someapp.data.model.measuring.Measuring
 import el.ka.someapp.data.model.role.AccessType
 import el.ka.someapp.data.model.role.hasRole
@@ -26,6 +28,10 @@ class NodeMeasuringFragment: BaseFragment() {
 
   private val measuringObserver = Observer<List<Measuring>> {
     measuringAdapter.setMeasuring(it)
+  }
+
+  private val currentNodeObserver = Observer<Node?> {
+    viewModel.loadMeasuringByState()
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,11 +79,22 @@ class NodeMeasuringFragment: BaseFragment() {
     super.onResume()
     viewModel.loadMeasuringByState()
     viewModel.measuringFiltered.observe(viewLifecycleOwner, measuringObserver)
+    viewModel.currentNode.observe(viewLifecycleOwner, currentNodeObserver)
+
+    binding.switchLoadMeasuringState.setOnCheckedChangeListener { _, isEnable ->
+      val loadAll = when (isEnable) {
+        true -> LoadMeasuringState.ALL
+        false -> LoadMeasuringState.CURRENT
+      }
+      viewModel.setLoadMeasuringState(loadAll)
+    }
   }
 
   override fun onDestroy() {
     super.onDestroy()
     viewModel.measuringFiltered.removeObserver(measuringObserver)
+    viewModel.currentNode.removeObserver(currentNodeObserver)
+    binding.switchLoadMeasuringState.setOnCheckedChangeListener(null)
   }
 
   override fun onBackPressed() {
@@ -88,4 +105,5 @@ class NodeMeasuringFragment: BaseFragment() {
     visibleViewModel.setNodeNavigationState(false)
     navigate(R.id.action_nodeMeasuringFragment_to_addMeasuringFragment)
   }
+
 }

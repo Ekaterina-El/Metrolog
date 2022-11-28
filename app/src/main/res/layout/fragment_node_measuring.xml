@@ -4,7 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools">
 
   <data>
-
+    <import type="el.ka.someapp.data.model.measuring.LoadMeasuringState" />
     <import type="android.view.View" />
 
     <variable
@@ -125,6 +125,21 @@
       </LinearLayout>
       <!--  Search - end  -->
 
+      <Switch
+        android:id="@+id/switchLoadMeasuringState"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:layout_marginTop="10dp"
+        android:checked="@{viewmodel.loadMeasuringState == LoadMeasuringState.ALL}"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="@string/load_all_measuring"
+        android:textColor="@color/secondary_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layoutHead"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_measuring"
         android:layout_width="match_parent"
@@ -138,7 +153,7 @@
         android:nestedScrollingEnabled="false"
         android:overScrollMode="never"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@id/layoutHead"
+        app:layout_constraintTop_toBottomOf="@id/switchLoadMeasuringState"
         tools:listitem="@layout/item_mesuring" />
 
       <androidx.constraintlayout.widget.ConstraintLayout
@@ -151,7 +166,7 @@
         android:visibility="@{viewmodel.measuringFiltered.size() == 0 ? View.VISIBLE : View.GONE}"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layoutHead"
+        app:layout_constraintTop_toBottomOf="@id/switchLoadMeasuringState"
         tools:visibility="visible">
 
         <TextView
@@ -163,7 +178,7 @@
           android:gravity="center"
           android:text="@string/empty_data"
           android:textColor="@color/secondary_color"
-          android:textSize="16sp"
+          android:textSize="14sp"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@id/imageEmpty" />

@@ -172,4 +172,5 @@
   <string name="repairPlace">Место ремонта</string>
   <string name="verificationCodeCSM">Код поверки ЦСМ</string>
   <string name="cost">Стоимость (руб.)</string>
+  <string name="load_all_measuring">Отображать СИ всех внутрених узлов</string>
 </resources>
