@@ -112,7 +112,7 @@
           android:ellipsize="end"
           android:fontFamily="@font/montserrat_regular"
           android:imeOptions="actionNext"
-          android:inputType="numberDecimal"
+          android:inputType="numberDecimal|numberSigned"
           android:maxLines="1"
           android:textColor="#333"
           android:textSize="14sp" />
@@ -140,7 +140,7 @@
           android:ellipsize="end"
           android:fontFamily="@font/montserrat_regular"
           android:imeOptions="actionNext"
-          android:inputType="numberDecimal"
+          android:inputType="numberDecimal|numberSigned"
           android:maxLines="1"
           android:textColor="#333"
           android:textSize="14sp" />
