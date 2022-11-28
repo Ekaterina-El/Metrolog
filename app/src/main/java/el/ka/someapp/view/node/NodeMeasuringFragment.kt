@@ -30,7 +30,7 @@ class NodeMeasuringFragment: BaseFragment() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    viewModel.loadMeasuring()
+    viewModel.loadMeasuringByState()
   }
 
   override fun onCreateView(
@@ -71,7 +71,7 @@ class NodeMeasuringFragment: BaseFragment() {
 
   override fun onResume() {
     super.onResume()
-    viewModel.loadMeasuring()
+    viewModel.loadMeasuringByState()
     viewModel.measuringFiltered.observe(viewLifecycleOwner, measuringObserver)
   }
 

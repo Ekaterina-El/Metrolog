@@ -6,9 +6,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import el.ka.someapp.data.model.State
-import el.ka.someapp.data.model.convertDate
 import el.ka.someapp.data.model.measuring.*
 import el.ka.someapp.data.repository.MeasuringDatabaseService
+import el.ka.someapp.general.convertDate
 import java.util.*
 
 class AddMeasuringViewModel(application: Application) : AndroidViewModel(application) {

@@ -10,11 +10,11 @@ import androidx.lifecycle.ViewModelProvider
 import el.ka.someapp.R
 import el.ka.someapp.data.model.SpinnerItem
 import el.ka.someapp.data.model.State
-import el.ka.someapp.data.model.addListener
 import el.ka.someapp.data.model.measuring.*
 import el.ka.someapp.data.model.role.AccessType
 import el.ka.someapp.data.model.role.hasRole
 import el.ka.someapp.databinding.FragmentPassportMeasuringBinding
+import el.ka.someapp.general.addListener
 import el.ka.someapp.view.BaseFragment
 import el.ka.someapp.view.adapters.MeasuringValueAdapter
 import el.ka.someapp.viewmodel.NodesViewModel

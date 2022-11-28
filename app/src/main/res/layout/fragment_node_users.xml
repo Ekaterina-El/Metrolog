@@ -124,7 +124,7 @@
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/app_padding"
-      android:layout_marginTop="24dp"
+      android:layout_marginTop="20dp"
       android:layout_marginEnd="@dimen/app_padding"
       android:visibility="@{viewmodel.filteredUsers.size() == 0 ? View.VISIBLE : View.GONE}"
       app:layout_constraintEnd_toEndOf="parent"

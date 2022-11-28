@@ -1,4 +1,4 @@
-package el.ka.someapp.data.model
+package el.ka.someapp.general
 
 import android.view.View
 import android.widget.AdapterView

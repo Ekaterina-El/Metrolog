@@ -31,6 +31,12 @@ object FirebaseServices {
   private const val USERS_BACKGROUND = "users_background"
   val usersBackgroundsStore = storage.getReference(USERS_BACKGROUND)
 
+  suspend fun getDocumentById(
+    docId: String,
+    ref: CollectionReference
+  ): DocumentSnapshot {
+    return ref.document(docId).get().asDeferred().await()
+  }
 
   fun getDocumentsByIDs(
     docNodes: List<String>,

@@ -10,8 +10,8 @@ import el.ka.someapp.R
 import el.ka.someapp.data.model.SpinnerItem
 import el.ka.someapp.data.model.User
 import el.ka.someapp.data.model.UserRole
-import el.ka.someapp.data.model.addListener
 import el.ka.someapp.databinding.JobFieldDialogBinding
+import el.ka.someapp.general.addListener
 import el.ka.someapp.view.adapters.SpinnerUsersAdapter
 import el.ka.someapp.viewmodel.JobFieldViewModel
 

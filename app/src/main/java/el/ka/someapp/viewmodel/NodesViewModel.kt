@@ -12,6 +12,7 @@ import el.ka.someapp.data.repository.AuthenticationService
 import el.ka.someapp.data.repository.MeasuringDatabaseService
 import el.ka.someapp.data.repository.NodesDatabaseService
 import el.ka.someapp.data.repository.UsersDatabaseService
+import el.ka.someapp.general.Loads
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 
@@ -45,28 +46,6 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   }
 
   // region Loads
-  companion object {
-    const val LOAD_CURRENT_USER_PROFILE = 1
-    const val LOAD_NODES_FROM_DB_BY_ID_LIST = 2
-    const val SET_NODES = 3
-    const val SAVE_NODE_WITH_CHECK = 4
-    const val ADD_NODE = 5
-    const val LOAD_NODE_BY_ID = 6
-    const val AFTER_LOAD_NODE = 7
-    const val LOAD_ALL_COMPANY_USER = 8
-    const val LOAD_LOCAL_USERS = 9
-    const val DELETE_MEASURING = 10
-    const val NAVIGATE_BY_HISTORY_TO = 11
-    const val LOAD_MEASURING = 12
-    const val SET_MEASURING = 13
-    const val FIND_USER_ROLE_IN_CURRENT_NODE = 14
-    const val CHANGE_NODE_NAME = 15
-    const val DELETE_NODE = 16
-    const val SET_USERS = 17
-    const val ADD_USER_USER_BY_EMAIL = 18
-    const val DENY_ACCESS_USER = 19
-  }
-
   private fun changeLoads(state: Int, isAdding: Boolean = true) {
     val states = _loads.value!!.toMutableSet()
     if (isAdding) states.add(state) else states.remove(state)
@@ -82,12 +61,25 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   private val _measuringFiltered = MutableLiveData<List<Measuring>>(listOf())
   val measuringFiltered: LiveData<List<Measuring>> get() = _measuringFiltered
 
-  fun loadMeasuring() {
-    changeLoads(LOAD_MEASURING)
-//    _state.value = State.LOADING
+
+  private val _loadMeasuringState =
+    MutableLiveData(LoadMeasuringState.ALL)   /* TODO: TEMP (CURRENT in prod) */
+
+  fun loadMeasuringByState() {
+    val node = _currentNode.value!!
+
+    when (_loadMeasuringState.value) {
+      LoadMeasuringState.ALL -> loadAllNodesMeasuring(node)
+      LoadMeasuringState.CURRENT -> loadMeasuring(node.measuring)
+      else -> {}
+    }
+  }
+
+  private fun loadMeasuring(measuringIds: List<String>) {
+    changeLoads(Loads.LOAD_MEASURING)
     viewModelScope.launch {
       val measuringItems = MeasuringDatabaseService
-        .getMeasuringByIDs(_currentNode.value!!.measuring)
+        .getMeasuringByIDs(measuringIds)
         .awaitAll()
         .mapNotNull {
           val measuring = it.toObject(Measuring::class.java)
@@ -95,16 +87,15 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
           measuring
         }
       setMeasuring(measuringItems)
-      changeLoads(LOAD_MEASURING, false)
+      changeLoads(Loads.LOAD_MEASURING, false)
     }
   }
 
   private fun setMeasuring(measuringItems: List<Measuring>) {
-    changeLoads(SET_MEASURING)
+    changeLoads(Loads.SET_MEASURING)
     _measuring.value = measuringItems
     filterMeasuring()
-    changeLoads(SET_MEASURING, false)
-    //    _state.value = State.VIEW
+    changeLoads(Loads.SET_MEASURING, false)
   }
 
   fun filterMeasuring() {
@@ -127,6 +118,26 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   fun clearFilterMeasuring() {
     filterFieldMeasuring.value = ""
     filterMeasuring()
+  }
+
+  private fun loadAllNodesMeasuring(rootNode: Node) {
+    changeLoads(Loads.LOAD_ALL_NODES_MEASURING)
+    val measuringIds = mutableListOf<String>()
+    measuringIds.addAll(rootNode.measuring)     // Добавляем id СИ рутового елемента
+
+    viewModelScope.launch {
+      // Загрузить все узлы и узлы узлов  |  Взять id СИ
+      rootNode.children.forEach {
+        // Загружаем узел
+        loadNodes(it).forEach { node ->
+          measuringIds.addAll(node.measuring)    // Берём id СИ, хранящихся в узле
+        }
+      }
+      // Загрузить общий список measuring
+
+      loadMeasuring(measuringIds)
+      changeLoads(Loads.LOAD_ALL_NODES_MEASURING, false)
+    }
   }
   // endregion
 
@@ -176,7 +187,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
 
   fun navigateByHistoryTo(node: Node) {
     if (node.id == _currentNode.value!!.id) return
-    changeLoads(NAVIGATE_BY_HISTORY_TO)
+    changeLoads(Loads.NAVIGATE_BY_HISTORY_TO)
 //    _state.value = State.LOADING
 
     // получить индекс nodeID
@@ -188,7 +199,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
 
     // загрузить данные о текущем node
     loadNodeByID(node.id, false)
-    changeLoads(NAVIGATE_BY_HISTORY_TO, false)
+    changeLoads(Loads.NAVIGATE_BY_HISTORY_TO, false)
   }
   // endregion
 
@@ -198,13 +209,13 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     get() = _currentUserProfile
 
   fun loadCurrentUserProfile(onSuccess: () -> Unit = {}) {
-    changeLoads(LOAD_CURRENT_USER_PROFILE)
+    changeLoads(Loads.LOAD_CURRENT_USER_PROFILE)
     UsersDatabaseService.loadCurrentUserProfile(
       onFailure = {},
       onSuccess = {
         _currentUserProfile.value = it
         onSuccess()
-        changeLoads(LOAD_CURRENT_USER_PROFILE, isAdding = false)
+        changeLoads(Loads.LOAD_CURRENT_USER_PROFILE, isAdding = false)
       }
     )
   }
@@ -260,6 +271,16 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
 
   private val _nodes = MutableLiveData<List<Node>>(listOf())
 
+  private suspend fun loadNodes(rootNodeId: String): List<Node> {
+    val list = mutableListOf<Node>()
+
+    val node = NodesDatabaseService.getNodeByID(rootNodeId).toObject(Node::class.java)!!
+    list.add(node)
+    val chd = node.children
+    if (chd.isNotEmpty()) chd.forEach { list.addAll(loadNodes(it)) }
+
+    return list
+  }
 
   fun loadNodes() {
     if (_currentNode.value == null)
@@ -281,7 +302,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   }
 
   private fun loadNodesFromDBByIDList(nodesIds: List<String>) {
-    changeLoads(LOAD_NODES_FROM_DB_BY_ID_LIST)
+    changeLoads(Loads.LOAD_NODES_FROM_DB_BY_ID_LIST)
 //    _state.value = State.LOADING
     viewModelScope.launch {
       val a = NodesDatabaseService
@@ -291,17 +312,16 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
           it.toObject(Node::class.java)
         }
       setNodes(a)
-      changeLoads(LOAD_NODES_FROM_DB_BY_ID_LIST, isAdding = false)
+      changeLoads(Loads.LOAD_NODES_FROM_DB_BY_ID_LIST, isAdding = false)
     }
   }
 
   private fun setNodes(list: List<Node>) {
-    changeLoads(SET_NODES)
+    changeLoads(Loads.SET_NODES)
     _nodes.value = list
-//    _state.value = State.VIEW
     filter.value = ""
     filterNodes()
-    changeLoads(SET_NODES, isAdding = false)
+    changeLoads(Loads.SET_NODES, isAdding = false)
 
   }
 
@@ -317,15 +337,15 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       _nodesHistory.value = listOf()
       _companyAllUsers.value = listOf()
     } else {
-      changeLoads(LOAD_NODE_BY_ID)
+      changeLoads(Loads.LOAD_NODE_BY_ID)
       NodesDatabaseService.getNodeById(
         nodeId,
         onFailure = {
-          changeLoads(LOAD_NODE_BY_ID, false)
+          changeLoads(Loads.LOAD_NODE_BY_ID, false)
         },
         onSuccess = {
           afterLoadNode(it, saveToHistory)
-          changeLoads(LOAD_NODE_BY_ID, false )
+          changeLoads(Loads.LOAD_NODE_BY_ID, false)
         }
       )
     }
@@ -335,14 +355,14 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     _currentNode.value = node
     if (saveToHistory) addToHistory(_currentNode.value!!)
 
-    changeLoads(AFTER_LOAD_NODE)
+    changeLoads(Loads.AFTER_LOAD_NODE)
 
     loadCompanyAllUsers {
       loadLocalUsers {
         findUserRoleInCurrentNode()
       }
     }
-    changeLoads(AFTER_LOAD_NODE, false)
+    changeLoads(Loads.AFTER_LOAD_NODE, false)
 //    _state.value = State.VIEW
   }
   // endregion
@@ -357,6 +377,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   private fun findUserRoleInCurrentNode(navigateTo: Int? = null) {
     if (historyRole.value!!.size == nodesHistory.value!!.size) return
 
+    changeLoads(Loads.FIND_USER_ROLE_IN_CURRENT_NODE)
     if (navigateTo == null) {
       val uid = currentUserProfile.value!!.uid
       val userJobFields = _localUsers.value!!.filter { it.jobField.userId == uid }
@@ -379,7 +400,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     updateCurrentNodeRole()
-    changeLoads(FIND_USER_ROLE_IN_CURRENT_NODE, false)
+    changeLoads(Loads.FIND_USER_ROLE_IN_CURRENT_NODE, false)
   }
 
   private fun updateCurrentNodeRole() {
@@ -415,17 +436,17 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   }
 
   fun deleteNode() {
-    changeLoads(DELETE_NODE)
+    changeLoads(Loads.DELETE_NODE)
 //    _state.value = State.LOADING
     NodesDatabaseService.deleteNode(node = _currentNode.value!!, onFailure = {}) {
-      changeLoads(DELETE_NODE, false)
+      changeLoads(Loads.DELETE_NODE, false)
 //      _state.value = State.VIEW
       goBack()
     }
   }
 
   private fun saveWithCheck(name: String) {
-    changeLoads(SAVE_NODE_WITH_CHECK)
+    changeLoads(Loads.SAVE_NODE_WITH_CHECK)
     val uid = AuthenticationService.getUserUid()!!
 
     val node = Node(
@@ -440,18 +461,18 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     NodesDatabaseService.checkUniqueNodeName(node = node, onFailure = {
       if (it == Errors.nonUniqueName) {
         _state.value = State.NON_UNIQUE_NAME
-        changeLoads(SAVE_NODE_WITH_CHECK, false)
+        changeLoads(Loads.SAVE_NODE_WITH_CHECK, false)
       }
     }, onSuccess = {
       _state.value = State.NEW_NODE_ADDED
       addNode(node)
-      changeLoads(SAVE_NODE_WITH_CHECK, false)
+      changeLoads(Loads.SAVE_NODE_WITH_CHECK, false)
 
     })
   }
 
   private fun addNode(node: Node) {
-    changeLoads(ADD_NODE)
+    changeLoads(Loads.ADD_NODE)
 //    _state.value = State.LOADING
     NodesDatabaseService.saveNode(
       node,
@@ -472,7 +493,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
         }
 
         loadNodes()
-        changeLoads(ADD_NODE, false)
+        changeLoads(Loads.ADD_NODE, false)
 
       })
   }
@@ -480,17 +501,17 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   fun changeNodeName(value: String) {
     val node = _currentNode.value!!.copy()
     node.name = value
-    changeLoads(CHANGE_NODE_NAME)
+    changeLoads(Loads.CHANGE_NODE_NAME)
     _state.value = State.LOADING
     NodesDatabaseService.checkUniqueNodeName(node = node, onFailure = {
-      changeLoads(CHANGE_NODE_NAME, false)
+      changeLoads(Loads.CHANGE_NODE_NAME, false)
       _state.value = State.NON_UNIQUE_NAME
     }, onSuccess = {
       NodesDatabaseService.changeNodeName(nodeId = node.id, newName = node.name, onFailure = {
         // todo: handle error
       }, onSuccess = {
         updateCurrentNodeDate(node = node)
-        changeLoads(CHANGE_NODE_NAME, false)
+        changeLoads(Loads.CHANGE_NODE_NAME, false)
       })
     })
   }
@@ -509,7 +530,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       return
     }
 
-    changeLoads(LOAD_ALL_COMPANY_USER)
+    changeLoads(Loads.LOAD_ALL_COMPANY_USER)
 //    _state.value = State.LOADING
     val usersIds = getRootNode()!!.usersHaveAccess
     viewModelScope.launch {
@@ -519,17 +540,17 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
         .mapNotNull { it.toObject(User::class.java) }
       setUsers(users)
       afterLoad()
-      changeLoads(LOAD_ALL_COMPANY_USER, false)
+      changeLoads(Loads.LOAD_ALL_COMPANY_USER, false)
     }
   }
 
   private fun setUsers(list: List<User>) {
-    changeLoads(SET_USERS)
+    changeLoads(Loads.SET_USERS)
     _companyAllUsers.value = list
 //    _state.value = State.VIEW
     filter.value = ""
     filterUsers()
-    changeLoads(SET_USERS, false)
+    changeLoads(Loads.SET_USERS, false)
   }
 
   // region Filter Users
@@ -606,7 +627,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       afterLoad()
       return
     }
-    changeLoads(LOAD_LOCAL_USERS)
+    changeLoads(Loads.LOAD_LOCAL_USERS)
 //    _state.value = State.LOADING
     viewModelScope.launch {
       if (_currentNode.value != null) {
@@ -620,7 +641,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
         )
         afterLoad()
       }
-      changeLoads(LOAD_LOCAL_USERS, false)
+      changeLoads(Loads.LOAD_LOCAL_USERS, false)
 //      _state.value = State.VIEW
     }
   }
@@ -681,7 +702,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
 
   /* Предоставляем доступ пользователю к проекту по адрессу эл.почты */
   fun addUserToProjectByEmail(email: String) {
-    changeLoads(ADD_USER_USER_BY_EMAIL)
+    changeLoads(Loads.ADD_USER_USER_BY_EMAIL)
     _state.value = State.LOADING
     NodesDatabaseService.addUserToProjectByEmail(
       email = email,
@@ -689,7 +710,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       onFailure = {
         _addUserError.value = it
         _state.value = State.ADD_USER_ERROR
-        changeLoads(ADD_USER_USER_BY_EMAIL, false)
+        changeLoads(Loads.ADD_USER_USER_BY_EMAIL, false)
       },
       onSuccess = { user ->
         _state.value = State.ADD_USER_SUCCESS
@@ -698,7 +719,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
           val uid = user.uid
           updateProjectUsers(isAdding = true, uid)
         }
-        changeLoads(ADD_USER_USER_BY_EMAIL, false)
+        changeLoads(Loads.ADD_USER_USER_BY_EMAIL, false)
       }
     )
   }
@@ -718,7 +739,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   private fun getRootNode() = _nodesHistory.value?.firstOrNull()
 
   fun denyAccessUser(userId: String) {
-    changeLoads(DENY_ACCESS_USER)
+    changeLoads(Loads.DENY_ACCESS_USER)
 //    _state.value = State.LOADING
     val rootId = getRootNode()?.id
 
@@ -727,15 +748,15 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       NodesDatabaseService.denyAccessUserToProject(
         rootId, userId,
         onFailure = {
-          changeLoads(DENY_ACCESS_USER, false)
+          changeLoads(Loads.DENY_ACCESS_USER, false)
         }
       ) {
         // у пользователя удалить из allowedProjects id проекта
         UsersDatabaseService.denyAccessUserToProject(rootId, userId, onFailure = {
-          changeLoads(DENY_ACCESS_USER, false)
+          changeLoads(Loads.DENY_ACCESS_USER, false)
         }) {
           updateProjectUsers(isAdding = false, userId)
-          changeLoads(DENY_ACCESS_USER, false)
+          changeLoads(Loads.DENY_ACCESS_USER, false)
         }
       }
   }
@@ -751,8 +772,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   }
 
   fun deleteMeasuring(measuring: Measuring) {
-    changeLoads(DELETE_MEASURING)
-//    _state.value = State.LOADING
+    changeLoads(Loads.DELETE_MEASURING)
     MeasuringDatabaseService.deleteMeasuring(
       measuringId = measuring.measuringID,
       locationNodeId = measuring.passport!!.locationIDNode,
@@ -761,8 +781,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
         val measuringItems = _currentNode.value!!.measuring.toMutableList()
         measuringItems.remove(measuring.measuringID)
         _currentNode.value!!.measuring = measuringItems
-//        _state.value = State.MEASURING_DELETED
-        changeLoads(DELETE_MEASURING, false)
+        changeLoads(Loads.DELETE_MEASURING, false)
 
       }
     )

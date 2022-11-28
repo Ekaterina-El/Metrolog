@@ -4,6 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+
     <import type="android.view.View" />
 
     <variable
@@ -19,162 +20,166 @@
       type="el.ka.someapp.view.node.NodeMeasuringFragment" />
   </data>
 
-  <androidx.constraintlayout.widget.ConstraintLayout
+  <androidx.core.widget.NestedScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:background="@color/white">
+    android:layout_height="match_parent">
 
-    <!--  Search - start  -->
-    <LinearLayout
-      android:gravity="center"
-      android:id="@+id/layoutHead"
+    <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="@dimen/app_padding"
-      android:layout_marginEnd="@dimen/app_padding"
-      android:orientation="horizontal"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      android:layout_marginTop="15dp"
-      >
+      android:layout_height="match_parent"
+      tools:background="@color/white">
 
+      <!--  Search - start  -->
       <LinearLayout
-        android:id="@+id/layoutSearchForm"
-        android:layout_width="0dp"
+        android:id="@+id/layoutHead"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_marginStart="@dimen/app_padding"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="@dimen/app_padding"
         android:gravity="center"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-        <ImageView
-          android:id="@+id/imageSearchClear"
-          android:layout_width="30dp"
-          android:layout_height="30dp"
-          android:contentDescription="@null"
-          app:layout_constraintBottom_toBottomOf="@id/editTextFilter"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintTop_toTopOf="@id/editTextFilter"
-          app:tint="@color/dark_gray"
-          android:src="@drawable/ic_search" />
 
-
-        <EditText
-          android:id="@+id/editTextFilter"
+        <LinearLayout
+          android:id="@+id/layoutSearchForm"
           android:layout_width="0dp"
-          android:layout_height="match_parent"
-          android:layout_marginStart="10dp"
+          android:layout_height="wrap_content"
           android:layout_weight="1"
-          android:afterTextChanged="@{() -> viewmodel.filterMeasuring()}"
-          android:background="@null"
-          android:ellipsize="end"
-          android:fontFamily="@font/montserrat_regular"
-          android:hint="@string/search"
-          android:importantForAutofill="no"
-          android:inputType="textFilter"
-          android:maxLines="1"
-          android:text="@={viewmodel.filterFieldMeasuring}"
-          android:textColor="@color/secondary_color"
-          android:textColorHint="@color/dark_gray"
-          android:textSize="16sp" />
-
-
-        <ImageView
-          android:layout_width="20dp"
-          android:visibility="@{viewmodel.filterFieldMeasuring.length() > 0 ? View.VISIBLE : View.GONE}"
-          android:layout_height="20dp"
-          android:onClick="@{() -> viewmodel.clearFilterMeasuring()}"
-          android:contentDescription="@null"
-          app:layout_constraintBottom_toBottomOf="@id/editTextFilter"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintTop_toTopOf="@id/editTextFilter"
-          app:tint="@color/dark_gray"
-          android:src="@drawable/ic_close" />
-
-
-      </LinearLayout>
-
-      <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="35dp"
-        app:hasAccessToAddMeasuring="@{viewmodel.currentRole}"
-        android:layout_height="35dp"
-        android:layout_marginStart="10dp"
-        android:background="@drawable/button_selector"
-        android:clickable="true"
-        android:focusable="true"
-        android:onClick="@{() -> master.goAddMeasuring()}">
-
-        <ImageView
-          android:layout_width="25dp"
-          android:layout_height="25dp"
-          android:contentDescription="@null"
-          android:src="@drawable/ic_add"
-          app:layout_constraintBottom_toBottomOf="parent"
+          android:gravity="center"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent"
-          app:tint="@color/text_on_primary" />
+          app:layout_constraintTop_toTopOf="parent">
 
-      </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
-    <!--  Search - end  -->
+          <ImageView
+            android:id="@+id/imageSearchClear"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_search"
+            app:layout_constraintBottom_toBottomOf="@id/editTextFilter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/editTextFilter"
+            app:tint="@color/dark_gray" />
 
-    <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/list_measuring"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="@dimen/app_padding"
-      android:layout_marginTop="20dp"
-      android:layout_marginEnd="@dimen/app_padding"
-      android:adapter="@{measuringAdapter}"
-      android:animateLayoutChanges="false"
-      android:clipToPadding="false"
-      android:overScrollMode="never"
-      app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-      app:layout_constraintTop_toBottomOf="@id/layoutHead"
-      tools:listitem="@layout/item_mesuring" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-      android:id="@+id/layoutEmpty"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="@dimen/app_padding"
-      android:layout_marginTop="14dp"
-      tools:visibility="visible"
-      android:layout_marginEnd="@dimen/app_padding"
-      android:visibility="@{viewmodel.measuringFiltered.size() == 0 ? View.VISIBLE : View.GONE}"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/layoutHead">
+          <EditText
+            android:id="@+id/editTextFilter"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:afterTextChanged="@{() -> viewmodel.filterMeasuring()}"
+            android:background="@null"
+            android:ellipsize="end"
+            android:fontFamily="@font/montserrat_regular"
+            android:hint="@string/search"
+            android:importantForAutofill="no"
+            android:inputType="textFilter"
+            android:maxLines="1"
+            android:text="@={viewmodel.filterFieldMeasuring}"
+            android:textColor="@color/secondary_color"
+            android:textColorHint="@color/dark_gray"
+            android:textSize="16sp" />
 
-      <TextView
-        android:id="@+id/textEmptyList"
+
+          <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:contentDescription="@null"
+            android:onClick="@{() -> viewmodel.clearFilterMeasuring()}"
+            android:src="@drawable/ic_close"
+            android:visibility="@{viewmodel.filterFieldMeasuring.length() > 0 ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/editTextFilter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/editTextFilter"
+            app:tint="@color/dark_gray" />
+
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+          android:layout_width="35dp"
+          android:layout_height="35dp"
+          android:layout_marginStart="10dp"
+          android:background="@drawable/button_selector"
+          android:clickable="true"
+          android:focusable="true"
+          android:onClick="@{() -> master.goAddMeasuring()}"
+          app:hasAccessToAddMeasuring="@{viewmodel.currentRole}">
+
+          <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_add"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/text_on_primary" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+      </LinearLayout>
+      <!--  Search - end  -->
+
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list_measuring"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/montserrat_regular"
-        android:gravity="center"
-        android:text="@string/empty_data"
-        android:textColor="@color/secondary_color"
-        android:textSize="16sp"
+        android:layout_marginStart="@dimen/app_padding"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="@dimen/app_padding"
+        android:adapter="@{measuringAdapter}"
+        android:animateLayoutChanges="false"
+        android:clipToPadding="false"
+        android:nestedScrollingEnabled="false"
+        android:overScrollMode="never"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/layoutHead"
+        tools:listitem="@layout/item_mesuring" />
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutEmpty"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/app_padding"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="@dimen/app_padding"
+        android:visibility="@{viewmodel.measuringFiltered.size() == 0 ? View.VISIBLE : View.GONE}"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageEmpty" />
+        app:layout_constraintTop_toBottomOf="@id/layoutHead"
+        tools:visibility="visible">
 
-      <ImageView
-        android:id="@+id/imageEmpty"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="5dp"
-        android:contentDescription="@string/empty_data"
-        android:src="@drawable/ic_database"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+          android:id="@+id/textEmptyList"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:fontFamily="@font/montserrat_regular"
+          android:gravity="center"
+          android:text="@string/empty_data"
+          android:textColor="@color/secondary_color"
+          android:textSize="16sp"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/imageEmpty" />
 
+        <ImageView
+          android:id="@+id/imageEmpty"
+          android:layout_width="100dp"
+          android:layout_height="100dp"
+          android:layout_marginTop="5dp"
+          android:contentDescription="@string/empty_data"
+          android:src="@drawable/ic_database"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent" />
+
+      </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-  </androidx.constraintlayout.widget.ConstraintLayout>
+  </androidx.core.widget.NestedScrollView>
 </layout>

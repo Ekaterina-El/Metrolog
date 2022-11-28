@@ -87,6 +87,10 @@ object NodesDatabaseService {
     }
   }
 
+  suspend fun getNodeByID(nodeId: String): DocumentSnapshot =
+    FirebaseServices.getDocumentById(nodeId, FirebaseServices.databaseNodes)
+
+
   fun getNodesByIDs(nodeIds: List<String>): List<Deferred<DocumentSnapshot>> =
     FirebaseServices.getDocumentsByIDs(nodeIds, collectionRef = FirebaseServices.databaseNodes)
 
