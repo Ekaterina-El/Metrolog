@@ -72,7 +72,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   }
 
   fun loadMeasuringByState() {
-    val node = _currentNode.value!!
+    val node = _currentNode.value ?: return
 
     when (_loadMeasuringState.value) {
       LoadMeasuringState.ALL -> loadAllNodesMeasuring(node)

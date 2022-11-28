@@ -60,6 +60,32 @@
         android:contentDescription="@string/delete_measuring_value" />
     </LinearLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/layoutUnits"
+      style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:hint="@string/measuring_units"
+      app:boxStrokeColor="@color/primary_dark_color"
+      app:boxStrokeErrorColor="@color/attentionColor"
+      app:errorEnabled="true"
+      app:errorTextColor="@color/attentionColor">
+
+      <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/inp_units"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/montserrat_regular"
+        android:imeOptions="actionNext"
+        android:inputType="text"
+        android:maxLines="1"
+        android:textColor="#333"
+        android:textSize="14sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
     <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -67,20 +93,20 @@
       android:orientation="horizontal">
 
       <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutRange"
+        android:id="@+id/layoutRangeMin"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="5dp"
         android:layout_weight="1"
-        android:hint="@string/measuring_range"
+        android:hint="@string/measuring_range_min"
         app:boxStrokeColor="@color/primary_dark_color"
         app:boxStrokeErrorColor="@color/attentionColor"
         app:errorEnabled="true"
         app:errorTextColor="@color/attentionColor">
 
         <com.google.android.material.textfield.TextInputEditText
-          android:id="@+id/inp_range"
+          android:id="@+id/inp_range_min"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:ellipsize="end"
@@ -94,31 +120,33 @@
       </com.google.android.material.textfield.TextInputLayout>
 
       <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutUnits"
+        android:id="@+id/layoutRangeMax"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_weight="1"
-        android:hint="@string/measuring_units"
+        android:layout_marginEnd="5dp"
         app:boxStrokeColor="@color/primary_dark_color"
         app:boxStrokeErrorColor="@color/attentionColor"
         app:errorEnabled="true"
+        android:hint="@string/measuring_range_max"
         app:errorTextColor="@color/attentionColor">
 
         <com.google.android.material.textfield.TextInputEditText
-          android:id="@+id/inp_units"
+          android:id="@+id/inp_range_max"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:ellipsize="end"
           android:fontFamily="@font/montserrat_regular"
           android:imeOptions="actionNext"
-          android:inputType="text"
+          android:inputType="numberDecimal"
           android:maxLines="1"
           android:textColor="#333"
           android:textSize="14sp" />
 
       </com.google.android.material.textfield.TextInputLayout>
+
 
     </LinearLayout>
 

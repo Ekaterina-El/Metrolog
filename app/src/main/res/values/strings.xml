@@ -114,8 +114,9 @@
   <string name="commissioningDate">Дата ввода в эксплутацию</string>
 
   <string name="measuring_value_name">Величина <font color="#CC2D2D">*</font></string>
-  <string name="measuring_range">Предел <font color="#CC2D2D">*</font></string>
-  <string name="measuring_units">Единицы <font color="#CC2D2D">*</font></string>
+  <string name="measuring_range_min">От <font color="#CC2D2D">*</font></string>
+  <string name="measuring_range_max">До <font color="#CC2D2D">*</font></string>
+  <string name="measuring_units">Единицы измерения<font color="#CC2D2D">*</font></string>
   <string name="measuring_accuracy_class">Класс точности</string>
   <string name="measuring_graduation_point">Цена деления</string>
 

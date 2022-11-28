@@ -77,7 +77,6 @@ class NodeMeasuringFragment: BaseFragment() {
 
   override fun onResume() {
     super.onResume()
-    viewModel.loadMeasuringByState()
     viewModel.measuringFiltered.observe(viewLifecycleOwner, measuringObserver)
     viewModel.currentNode.observe(viewLifecycleOwner, currentNodeObserver)
 

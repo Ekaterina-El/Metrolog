@@ -18,13 +18,22 @@ class MeasuringValueAdapter(val listener: AdapterListener? = null): RecyclerView
     )
     val holder = MeasuringValueViewHolder(binding)
     holders.add(holder)
-
     return holder
   }
+
+  private var lastAdded: MeasuringValueViewHolder? = null
 
   override fun onBindViewHolder(holder: MeasuringValueViewHolder, position: Int) {
     holder.bind(items[position])
     holder.setAccessToEdit(hasAccessToEdit)
+
+    if (holders.size <= 1) lastAdded = holder
+    else {
+      lastAdded!!.setCanDelete(true)
+      lastAdded = holder
+      holder.setCanDelete(false)
+    }
+//    if (holders.size > 1) holders[holders.size - 1].setCanDelete(true)
   }
 
   override fun onViewAttachedToWindow(holder: MeasuringValueViewHolder) {
@@ -43,17 +52,10 @@ class MeasuringValueAdapter(val listener: AdapterListener? = null): RecyclerView
   fun addNewItem() {
     items.add(0, MeasurementValue())
     notifyItemInserted(0)
-
-    if (holders.size >= 1) {
-      holders[holders.size - 1].setCanDelete(true)
-    }
-//    holders[0].setCanDelete(false)
-
     listener?.onChangeSize(items.size)
   }
 
   private fun deleteItem(idx: Int) {
-    if (idx == 0) return
     items.removeAt(idx)
     notifyItemRemoved(idx)
     listener?.onChangeSize(items.size)

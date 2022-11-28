@@ -1,7 +1,6 @@
 package el.ka.someapp.view.adapters
 
 import android.view.View
-import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import el.ka.someapp.R
 import el.ka.someapp.data.model.measuring.MeasurementValue
@@ -12,7 +11,8 @@ class MeasuringValueViewHolder(val binding: ItemMeasuringValueBinding) :
   RecyclerView.ViewHolder(binding.root) {
   fun bind(measurementValue: MeasurementValue) {
     binding.inpName.setText(measurementValue.name)
-    binding.inpRange.setText(measurementValue.range)
+    binding.inpRangeMin.setText(measurementValue.rangeMin)
+    binding.inpRangeMax.setText(measurementValue.rangeMax)
     binding.inpUnits.setText(measurementValue.units)
     binding.inpGraduationPoint.setText(measurementValue.graduationPoint)
     binding.inpAccuracyClass.setText(measurementValue.accuracyClass)
@@ -33,9 +33,15 @@ class MeasuringValueViewHolder(val binding: ItemMeasuringValueBinding) :
     var value = binding.inpName.text.toString()
     if (BaseFragment.checkIsNoEmpty(layout, value, isRequireString)) errors += 1
 
-    // Предел: обязательно
-    layout = binding.layoutRange
-    value = binding.inpRange.text.toString()
+    // Нижний предел (от): обязательно
+    layout = binding.layoutRangeMin
+    value = binding.inpRangeMin.text.toString()
+    if (BaseFragment.checkIsNoEmpty(layout, value, isRequireString)) errors += 1
+
+
+    // Верхний предел (до): обязательно
+    layout = binding.layoutRangeMax
+    value = binding.inpRangeMax.text.toString()
     if (BaseFragment.checkIsNoEmpty(layout, value, isRequireString)) errors += 1
 
     // Единицы измерения: обязательно
@@ -46,9 +52,10 @@ class MeasuringValueViewHolder(val binding: ItemMeasuringValueBinding) :
     return errors != 0
   }
 
-  fun getMeasuringValue() = MeasurementValue (
+  fun getMeasuringValue() = MeasurementValue(
     name = binding.inpName.text.toString(),
-    range = binding.inpRange.text.toString(),
+    rangeMin = binding.inpRangeMin.text.toString(),
+    rangeMax = binding.inpRangeMax.text.toString(),
     units = binding.inpUnits.text.toString(),
     accuracyClass = binding.inpAccuracyClass.text.toString(),
     graduationPoint = binding.inpGraduationPoint.text.toString(),
@@ -57,7 +64,8 @@ class MeasuringValueViewHolder(val binding: ItemMeasuringValueBinding) :
   fun setAccessToEdit(hasAccess: Boolean) {
     listOf(
       binding.inpName,
-      binding.inpRange,
+      binding.inpRangeMin,
+      binding.inpRangeMax,
       binding.inpUnits,
       binding.inpAccuracyClass,
       binding.inpGraduationPoint
