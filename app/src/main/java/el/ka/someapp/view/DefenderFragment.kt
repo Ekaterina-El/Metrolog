@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
@@ -14,11 +15,15 @@ import el.ka.someapp.data.model.Errors
 import el.ka.someapp.data.model.State
 import el.ka.someapp.databinding.DefenderFragmentBinding
 import el.ka.someapp.viewmodel.DefenderViewModel
+import el.ka.someapp.viewmodel.NodesViewModel
 import el.ka.someapp.viewmodel.StatePassword
 
 class DefenderFragment : BaseFragment() {
   private lateinit var binding: DefenderFragmentBinding
   private lateinit var viewModel: DefenderViewModel
+
+  private val nodesViewModel: NodesViewModel by activityViewModels()
+
 
   private lateinit var bounceAnimation: Animation
   private lateinit var circles: List<View>
@@ -31,8 +36,18 @@ class DefenderFragment : BaseFragment() {
     }
   }
 
+  private val nodeStateObserver = Observer<State> {
+    when (it) {
+      State.NETWORK_ERROR -> {
+        showNetworkErrorDialog()
+        nodesViewModel.toViewState()
+      }
+      else -> {}
+    }
+  }
+
   private val stateObserver = Observer<State> {
-    when(it) {
+    when (it) {
       State.ERROR -> {
         viewModel.resumeState()
         errorPin()
@@ -110,11 +125,13 @@ class DefenderFragment : BaseFragment() {
   override fun onResume() {
     super.onResume()
     viewModel.state.observe(viewLifecycleOwner, stateObserver)
+    nodesViewModel.state.observe(viewLifecycleOwner, nodeStateObserver)
   }
 
   override fun onStop() {
     super.onStop()
     viewModel.state.removeObserver(stateObserver)
+    nodesViewModel.state.removeObserver(nodeStateObserver)
   }
 
 
@@ -133,4 +150,10 @@ class DefenderFragment : BaseFragment() {
     setPassword(null)
     navigate(R.id.action_defenderFragment_to_welcomeFragment)
   }
+
+  // region Network Error Dialog
+  private fun showNetworkErrorDialog() {
+
+  }
+  // endregion
 }

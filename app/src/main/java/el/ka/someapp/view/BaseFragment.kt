@@ -3,8 +3,10 @@ package el.ka.someapp.view
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -243,6 +245,18 @@ abstract class BaseFragment : Fragment() {
       MeasuringPassportPart.MEASUREMENT_TYPE -> Fields.measurementTypeVariables
       MeasuringPassportPart.STATUS -> Fields.measurementStatusVariables
       MeasuringPassportPart.CONDITION -> Fields.measurementConditionVariables
+    }
+  // endregion
+
+  // region Internet Connection
+  val isNetworkConnected: Boolean
+    get() {
+      val connectivityManager =
+        requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+      val activeNetwork = connectivityManager.activeNetwork
+
+      val hasInternet = activeNetwork != null
+      return hasInternet
     }
   // endregion
 

@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.firestore.FirebaseFirestoreException
 import el.ka.someapp.data.model.*
 import el.ka.someapp.data.model.measuring.*
 import el.ka.someapp.data.repository.AuthenticationService
@@ -217,7 +218,9 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   fun loadCurrentUserProfile(onSuccess: () -> Unit = {}) {
     changeLoads(Loads.LOAD_CURRENT_USER_PROFILE)
     UsersDatabaseService.loadCurrentUserProfile(
-      onFailure = {},
+      onFailure = {
+        changeLoads(Loads.LOAD_CURRENT_USER_PROFILE, isAdding = false)
+      },
       onSuccess = {
         _currentUserProfile.value = it
         onSuccess()
@@ -289,8 +292,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   }
 
   fun loadNodes() {
-    if (_currentNode.value == null)
-      tryLoadUserNodes()
+    if (_currentNode.value == null) tryLoadUserNodes()
     else loadLevelNodes()
   }
 
@@ -309,17 +311,25 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
 
   private fun loadNodesFromDBByIDList(nodesIds: List<String>) {
     changeLoads(Loads.LOAD_NODES_FROM_DB_BY_ID_LIST)
-//    _state.value = State.LOADING
     viewModelScope.launch {
-      val a = NodesDatabaseService
-        .getNodesByIDs(nodeIds = nodesIds)
-        .awaitAll()
-        .mapNotNull {
-          it.toObject(Node::class.java)
-        }
-      setNodes(a)
-      changeLoads(Loads.LOAD_NODES_FROM_DB_BY_ID_LIST, isAdding = false)
+      try {
+        val a = NodesDatabaseService
+          .getNodesByIDs(nodeIds = nodesIds)
+          .awaitAll()
+          .mapNotNull {
+            it.toObject(Node::class.java)
+          }
+        setNodes(a)
+        changeLoads(Loads.LOAD_NODES_FROM_DB_BY_ID_LIST, isAdding = false)
+      } catch (e: FirebaseFirestoreException) {
+        changeLoads(Loads.LOAD_NODES_FROM_DB_BY_ID_LIST, isAdding = false)
+        catchNetworkError()
+      }
     }
+  }
+
+  private fun catchNetworkError() {
+    _state.value = State.NETWORK_ERROR
   }
 
   private fun setNodes(list: List<Node>) {

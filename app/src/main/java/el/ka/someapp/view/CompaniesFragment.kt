@@ -40,9 +40,11 @@ class CompaniesFragment : BaseFragment() {
   }
 
   private val stateObserver = Observer<State> {
-//    if (it != State.LOADING) hideLoadingDialog()
-
     when (it) {
+      State.NETWORK_ERROR -> {
+//        viewModel.toViewState()
+        navigate(R.id.action_companiesFragment_to_defenderFragment)
+      }
       State.NON_UNIQUE_NAME -> {
         showCreateDialogWithError(getString(Errors.nonUniqueName.textId))
       }
@@ -50,7 +52,6 @@ class CompaniesFragment : BaseFragment() {
         clearDialog()
         viewModel.toViewState()
       }
-//      State.LOADING -> showLoadingDialog()
       else -> {}
     }
   }

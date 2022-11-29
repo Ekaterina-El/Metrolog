@@ -79,12 +79,17 @@ object NodesDatabaseService {
   fun getNodeById(
     nodeId: String, onSuccess: (Node) -> Unit, onFailure: (ErrorApp) -> Unit
   ) {
-    FirebaseServices.databaseNodes.document(nodeId).get().addOnSuccessListener { snap ->
-      val doc = snap.toObject(Node::class.java)
-      onSuccess(doc!!)
-    }.addOnFailureListener {
-      onFailure(Errors.somethingWrong)
-    }
+    FirebaseServices.databaseNodes.document(nodeId).get()
+      .addOnCanceledListener {
+        val a = 10
+      }
+      .addOnFailureListener {
+        onFailure(Errors.somethingWrong)
+      }
+      .addOnSuccessListener { snap ->
+        val doc = snap.toObject(Node::class.java)
+        onSuccess(doc!!)
+      }
   }
 
   suspend fun getNodeByID(nodeId: String): DocumentSnapshot =
