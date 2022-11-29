@@ -19,6 +19,7 @@ import el.ka.someapp.view.adapters.SpinnerUsersAdapter
 import el.ka.someapp.view.dialog.AddCompanyDialog
 import el.ka.someapp.view.dialog.ConfirmDialog
 import el.ka.someapp.view.dialog.JobFieldDialog
+import el.ka.someapp.view.dialog.RoleInfoDialog
 import el.ka.someapp.viewmodel.JobFieldViewModel
 import el.ka.someapp.viewmodel.NodesViewModel
 
@@ -120,6 +121,16 @@ class NodeInfoFragment : BaseFragment() {
     viewModel.localUser.removeObserver(localUsersObserver)
     viewModel.currentRole.removeObserver(roleObserver)
   }
+
+
+  // region Role Info Dialog
+  private var roleInfoDialog: RoleInfoDialog? = null
+
+  fun showRoleInfoDialog() {
+    if (roleInfoDialog == null) roleInfoDialog = RoleInfoDialog.getInstance(requireContext())
+    roleInfoDialog!!.openDialog()
+  }
+  // endregion
 
   // region Delete Job Field
   private val deleteJobFieldConfirmListener = object : ConfirmDialog.Companion.ConfirmListener {

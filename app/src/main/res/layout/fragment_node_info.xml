@@ -73,18 +73,39 @@
       app:tint="@color/primary_dark_color" />
     <!-- Header - end -->
 
-    <TextView
-      android:id="@+id/textViewRole"
+    <LinearLayout
+      android:id="@+id/layoutViewRole"
       android:layout_marginTop="5dp"
-      android:layout_width="match_parent"
-      android:layout_marginHorizontal="@dimen/app_padding"
-      android:layout_height="wrap_content"
       app:layout_constraintTop_toBottomOf="@id/textName"
-      android:fontFamily="@font/montserrat_regular"
-      android:textSize="14sp"
-      app:nodeRole="@{viewmodel.currentRole}"
-      tools:text="Роль: Читатель"
-      android:textColor="@color/secondary_color" />
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginHorizontal="@dimen/app_padding"
+      android:gravity="center_vertical"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent">
+
+      <TextView
+        android:id="@+id/textViewRole"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_regular"
+        android:textColor="@color/secondary_color"
+        android:textSize="14sp"
+        app:nodeRole="@{viewmodel.currentRole}"
+        tools:text="Роль: Читатель" />
+
+      <ImageView
+        android:layout_width="27dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="3dp"
+        android:contentDescription="@string/role_info"
+        android:onClick="@{() -> master.showRoleInfoDialog()}"
+        android:padding="5dp"
+        android:src="@drawable/ic_question_2"
+        app:tint="@color/icon_color" />
+
+    </LinearLayout>
+
 
     <!-- Company positions - start -->
     <TextView
@@ -97,7 +118,7 @@
       android:text="@string/company_positions_title"
       android:textColor="@color/secondary_color"
       android:textSize="16sp"
-      app:layout_constraintTop_toBottomOf="@id/textViewRole"
+      app:layout_constraintTop_toBottomOf="@id/layoutViewRole"
       app:layout_constraintStart_toStartOf="parent"
       />
 

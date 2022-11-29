@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@color/background_color">
+
+  <LinearLayout
+    android:id="@+id/dialog_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/app_padding"
+    android:paddingVertical="20dp">
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:fontFamily="@font/montserrat_regular"
+      android:text="@string/conditions_defining_role"
+      android:textSize="16sp"
+      android:textStyle="bold" />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="10dp"
+      android:fontFamily="@font/montserrat_regular"
+      android:justificationMode="inter_word"
+      android:text="@string/conditions_defining_role_t1" />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="5dp"
+      android:fontFamily="@font/montserrat_regular"
+      android:justificationMode="inter_word"
+      android:text="@string/conditions_defining_role_t2" />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="5dp"
+      android:fontFamily="@font/montserrat_regular"
+      android:justificationMode="inter_word"
+      android:text="@string/conditions_defining_role_t3"
+      android:textSize="14sp" />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="30dp"
+      android:fontFamily="@font/montserrat_regular"
+      android:text="@string/types_authority_in_node"
+      android:textSize="16sp"
+      android:textStyle="bold" />
+
+    <!--  Роли и полномочия добавляються программно  -->
+
+  </LinearLayout>
+</androidx.core.widget.NestedScrollView>
