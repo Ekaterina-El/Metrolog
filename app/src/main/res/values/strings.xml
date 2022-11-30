@@ -130,7 +130,7 @@
   <string name="verificationRepairMeasuringDescription">Вы можете просмотреть данные о поверке СИ и при наличи прав на изменение отредактировать</string>
   <string name="TOMeasuringDescription">Вы можете просмотреть данные о ТО средства измерения и при наличи прав на изменение отредактировать</string>
   <string name="createMeasuringError">При заполнении формы допущенны ошибки. Проверьте ещё раз и попробуйте вновь</string>
-  <string name="error_pin">Пароль не верный</string>
+  <string name="error_pin">Пароль неверный</string>
   <string name="error">Ошибка</string>
 
   <string name="finalCost">Сохранено как: %1$d руб.</string>
@@ -194,4 +194,9 @@
   <string name="delete_measuring_info">Удаление СИ</string>
   <string name="view_measuring_info">Просмотр СИ</string>
   <string name="export_measuring_info">Экспорт СИ</string>
+  <string name="network_error">Неполадки с интернетом</string>
+  <string name="try_with_error">Попробуйте:</string>
+  <string name="try_another_connection">‣ подключиться к другой сети - мобильной или Wi-Fi,</string>
+  <string name="try_off_VPN">‣ отключить VPN или выбрать в нём другую страну.</string>
+  <string name="understand">Понятно</string>
 </resources>

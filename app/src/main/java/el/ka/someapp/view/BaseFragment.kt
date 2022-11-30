@@ -28,6 +28,7 @@ import el.ka.someapp.data.model.measuring.Fields
 import el.ka.someapp.data.model.measuring.MeasuringPassportPart
 import el.ka.someapp.view.adapters.SpinnerAdapter
 import el.ka.someapp.view.dialog.ConfirmDialog
+import el.ka.someapp.view.dialog.NetworkErrorDialog
 import java.util.*
 
 abstract class BaseFragment : Fragment() {
@@ -258,6 +259,16 @@ abstract class BaseFragment : Fragment() {
       val hasInternet = activeNetwork != null
       return hasInternet
     }
+  // endregion
+
+  // region Network Error Dialog
+  private var networkErrorDialog: NetworkErrorDialog? = null
+
+  fun showNetworkErrorDialog() {
+    if (networkErrorDialog == null) networkErrorDialog =
+      NetworkErrorDialog.getInstance(requireContext())
+    networkErrorDialog!!.showDialog()
+  }
   // endregion
 
   companion object {

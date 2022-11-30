@@ -150,10 +150,4 @@ class DefenderFragment : BaseFragment() {
     setPassword(null)
     navigate(R.id.action_defenderFragment_to_welcomeFragment)
   }
-
-  // region Network Error Dialog
-  private fun showNetworkErrorDialog() {
-
-  }
-  // endregion
 }

@@ -19,4 +19,5 @@
   <color name="light_gray">#DDDDDD</color>
   <color name="dark_gray">#BABABA</color>
   <color name="super_dark_gray">#939393</color>
+  <color name="secondary_color_dark">#242424</color>
 </resources>
