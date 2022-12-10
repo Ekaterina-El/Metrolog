@@ -810,7 +810,14 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       MeasuringPart.OVERHAUL -> updateOverhaul(value as Overhaul)
       MeasuringPart.TO -> updateTO(value as TO)
       MeasuringPart.VERIFICATION -> updateVerification(value as Verification)
+      MeasuringPart.CERTIFICATION -> updateCertification(value as Certification)
     }
+  }
+
+  private fun updateCertification(certification: Certification) {
+    val measuring = _currentMeasuring.value!!
+    measuring.certification = certification
+    _currentMeasuring.value = measuring
   }
 
   private fun updateVerification(verification: Verification) {

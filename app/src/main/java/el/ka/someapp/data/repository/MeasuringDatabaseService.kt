@@ -66,6 +66,7 @@ object MeasuringDatabaseService {
       MeasuringPart.OVERHAUL -> value as Overhaul
       MeasuringPart.TO -> value as TO
       MeasuringPart.VERIFICATION -> value as Verification
+      MeasuringPart.CERTIFICATION -> value as Certification
     }
 
     val partName = part.dbTitle

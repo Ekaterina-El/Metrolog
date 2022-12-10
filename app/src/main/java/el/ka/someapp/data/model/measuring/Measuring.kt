@@ -6,5 +6,6 @@ data class Measuring(
   var verification: Verification = Verification(),
   var TO: TO = TO(),
   var maintenanceRepair: MaintenanceRepair = MaintenanceRepair(),
-  var overhaul: Overhaul = Overhaul()
+  var overhaul: Overhaul = Overhaul(),
+  var certification: Certification = Certification()
 )

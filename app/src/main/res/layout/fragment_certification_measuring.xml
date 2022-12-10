@@ -4,13 +4,14 @@
   xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+
     <variable
       name="viewModel"
-      type="el.ka.someapp.viewmodel.VerificationMeasuringViewModel" />
+      type="el.ka.someapp.viewmodel.CertificationMeasuringViewModel" />
 
     <variable
       name="master"
-      type="el.ka.someapp.view.measuring.VerificationMeasuringFragment" />
+      type="el.ka.someapp.view.measuring.CertificationMeasuringFragment" />
   </data>
 
   <androidx.core.widget.NestedScrollView
@@ -36,7 +37,7 @@
           android:layout_height="wrap_content"
           android:layout_weight="1"
           android:fontFamily="@font/montserrat_regular"
-          android:text="@string/verification"
+          android:text="@string/certification"
           android:textColor="@color/secondary_color"
           android:textSize="18sp"
           android:textStyle="bold"
@@ -74,7 +75,7 @@
         android:layout_marginHorizontal="@dimen/app_padding"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/montserrat_regular"
-        android:text="@string/verificationRepairMeasuringDescription"
+        android:text="@string/certificationMeasuringDescription"
         android:textColor="@color/secondary_color"
         android:textSize="14sp" />
 
@@ -93,15 +94,16 @@
       <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:baselineAligned="false">
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
         <androidx.constraintlayout.widget.ConstraintLayout
           android:id="@+id/datePickerLast"
           android:layout_width="0dp"
-          android:layout_marginEnd="5dp"
-          android:layout_marginStart="@dimen/app_padding"
           android:layout_height="wrap_content"
+          android:layout_marginStart="@dimen/app_padding"
           android:layout_marginTop="20dp"
+          android:layout_marginEnd="5dp"
           android:layout_weight="1"
           android:clickable="true">
 
@@ -156,13 +158,14 @@
             app:layout_constraintStart_toStartOf="@id/layoutCD"
             app:layout_constraintTop_toTopOf="@id/layoutCD" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.constraintlayout.widget.ConstraintLayout
           android:id="@+id/datePickerNext"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_marginStart="5dp"
-          android:layout_marginEnd="@dimen/app_padding"
           android:layout_marginTop="20dp"
+          android:layout_marginEnd="@dimen/app_padding"
           android:layout_weight="1"
           android:clickable="true">
 
@@ -225,17 +228,18 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_marginHorizontal="@dimen/app_padding"
+        android:layout_marginTop="10dp"
         android:hint="@string/interval"
         app:errorTextColor="@color/attentionColor">
+
         <com.google.android.material.textfield.TextInputEditText
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:ellipsize="end"
+          android:enabled="false"
           android:fontFamily="@font/montserrat_regular"
           android:imeOptions="actionNext"
-          android:enabled="false"
           android:inputType="text"
           android:maxLines="1"
           android:text="@{viewModel.interval.toString()}"
@@ -245,11 +249,11 @@
 
       <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layoutLaboratory"
-        android:layout_marginTop="10dp"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/app_padding"
+        android:layout_marginTop="10dp"
         android:hint="@string/place">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -261,51 +265,6 @@
           android:inputType="text"
           android:maxLines="1"
           android:text="@={viewModel.place}"
-          android:textColor="#333"
-          android:textSize="14sp" />
-
-      </com.google.android.material.textfield.TextInputLayout>
-
-      <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutVerificationCodeCSM"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_marginTop="10dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/app_padding"
-        android:hint="@string/verificationCodeCSM">
-
-        <com.google.android.material.textfield.TextInputEditText
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:ellipsize="end"
-          android:fontFamily="@font/montserrat_regular"
-          android:imeOptions="actionNext"
-          android:inputType="text"
-          android:maxLines="1"
-          android:text="@={viewModel.verificationCodeCSM}"
-          android:textColor="#333"
-          android:textSize="14sp" />
-
-      </com.google.android.material.textfield.TextInputLayout>
-
-      <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutCost"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_marginTop="10dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/app_padding"
-        android:hint="@string/cost">
-
-        <com.google.android.material.textfield.TextInputEditText
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:ellipsize="end"
-          android:fontFamily="@font/montserrat_regular"
-          android:inputType="numberDecimal"
-          android:maxLines="1"
-          android:text="@={viewModel.cost}"
           android:textColor="#333"
           android:textSize="14sp" />
       </com.google.android.material.textfield.TextInputLayout>

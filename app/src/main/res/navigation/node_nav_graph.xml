@@ -66,6 +66,9 @@
     <action
       android:id="@+id/action_measuringDashboardFragment_to_verificationMeasuringFragment"
       app:destination="@id/verificationMeasuringFragment" />
+    <action
+      android:id="@+id/action_measuringDashboardFragment_to_certificationMeasuringFragment"
+      app:destination="@id/certificationMeasuringFragment" />
   </fragment>
   <fragment
     android:id="@+id/passportMeasuringFragment"
@@ -87,4 +90,8 @@
     android:id="@+id/verificationMeasuringFragment"
     android:name="el.ka.someapp.view.measuring.VerificationMeasuringFragment"
     android:label="VerificationMeasuringFragment" />
+  <fragment
+    android:id="@+id/certificationMeasuringFragment"
+    android:name="el.ka.someapp.view.measuring.CertificationMeasuringFragment"
+    android:label="CertificationMeasuringFragment" />
 </navigation>

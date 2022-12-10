@@ -128,6 +128,7 @@
   <string name="overhaulMeasuringDescription">Вы можете просмотреть данные о капительное ремонте СИ и при наличи прав на изменение отредактировать</string>
   <string name="maintenanceRepairMeasuringDescription">Вы можете просмотреть данные о текущем ремонте СИ и при наличи прав на изменение отредактировать</string>
   <string name="verificationRepairMeasuringDescription">Вы можете просмотреть данные о поверке СИ и при наличи прав на изменение отредактировать</string>
+  <string name="certificationMeasuringDescription">Вы можете просмотреть данные о аттестации СИ и при наличи прав на изменение отредактировать</string>
   <string name="TOMeasuringDescription">Вы можете просмотреть данные о ТО средства измерения и при наличи прав на изменение отредактировать</string>
   <string name="createMeasuringError">При заполнении формы допущенны ошибки. Проверьте ещё раз и попробуйте вновь</string>
   <string name="error_pin">Пароль неверный</string>
@@ -199,4 +200,5 @@
   <string name="try_another_connection">‣ подключиться к другой сети - мобильной или Wi-Fi,</string>
   <string name="try_off_VPN">‣ отключить VPN или выбрать в нём другую страну.</string>
   <string name="understand">Понятно</string>
+  <string name="place">Место</string>
 </resources>

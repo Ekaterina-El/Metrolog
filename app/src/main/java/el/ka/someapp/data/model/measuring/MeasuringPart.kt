@@ -5,5 +5,6 @@ enum class MeasuringPart(val dbTitle: String) {
   MAINTENANCE_REPAIR("maintenanceRepair"),
   TO("to"),
   OVERHAUL("overhaul"),
-  VERIFICATION("verification")
+  VERIFICATION("verification"),
+  CERTIFICATION("certification")
 }

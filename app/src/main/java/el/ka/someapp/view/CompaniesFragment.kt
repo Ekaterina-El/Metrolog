@@ -42,7 +42,6 @@ class CompaniesFragment : BaseFragment() {
   private val stateObserver = Observer<State> {
     when (it) {
       State.NETWORK_ERROR -> {
-//        viewModel.toViewState()
         navigate(R.id.action_companiesFragment_to_defenderFragment)
       }
       State.NON_UNIQUE_NAME -> {
