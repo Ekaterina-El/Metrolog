@@ -804,57 +804,18 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   }
 
   fun updateMeasuringPart(part: MeasuringPart, value: Any) {
+    val measuring = _currentMeasuring.value!!
 
     when (part) {
-      MeasuringPart.PASSPORT -> updatePassport(value as MeasuringPassport)
-      MeasuringPart.MAINTENANCE_REPAIR -> updateMaintenanceRepair(value as MaintenanceRepair)
-      MeasuringPart.OVERHAUL -> updateOverhaul(value as Overhaul)
-      MeasuringPart.TO -> updateTO(value as TO)
-      MeasuringPart.VERIFICATION -> updateVerification(value as Verification)
-      MeasuringPart.CERTIFICATION -> updateCertification(value as Certification)
-      MeasuringPart.CALIBRATION -> updateCalibration(value as Calibration)
+      MeasuringPart.PASSPORT -> measuring.passport = value as MeasuringPassport
+      MeasuringPart.MAINTENANCE_REPAIR -> measuring.maintenanceRepair = value as MaintenanceRepair
+      MeasuringPart.OVERHAUL -> measuring.overhaul = value as Overhaul
+      MeasuringPart.TO -> measuring.TO = value as TO
+      MeasuringPart.VERIFICATION -> measuring.verification = value as Verification
+      MeasuringPart.CERTIFICATION -> measuring.certification = value as Certification
+      MeasuringPart.CALIBRATION -> measuring.calibration = value as Calibration
     }
-  }
 
-  private fun updateCalibration(calibration: Calibration) {
-    val measuring = _currentMeasuring.value!!
-    measuring.calibration = calibration
-    _currentMeasuring.value = measuring
-  }
-
-  private fun updateCertification(certification: Certification) {
-    val measuring = _currentMeasuring.value!!
-    measuring.certification = certification
-    _currentMeasuring.value = measuring
-  }
-
-  private fun updateVerification(verification: Verification) {
-    val measuring = _currentMeasuring.value!!
-    measuring.verification = verification
-    _currentMeasuring.value = measuring
-  }
-
-  private fun updateTO(TO: TO) {
-    val measuring = _currentMeasuring.value!!
-    measuring.TO = TO
-    _currentMeasuring.value = measuring
-  }
-
-  private fun updateOverhaul(overhaul: Overhaul) {
-    val measuring = _currentMeasuring.value!!
-    measuring.overhaul = overhaul
-    _currentMeasuring.value = measuring
-  }
-
-  private fun updateMaintenanceRepair(maintenanceRepair: MaintenanceRepair) {
-    val measuring = _currentMeasuring.value!!
-    measuring.maintenanceRepair = maintenanceRepair
-    _currentMeasuring.value = measuring
-  }
-
-  private fun updatePassport(passport: MeasuringPassport) {
-    val measuring = _currentMeasuring.value!!
-    measuring.passport = passport
     _currentMeasuring.value = measuring
   }
 
