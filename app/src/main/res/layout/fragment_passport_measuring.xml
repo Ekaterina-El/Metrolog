@@ -8,7 +8,7 @@
     <import type="el.ka.someapp.data.model.measuring.DateType" />
 
     <variable
-      name="viewmodel"
+      name="viewModel"
       type="el.ka.someapp.viewmodel.PassportViewModel" />
 
     <variable
@@ -17,7 +17,7 @@
 
     <variable
       name="master"
-      type="el.ka.someapp.view.measuring.PassportMeasuringFragment" />
+      type="el.ka.someapp.view.measuring.MeasuringPartFragment" />
   </data>
 
   <androidx.core.widget.NestedScrollView
@@ -58,7 +58,7 @@
           android:clickable="true"
           android:focusable="true"
           android:onClick="@{() -> master.trySaveMeasuring()}"
-          app:hasAccessToEditMeasuring="@{viewmodel.viewerRole}">
+          app:hasAccessToEditMeasuring="@{viewModel.viewerRole}">
 
           <ImageView
             android:layout_width="25dp"
@@ -119,7 +119,7 @@
           android:imeOptions="actionNext"
           android:inputType="text"
           android:maxLines="1"
-          android:text="@={viewmodel.name}"
+          android:text="@={viewModel.name}"
           android:textColor="#333"
           android:textSize="14sp" />
 
@@ -199,7 +199,7 @@
           android:imeOptions="actionNext"
           android:inputType="text"
           android:maxLines="1"
-          android:text="@={viewmodel.type}"
+          android:text="@={viewModel.type}"
           android:textColor="#333"
           android:textSize="14sp" />
 
@@ -225,7 +225,7 @@
           android:imeOptions="actionNext"
           android:inputType="text"
           android:maxLines="1"
-          android:text="@={viewmodel.inventoryNumber}"
+          android:text="@={viewModel.inventoryNumber}"
           android:textColor="#333"
           android:textSize="14sp" />
 
@@ -251,7 +251,7 @@
           android:imeOptions="actionNext"
           android:inputType="text"
           android:maxLines="1"
-          android:text="@={viewmodel.serialNumber}"
+          android:text="@={viewModel.serialNumber}"
           android:textColor="#333"
           android:textSize="14sp" />
 
@@ -277,7 +277,7 @@
           android:imeOptions="actionNext"
           android:inputType="text"
           android:maxLines="1"
-          android:text="@={viewmodel.registrationNumberGRSI}"
+          android:text="@={viewModel.registrationNumberGRSI}"
           android:textColor="#333"
           android:textSize="14sp" />
 
@@ -309,8 +309,8 @@
           android:background="@drawable/button_selector"
           android:clickable="true"
           android:focusable="true"
-          android:onClick="@{() -> master.addMeasuringValue()}"
-          app:hasAccessToEditMeasuring="@{viewmodel.viewerRole}">
+          android:onClick="@{() -> measuringValueAdapter.addNewItem()}"
+          app:hasAccessToEditMeasuring="@{viewModel.viewerRole}">
 
           <ImageView
             android:layout_width="25dp"
@@ -356,7 +356,7 @@
           android:imeOptions="actionNext"
           android:inputType="text"
           android:maxLines="1"
-          android:text="@={viewmodel.manufacturer}"
+          android:text="@={viewModel.manufacturer}"
           android:textColor="#333"
           android:textSize="14sp" />
 
@@ -382,7 +382,7 @@
           android:imeOptions="actionNext"
           android:inputType="text"
           android:maxLines="1"
-          android:text="@={viewmodel.supplier}"
+          android:text="@={viewModel.supplier}"
           android:textColor="#333"
           android:textSize="14sp" />
 
@@ -408,7 +408,7 @@
           android:imeOptions="actionNext"
           android:inputType="text"
           android:maxLines="1"
-          android:text="@={viewmodel.sectorGROEI}"
+          android:text="@={viewModel.sectorGROEI}"
           android:textColor="#333"
           android:textSize="14sp" />
 
@@ -533,7 +533,7 @@
             android:ellipsize="end"
             android:fontFamily="@font/montserrat_regular"
             android:maxLines="1"
-            android:text="@{viewmodel.conditionDateFormatted}"
+            android:text="@{viewModel.conditionDateFormatted}"
             android:textColor="@color/secondary_color"
             android:textColorHint="@color/hint_color"
             android:textSize="14sp"
@@ -593,7 +593,7 @@
             android:ellipsize="end"
             android:fontFamily="@font/montserrat_regular"
             android:maxLines="1"
-            android:text="@{viewmodel.commissioningDateFormatted}"
+            android:text="@{viewModel.commissioningDateFormatted}"
             android:textColor="@color/secondary_color"
             android:textColorHint="@color/hint_color"
             android:textSize="14sp"
@@ -654,7 +654,7 @@
             android:ellipsize="end"
             android:fontFamily="@font/montserrat_regular"
             android:maxLines="1"
-            android:text="@{viewmodel.releaseDateFormatted}"
+            android:text="@{viewModel.releaseDateFormatted}"
             android:textColor="@color/secondary_color"
             android:textColorHint="@color/hint_color"
             android:textSize="14sp"

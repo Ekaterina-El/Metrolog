@@ -73,8 +73,39 @@ fun MeasuringPart.getMeasuringPartView(
       master,
       viewLifecycleOwner
     )
-    else -> null
+
+    MeasuringPart.PASSPORT -> initPassportPart(
+      layoutInflater,
+      measuring,
+      viewerRole,
+      owner,
+      master,
+      viewLifecycleOwner
+    )
   }
+}
+
+fun initPassportPart(
+  layoutInflater: LayoutInflater,
+  measuring: Measuring,
+  viewerRole: UserRole,
+  owner: ViewModelStoreOwner,
+  master: MeasuringPartFragment,
+  viewLifecycleOwner: LifecycleOwner?
+): MeasuringPartView {
+  val binding = FragmentPassportMeasuringBinding.inflate(layoutInflater)
+  val controlInterface = binding.controlInterface
+
+  val viewModel = ViewModelProvider(owner)[PassportViewModel::class.java]
+  viewModel.loadMeasuring(measuring, viewerRole, measuring.passport)
+
+  binding.master = master
+  binding.lifecycleOwner = viewLifecycleOwner
+  binding.viewModel = viewModel
+
+  return MeasuringPartView(
+    binding, viewModel, controlInterface
+  )
 }
 
 fun initTOPart(
@@ -216,6 +247,23 @@ private val FragmentMaintenanceRepairMeasuringBinding.controlInterface: List<Vie
 private val FragmentToMeasuringBinding.controlInterface: List<View>
   get() = listOf()
 
+private val FragmentPassportMeasuringBinding.controlInterface: List<View>
+  get() = listOf<View>(
+    layoutName,
+    spinnerMeasurementKind,
+    spinnerMeasurementCategory,
+    layoutMeasuringType,
+    layoutInventoryName,
+    layoutSerialName,
+    layoutRegNameGRSI,
+    layoutManufacturer,
+    layoutSupplier,
+    layoutSectorGROEI,
+    spinnerMeasurementType,
+    spinnerMeasurementStatus,
+    spinnerMeasurementCondition,
+  )
+
 
 private val FragmentVerificationMeasuringBinding.controlInterface: List<View>
   get() = listOf(
@@ -223,6 +271,7 @@ private val FragmentVerificationMeasuringBinding.controlInterface: List<View>
     layoutCost,
     layoutLaboratory
   )
+
 
 data class MeasuringPartView(
   val binding: ViewDataBinding,

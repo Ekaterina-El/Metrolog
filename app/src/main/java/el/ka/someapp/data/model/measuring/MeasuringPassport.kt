@@ -1,6 +1,6 @@
 package el.ka.someapp.data.model.measuring
 
-import java.util.Date
+import java.util.*
 
 data class MeasuringPassport(
   var kind: MeasuringKind = MeasuringKind.MEASURE,
@@ -20,5 +20,8 @@ data class MeasuringPassport(
   var conditionDate: Date? = null,
   var releaseDate: Date? = null,
   var commissioningDate: Date? = null,
-  var locationIDNode: String = ""
-)
+  var locationIDNode: String = "",
+  override var interval: Int = 0,
+  override var dateLast: Date? = null,
+  override var dateNext: Date? = null
+) : MeasuringPartRealization

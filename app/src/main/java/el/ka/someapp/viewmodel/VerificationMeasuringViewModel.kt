@@ -19,7 +19,7 @@ class VerificationMeasuringViewModel(application: Application) :
 
   override var measuringPart: MeasuringPart
     get() = MeasuringPart.VERIFICATION
-    set(value) {}
+    set(_) {}
 
   override fun getMeasuringPartRealization(): MeasuringPartRealization = Verification(
     interval = _interval.value!!,

@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit
 
 abstract class MeasuringPartViewModel(application: Application) : AndroidViewModel(application) {
   private lateinit var measuring: Measuring
-  private lateinit var measuringPartRealization: MeasuringPartRealization
+  lateinit var measuringPartRealizationOriginal: MeasuringPartRealization
 
   abstract var measuringPart: MeasuringPart
 
@@ -33,7 +33,7 @@ abstract class MeasuringPartViewModel(application: Application) : AndroidViewMod
     val newValue = getMeasuringPartRealization()
 
     // Если изменния не былои внесены - вернутся назад
-    if (newValue == measuringPartRealization) {
+    if (newValue == measuringPartRealizationOriginal) {
       _state.value = State.BACK
       return
     }
@@ -63,7 +63,7 @@ abstract class MeasuringPartViewModel(application: Application) : AndroidViewMod
     _viewerRole.value = viewerRole
 
     this@MeasuringPartViewModel.measuring = measuring
-    this@MeasuringPartViewModel.measuringPartRealization = measuringPartRealization
+    this@MeasuringPartViewModel.measuringPartRealizationOriginal = measuringPartRealization
 
     _lastDate.value = measuringPartRealization.dateLast
     _nextDate.value = measuringPartRealization.dateNext
@@ -81,10 +81,43 @@ abstract class MeasuringPartViewModel(application: Application) : AndroidViewMod
     when (_editDate.value) {
       DateType.LAST -> _lastDate.value = date
       DateType.NEXT -> _nextDate.value = date
+      DateType.RELEASE -> _releaseDate.value = date
+      DateType.CONDITION -> _conditionDate.value = date
+      DateType.COMMISSION -> _commissioningDate.value = date
       else -> {}
     }
     if (_editDate.value == DateType.LAST || _editDate.value == DateType.NEXT) updateInterval()
   }
+
+
+  // region Condition Date
+  val _conditionDate = MutableLiveData<Date?>(null)
+  val conditionDate: LiveData<Date?>
+    get() = _conditionDate
+  val conditionDateFormatted =
+    Transformations.map(_conditionDate) { date ->
+      return@map date?.convertDate() ?: "??/??/????"
+    }
+  // endregion
+
+  // region Release Date
+  val _releaseDate = MutableLiveData<Date?>(null)
+  val releaseDate: LiveData<Date?>
+    get() = _releaseDate
+
+  val releaseDateFormatted = Transformations.map(_releaseDate) { date ->
+    return@map date?.convertDate() ?: "??/??/????"
+  }
+  // endregion
+
+  // region Commissioning Date
+  val _commissioningDate = MutableLiveData<Date?>(null)
+  val commissioningDate: LiveData<Date?>
+    get() = _commissioningDate
+  val commissioningDateFormatted = Transformations.map(_commissioningDate) { date ->
+    return@map date?.convertDate() ?: "??/??/????"
+  }
+  // endregion
 
   val _lastDate = MutableLiveData<Date?>(null)
   val lastDate: LiveData<Date?>

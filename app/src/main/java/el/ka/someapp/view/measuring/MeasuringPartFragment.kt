@@ -31,7 +31,7 @@ open class MeasuringPartFragment(val measuringPart: MeasuringPart) :
 
   val nodesViewModel: NodesViewModel by activityViewModels()
 
-  private val hasAccess: Boolean
+  val hasAccess: Boolean
     get() = hasRole(viewModel.viewerRole.value!!, AccessType.EDIT_MEASURING)
 
   var stateObserver = androidx.lifecycle.Observer<State> {
@@ -44,11 +44,11 @@ open class MeasuringPartFragment(val measuringPart: MeasuringPart) :
   }
 
   private var controlInterface: List<View> = listOf()
-  private fun updateAccessToEditFields() {
+  open fun updateAccessToEditFields() {
     controlInterface.forEach { it.isEnabled = hasAccess }
   }
 
-  private lateinit var viewDateBinding: ViewDataBinding
+  lateinit var viewDateBinding: ViewDataBinding
 
   override fun initFunctionalityParts() {
     val parts = measuringPart.getMeasuringPartView(
@@ -108,8 +108,10 @@ open class MeasuringPartFragment(val measuringPart: MeasuringPart) :
     datePickerNext?.setOnClickListener(null)
   }
 
+  open fun allFieldsRight(): Boolean = true
+
   fun trySaveMeasuring() {
-    viewModel.saveMeasuring {
+    if (allFieldsRight()) viewModel.saveMeasuring {
       nodesViewModel.updateMeasuringPart(measuringPart, it)
     }
   }
@@ -124,7 +126,7 @@ open class MeasuringPartFragment(val measuringPart: MeasuringPart) :
   private fun showLastDatePicker() = showDatePicker(DateType.LAST)
   private fun showNextDatePicker() = showDatePicker(DateType.NEXT)
 
-  private fun showDatePicker(type: DateType) {
+  fun showDatePicker(type: DateType) {
     viewModel.setEditTime(type)
     val date = when (type) {
       DateType.LAST -> viewModel.lastDate.value
