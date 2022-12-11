@@ -3,7 +3,9 @@ package el.ka.someapp.view.measuring
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import el.ka.someapp.data.model.State
+import el.ka.someapp.data.model.UserRole
 import el.ka.someapp.data.model.measuring.DateType
+import el.ka.someapp.data.model.measuring.Measuring
 import el.ka.someapp.data.model.measuring.MeasuringPart
 import el.ka.someapp.data.model.role.AccessType
 import el.ka.someapp.data.model.role.hasRole
@@ -15,6 +17,13 @@ import java.util.*
 abstract class MeasuringPartFragment : BaseFragment() {
   abstract val measuringPart: MeasuringPart
   abstract val viewModel: MeasuringPartViewModel
+
+  val measuring: Measuring
+    get() = nodesViewModel.currentMeasuring.value!!
+
+  val viewerRole: UserRole
+    get() = nodesViewModel.currentRole.value!!
+
   val nodesViewModel: NodesViewModel by activityViewModels()
 
   val hasAccess: Boolean

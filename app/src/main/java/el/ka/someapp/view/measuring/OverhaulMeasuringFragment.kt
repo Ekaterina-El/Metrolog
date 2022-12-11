@@ -4,43 +4,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
-import el.ka.someapp.data.model.State
-import el.ka.someapp.data.model.measuring.DateType
 import el.ka.someapp.data.model.measuring.MeasuringPart
-import el.ka.someapp.data.model.role.AccessType
-import el.ka.someapp.data.model.role.hasRole
 import el.ka.someapp.databinding.FragmentOverhaulMeasuringBinding
-import el.ka.someapp.view.BaseFragment
-import el.ka.someapp.viewmodel.NodesViewModel
+import el.ka.someapp.viewmodel.MeasuringPartViewModel
 import el.ka.someapp.viewmodel.OverhaulViewModel
-import el.ka.someapp.viewmodel.PassportViewModel
-import java.util.*
 
-class OverhaulMeasuringFragment : BaseFragment() {
+class OverhaulMeasuringFragment : MeasuringPartFragment() {
   private lateinit var binding: FragmentOverhaulMeasuringBinding
 
-  private val nodesViewModel: NodesViewModel by activityViewModels()
-  private var overhaulViewModel: OverhaulViewModel? = null
+  override val measuringPart = MeasuringPart.OVERHAUL
+  override lateinit var viewModel: MeasuringPartViewModel
 
-  private var stateObserver = androidx.lifecycle.Observer<State> {
-    if (it != State.LOADING) hideLoadingDialog()
-
-    when (it) {
-      State.LOADING -> showLoadingDialog()
-      State.BACK -> goBack()
-      else -> {}
-    }
-  }
-
+  override var controlInterface: List<View> = listOf()
   override fun initFunctionalityParts() {
     binding = FragmentOverhaulMeasuringBinding.inflate(layoutInflater)
-    overhaulViewModel = ViewModelProvider(this)[OverhaulViewModel::class.java]
-    overhaulViewModel!!.loadMeasuring(
-      measuring = nodesViewModel.currentMeasuring.value!!,
-      viewerRole = nodesViewModel.currentRole.value!!
-    )
+    controlInterface = listOf<View>(binding.layoutPlace, binding.layoutLaboratory)
+
+    viewModel = ViewModelProvider(this)[OverhaulViewModel::class.java]
+    viewModel.loadMeasuring(measuring, viewerRole, measuring.overhaul)
     updateAccessToEditFields()
   }
 
@@ -48,18 +30,8 @@ class OverhaulMeasuringFragment : BaseFragment() {
     binding.apply {
       master = this@OverhaulMeasuringFragment
       lifecycleOwner = viewLifecycleOwner
-      viewModel = overhaulViewModel
+      viewModel = this@OverhaulMeasuringFragment.viewModel as OverhaulViewModel
     }
-  }
-
-  private fun updateAccessToEditFields() {
-    val hasAccess = hasRole(overhaulViewModel!!.viewerRole.value!!, AccessType.EDIT_MEASURING)
-
-    listOf<View>(
-      binding.layoutPlace,
-      binding.layoutLaboratory
-    ).forEach { it.isEnabled = hasAccess }
-
   }
 
   override fun onCreateView(
@@ -71,57 +43,17 @@ class OverhaulMeasuringFragment : BaseFragment() {
     return binding.root
   }
 
-  override fun onBackPressed() {
-    goBack()
-  }
-
-  private fun goBack() {
-    popUp()
-  }
-
   override fun onResume() {
-    val hasAccess = hasRole(overhaulViewModel!!.viewerRole.value!!, AccessType.EDIT_MEASURING)
-
     super.onResume()
-    overhaulViewModel!!.state.observe(viewLifecycleOwner, stateObserver)
-
     if (hasAccess) {
-      // region Date Pickers Listeners
-      binding.datePickerLast.setOnClickListener { showDatePicker(DateType.LAST) }
-      binding.datePickerNext.setOnClickListener { showDatePicker(DateType.NEXT) }
-      // endregion
+      binding.datePickerLast.setOnClickListener { showLastDatePicker() }
+      binding.datePickerNext.setOnClickListener { showNextDatePicker() }
     }
   }
 
   override fun onStop() {
     super.onStop()
-    overhaulViewModel!!.state.removeObserver(stateObserver)
-
     binding.datePickerLast.setOnClickListener(null)
     binding.datePickerNext.setOnClickListener(null)
   }
-
-  fun trySaveMeasuring() {
-    overhaulViewModel!!.saveMeasuring {
-      nodesViewModel.updateMeasuringPart(MeasuringPart.OVERHAUL, it)
-    }
-  }
-
-  private val datePickerListener = object : Companion.DatePickerListener {
-    override fun onPick(date: Date) {
-      overhaulViewModel!!.saveDate(date)
-    }
-  }
-
-  // region Date Picker Dialog
-  private fun showDatePicker(type: DateType) {
-    overhaulViewModel!!.setEditTime(type)
-    val date = when (type) {
-      DateType.LAST -> overhaulViewModel!!.lastDate.value
-      DateType.NEXT -> overhaulViewModel!!.nextDate.value
-      else -> null
-    }
-    showDatePickerDialog(date, datePickerListener)
-  }
-  // endregion
 }
