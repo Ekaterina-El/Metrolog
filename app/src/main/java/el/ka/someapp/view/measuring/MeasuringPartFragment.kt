@@ -1,12 +1,17 @@
 package el.ka.someapp.view.measuring
 
+import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.activityViewModels
 import el.ka.someapp.data.model.State
 import el.ka.someapp.data.model.UserRole
 import el.ka.someapp.data.model.measuring.DateType
 import el.ka.someapp.data.model.measuring.Measuring
 import el.ka.someapp.data.model.measuring.MeasuringPart
+import el.ka.someapp.data.model.measuring.getMeasuringPartView
 import el.ka.someapp.data.model.role.AccessType
 import el.ka.someapp.data.model.role.hasRole
 import el.ka.someapp.view.BaseFragment
@@ -14,9 +19,9 @@ import el.ka.someapp.viewmodel.MeasuringPartViewModel
 import el.ka.someapp.viewmodel.NodesViewModel
 import java.util.*
 
-abstract class MeasuringPartFragment : BaseFragment() {
-  abstract val measuringPart: MeasuringPart
-  abstract val viewModel: MeasuringPartViewModel
+open class MeasuringPartFragment(val measuringPart: MeasuringPart) :
+  BaseFragment() {
+  lateinit var viewModel: MeasuringPartViewModel
 
   val measuring: Measuring
     get() = nodesViewModel.currentMeasuring.value!!
@@ -26,7 +31,7 @@ abstract class MeasuringPartFragment : BaseFragment() {
 
   val nodesViewModel: NodesViewModel by activityViewModels()
 
-  val hasAccess: Boolean
+  private val hasAccess: Boolean
     get() = hasRole(viewModel.viewerRole.value!!, AccessType.EDIT_MEASURING)
 
   var stateObserver = androidx.lifecycle.Observer<State> {
@@ -38,9 +43,41 @@ abstract class MeasuringPartFragment : BaseFragment() {
     }
   }
 
-  abstract var controlInterface: List<View>
-  fun updateAccessToEditFields() {
+  private var controlInterface: List<View> = listOf()
+  private fun updateAccessToEditFields() {
     controlInterface.forEach { it.isEnabled = hasAccess }
+  }
+
+  private lateinit var viewDateBinding: ViewDataBinding
+
+  override fun initFunctionalityParts() {
+    val parts = measuringPart.getMeasuringPartView(
+      measuring,
+      layoutInflater,
+      viewerRole,
+      this,
+      this,
+      viewLifecycleOwner
+    )!!
+
+    viewDateBinding = parts.binding
+    viewModel = parts.viewModel
+    controlInterface = parts.controlInterface
+    datePickerLast = parts.datePickerLast
+    datePickerNext = parts.datePickerNext
+
+    updateAccessToEditFields()
+  }
+
+  override fun inflateBindingVariables() {}
+
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View {
+    super.onCreateView(inflater, container, savedInstanceState)
+    return viewDateBinding.root
   }
 
   override fun onBackPressed() {
@@ -51,14 +88,24 @@ abstract class MeasuringPartFragment : BaseFragment() {
     popUp()
   }
 
+  private var datePickerLast: View? = null
+  private var datePickerNext: View? = null
+
   override fun onResume() {
     super.onResume()
     viewModel.state.observe(viewLifecycleOwner, stateObserver)
+
+    if (hasAccess) {
+      datePickerLast?.setOnClickListener { showLastDatePicker() }
+      datePickerNext?.setOnClickListener { showNextDatePicker() }
+    }
   }
 
   override fun onStop() {
     super.onStop()
     viewModel.state.removeObserver(stateObserver)
+    datePickerLast?.setOnClickListener(null)
+    datePickerNext?.setOnClickListener(null)
   }
 
   fun trySaveMeasuring() {
@@ -74,10 +121,10 @@ abstract class MeasuringPartFragment : BaseFragment() {
     }
   }
 
-  fun showLastDatePicker() = showDatePicker(DateType.LAST)
-  fun showNextDatePicker() = showDatePicker(DateType.NEXT)
+  private fun showLastDatePicker() = showDatePicker(DateType.LAST)
+  private fun showNextDatePicker() = showDatePicker(DateType.NEXT)
 
-  fun showDatePicker(type: DateType) {
+  private fun showDatePicker(type: DateType) {
     viewModel.setEditTime(type)
     val date = when (type) {
       DateType.LAST -> viewModel.lastDate.value

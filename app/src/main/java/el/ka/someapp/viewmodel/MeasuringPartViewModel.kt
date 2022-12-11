@@ -70,6 +70,7 @@ abstract class MeasuringPartViewModel(application: Application) : AndroidViewMod
     _interval.value = measuringPartRealization.interval
   }
 
+
   // region Date Pickers
   private val _editDate = MutableLiveData<DateType?>(null)
   fun setEditTime(timeType: DateType) {

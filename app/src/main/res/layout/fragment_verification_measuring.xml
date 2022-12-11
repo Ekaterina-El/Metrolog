@@ -10,7 +10,7 @@
 
     <variable
       name="master"
-      type="el.ka.someapp.view.measuring.VerificationMeasuringFragment" />
+      type="el.ka.someapp.view.measuring.MeasuringPartFragment" />
   </data>
 
   <androidx.core.widget.NestedScrollView
