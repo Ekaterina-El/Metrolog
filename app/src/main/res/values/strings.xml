@@ -130,6 +130,7 @@
   <string name="verificationRepairMeasuringDescription">Вы можете просмотреть данные о поверке СИ и при наличи прав на изменение отредактировать</string>
   <string name="certificationMeasuringDescription">Вы можете просмотреть данные о аттестации СИ и при наличи прав на изменение отредактировать</string>
   <string name="TOMeasuringDescription">Вы можете просмотреть данные о ТО средства измерения и при наличи прав на изменение отредактировать</string>
+  <string name="calibrationMeasuringDescription">Вы можете просмотреть данные о калибровке СИ и при наличи прав на изменение отредактировать</string>
   <string name="createMeasuringError">При заполнении формы допущенны ошибки. Проверьте ещё раз и попробуйте вновь</string>
   <string name="error_pin">Пароль неверный</string>
   <string name="error">Ошибка</string>
@@ -162,7 +163,7 @@
   <string name="role">Роль</string>
   <string name="passport">Паспорт</string>
   <string name="maintenance_repair">Текущий ремонт</string>
-  <string name="to">ТО средства измерения</string>
+  <string name="to">ТО</string>
   <string name="overhaul">Капитальный ремонт</string>
   <string name="control_panel">Панель управления СИ</string>
   <string name="passport_measuring">Паспорт СИ</string>

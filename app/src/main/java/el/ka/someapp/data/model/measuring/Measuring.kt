@@ -7,5 +7,6 @@ data class Measuring(
   var TO: TO = TO(),
   var maintenanceRepair: MaintenanceRepair = MaintenanceRepair(),
   var overhaul: Overhaul = Overhaul(),
-  var certification: Certification = Certification()
+  var certification: Certification = Certification(),
+  var calibration: Calibration = Calibration(),
 )

@@ -18,7 +18,7 @@ object MeasuringDatabaseService {
       .addOnSuccessListener {
         val measuringId = it.id
         NodesDatabaseService.addMeasuringId(
-          nodeId = measuring.passport!!.locationIDNode,
+          nodeId = measuring.passport.locationIDNode,
           measuringId = measuringId,
           onFailure = { onFailure(Errors.somethingWrong) },
           onSuccess = { onSuccess(measuringId) }
@@ -67,6 +67,7 @@ object MeasuringDatabaseService {
       MeasuringPart.TO -> value as TO
       MeasuringPart.VERIFICATION -> value as Verification
       MeasuringPart.CERTIFICATION -> value as Certification
+      MeasuringPart.CALIBRATION -> value as Calibration
     }
 
     val partName = part.dbTitle

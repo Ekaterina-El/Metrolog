@@ -110,9 +110,9 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     _measuringFiltered.value =
       if (f.isEmpty()) _measuring.value
       else _measuring.value!!.filter {
-        return@filter it.passport!!.name.contains(f, true) ||
-            it.passport!!.type.contains(f, true) ||
-            it.passport!!.inventoryNumber!!.contains(f, true)
+        return@filter it.passport.name.contains(f, true) ||
+            it.passport.type.contains(f, true) ||
+            it.passport.inventoryNumber!!.contains(f, true)
       }
   }
 
@@ -791,7 +791,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     changeLoads(Loads.DELETE_MEASURING)
     MeasuringDatabaseService.deleteMeasuring(
       measuringId = measuring.measuringID,
-      locationNodeId = measuring.passport!!.locationIDNode,
+      locationNodeId = measuring.passport.locationIDNode,
       onFailure = {},
       onSuccess = {
         val measuringItems = _currentNode.value!!.measuring.toMutableList()
@@ -804,6 +804,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   }
 
   fun updateMeasuringPart(part: MeasuringPart, value: Any) {
+
     when (part) {
       MeasuringPart.PASSPORT -> updatePassport(value as MeasuringPassport)
       MeasuringPart.MAINTENANCE_REPAIR -> updateMaintenanceRepair(value as MaintenanceRepair)
@@ -811,7 +812,14 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       MeasuringPart.TO -> updateTO(value as TO)
       MeasuringPart.VERIFICATION -> updateVerification(value as Verification)
       MeasuringPart.CERTIFICATION -> updateCertification(value as Certification)
+      MeasuringPart.CALIBRATION -> updateCalibration(value as Calibration)
     }
+  }
+
+  private fun updateCalibration(calibration: Calibration) {
+    val measuring = _currentMeasuring.value!!
+    measuring.calibration = calibration
+    _currentMeasuring.value = measuring
   }
 
   private fun updateCertification(certification: Certification) {

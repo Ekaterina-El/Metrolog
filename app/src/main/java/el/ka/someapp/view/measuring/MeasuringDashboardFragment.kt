@@ -137,8 +137,9 @@ class MeasuringDashboardFragment : BaseFragment() {
       MeasuringPart.MAINTENANCE_REPAIR -> R.id.action_measuringDashboardFragment_to_maintenanceRepairMeasuringFragment
       MeasuringPart.VERIFICATION -> R.id.action_measuringDashboardFragment_to_verificationMeasuringFragment
       MeasuringPart.CERTIFICATION -> R.id.action_measuringDashboardFragment_to_certificationMeasuringFragment
+      MeasuringPart.CALIBRATION -> R.id.action_measuringDashboardFragment_to_calibrationMeasuringFragment
     }
-    if (action != null) navigate(action)
+    navigate(action)
   }
 
   companion object {
