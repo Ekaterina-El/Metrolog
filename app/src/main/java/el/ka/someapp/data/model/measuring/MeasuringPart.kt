@@ -7,10 +7,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import el.ka.someapp.data.model.UserRole
-import el.ka.someapp.databinding.FragmentCertificationMeasuringBinding
-import el.ka.someapp.databinding.FragmentMaintenanceRepairMeasuringBinding
-import el.ka.someapp.databinding.FragmentOverhaulMeasuringBinding
-import el.ka.someapp.databinding.FragmentVerificationMeasuringBinding
+import el.ka.someapp.databinding.*
 import el.ka.someapp.view.measuring.MeasuringPartFragment
 import el.ka.someapp.viewmodel.*
 
@@ -67,8 +64,40 @@ fun MeasuringPart.getMeasuringPartView(
       master,
       viewLifecycleOwner
     )
+
+    MeasuringPart.TO -> initTOPart(
+      layoutInflater,
+      measuring,
+      viewerRole,
+      owner,
+      master,
+      viewLifecycleOwner
+    )
     else -> null
   }
+}
+
+fun initTOPart(
+  layoutInflater: LayoutInflater,
+  measuring: Measuring,
+  viewerRole: UserRole,
+  owner: ViewModelStoreOwner,
+  master: MeasuringPartFragment,
+  viewLifecycleOwner: LifecycleOwner?
+): MeasuringPartView {
+  val binding = FragmentToMeasuringBinding.inflate(layoutInflater)
+  val controlInterface = binding.controlInterface
+
+  val viewModel = ViewModelProvider(owner)[TOViewModel::class.java]
+  viewModel.loadMeasuring(measuring, viewerRole, measuring.TO)
+
+  binding.master = master
+  binding.lifecycleOwner = viewLifecycleOwner
+  binding.viewModel = viewModel
+
+  return MeasuringPartView(
+    binding, viewModel, controlInterface, binding.datePickerLast, binding.datePickerNext
+  )
 }
 
 fun initVerificationPart(
@@ -183,6 +212,10 @@ private val FragmentCertificationMeasuringBinding.controlInterface: List<View>
 
 private val FragmentMaintenanceRepairMeasuringBinding.controlInterface: List<View>
   get() = listOf<View>(layoutPlace, layoutLaboratory)
+
+private val FragmentToMeasuringBinding.controlInterface: List<View>
+  get() = listOf()
+
 
 private val FragmentVerificationMeasuringBinding.controlInterface: List<View>
   get() = listOf(
