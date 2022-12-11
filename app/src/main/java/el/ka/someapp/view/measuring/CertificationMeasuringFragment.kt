@@ -4,42 +4,39 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
-import el.ka.someapp.data.model.State
-import el.ka.someapp.data.model.measuring.DateType
 import el.ka.someapp.data.model.measuring.MeasuringPart
-import el.ka.someapp.data.model.role.AccessType
-import el.ka.someapp.data.model.role.hasRole
 import el.ka.someapp.databinding.FragmentCertificationMeasuringBinding
-import el.ka.someapp.view.BaseFragment
 import el.ka.someapp.viewmodel.CertificationMeasuringViewModel
-import el.ka.someapp.viewmodel.NodesViewModel
-import java.util.*
+import el.ka.someapp.viewmodel.MeasuringPartViewModel
 
-class CertificationMeasuringFragment : BaseFragment() {
+
+class CertificationMeasuringFragment : MeasuringPartFragment() {
+  override val measuringPart: MeasuringPart
+    get() = MeasuringPart.CERTIFICATION
+
   private lateinit var binding: FragmentCertificationMeasuringBinding
+  override lateinit var viewModel: MeasuringPartViewModel
 
-  private val nodesViewModel: NodesViewModel by activityViewModels()
-  private var viewModel: CertificationMeasuringViewModel? = null
-
-  private var stateObserver = androidx.lifecycle.Observer<State> {
-    if (it != State.LOADING) hideLoadingDialog()
-    when (it) {
-      State.LOADING -> showLoadingDialog()
-      State.BACK -> goBack()
-      else -> {}
-    }
-  }
+  private lateinit var controlViews: List<View>
+  override var controlInterface: List<View>
+    get() = controlViews
+    set(value) {}
 
   override fun initFunctionalityParts() {
     binding = FragmentCertificationMeasuringBinding.inflate(layoutInflater)
+    controlViews = listOf<View>(
+      binding.layoutLaboratory
+    )
+
     viewModel =
       ViewModelProvider(this)[CertificationMeasuringViewModel::class.java]
 
-    viewModel!!.loadMeasuring(
-      measuring = nodesViewModel.currentMeasuring.value!!,
-      viewerRole = nodesViewModel.currentRole.value!!
+    val measuring = nodesViewModel.currentMeasuring.value!!
+    viewModel.loadMeasuring(
+      measuring,
+      viewerRole = nodesViewModel.currentRole.value!!,
+      measuring.certification
     )
     updateAccessToEditFields()
   }
@@ -48,17 +45,8 @@ class CertificationMeasuringFragment : BaseFragment() {
     binding.apply {
       master = this@CertificationMeasuringFragment
       lifecycleOwner = viewLifecycleOwner
-      viewModel = this@CertificationMeasuringFragment.viewModel
+      viewModel = this@CertificationMeasuringFragment.viewModel as CertificationMeasuringViewModel
     }
-  }
-
-  private fun updateAccessToEditFields() {
-    val hasAccess =
-      hasRole(viewModel!!.viewerRole.value!!, AccessType.EDIT_MEASURING)
-
-    listOf<View>(
-      binding.layoutLaboratory
-    ).forEach { it.isEnabled = hasAccess }
   }
 
   override fun onCreateView(
@@ -70,57 +58,18 @@ class CertificationMeasuringFragment : BaseFragment() {
     return binding.root
   }
 
-  override fun onBackPressed() {
-    goBack()
-  }
-
-  private fun goBack() {
-    popUp()
-  }
-
   override fun onResume() {
     super.onResume()
-    viewModel!!.state.observe(viewLifecycleOwner, stateObserver)
 
-    val hasAccess =
-      hasRole(viewModel!!.viewerRole.value!!, AccessType.EDIT_MEASURING)
     if (hasAccess) {
-      // region Date Pickers Listeners
-      binding.datePickerLast.setOnClickListener { showDatePicker(DateType.LAST) }
-      binding.datePickerNext.setOnClickListener { showDatePicker(DateType.NEXT) }
-      // endregion
+      binding.datePickerLast.setOnClickListener { showLastDatePicker() }
+      binding.datePickerNext.setOnClickListener { showNextDatePicker() }
     }
   }
 
   override fun onStop() {
     super.onStop()
-    viewModel!!.state.removeObserver(stateObserver)
-
     binding.datePickerLast.setOnClickListener(null)
     binding.datePickerNext.setOnClickListener(null)
   }
-
-  fun trySaveMeasuring() {
-    viewModel!!.saveMeasuring {
-      nodesViewModel.updateMeasuringPart(MeasuringPart.CERTIFICATION, it)
-    }
-  }
-
-  private val datePickerListener = object : Companion.DatePickerListener {
-    override fun onPick(date: Date) {
-      viewModel!!.saveDate(date)
-    }
-  }
-
-  // region Date Picker Dialog
-  private fun showDatePicker(type: DateType) {
-    viewModel!!.setEditTime(type)
-    val date = when (type) {
-      DateType.LAST -> viewModel!!.lastDate.value
-      DateType.NEXT -> viewModel!!.nextDate.value
-      else -> null
-    }
-    showDatePickerDialog(date, datePickerListener)
-  }
-  // endregion
 }
