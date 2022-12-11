@@ -8,13 +8,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import el.ka.someapp.data.model.UserRole
 import el.ka.someapp.databinding.FragmentCertificationMeasuringBinding
+import el.ka.someapp.databinding.FragmentMaintenanceRepairMeasuringBinding
 import el.ka.someapp.databinding.FragmentOverhaulMeasuringBinding
 import el.ka.someapp.databinding.FragmentVerificationMeasuringBinding
 import el.ka.someapp.view.measuring.MeasuringPartFragment
-import el.ka.someapp.viewmodel.CertificationMeasuringViewModel
-import el.ka.someapp.viewmodel.MeasuringPartViewModel
-import el.ka.someapp.viewmodel.OverhaulViewModel
-import el.ka.someapp.viewmodel.VerificationMeasuringViewModel
+import el.ka.someapp.viewmodel.*
 
 enum class MeasuringPart(val dbTitle: String) {
   PASSPORT("passport"),
@@ -51,7 +49,17 @@ fun MeasuringPart.getMeasuringPartView(
       master,
       viewLifecycleOwner
     )
+
     MeasuringPart.VERIFICATION -> initVerificationPart(
+      layoutInflater,
+      measuring,
+      viewerRole,
+      owner,
+      master,
+      viewLifecycleOwner
+    )
+
+    MeasuringPart.MAINTENANCE_REPAIR -> initMaintenanceRepairPart(
       layoutInflater,
       measuring,
       viewerRole,
@@ -137,11 +145,44 @@ fun initCertificationPart(
 }
 
 
+fun initMaintenanceRepairPart(
+  layoutInflater: LayoutInflater,
+  measuring: Measuring,
+  viewerRole: UserRole,
+  owner: ViewModelStoreOwner,
+  master: MeasuringPartFragment,
+  viewLifecycleOwner: LifecycleOwner?
+): MeasuringPartView {
+  val binding = FragmentMaintenanceRepairMeasuringBinding.inflate(layoutInflater)
+  val controlInterface = binding.controlInterface
+
+  val viewModel = ViewModelProvider(owner)[MaintenanceRepairViewModel::class.java]
+  viewModel.loadMeasuring(
+    measuring,
+    viewerRole,
+    measuring.maintenanceRepair
+  )
+
+  binding.master = master
+  binding.lifecycleOwner = viewLifecycleOwner
+  binding.viewModel = viewModel
+
+  return MeasuringPartView(
+    binding,
+    viewModel,
+    controlInterface, binding.datePickerLast, binding.datePickerNext
+  )
+}
+
+
 private val FragmentOverhaulMeasuringBinding.controlInterface: List<View>
   get() = listOf(layoutPlace, layoutLaboratory)
 
 private val FragmentCertificationMeasuringBinding.controlInterface: List<View>
   get() = listOf(layoutLaboratory)
+
+private val FragmentMaintenanceRepairMeasuringBinding.controlInterface: List<View>
+  get() = listOf<View>(layoutPlace, layoutLaboratory)
 
 private val FragmentVerificationMeasuringBinding.controlInterface: List<View>
   get() = listOf(

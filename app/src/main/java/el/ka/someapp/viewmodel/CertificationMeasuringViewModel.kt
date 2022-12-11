@@ -13,9 +13,7 @@ class CertificationMeasuringViewModel(application: Application) :
   MeasuringPartViewModel(application) {
   val place = MutableLiveData<String>()
 
-  override var measuringPart: MeasuringPart
-    get() = MeasuringPart.CERTIFICATION
-    set(value) {}
+  override var measuringPart = MeasuringPart.CERTIFICATION
 
   override fun getMeasuringPartRealization(): MeasuringPartRealization = Certification(
     interval = _interval.value!!,

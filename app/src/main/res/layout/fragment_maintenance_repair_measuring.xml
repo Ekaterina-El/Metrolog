@@ -11,7 +11,7 @@
 
     <variable
       name="master"
-      type="el.ka.someapp.view.measuring.MaintenanceRepairMeasuringFragment" />
+      type="el.ka.someapp.view.measuring.MeasuringPartFragment" />
   </data>
 
   <androidx.core.widget.NestedScrollView
