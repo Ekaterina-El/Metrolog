@@ -21,124 +21,72 @@ enum class MeasuringPart(val dbTitle: String) {
 }
 
 
+data class MeasuringPartView(
+  val binding: ViewDataBinding,
+  val viewModel: MeasuringPartViewModel,
+  val controlInterface: List<View>,
+  val datePickerLast: View? = null,
+  val datePickerNext: View? = null,
+)
+
+data class MeasuringPartArguments(
+  val layoutInflater: LayoutInflater,
+  val measuring: Measuring,
+  val viewerRole: UserRole,
+  val owner: ViewModelStoreOwner,
+  val master: MeasuringPartFragment,
+  val viewLifecycleOwner: LifecycleOwner?
+)
+
 fun MeasuringPart.getMeasuringPartView(
-  measuring: Measuring,
-  layoutInflater: LayoutInflater,
-  viewerRole: UserRole,
-  owner: ViewModelStoreOwner,
-  master: MeasuringPartFragment,
-  viewLifecycleOwner: LifecycleOwner?
-): MeasuringPartView? {
-  return when (this) {
-    MeasuringPart.OVERHAUL -> initOverhaulPart(
-      layoutInflater,
-      measuring,
-      viewerRole,
-      owner,
-      master,
-      viewLifecycleOwner
-    )
-    MeasuringPart.CERTIFICATION -> initCertificationPart(
-      layoutInflater,
-      measuring,
-      viewerRole,
-      owner,
-      master,
-      viewLifecycleOwner
-    )
+  args: MeasuringPartArguments
+) = when (this) {
+  MeasuringPart.OVERHAUL -> initOverhaulPart(args)
+  MeasuringPart.CERTIFICATION -> initCertificationPart(args)
+  MeasuringPart.VERIFICATION -> initVerificationPart(args)
+  MeasuringPart.MAINTENANCE_REPAIR -> initMaintenanceRepairPart(args)
+  MeasuringPart.TO -> initTOPart(args)
+  MeasuringPart.PASSPORT -> initPassportPart(args)
+}
 
-    MeasuringPart.VERIFICATION -> initVerificationPart(
-      layoutInflater,
-      measuring,
-      viewerRole,
-      owner,
-      master,
-      viewLifecycleOwner
-    )
+// region Init functions for Measuring Parts
+private fun initPassportPart(args: MeasuringPartArguments): MeasuringPartView {
+  with(args) {
+    val binding = FragmentPassportMeasuringBinding.inflate(layoutInflater)
+    val controlInterface = binding.controlInterface
 
-    MeasuringPart.MAINTENANCE_REPAIR -> initMaintenanceRepairPart(
-      layoutInflater,
-      measuring,
-      viewerRole,
-      owner,
-      master,
-      viewLifecycleOwner
-    )
+    val viewModel = ViewModelProvider(owner)[PassportViewModel::class.java]
+    viewModel.loadMeasuring(measuring, viewerRole, measuring.passport)
 
-    MeasuringPart.TO -> initTOPart(
-      layoutInflater,
-      measuring,
-      viewerRole,
-      owner,
-      master,
-      viewLifecycleOwner
-    )
+    binding.master = master
+    binding.lifecycleOwner = viewLifecycleOwner
+    binding.viewModel = viewModel
 
-    MeasuringPart.PASSPORT -> initPassportPart(
-      layoutInflater,
-      measuring,
-      viewerRole,
-      owner,
-      master,
-      viewLifecycleOwner
+    return MeasuringPartView(
+      binding, viewModel, controlInterface
     )
   }
 }
 
-fun initPassportPart(
-  layoutInflater: LayoutInflater,
-  measuring: Measuring,
-  viewerRole: UserRole,
-  owner: ViewModelStoreOwner,
-  master: MeasuringPartFragment,
-  viewLifecycleOwner: LifecycleOwner?
-): MeasuringPartView {
-  val binding = FragmentPassportMeasuringBinding.inflate(layoutInflater)
-  val controlInterface = binding.controlInterface
+private fun initTOPart(args: MeasuringPartArguments): MeasuringPartView {
+  with(args) {
+    val binding = FragmentToMeasuringBinding.inflate(layoutInflater)
+    val controlInterface = binding.controlInterface
 
-  val viewModel = ViewModelProvider(owner)[PassportViewModel::class.java]
-  viewModel.loadMeasuring(measuring, viewerRole, measuring.passport)
+    val viewModel = ViewModelProvider(owner)[TOViewModel::class.java]
+    viewModel.loadMeasuring(measuring, viewerRole, measuring.TO)
 
-  binding.master = master
-  binding.lifecycleOwner = viewLifecycleOwner
-  binding.viewModel = viewModel
+    binding.master = master
+    binding.lifecycleOwner = viewLifecycleOwner
+    binding.viewModel = viewModel
 
-  return MeasuringPartView(
-    binding, viewModel, controlInterface
-  )
+    return MeasuringPartView(
+      binding, viewModel, controlInterface, binding.datePickerLast, binding.datePickerNext
+    )
+  }
 }
 
-fun initTOPart(
-  layoutInflater: LayoutInflater,
-  measuring: Measuring,
-  viewerRole: UserRole,
-  owner: ViewModelStoreOwner,
-  master: MeasuringPartFragment,
-  viewLifecycleOwner: LifecycleOwner?
-): MeasuringPartView {
-  val binding = FragmentToMeasuringBinding.inflate(layoutInflater)
-  val controlInterface = binding.controlInterface
-
-  val viewModel = ViewModelProvider(owner)[TOViewModel::class.java]
-  viewModel.loadMeasuring(measuring, viewerRole, measuring.TO)
-
-  binding.master = master
-  binding.lifecycleOwner = viewLifecycleOwner
-  binding.viewModel = viewModel
-
-  return MeasuringPartView(
-    binding, viewModel, controlInterface, binding.datePickerLast, binding.datePickerNext
-  )
-}
-
-fun initVerificationPart(
-  layoutInflater: LayoutInflater,
-  measuring: Measuring,
-  viewerRole: UserRole,
-  owner: ViewModelStoreOwner,
-  master: MeasuringPartFragment,
-  viewLifecycleOwner: LifecycleOwner?
-): MeasuringPartView {
+private fun initVerificationPart(args: MeasuringPartArguments): MeasuringPartView = with(args) {
   val binding = FragmentVerificationMeasuringBinding.inflate(layoutInflater)
   val controlInterface = binding.controlInterface
 
@@ -155,14 +103,7 @@ fun initVerificationPart(
   )
 }
 
-fun initOverhaulPart(
-  layoutInflater: LayoutInflater,
-  measuring: Measuring,
-  viewerRole: UserRole,
-  owner: ViewModelStoreOwner,
-  master: MeasuringPartFragment,
-  viewLifecycleOwner: LifecycleOwner?
-): MeasuringPartView {
+private fun initOverhaulPart(args: MeasuringPartArguments): MeasuringPartView = with(args) {
   val binding = FragmentOverhaulMeasuringBinding.inflate(layoutInflater)
   val controlInterface = binding.controlInterface
 
@@ -179,14 +120,7 @@ fun initOverhaulPart(
   )
 }
 
-fun initCertificationPart(
-  layoutInflater: LayoutInflater,
-  measuring: Measuring,
-  viewerRole: UserRole,
-  owner: ViewModelStoreOwner,
-  master: MeasuringPartFragment,
-  viewLifecycleOwner: LifecycleOwner?
-): MeasuringPartView {
+private fun initCertificationPart(args: MeasuringPartArguments): MeasuringPartView = with(args) {
   val binding = FragmentCertificationMeasuringBinding.inflate(layoutInflater)
   val controlInterface = binding.controlInterface
 
@@ -205,36 +139,31 @@ fun initCertificationPart(
 }
 
 
-fun initMaintenanceRepairPart(
-  layoutInflater: LayoutInflater,
-  measuring: Measuring,
-  viewerRole: UserRole,
-  owner: ViewModelStoreOwner,
-  master: MeasuringPartFragment,
-  viewLifecycleOwner: LifecycleOwner?
-): MeasuringPartView {
-  val binding = FragmentMaintenanceRepairMeasuringBinding.inflate(layoutInflater)
-  val controlInterface = binding.controlInterface
+private fun initMaintenanceRepairPart(args: MeasuringPartArguments): MeasuringPartView =
+  with(args) {
+    val binding = FragmentMaintenanceRepairMeasuringBinding.inflate(layoutInflater)
+    val controlInterface = binding.controlInterface
 
-  val viewModel = ViewModelProvider(owner)[MaintenanceRepairViewModel::class.java]
-  viewModel.loadMeasuring(
-    measuring,
-    viewerRole,
-    measuring.maintenanceRepair
-  )
+    val viewModel = ViewModelProvider(owner)[MaintenanceRepairViewModel::class.java]
+    viewModel.loadMeasuring(
+      measuring,
+      viewerRole,
+      measuring.maintenanceRepair
+    )
 
-  binding.master = master
-  binding.lifecycleOwner = viewLifecycleOwner
-  binding.viewModel = viewModel
+    binding.master = master
+    binding.lifecycleOwner = viewLifecycleOwner
+    binding.viewModel = viewModel
 
-  return MeasuringPartView(
-    binding,
-    viewModel,
-    controlInterface, binding.datePickerLast, binding.datePickerNext
-  )
-}
+    return MeasuringPartView(
+      binding,
+      viewModel,
+      controlInterface, binding.datePickerLast, binding.datePickerNext
+    )
+  }
+// endregion
 
-
+// region Control Interface list for every Measuring Part Binding
 private val FragmentOverhaulMeasuringBinding.controlInterface: List<View>
   get() = listOf(layoutPlace, layoutLaboratory)
 
@@ -264,19 +193,10 @@ private val FragmentPassportMeasuringBinding.controlInterface: List<View>
     spinnerMeasurementCondition,
   )
 
-
 private val FragmentVerificationMeasuringBinding.controlInterface: List<View>
   get() = listOf(
     layoutVerificationCodeCSM,
     layoutCost,
     layoutLaboratory
   )
-
-
-data class MeasuringPartView(
-  val binding: ViewDataBinding,
-  val viewModel: MeasuringPartViewModel,
-  val controlInterface: List<View>,
-  val datePickerLast: View? = null,
-  val datePickerNext: View? = null,
-)
+// endregion

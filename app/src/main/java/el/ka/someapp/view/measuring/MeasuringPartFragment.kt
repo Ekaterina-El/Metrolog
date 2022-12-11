@@ -8,10 +8,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.activityViewModels
 import el.ka.someapp.data.model.State
 import el.ka.someapp.data.model.UserRole
-import el.ka.someapp.data.model.measuring.DateType
-import el.ka.someapp.data.model.measuring.Measuring
-import el.ka.someapp.data.model.measuring.MeasuringPart
-import el.ka.someapp.data.model.measuring.getMeasuringPartView
+import el.ka.someapp.data.model.measuring.*
 import el.ka.someapp.data.model.role.AccessType
 import el.ka.someapp.data.model.role.hasRole
 import el.ka.someapp.view.BaseFragment
@@ -52,13 +49,15 @@ open class MeasuringPartFragment(val measuringPart: MeasuringPart) :
 
   override fun initFunctionalityParts() {
     val parts = measuringPart.getMeasuringPartView(
-      measuring,
-      layoutInflater,
-      viewerRole,
-      this,
-      this,
-      viewLifecycleOwner
-    )!!
+      MeasuringPartArguments(
+        layoutInflater,
+        measuring,
+        viewerRole,
+        this,
+        this,
+        viewLifecycleOwner
+      )
+    )
 
     viewDateBinding = parts.binding
     viewModel = parts.viewModel
