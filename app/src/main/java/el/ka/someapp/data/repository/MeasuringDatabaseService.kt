@@ -4,7 +4,9 @@ import com.google.firebase.firestore.DocumentSnapshot
 import el.ka.someapp.data.model.ErrorApp
 import el.ka.someapp.data.model.Errors
 import el.ka.someapp.data.model.measuring.*
+import el.ka.someapp.general.getCurrentTime
 import kotlinx.coroutines.Deferred
+import java.util.*
 
 object MeasuringDatabaseService {
   fun createMeasuring(
@@ -68,14 +70,39 @@ object MeasuringDatabaseService {
       MeasuringPart.VERIFICATION -> value as Verification
       MeasuringPart.CERTIFICATION -> value as Certification
       MeasuringPart.CALIBRATION -> value as Calibration
+      MeasuringPart.HISTORY -> return
     }
-
     val partName = part.dbTitle
+    val historyItem = getHistoryItem(part.actionType!!)
 
     FirebaseServices.databaseMeasuring
       .document(measuringID)
       .update(partName, valueToDB)
       .addOnFailureListener { onFailure() }
-      .addOnSuccessListener { onSuccess() }
+      .addOnSuccessListener {
+        changeMeasuringHistory(measuringID, historyItem, onSuccess = { onSuccess() }, onFailure)
+      }
+  }
+
+  private fun getHistoryItem(action: MeasuringActionType) = MeasuringHistoryItem(
+    date = getCurrentTime(),
+    userId = AuthenticationService.getUserUid()!!,
+    action
+  )
+
+  private fun changeMeasuringHistory(
+    measuringID: String,
+    historyItem: MeasuringHistoryItem,
+    onSuccess: () -> Unit,
+    onFailure: () -> Unit
+  ) {
+    val ref = FirebaseServices.databaseMeasuring.document(measuringID)
+    FirebaseServices.changeFieldArray(
+      ref,
+      field = MeasuringPart.HISTORY.dbTitle,
+      value = historyItem,
+      onSuccess = onSuccess,
+      onFailure = onFailure
+    )
   }
 }

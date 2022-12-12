@@ -202,4 +202,13 @@
   <string name="try_off_VPN">‣ отключить VPN или выбрать в нём другую страну.</string>
   <string name="understand">Понятно</string>
   <string name="place">Место</string>
+
+  <string name="created_measuring">Создано СИ</string>
+  <string name="edited_passport_measuring">Отредактирован паспорт СИ</string>
+  <string name="edited_maintenance_repair">Отредактирована информация о текущем ремонте СИ</string>
+  <string name="edited_measuring_to">Отредактирована информация о ТО СИ</string>
+  <string name="edited_calibration">Отредактирована информация о калибровке СИ</string>
+  <string name="edited_verification">Отредактирована информация о поверке СИ</string>
+  <string name="edited_overhaul">Отредактирована информация о капитальном ремонте СИ</string>
+  <string name="edit_certification">Отредактирована информация о аттестации СИ</string>
 </resources>

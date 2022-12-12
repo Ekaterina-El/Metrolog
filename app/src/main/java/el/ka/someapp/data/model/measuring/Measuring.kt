@@ -9,4 +9,5 @@ data class Measuring(
   var overhaul: Overhaul = Overhaul(),
   var certification: Certification = Certification(),
   var calibration: Calibration = Calibration(),
+  var history: List<MeasuringHistoryItem> = listOf()
 )

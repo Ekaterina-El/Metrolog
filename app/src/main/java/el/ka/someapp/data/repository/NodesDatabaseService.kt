@@ -80,9 +80,6 @@ object NodesDatabaseService {
     nodeId: String, onSuccess: (Node) -> Unit, onFailure: (ErrorApp) -> Unit
   ) {
     FirebaseServices.databaseNodes.document(nodeId).get()
-      .addOnCanceledListener {
-        val a = 10
-      }
       .addOnFailureListener {
         onFailure(Errors.somethingWrong)
       }

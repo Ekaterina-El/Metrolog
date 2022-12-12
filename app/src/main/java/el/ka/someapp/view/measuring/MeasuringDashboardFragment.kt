@@ -128,7 +128,6 @@ class MeasuringDashboardFragment : BaseFragment() {
   }
   // endregion
 
-
   fun navigateTo(part: MeasuringPart) {
     val action = when (part) {
       MeasuringPart.PASSPORT -> R.id.action_measuringDashboardFragment_to_passportMeasuringFragment
@@ -138,8 +137,9 @@ class MeasuringDashboardFragment : BaseFragment() {
       MeasuringPart.VERIFICATION -> R.id.action_measuringDashboardFragment_to_verificationMeasuringFragment
       MeasuringPart.CERTIFICATION -> R.id.action_measuringDashboardFragment_to_certificationMeasuringFragment
       MeasuringPart.CALIBRATION -> R.id.action_measuringDashboardFragment_to_calibrationMeasuringFragment
+      else -> null
     }
-    navigate(action)
+    action?.let { navigate(action) }
   }
 
   companion object {

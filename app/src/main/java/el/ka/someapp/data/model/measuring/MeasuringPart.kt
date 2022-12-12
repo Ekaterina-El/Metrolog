@@ -11,14 +11,15 @@ import el.ka.someapp.databinding.*
 import el.ka.someapp.view.measuring.MeasuringPartFragment
 import el.ka.someapp.viewmodel.*
 
-enum class MeasuringPart(val dbTitle: String) {
-  PASSPORT("passport"),
-  MAINTENANCE_REPAIR("maintenanceRepair"),
-  TO("to"),
-  OVERHAUL("overhaul"),
-  VERIFICATION("verification"),
-  CERTIFICATION("certification"),
-  CALIBRATION("calibration")
+enum class MeasuringPart(val dbTitle: String, val actionType: MeasuringActionType?) {
+  PASSPORT("passport", MeasuringActionType.EDITED_PASSPORT),
+  MAINTENANCE_REPAIR("maintenanceRepair", MeasuringActionType.EDITED_MAINTENANCE_REPAIR),
+  TO("to", MeasuringActionType.EDITED_TO),
+  OVERHAUL("overhaul", MeasuringActionType.EDITED_OVERHAUL),
+  VERIFICATION("verification", MeasuringActionType.EDITED_VERIFICATION),
+  CERTIFICATION("certification", MeasuringActionType.EDITED_VERIFICATION),
+  CALIBRATION("calibration", MeasuringActionType.EDITED_CALIBRATION),
+  HISTORY("history", null)
 }
 
 
@@ -49,6 +50,7 @@ fun MeasuringPart.getMeasuringPartView(
   MeasuringPart.TO -> initTOPart(args)
   MeasuringPart.PASSPORT -> initPassportPart(args)
   MeasuringPart.CALIBRATION -> initCalibrationPart(args)
+  else -> null
 }
 
 

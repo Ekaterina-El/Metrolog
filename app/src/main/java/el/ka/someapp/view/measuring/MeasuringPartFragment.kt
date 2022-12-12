@@ -59,12 +59,13 @@ open class MeasuringPartFragment(val measuringPart: MeasuringPart) :
       )
     )
 
-    viewDateBinding = parts.binding
-    viewModel = parts.viewModel
-    controlInterface = parts.controlInterface
-    datePickerLast = parts.datePickerLast
-    datePickerNext = parts.datePickerNext
-
+    parts?.let {
+      viewDateBinding = parts.binding
+      viewModel = parts.viewModel
+      controlInterface = parts.controlInterface
+      datePickerLast = parts.datePickerLast
+      datePickerNext = parts.datePickerNext
+    }
     updateAccessToEditFields()
   }
 

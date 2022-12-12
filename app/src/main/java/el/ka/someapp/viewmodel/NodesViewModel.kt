@@ -814,6 +814,8 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       MeasuringPart.VERIFICATION -> measuring.verification = value as Verification
       MeasuringPart.CERTIFICATION -> measuring.certification = value as Certification
       MeasuringPart.CALIBRATION -> measuring.calibration = value as Calibration
+      MeasuringPart.HISTORY -> measuring.history =
+        (value as List<*>).map { it as MeasuringHistoryItem }
     }
 
     _currentMeasuring.value = measuring
