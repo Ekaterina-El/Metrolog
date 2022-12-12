@@ -211,4 +211,5 @@
   <string name="edited_verification">Отредактирована информация о поверке СИ</string>
   <string name="edited_overhaul">Отредактирована информация о капитальном ремонте СИ</string>
   <string name="edit_certification">Отредактирована информация о аттестации СИ</string>
+  <string name="measuring_history">История изменений</string>
 </resources>

@@ -63,7 +63,6 @@ class AllUsersAdapter(val context: Context, val listener: ItemListener? = null) 
 
   fun updateRole(role: UserRole?) {
     itemsHolders.forEach { it.viewerRole = role }
-//    this.viewerRole = role
   }
 
   private fun clearList() {

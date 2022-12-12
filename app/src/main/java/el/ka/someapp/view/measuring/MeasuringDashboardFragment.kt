@@ -9,14 +9,13 @@ import android.widget.PopupMenu
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import el.ka.someapp.R
-import el.ka.someapp.data.model.State
-import el.ka.someapp.data.model.UserRole
-import el.ka.someapp.data.model.measuring.Measuring
-import el.ka.someapp.data.model.measuring.MeasuringPart
+import el.ka.someapp.data.model.*
+import el.ka.someapp.data.model.measuring.*
 import el.ka.someapp.data.model.role.AccessType
 import el.ka.someapp.data.model.role.hasRole
 import el.ka.someapp.databinding.FragmentMeasuringDashboardBinding
 import el.ka.someapp.view.BaseFragment
+import el.ka.someapp.view.adapters.MeasuringHistoryAdapter
 import el.ka.someapp.view.dialog.ConfirmDialog
 import el.ka.someapp.viewmodel.NodesViewModel
 import el.ka.someapp.viewmodel.VisibleViewModel
@@ -26,6 +25,8 @@ class MeasuringDashboardFragment : BaseFragment() {
 
   private val nodesViewModel: NodesViewModel by activityViewModels()
   private val visibleViewModel: VisibleViewModel by activityViewModels()
+
+  private lateinit var measuringHistoryAdapter: MeasuringHistoryAdapter
 
   private val stateObserver = Observer<State> {
     if (it != State.LOADING) hideLoadingDialog() else showLoadingDialog()
@@ -68,6 +69,43 @@ class MeasuringDashboardFragment : BaseFragment() {
       viewModel = this@MeasuringDashboardFragment.nodesViewModel
       master = this@MeasuringDashboardFragment
     }
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    val img =
+      "https://firebasestorage.googleapis.com/v0/b/metrolog-79c82.appspot.com/o/users_profiles%2FSoEjWiDUpWSpqGkW4vbaVKb7Doo1?alt=media&token=f0750949-6200-419e-a806-6e1930ecc7c6"
+    val items = listOf(
+      HeaderItem("2 декабря, пн"),
+      ContentItem(
+        MeasuringHistoryItemExecuted(
+          User(fullName = "Иванов Иван Иванович", profileImageUrl = img),
+          MeasuringHistoryItem(
+            action = MeasuringActionType.CREATED
+          )
+        )
+      ),
+      ContentItem(
+        MeasuringHistoryItemExecuted(
+          User(fullName = "Иванов Иван Иванович", profileImageUrl = img),
+          MeasuringHistoryItem(
+            action = MeasuringActionType.EDITED_VERIFICATION
+          )
+        )
+      ),
+
+      HeaderItem("3 декабря, вт"),
+      ContentItem(
+        MeasuringHistoryItemExecuted(
+          User(fullName = "Павлов Павел Павлович"),
+          MeasuringHistoryItem(
+            action = MeasuringActionType.EDITED_TO
+          )
+        )
+      ),
+    )
+    measuringHistoryAdapter = MeasuringHistoryAdapter(items)
+    binding.historyAdapter = measuringHistoryAdapter
   }
 
   override fun onResume() {

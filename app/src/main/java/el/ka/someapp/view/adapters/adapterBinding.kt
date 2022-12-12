@@ -224,3 +224,8 @@ fun hasAccessToAddMeasuring(view: View, role: UserRole?) {
 fun showError2(view: TextInputLayout, error: ErrorApp?) {
   view.error = if (error != null) view.context.getString(error.textId) else null
 }
+
+@BindingAdapter("app:stringRes")
+fun stringRes(textView: TextView, resId: Int) {
+  textView.text = textView.context.getString(resId)
+}

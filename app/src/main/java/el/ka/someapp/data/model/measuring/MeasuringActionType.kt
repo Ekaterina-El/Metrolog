@@ -2,7 +2,7 @@ package el.ka.someapp.data.model.measuring
 
 import el.ka.someapp.R
 
-enum class MeasuringActionType(strId: Int) {
+enum class MeasuringActionType(val strId: Int) {
   CREATED(R.string.created_measuring),
   EDITED_PASSPORT(R.string.edited_passport_measuring),
   EDITED_MAINTENANCE_REPAIR(R.string.edited_maintenance_repair),
