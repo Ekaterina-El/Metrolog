@@ -13,8 +13,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingTop="15dp"
-    android:paddingBottom="6dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="4dp"
     tools:background="@color/white">
 
     <TextView

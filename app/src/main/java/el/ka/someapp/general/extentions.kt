@@ -11,15 +11,17 @@ import java.util.*
 val local: Locale get() = Locale.getDefault()
 val sdf = SimpleDateFormat("dd/MM/yyyy", local)
 val sdfTitle = SimpleDateFormat("dd MMMM, EE", local)
+val sdfOnlyTime = SimpleDateFormat("HH:mm", local)
 
 enum class DateConvertType {
-  SIMPLE, TITLE
+  SIMPLE, TITLE, ONLY_TIME
 }
 
 fun Date.convertDate(type: DateConvertType = DateConvertType.SIMPLE): String {
   return when (type) {
     DateConvertType.SIMPLE -> sdf.format(this)
     DateConvertType.TITLE -> sdfTitle.format(this)
+    DateConvertType.ONLY_TIME -> sdfOnlyTime.format(this)
   }
 }
 

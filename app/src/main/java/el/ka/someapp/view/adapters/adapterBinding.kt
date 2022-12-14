@@ -18,7 +18,10 @@ import el.ka.someapp.data.model.measuring.MeasuringCondition
 import el.ka.someapp.data.model.measuring.MeasuringKind
 import el.ka.someapp.data.model.measuring.MeasuringState
 import el.ka.someapp.data.model.role.*
+import el.ka.someapp.general.DateConvertType
+import el.ka.someapp.general.convertDate
 import el.ka.someapp.viewmodel.StatePassword
+import java.util.*
 
 @BindingAdapter("app:isLoad")
 fun visibleLoader(view: View, state: State) {
@@ -228,4 +231,9 @@ fun showError2(view: TextInputLayout, error: ErrorApp?) {
 @BindingAdapter("app:stringRes")
 fun stringRes(textView: TextView, resId: Int) {
   textView.text = textView.context.getString(resId)
+}
+
+@BindingAdapter("app:stringDateTime")
+fun stringDateTime(textView: TextView, date: Date) {
+  textView.text = date.convertDate(DateConvertType.ONLY_TIME)
 }
