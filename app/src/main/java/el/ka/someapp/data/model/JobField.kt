@@ -14,4 +14,14 @@ data class JobField(
       jobName = UserRole.HEAD.roleName
     )
   }
+
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (other !is JobField) return false
+
+    return (jobName == other.jobName)
+        && (jobRole == other.jobRole)
+        && (userId == other.userId)
+        && (default == other.default)
+  }
 }

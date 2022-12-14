@@ -636,14 +636,10 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   }
 
   fun updateJobField(oldJobField: JobField, jobField: JobField) {
-
-    val jobs = _currentNode.value!!.jobs.toMutableList()
-    jobs.remove(oldJobField)
-    jobs.add(jobField)
-    _currentNode.value!!.jobs = jobs
-
+    _currentNode.value!!.jobs = _currentNode.value!!.jobs.toMutableList().map {
+      return@map if (it == oldJobField) jobField else it
+    }
     loadLocalUsers()
-//    _state.value = State.VIEW
   }
 
   fun deleteJobField(jobField: JobField) {

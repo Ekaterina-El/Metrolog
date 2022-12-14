@@ -55,7 +55,6 @@ class NodeInfoFragment : BaseFragment() {
     override fun onClick(jobField: JobField) {}
     override fun onEdit(jobField: JobField) {
       viewModel.setToEditJobField(jobField)
-
     }
 
     override fun onDelete(jobField: JobField) {

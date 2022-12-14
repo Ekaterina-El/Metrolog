@@ -1,6 +1,7 @@
 package el.ka.someapp.view.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
@@ -122,6 +123,7 @@ class JobsAdapter(val context: Context, val listener: ItemListener? = null) :
   override fun getItemCount(): Int = items.size
 
   fun setLocalUser(localUsers: List<LocalUser>, viewerRole: UserRole? = null) {
+    Log.d("JobsAdapter", "setLocalUser: ${localUsers.size}")
     clearList()
     this.viewerRole = viewerRole
     localUsers.forEach { addNode(it) }
