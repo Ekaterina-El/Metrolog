@@ -33,6 +33,10 @@ class PassportMeasuringFragment : MeasuringPartFragment(MeasuringPart.PASSPORT) 
     measuringValueAdapter.setAccessToEdit(hasAccess)
   }
 
+  override fun beforeSave() {
+    passportViewModel.setMeasurementValues(measuringValueAdapter.getMeasuringValues())
+  }
+
   // region Spinner Adapters
   private fun createSpinners() {
     createSpinner(MeasuringPassportPart.KIND)
