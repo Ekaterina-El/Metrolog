@@ -25,6 +25,12 @@ fun Date.convertDate(type: DateConvertType = DateConvertType.SIMPLE): String {
   }
 }
 
+//fun MeasuringPartRealization.toStringDates(): String {
+//  val last = this.dateLast?.convertDate() ?: "??/??/????"
+//  val next = this.dateNext?.convertDate() ?: "??/??/????"
+//  return "$last - $next"
+//}
+
 fun String.convertDate(): Date {
   return sdf.parse(this) as Date
 }

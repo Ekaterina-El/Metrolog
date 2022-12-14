@@ -13,88 +13,71 @@
   <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="10dp"
-    android:layout_marginVertical="10dp"
+    android:paddingVertical="10dp"
     android:orientation="vertical">
 
     <TextView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginBottom="10dp"
-      android:fontFamily="@font/montserrat_regular"
-      android:text="@{measuring.passport.name}"
-      android:textColor="@color/secondary_color"
-      android:textSize="14sp"
+      style="@style/smallText"
       android:textStyle="bold"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
+      android:text="@{measuring.passport.name}"
       tools:text="СИ N" />
 
     <TextView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:fontFamily="@font/montserrat_regular"
+      style="@style/smallText"
+      android:layout_marginTop="10dp"
       android:text="@{!measuring.passport.inventoryNumber.isEmpty() ? @string/inv_number(measuring.passport.inventoryNumber) : @string/inv_number('-')}"
-      android:textColor="@color/secondary_color"
-      android:textSize="12sp"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
       tools:text="Инвентарный номер: 121G5F3232" />
 
     <TextView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:fontFamily="@font/montserrat_regular"
+      style="@style/smallText"
       android:text="@{@string/type(measuring.passport.type)}"
-      android:textColor="@color/secondary_color"
-      android:textSize="12sp"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
       tools:text="Тип: NHG-V" />
 
     <TextView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:fontFamily="@font/montserrat_regular"
-      android:textColor="@color/secondary_color"
-      android:textSize="12sp"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
+      style="@style/smallText"
       app:showKind="@{measuring.passport.kind}"
       tools:text="Вид: Мера" />
 
     <TextView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:fontFamily="@font/montserrat_regular"
-      android:textColor="@color/secondary_color"
+      style="@style/smallText"
       android:textSize="12sp"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
       app:showStatus="@{measuring.passport.status}"
       tools:text="Статус: Аттестация" />
 
     <TextView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:fontFamily="@font/montserrat_regular"
-      android:textColor="@color/secondary_color"
-      android:textSize="12sp"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
+      style="@style/smallText"
       app:showCondition="@{measuring.passport.condition}"
       tools:text="Состояние: В работе" />
+
+    <TextView
+      style="@style/smallText"
+      android:layout_marginTop="10dp"
+      app:showOverhaulDates="@{measuring.overhaul}"
+      tools:text="Кап.ремонт: 13/03/2022 - 13/12/2022" />
+
+    <TextView
+      style="@style/smallText"
+      app:showMaintenanceRepairDates="@{measuring.maintenanceRepair}"
+      tools:text="Текущий ремонт: 13/03/2022 - 13/12/2022" />
+
+    <TextView
+      style="@style/smallText"
+      app:showTODates="@{measuring.TO}"
+      tools:text="ТО: 13/03/2022 - 13/12/2022" />
+
+    <TextView
+      style="@style/smallText"
+      app:showVerificationDates="@{measuring.verification}"
+      tools:text="Поверка: 13/03/2022 - 13/12/2022" />
+
+    <TextView
+      style="@style/smallText"
+      app:showCertificationDates="@{measuring.certification}"
+      tools:text="Аттестация: 13/03/2022 - 13/12/2022" />
+
+    <TextView
+      style="@style/smallText"
+      app:showCalibrationDates="@{measuring.calibration}"
+      tools:text="Калибровка: 13/03/2022 - 13/12/2022" />
   </LinearLayout>
 </layout>

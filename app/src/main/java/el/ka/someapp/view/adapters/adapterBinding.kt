@@ -1,6 +1,7 @@
 package el.ka.someapp.view.adapters
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.text.InputType
 import android.view.View
 import android.widget.EditText
@@ -16,6 +17,7 @@ import el.ka.someapp.data.model.User
 import el.ka.someapp.data.model.UserRole
 import el.ka.someapp.data.model.measuring.MeasuringCondition
 import el.ka.someapp.data.model.measuring.MeasuringKind
+import el.ka.someapp.data.model.measuring.MeasuringPartRealization
 import el.ka.someapp.data.model.measuring.MeasuringState
 import el.ka.someapp.data.model.role.*
 import el.ka.someapp.general.DateConvertType
@@ -236,4 +238,45 @@ fun stringRes(textView: TextView, resId: Int) {
 @BindingAdapter("app:stringDateTime")
 fun stringDateTime(textView: TextView, date: Date) {
   textView.text = date.convertDate(DateConvertType.ONLY_TIME)
+}
+
+@BindingAdapter("app:showOverhaulDates")
+fun showOverhaulDates(view: TextView, v: MeasuringPartRealization) {
+  setDates(R.string.overhaulTitle, view, v)
+}
+
+@BindingAdapter("app:showMaintenanceRepairDates")
+fun showMaintenanceRepairDates(view: TextView, v: MeasuringPartRealization) {
+  setDates(R.string.maintenance_repair, view, v)
+}
+
+@BindingAdapter("app:showTODates")
+fun showTODates(view: TextView, v: MeasuringPartRealization) {
+  setDates(R.string.to, view, v)
+}
+
+@BindingAdapter("app:showVerificationDates")
+fun showVerificationDates(view: TextView, v: MeasuringPartRealization) {
+  setDates(R.string.verification, view, v)
+}
+
+@BindingAdapter("app:showCertificationDates")
+fun showCertificationDates(view: TextView, v: MeasuringPartRealization) {
+  setDates(R.string.certification, view, v)
+}
+
+@BindingAdapter("app:showCalibrationDates")
+fun showCalibrationDates(view: TextView, v: MeasuringPartRealization) {
+  setDates(R.string.calibration, view, v)
+}
+
+fun setDates(titleRes: Int, view: TextView, v: MeasuringPartRealization) {
+  view.text = getMeasuringPartDate(view.context, titleRes, v)
+}
+
+fun getMeasuringPartDate(ctx: Context, titleRes: Int, value: MeasuringPartRealization): String {
+  val last = value.dateLast?.convertDate() ?: "??/??/????"
+  val next = value.dateNext?.convertDate() ?: "??/??/????"
+  val title = ctx.getString(titleRes)
+  return ctx.getString(R.string.titleWithDate, title, last, next)
 }
