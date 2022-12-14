@@ -3,12 +3,28 @@ package el.ka.someapp.general
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Spinner
+import el.ka.someapp.data.model.measuring.CategoryHistory
+import el.ka.someapp.data.model.measuring.MeasuringHistoryItemExecuted
 import java.text.SimpleDateFormat
 import java.util.*
 
-fun Date.convertDate(): String {
-  val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-  return sdf.format(this)
+val local: Locale get() = Locale.getDefault()
+val sdf = SimpleDateFormat("dd/MM/yyyy", local)
+val sdfTitle = SimpleDateFormat("dd MMMM, EE", local)
+
+enum class DateConvertType {
+  SIMPLE, TITLE
+}
+
+fun Date.convertDate(type: DateConvertType = DateConvertType.SIMPLE): String {
+  return when (type) {
+    DateConvertType.SIMPLE -> sdf.format(this)
+    DateConvertType.TITLE -> sdfTitle.format(this)
+  }
+}
+
+fun String.convertDate(): Date {
+  return sdf.parse(this) as Date
 }
 
 fun Spinner.addListener(onSelected: (Any?) -> Unit) {
@@ -20,4 +36,15 @@ fun Spinner.addListener(onSelected: (Any?) -> Unit) {
 
       override fun onNothingSelected(p0: AdapterView<*>?) {}
     }
+}
+
+fun List<MeasuringHistoryItemExecuted>.byCategory(): List<CategoryHistory> {
+  val list = this.toMutableList()
+
+  return list.map { it.history.date!!.convertDate() }.distinct().map { date ->
+    val actions = list.filter { it.history.date!!.convertDate() == date }
+    val category = CategoryHistory(date.convertDate(), actions)
+    list.removeAll(actions)
+    return@map category
+  }
 }

@@ -10,10 +10,14 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import el.ka.someapp.R
 import el.ka.someapp.data.model.*
-import el.ka.someapp.data.model.measuring.*
+import el.ka.someapp.data.model.measuring.CategoryHistory
+import el.ka.someapp.data.model.measuring.Measuring
+import el.ka.someapp.data.model.measuring.MeasuringPart
 import el.ka.someapp.data.model.role.AccessType
 import el.ka.someapp.data.model.role.hasRole
 import el.ka.someapp.databinding.FragmentMeasuringDashboardBinding
+import el.ka.someapp.general.DateConvertType
+import el.ka.someapp.general.convertDate
 import el.ka.someapp.view.BaseFragment
 import el.ka.someapp.view.adapters.MeasuringHistoryAdapter
 import el.ka.someapp.view.dialog.ConfirmDialog
@@ -27,6 +31,17 @@ class MeasuringDashboardFragment : BaseFragment() {
   private val visibleViewModel: VisibleViewModel by activityViewModels()
 
   private lateinit var measuringHistoryAdapter: MeasuringHistoryAdapter
+
+  private val historyObserver = Observer<List<CategoryHistory>> { list ->
+    val items = mutableListOf<ListItem>()
+    list.forEach { category ->
+      items.add(HeaderItem(category.date.convertDate(DateConvertType.TITLE)))
+      category.actions.forEach {
+        items.add(ContentItem(it))
+      }
+    }
+    measuringHistoryAdapter.setItems(items)
+  }
 
   private val stateObserver = Observer<State> {
     if (it != State.LOADING) hideLoadingDialog() else showLoadingDialog()
@@ -49,8 +64,8 @@ class MeasuringDashboardFragment : BaseFragment() {
 
   override fun initFunctionalityParts() {
     binding = FragmentMeasuringDashboardBinding.inflate(layoutInflater)
-    popupMenu = PopupMenu(context, binding.verticalMenu)
 
+    popupMenu = PopupMenu(context, binding.verticalMenu)
     popupMenu.setOnDismissListener {
       it.menu.clear()
     }
@@ -69,48 +84,20 @@ class MeasuringDashboardFragment : BaseFragment() {
       viewModel = this@MeasuringDashboardFragment.nodesViewModel
       master = this@MeasuringDashboardFragment
     }
+
+    measuringHistoryAdapter = MeasuringHistoryAdapter()
+    binding.historyAdapter = measuringHistoryAdapter
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    val img =
-      "https://firebasestorage.googleapis.com/v0/b/metrolog-79c82.appspot.com/o/users_profiles%2FSoEjWiDUpWSpqGkW4vbaVKb7Doo1?alt=media&token=f0750949-6200-419e-a806-6e1930ecc7c6"
-    val items = listOf(
-      HeaderItem("2 декабря, пн"),
-      ContentItem(
-        MeasuringHistoryItemExecuted(
-          User(fullName = "Иванов Иван Иванович", profileImageUrl = img),
-          MeasuringHistoryItem(
-            action = MeasuringActionType.CREATED
-          )
-        )
-      ),
-      ContentItem(
-        MeasuringHistoryItemExecuted(
-          User(fullName = "Иванов Иван Иванович", profileImageUrl = img),
-          MeasuringHistoryItem(
-            action = MeasuringActionType.EDITED_VERIFICATION
-          )
-        )
-      ),
-
-      HeaderItem("3 декабря, вт"),
-      ContentItem(
-        MeasuringHistoryItemExecuted(
-          User(fullName = "Павлов Павел Павлович"),
-          MeasuringHistoryItem(
-            action = MeasuringActionType.EDITED_TO
-          )
-        )
-      ),
-    )
-    measuringHistoryAdapter = MeasuringHistoryAdapter(items)
-    binding.historyAdapter = measuringHistoryAdapter
+    nodesViewModel.loadCurrentMeasuringHistory()
   }
 
   override fun onResume() {
     super.onResume()
 
+    nodesViewModel.currentMeasuringHistory.observe(viewLifecycleOwner, historyObserver)
     nodesViewModel.state.observe(viewLifecycleOwner, stateObserver)
 
     val hasAccess = accessToDelete(nodesViewModel.currentRole.value!!)
@@ -128,7 +115,7 @@ class MeasuringDashboardFragment : BaseFragment() {
   override fun onStop() {
     super.onStop()
     binding.verticalMenu.setOnClickListener(null)
-
+    nodesViewModel.currentMeasuringHistory.removeObserver(historyObserver)
     nodesViewModel.state.removeObserver(stateObserver)
   }
 

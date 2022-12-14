@@ -83,12 +83,11 @@
         android:layout_marginTop="10dp"
         android:orientation="vertical">
 
-        <!--   region Row 1 [Start]  -->
         <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:orientation="horizontal">
-          <!--- Card 1 [Start] -->
+
           <androidx.cardview.widget.CardView
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -127,11 +126,54 @@
                 android:textColor="@color/secondary_color" />
 
             </LinearLayout>
+          </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal">
+
+          <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="@{() -> master.navigateTo(MeasuringPart.OVERHAUL)}"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:orientation="vertical"
+              android:padding="20dp"
+              tools:ignore="UseCompoundDrawables">
+
+              <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dashboard_size"
+                android:src="@drawable/ic_repair_3"
+                app:tint="@color/primary_color"
+                tools:ignore="ContentDescription" />
+
+              <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dashboard_between_icon_text"
+                android:fontFamily="@font/montserrat_regular"
+                android:gravity="center"
+                android:text="@string/overhaul"
+                android:textColor="@color/secondary_color" />
+            </LinearLayout>
 
           </androidx.cardview.widget.CardView>
-          <!--- Card 1 [End]-->
 
-          <!--- Card 2 [Start] -->
           <androidx.cardview.widget.CardView
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -167,12 +209,16 @@
                 android:fontFamily="@font/montserrat_regular"
                 android:gravity="center"
                 android:text="@string/maintenance_repair"
-                android:textColor="@color/secondary_color"
-                android:textSize="12sp" />
+                android:textColor="@color/secondary_color" />
             </LinearLayout>
 
           </androidx.cardview.widget.CardView>
-          <!--- Card 2 [End]-->
+        </LinearLayout>
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal">
 
           <androidx.cardview.widget.CardView
             android:layout_width="0dp"
@@ -188,7 +234,7 @@
 
             <LinearLayout
               android:layout_width="match_parent"
-              android:layout_height="wrap_content"
+              android:layout_height="match_parent"
               android:layout_gravity="center_vertical"
               android:gravity="center"
               android:orientation="vertical"
@@ -209,203 +255,137 @@
                 android:fontFamily="@font/montserrat_regular"
                 android:gravity="center"
                 android:text="@string/to"
-                android:textColor="@color/secondary_color"
-                android:textSize="12sp" />
+                android:textColor="@color/secondary_color" />
             </LinearLayout>
 
           </androidx.cardview.widget.CardView>
 
+          <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="@{() -> master.navigateTo(MeasuringPart.CALIBRATION)}"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_gravity="center_vertical"
+              android:gravity="center"
+              android:orientation="vertical"
+              android:padding="20dp"
+              tools:ignore="UseCompoundDrawables">
+
+              <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dashboard_size"
+                android:src="@drawable/ic_calibration"
+                app:tint="@color/primary_color"
+                tools:ignore="ContentDescription" />
+
+              <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dashboard_between_icon_text"
+                android:fontFamily="@font/montserrat_regular"
+                android:gravity="center"
+                android:text="@string/calibration"
+                android:textColor="@color/secondary_color" />
+
+            </LinearLayout>
+
+          </androidx.cardview.widget.CardView>
         </LinearLayout>
-        <!-- endregion   Row 1 [End]  -->
 
         <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:orientation="horizontal">
 
-          <!--   region Row 2 Left   -->
-          <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:orientation="vertical">
-            <!--- Card 3 [Start] -->
-            <androidx.cardview.widget.CardView
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:clickable="true"
-              android:focusable="true"
-              android:foreground="?android:attr/selectableItemBackground"
-              android:onClick="@{() -> master.navigateTo(MeasuringPart.CALIBRATION)}"
-              app:cardCornerRadius="8dp"
-              app:cardElevation="4dp"
-              app:cardUseCompatPadding="true">
-
-              <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="20dp"
-                tools:ignore="UseCompoundDrawables">
-
-                <ImageView
-                  android:layout_width="wrap_content"
-                  android:layout_height="@dimen/dashboard_size"
-                  android:src="@drawable/ic_calibration"
-                  app:tint="@color/primary_color"
-                  tools:ignore="ContentDescription" />
-
-                <TextView
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_marginTop="@dimen/dashboard_between_icon_text"
-                  android:fontFamily="@font/montserrat_regular"
-                  android:gravity="center"
-                  android:text="@string/calibration"
-                  android:textColor="@color/secondary_color"
-                  android:textSize="12sp" />
-
-              </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-            <!--- Card 3 [End]-->
-
-            <!--- Card 4 [Start] -->
-            <androidx.cardview.widget.CardView
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:clickable="true"
-              android:focusable="true"
-              android:foreground="?android:attr/selectableItemBackground"
-              android:onClick="@{() -> master.navigateTo(MeasuringPart.OVERHAUL)}"
-              app:cardCornerRadius="8dp"
-              app:cardElevation="4dp"
-              app:cardUseCompatPadding="true">
-
-              <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="20dp"
-                tools:ignore="UseCompoundDrawables">
-
-                <ImageView
-                  android:layout_width="wrap_content"
-                  android:layout_height="@dimen/dashboard_size"
-                  android:src="@drawable/ic_repair_3"
-                  app:tint="@color/primary_color"
-                  tools:ignore="ContentDescription" />
-
-                <TextView
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_marginTop="@dimen/dashboard_between_icon_text"
-                  android:fontFamily="@font/montserrat_regular"
-                  android:gravity="center"
-                  android:text="@string/overhaul"
-                  android:textColor="@color/secondary_color"
-                  android:textSize="12sp" />
-              </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-            <!--- Card 4 [End]-->
-          </LinearLayout>
-          <!--    endregion    -->
-
-          <!--- region Row 2 Right -->
-
-          <!--- Card 3 [Start] -->
-          <LinearLayout
+          <androidx.cardview.widget.CardView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="@{() -> master.navigateTo(MeasuringPart.VERIFICATION)}"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp"
+            app:cardUseCompatPadding="true"
+            tools:ignore="NestedWeights">
 
-            <androidx.cardview.widget.CardView
+            <LinearLayout
               android:layout_width="match_parent"
-              android:layout_height="0dp"
-              android:layout_weight="1"
-              android:clickable="true"
-              android:focusable="true"
-              android:foreground="?android:attr/selectableItemBackground"
-              android:onClick="@{() -> master.navigateTo(MeasuringPart.VERIFICATION)}"
-              app:cardCornerRadius="8dp"
-              app:cardElevation="4dp"
-              app:cardUseCompatPadding="true"
-              tools:ignore="NestedWeights">
+              android:layout_height="match_parent"
+              android:layout_gravity="center_vertical"
+              android:gravity="center"
+              android:orientation="vertical"
+              android:padding="20dp"
+              tools:ignore="UseCompoundDrawables">
 
-              <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
+              <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dashboard_size"
+                android:src="@drawable/ic_verification"
+                app:tint="@color/primary_color"
+                tools:ignore="ContentDescription" />
+
+              <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dashboard_between_icon_text"
+                android:fontFamily="@font/montserrat_regular"
                 android:gravity="center"
-                android:orientation="vertical"
-                android:padding="20dp"
-                tools:ignore="UseCompoundDrawables">
+                android:text="@string/verification"
+                android:textColor="@color/secondary_color" />
 
-                <ImageView
-                  android:layout_width="wrap_content"
-                  android:layout_height="@dimen/dashboard_size"
-                  android:src="@drawable/ic_verification"
-                  app:tint="@color/primary_color"
-                  tools:ignore="ContentDescription" />
+            </LinearLayout>
 
-                <TextView
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_marginTop="@dimen/dashboard_between_icon_text"
-                  android:fontFamily="@font/montserrat_regular"
-                  android:gravity="center"
-                  android:text="@string/verification"
-                  android:textColor="@color/secondary_color"
-                  android:textSize="12sp" />
+          </androidx.cardview.widget.CardView>
 
-              </LinearLayout>
+          <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="@{() -> master.navigateTo(MeasuringPart.CERTIFICATION)}"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp"
+            app:cardUseCompatPadding="true">
 
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
+            <LinearLayout
               android:layout_width="match_parent"
-              android:layout_height="0dp"
-              android:layout_weight="1"
-              android:clickable="true"
-              android:focusable="true"
-              android:foreground="?android:attr/selectableItemBackground"
-              android:onClick="@{() -> master.navigateTo(MeasuringPart.CERTIFICATION)}"
-              app:cardCornerRadius="8dp"
-              app:cardElevation="4dp"
-              app:cardUseCompatPadding="true">
+              android:layout_height="match_parent"
+              android:gravity="center"
+              android:orientation="vertical"
+              android:padding="20dp"
+              tools:ignore="UseCompoundDrawables">
 
-              <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+              <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dashboard_size"
+                android:src="@drawable/ic_certification"
+                app:tint="@color/primary_color"
+                tools:ignore="ContentDescription" />
+
+              <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dashboard_between_icon_text"
+                android:fontFamily="@font/montserrat_regular"
                 android:gravity="center"
-                android:orientation="vertical"
-                android:padding="20dp"
-                tools:ignore="UseCompoundDrawables">
-
-                <ImageView
-                  android:layout_width="wrap_content"
-                  android:layout_height="@dimen/dashboard_size"
-                  android:src="@drawable/ic_certification"
-                  app:tint="@color/primary_color"
-                  tools:ignore="ContentDescription" />
-
-                <TextView
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_marginTop="@dimen/dashboard_between_icon_text"
-                  android:fontFamily="@font/montserrat_regular"
-                  android:gravity="center"
-                  android:text="@string/certification"
-                  android:textColor="@color/secondary_color"
-                  android:textSize="12sp" />
-              </LinearLayout>
-            </androidx.cardview.widget.CardView>
-          </LinearLayout>
+                android:text="@string/certification"
+                android:textColor="@color/secondary_color" />
+            </LinearLayout>
+          </androidx.cardview.widget.CardView>
         </LinearLayout>
       </LinearLayout>
 

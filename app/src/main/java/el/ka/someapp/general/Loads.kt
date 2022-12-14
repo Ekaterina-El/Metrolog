@@ -21,4 +21,5 @@ object Loads {
   const val ADD_USER_USER_BY_EMAIL = 18
   const val DENY_ACCESS_USER = 19
   const val LOAD_ALL_NODES_MEASURING = 20
+  const val LOAD_MEASURING_HISTORY = 21
 }

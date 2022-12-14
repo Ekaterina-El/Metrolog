@@ -2,7 +2,6 @@ package el.ka.someapp.data.repository
 
 import android.net.Uri
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.storage.StorageReference
 import el.ka.someapp.data.model.ErrorApp
 import el.ka.someapp.data.model.Errors
@@ -84,6 +83,10 @@ object UsersDatabaseService {
       }
   }
 
+  suspend fun getUserByUid(uid: String): DocumentSnapshot =
+    FirebaseServices.getDocumentById(uid, ref = FirebaseServices.databaseUsers)
+
+
   fun changeBackgroundImage(uri: Uri, onFailure: () -> Unit, onSuccess: (String) -> Unit) {
     val ref = FirebaseServices.usersBackgroundsStore.child(AuthenticationService.getUserUid()!!)
     loadImageToStore(ref, uri, onFailure, onSuccess = {
@@ -118,7 +121,11 @@ object UsersDatabaseService {
     changeField(ref, field = PROFILE_IMAGE_URL_FIELD, value = url, onFailure, onSuccess)
   }
 
-  private fun changeBackgroundProfileURL(url: String, onFailure: () -> Unit, onSuccess: () -> Unit) {
+  private fun changeBackgroundProfileURL(
+    url: String,
+    onFailure: () -> Unit,
+    onSuccess: () -> Unit
+  ) {
     val ref = FirebaseServices.databaseUsers.document(AuthenticationService.getUserUid()!!)
     changeField(ref, field = BACKGROUND_IMAGE_URL_FIELD, value = url, onFailure, onSuccess)
   }

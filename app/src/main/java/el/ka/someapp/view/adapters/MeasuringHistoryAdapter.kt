@@ -1,5 +1,6 @@
 package el.ka.someapp.view.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -9,8 +10,9 @@ import el.ka.someapp.data.model.measuring.MeasuringHistoryItemExecuted
 import el.ka.someapp.databinding.ItemHistoryBinding
 import el.ka.someapp.databinding.ItemHistoryHeaderBinding
 
-class MeasuringHistoryAdapter(private val list: List<ListItem>) :
-  RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MeasuringHistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+  private val list: MutableList<ListItem> = mutableListOf()
+
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
     return when (viewType) {
       TypeListItem.HEADER.idx -> {
@@ -44,6 +46,13 @@ class MeasuringHistoryAdapter(private val list: List<ListItem>) :
   override fun getItemCount() = list.size
 
   override fun getItemViewType(position: Int) = list[position].type.idx
+
+  @SuppressLint("NotifyDataSetChanged")
+  fun setItems(newList: List<ListItem>) {
+    list.clear()
+    list.addAll(newList)
+    notifyDataSetChanged()
+  }
 }
 
 class MeasuringHistoryContentViewHolder(private val binding: ItemHistoryBinding) :

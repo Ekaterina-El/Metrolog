@@ -14,6 +14,7 @@ import el.ka.someapp.data.repository.MeasuringDatabaseService
 import el.ka.someapp.data.repository.NodesDatabaseService
 import el.ka.someapp.data.repository.UsersDatabaseService
 import el.ka.someapp.general.Loads
+import el.ka.someapp.general.byCategory
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 
@@ -81,6 +82,31 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       else -> {}
     }
   }
+
+  fun loadCurrentMeasuringHistory() {
+    changeLoads(Loads.LOAD_MEASURING_HISTORY)
+    viewModelScope.launch {
+      val historyItemsExecuted = _currentMeasuring.value!!.history
+        .map {
+          val uid = it.userId
+          return@map MeasuringHistoryItemExecuted(
+            history = it,
+            user = getUserFromAll(uid) ?: loadUserByUid(uid)
+          )
+        }
+      _currentMeasuringHistory.value = historyItemsExecuted.byCategory()
+      changeLoads(Loads.LOAD_MEASURING_HISTORY, false)
+    }
+  }
+
+  private val _currentMeasuringHistory = MutableLiveData<List<CategoryHistory>>()
+  val currentMeasuringHistory: LiveData<List<CategoryHistory>>
+    get() = _currentMeasuringHistory
+
+  private suspend fun loadUserByUid(uid: String): User =
+    UsersDatabaseService.getUserByUid(uid).toObject(User::class.java)!!
+
+  private fun getUserFromAll(uid: String) = _companyAllUsers.value!!.firstOrNull { it.uid == uid }
 
   private fun loadMeasuring(measuringIds: List<String>) {
     changeLoads(Loads.LOAD_MEASURING)
@@ -824,5 +850,5 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   fun getLocalUserHeadID(): String? {
     return _localUsers.value!!.firstOrNull { it.jobField.jobRole == UserRole.HEAD }?.user?.uid
   }
-  // endregion
 }
+// endregion
