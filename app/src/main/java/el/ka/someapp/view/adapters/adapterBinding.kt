@@ -22,6 +22,8 @@ import el.ka.someapp.data.model.measuring.MeasuringState
 import el.ka.someapp.data.model.role.*
 import el.ka.someapp.general.DateConvertType
 import el.ka.someapp.general.convertDate
+import el.ka.someapp.general.daysTo
+import el.ka.someapp.general.getCurrentTime
 import el.ka.someapp.viewmodel.StatePassword
 import java.util.*
 
@@ -272,6 +274,19 @@ fun showCalibrationDates(view: TextView, v: MeasuringPartRealization) {
 
 fun setDates(titleRes: Int, view: TextView, v: MeasuringPartRealization) {
   view.text = getMeasuringPartDate(view.context, titleRes, v)
+  view.setTextColor(getMeasuringPartColor(view.context, v.dateNext))
+}
+
+fun getMeasuringPartColor(context: Context, nextDate: Date?): Int {
+  val days = if (nextDate != null) getCurrentTime().daysTo(nextDate) else 0
+
+  val colorRes = when {
+    days <= 0 -> R.color.overdueTerms
+    days > 30 -> R.color.secondary_color
+    else -> R.color.halfOverdueTerms
+  }
+
+  return context.getColor(colorRes)
 }
 
 fun getMeasuringPartDate(ctx: Context, titleRes: Int, value: MeasuringPartRealization): String {

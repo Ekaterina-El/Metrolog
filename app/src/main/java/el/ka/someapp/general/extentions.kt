@@ -7,6 +7,7 @@ import el.ka.someapp.data.model.measuring.CategoryHistory
 import el.ka.someapp.data.model.measuring.MeasuringHistoryItemExecuted
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 val local: Locale get() = Locale.getDefault()
 val sdf = SimpleDateFormat("dd/MM/yyyy", local)
@@ -25,11 +26,12 @@ fun Date.convertDate(type: DateConvertType = DateConvertType.SIMPLE): String {
   }
 }
 
-//fun MeasuringPartRealization.toStringDates(): String {
-//  val last = this.dateLast?.convertDate() ?: "??/??/????"
-//  val next = this.dateNext?.convertDate() ?: "??/??/????"
-//  return "$last - $next"
-//}
+fun Date.daysTo(date: Date): Int {
+  val current = this.time
+  val timeDateTo = date.time
+  val diff = timeDateTo - current
+  return TimeUnit.MILLISECONDS.toDays(diff).toInt()
+}
 
 fun String.convertDate(): Date {
   return sdf.parse(this) as Date

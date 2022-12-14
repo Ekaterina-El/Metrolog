@@ -16,8 +16,11 @@
   <color name="semi_dark">#80454545</color>
   <color name="secondary_color">#757575</color>
   <color name="attentionColor">#CC2D2D</color>
+  <color name="attentionColor2">#304FFE</color>
   <color name="light_gray">#DDDDDD</color>
   <color name="dark_gray">#BABABA</color>
   <color name="super_dark_gray">#939393</color>
   <color name="secondary_color_dark">#242424</color>
+  <color name="overdueTerms">@color/attentionColor</color>
+  <color name="halfOverdueTerms">@color/attentionColor2</color>
 </resources>
