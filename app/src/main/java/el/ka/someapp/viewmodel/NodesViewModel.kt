@@ -829,7 +829,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     )
   }
 
-  fun updateMeasuringPart(part: MeasuringPart, value: Any) {
+  fun updateMeasuringPart(part: MeasuringPart, value: Any, historyItem: MeasuringHistoryItem) {
     val measuring = _currentMeasuring.value!!
 
     when (part) {
@@ -843,6 +843,10 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
       MeasuringPart.HISTORY -> measuring.history =
         (value as List<*>).map { it as MeasuringHistoryItem }
     }
+
+    val history = measuring.history.toMutableList()
+    history.add(historyItem)
+    measuring.history = history
 
     _currentMeasuring.value = measuring
   }

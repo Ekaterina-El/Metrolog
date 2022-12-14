@@ -38,6 +38,7 @@
         android:id="@+id/fullName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
         android:fontFamily="@font/montserrat_regular"
         android:text="@{history.user.fullName}"
         android:textColor="@color/secondary_color"

@@ -7,10 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import el.ka.someapp.data.model.State
 import el.ka.someapp.data.model.UserRole
-import el.ka.someapp.data.model.measuring.DateType
-import el.ka.someapp.data.model.measuring.Measuring
-import el.ka.someapp.data.model.measuring.MeasuringPart
-import el.ka.someapp.data.model.measuring.MeasuringPartRealization
+import el.ka.someapp.data.model.measuring.*
 import el.ka.someapp.data.repository.MeasuringDatabaseService
 import el.ka.someapp.general.convertDate
 import java.util.*
@@ -28,7 +25,7 @@ abstract class MeasuringPartViewModel(application: Application) : AndroidViewMod
   private val _viewerRole = MutableLiveData<UserRole?>()
   val viewerRole: LiveData<UserRole?> get() = _viewerRole
 
-  fun saveMeasuring(after: (MeasuringPartRealization) -> Unit) {
+  fun saveMeasuring(after: (MeasuringPartRealization, MeasuringHistoryItem) -> Unit) {
     _state.value = State.LOADING
     val newValue = getMeasuringPartRealization()
 
@@ -46,8 +43,8 @@ abstract class MeasuringPartViewModel(application: Application) : AndroidViewMod
       onFailure = {
         _state.value = State.VIEW
       },
-      onSuccess = {
-        after(newValue)
+      onSuccess = { history ->
+        after(newValue, history)
         _state.value = State.BACK
       }
     )

@@ -33,7 +33,6 @@ class PassportMeasuringFragment : MeasuringPartFragment(MeasuringPart.PASSPORT) 
     measuringValueAdapter.setAccessToEdit(hasAccess)
   }
 
-
   // region Spinner Adapters
   private fun createSpinners() {
     createSpinner(MeasuringPassportPart.KIND)

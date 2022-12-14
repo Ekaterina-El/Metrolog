@@ -23,7 +23,13 @@ object MeasuringDatabaseService {
           nodeId = measuring.passport.locationIDNode,
           measuringId = measuringId,
           onFailure = { onFailure(Errors.somethingWrong) },
-          onSuccess = { onSuccess(measuringId) }
+          onSuccess = {
+            changeMeasuringHistory(
+              measuringId,
+              getHistoryItem(MeasuringActionType.CREATED),
+              onSuccess = { onSuccess(measuringId) },
+              onFailure = { onFailure(Errors.somethingWrong) })
+          }
         )
       }
   }
@@ -60,7 +66,7 @@ object MeasuringDatabaseService {
     part: MeasuringPart,
     value: Any,
     onFailure: () -> Unit,
-    onSuccess: () -> Unit
+    onSuccess: (MeasuringHistoryItem) -> Unit
   ) {
     val valueToDB = when (part) {
       MeasuringPart.PASSPORT -> value as MeasuringPassport
@@ -80,7 +86,12 @@ object MeasuringDatabaseService {
       .update(partName, valueToDB)
       .addOnFailureListener { onFailure() }
       .addOnSuccessListener {
-        changeMeasuringHistory(measuringID, historyItem, onSuccess = { onSuccess() }, onFailure)
+        changeMeasuringHistory(
+          measuringID,
+          historyItem,
+          onSuccess = { onSuccess(historyItem) },
+          onFailure
+        )
       }
   }
 

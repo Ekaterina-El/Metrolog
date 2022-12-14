@@ -111,8 +111,8 @@ open class MeasuringPartFragment(val measuringPart: MeasuringPart) :
   open fun allFieldsRight(): Boolean = true
 
   fun trySaveMeasuring() {
-    if (allFieldsRight()) viewModel.saveMeasuring {
-      nodesViewModel.updateMeasuringPart(measuringPart, it)
+    if (allFieldsRight()) viewModel.saveMeasuring { value, history ->
+      nodesViewModel.updateMeasuringPart(measuringPart, value, history)
     }
   }
 
