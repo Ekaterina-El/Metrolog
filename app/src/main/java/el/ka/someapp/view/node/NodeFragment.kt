@@ -1,7 +1,6 @@
 package el.ka.someapp.view.node
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import el.ka.someapp.R
-import el.ka.someapp.data.model.Node
 import el.ka.someapp.data.model.State
 import el.ka.someapp.databinding.FragmentNodeBinding
 import el.ka.someapp.view.BaseFragment
@@ -35,7 +33,6 @@ class NodeFragment : BaseFragment() {
   private val loadsObserver = Observer<Set<Int>> {
     if (it.isNotEmpty()) showLoadingDialog() else hideLoadingDialog()
   }
-
 
   private fun navigateBack() {
     navigate(R.id.action_nodeFragment_to_companiesFragment)

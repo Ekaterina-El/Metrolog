@@ -94,7 +94,8 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
             user = getUserFromAll(uid) ?: loadUserByUid(uid)
           )
         }
-      _currentMeasuringHistory.value = historyItemsExecuted.byCategory()
+      _currentMeasuringHistory.value =
+        historyItemsExecuted.byCategory().sortedByDescending { it.date }
       changeLoads(Loads.LOAD_MEASURING_HISTORY, false)
     }
   }
@@ -618,9 +619,6 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
   }
-
-  // endregion
-  // endregion
 
   // region LocalUsers
   private val _localUsers = MutableLiveData<List<LocalUser>>(listOf())
