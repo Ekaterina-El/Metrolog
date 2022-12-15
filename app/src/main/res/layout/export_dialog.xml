@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  tools:background="@color/background_color">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg"
+    android:gravity="center"
+    android:paddingHorizontal="15dp"
+    android:paddingVertical="10dp">
+
+    <ImageView
+      android:layout_width="20dp"
+      android:layout_height="20dp"
+      android:contentDescription="@null"
+      android:src="@drawable/ic_export"
+      app:tint="@color/text_on_primary" />
+
+    <TextView
+      android:id="@+id/textTitle"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="20dp"
+      android:layout_weight="1"
+      android:fontFamily="@font/montserrat_regular"
+      android:text="@string/export_measuring_to_excel"
+      android:textColor="@color/text_on_primary"
+      android:textSize="16sp" />
+  </LinearLayout>
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+      style="@style/text"
+      android:layout_marginTop="10dp"
+      android:text="@string/export_text" />
+
+    <TextView
+      android:id="@+id/textViewCountMeasuring"
+      style="@style/text"
+      android:layout_marginTop="5dp"
+      android:textStyle="bold"
+      tools:text="СИ для экспорта: " />
+
+    <TextView
+      android:id="@+id/textViewMessage"
+      style="@style/text"
+      android:layout_marginTop="15dp"
+      android:text="@string/export_description" />
+
+    <CheckBox
+      android:id="@+id/checkboxInformation"
+      style="@style/text"
+      android:layout_marginTop="10dp"
+      android:text="@string/information_about_measuring" />
+
+    <CheckBox
+      android:id="@+id/checkboxMaintenanceRepair"
+      style="@style/text"
+      android:text="@string/maintenance_repair" />
+
+    <CheckBox
+      android:id="@+id/checkboxTO"
+      style="@style/text"
+      android:text="@string/to" />
+
+    <CheckBox
+      android:id="@+id/checkboxOverhaul"
+      style="@style/text"
+      android:text="@string/overhaul" />
+
+    <CheckBox
+      android:id="@+id/checkboxCertification"
+      style="@style/text"
+      android:text="@string/certification" />
+
+    <CheckBox
+      android:id="@+id/checkboxCalibration"
+      style="@style/text"
+      android:text="@string/calibration" />
+
+    <CheckBox
+      android:id="@+id/checkboxVerification"
+      style="@style/text"
+      android:text="@string/verification" />
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="30dp"
+      android:orientation="horizontal">
+
+      <Button
+        android:id="@+id/buttonContinue"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_weight="1"
+        android:background="@drawable/button_selector"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="@string/continue_text"
+        android:textAllCaps="false"
+        android:textColor="@color/text_on_primary"
+        app:backgroundTint="@null"
+        app:tint="@null" />
+
+    </LinearLayout>
+
+
+  </LinearLayout>
+
+</LinearLayout>

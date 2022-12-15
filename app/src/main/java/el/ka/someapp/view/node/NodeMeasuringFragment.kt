@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import el.ka.someapp.MainActivity
 import el.ka.someapp.R
+import el.ka.someapp.data.model.ExportType
 import el.ka.someapp.data.model.Node
 import el.ka.someapp.data.model.measuring.LoadMeasuringState
 import el.ka.someapp.data.model.measuring.Measuring
@@ -18,10 +19,11 @@ import el.ka.someapp.data.model.role.hasRole
 import el.ka.someapp.databinding.FragmentNodeMeasuringBinding
 import el.ka.someapp.view.BaseFragment
 import el.ka.someapp.view.adapters.MeasuringAdapter
+import el.ka.someapp.view.dialog.ExportDialog
 import el.ka.someapp.viewmodel.NodesViewModel
 import el.ka.someapp.viewmodel.VisibleViewModel
 
-class NodeMeasuringFragment: BaseFragment() {
+class NodeMeasuringFragment : BaseFragment() {
   private lateinit var binding: FragmentNodeMeasuringBinding
   private val viewModel: NodesViewModel by activityViewModels()
   private val visibleViewModel: VisibleViewModel by activityViewModels()
@@ -50,7 +52,7 @@ class NodeMeasuringFragment: BaseFragment() {
     return binding.root
   }
 
-  private val measuringListener = object: MeasuringAdapter.ItemListener {
+  private val measuringListener = object : MeasuringAdapter.ItemListener {
     override fun onClick(measuring: Measuring) {
       if (hasRole(viewModel.currentRole.value!!, AccessType.VIEW_MEASURING)) {
         visibleViewModel.setNodeNavigationState(false)
@@ -108,13 +110,29 @@ class NodeMeasuringFragment: BaseFragment() {
   }
 
   fun exportMeasuringItems() {
-    val path = (context as MainActivity).exporter.save()
-//    openExcelDocument(path)
-    Toast.makeText(
-      requireContext(),
-      getString(R.string.you_measuring_exported_successfully),
-      Toast.LENGTH_SHORT
-    ).show()
+    showExportDialog()
   }
 
+  private var exportDialog: ExportDialog? = null
+  private val exportDialogListener = object : ExportDialog.Companion.DialogListener {
+    override fun onContinue(exportTypes: List<ExportType>) {
+      ((context) as MainActivity).exporter.export(
+        exportTypes,
+        measuring = viewModel.measuringFiltered.value!!
+      ) {
+//        openExcelDocument(path)
+        exportDialog!!.closeConfirmDialog()
+        Toast.makeText(
+          requireContext(), getString(R.string.you_measuring_exported_successfully),
+          Toast.LENGTH_SHORT
+        ).show()
+      }
+    }
+  }
+
+  private fun showExportDialog() {
+    if (exportDialog == null) exportDialog = ExportDialog.getInstance(requireContext())
+    val countOfMeasuring = viewModel.measuringFiltered.value!!.size
+    exportDialog!!.openConfirmDialog(exportDialogListener, countOfMeasuring)
+  }
 }

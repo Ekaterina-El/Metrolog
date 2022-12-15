@@ -1,6 +1,7 @@
 package el.ka.someapp.data.model
 
 import android.os.Environment
+import el.ka.someapp.data.model.measuring.Measuring
 import org.apache.poi.ss.usermodel.BorderStyle
 import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Sheet
@@ -94,5 +95,14 @@ class Exporter {
     outputStream.flush()
     outputStream.close()
     return filePath.path
+  }
+
+  fun export(
+    exportTypes: List<ExportType>,
+    measuring: List<Measuring>,
+    onSuccess: (String) -> Unit
+  ) {
+//    Log.d("Export", "exportTypes: ${exportTypes.joinToString(", ")}")
+    onSuccess("")
   }
 }
