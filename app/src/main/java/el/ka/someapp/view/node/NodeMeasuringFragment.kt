@@ -124,7 +124,9 @@ class NodeMeasuringFragment : BaseFragment() {
   private fun startExport(exportTypes: List<ExportType>) {
     exportDialog!!.closeConfirmDialog()
     val measuring = viewModel.measuringFiltered.value!!
-    ((context) as MainActivity).exporter.export(exportTypes, measuring) {
+    val companyName = viewModel.getRootNode()?.name ?: "-"
+
+    ((context) as MainActivity).exporter.export(exportTypes, measuring, companyName) {
 //        openExcelDocument(path)
       toast(R.string.you_measuring_exported_successfully)
     }

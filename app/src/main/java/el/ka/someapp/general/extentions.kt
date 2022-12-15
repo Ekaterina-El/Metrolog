@@ -65,6 +65,7 @@ fun List<MeasuringHistoryItemExecuted>.byCategory(): List<CategoryHistory> {
 
 fun List<Measuring>.toRowsForExport(
   context: Context,
+  companyName: String,
   exportType: ExportType
 ): List<List<String>> = this.map {
   val list = mutableListOf<String>()
@@ -74,7 +75,9 @@ fun List<Measuring>.toRowsForExport(
   list.add(pass.type)
   list.add(pass.serialNumber.toString())
   list.add(pass.inventoryNumber.toString())
-  list.add(pass.locationIDNode) // заменить на имя узла + компанию
+
+  if (companyName != pass.locationNodeName) list.add("$companyName, ${pass.locationNodeName}")
+  else list.add(companyName)
 
   when (exportType) {
     ExportType.GENERAL -> {

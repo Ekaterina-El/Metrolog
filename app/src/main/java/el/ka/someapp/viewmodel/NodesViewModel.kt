@@ -783,7 +783,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   }
 
 
-  private fun getRootNode() = _nodesHistory.value?.firstOrNull()
+  fun getRootNode() = _nodesHistory.value?.firstOrNull()
 
   fun denyAccessUser(userId: String) {
     changeLoads(Loads.DENY_ACCESS_USER)

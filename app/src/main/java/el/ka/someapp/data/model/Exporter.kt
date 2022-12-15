@@ -100,11 +100,12 @@ class Exporter(val context: Context) {
   fun export(
     exportTypes: List<ExportType>,
     measuring: List<Measuring>,
+    companyName: String,
     onSuccess: (String) -> Unit
   ) {
     val workbook = XSSFWorkbook()
     createStyles(workbook)
-    exportTypes.forEach { createSheet(workbook, measuring, it) }
+    exportTypes.forEach { createSheet(workbook, measuring, companyName, it) }
     val path = saveWorkbook(workbook)
     onSuccess(path)
   }
@@ -178,6 +179,7 @@ class Exporter(val context: Context) {
   private fun createSheet(
     workbook: XSSFWorkbook,
     measuring: List<Measuring>,
+    companyName: String,
     exportType: ExportType
   ) {
     // Create sheet
@@ -190,7 +192,7 @@ class Exporter(val context: Context) {
 
     // Create values
     val values = mutableListOf(headerItems.toList())
-    values.addAll(measuring.toRowsForExport(context, exportType))
+    values.addAll(measuring.toRowsForExport(context, companyName, exportType))
 
     // Set values to sheet
     setDate(sheet, values)
