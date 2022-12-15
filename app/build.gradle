@@ -56,11 +56,9 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.14.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
 
-    // This library is used for crop image feature
-//    implementation("com.vanniktech:android-image-cropper:4.5.0")
-//    implementation 'com.github.takusemba:cropme:x.x.x'
     implementation("com.vanniktech:android-image-cropper:4.5.0")
-
-
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    implementation 'com.github.SUPERCILEX.poi-android:poi:3.17'
+    compileOnly 'org.apache.poi:poi-ooxml:3.17'
 }

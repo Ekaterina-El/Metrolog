@@ -5,8 +5,10 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -307,5 +309,14 @@ abstract class BaseFragment : Fragment() {
       }
       return isNull
     }
+  }
+
+  fun openExcelDocument(path: String) {
+    val intent = Intent(Intent.ACTION_VIEW)
+    val uri = Uri.parse(path)
+    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+    intent.setDataAndType(uri, "application/vnd.ms-excel")
+    startActivity(intent)
   }
 }

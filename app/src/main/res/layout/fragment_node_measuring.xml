@@ -125,20 +125,36 @@
       </LinearLayout>
       <!--  Search - end  -->
 
-      <Switch
-        android:id="@+id/switchLoadMeasuringState"
-        android:layout_width="match_parent"
+      <LinearLayout
+        android:id="@+id/controlLayout"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="match_parent"
         android:layout_marginHorizontal="@dimen/app_padding"
         android:layout_marginTop="10dp"
-        android:checked="@{viewmodel.loadMeasuringState == LoadMeasuringState.ALL}"
-        android:fontFamily="@font/montserrat_regular"
-        android:text="@string/load_all_measuring"
-        android:textColor="@color/secondary_color"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layoutHead"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
+        app:layout_constraintTop_toBottomOf="@id/layoutHead">
+
+        <Switch
+          android:id="@+id/switchLoadMeasuringState"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:checked="@{viewmodel.loadMeasuringState == LoadMeasuringState.ALL}"
+          android:fontFamily="@font/montserrat_regular"
+          android:text="@string/load_all_measuring"
+          android:textColor="@color/secondary_color"
+          tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+        <ImageView
+          android:id="@+id/iconExcel"
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:contentDescription="@string/export_measuring_to_excel"
+          android:onClick="@{() -> master.exportMeasuringItems()}"
+          android:src="@drawable/ic_excel" />
+      </LinearLayout>
 
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_measuring"
@@ -153,7 +169,7 @@
         android:nestedScrollingEnabled="false"
         android:overScrollMode="never"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@id/switchLoadMeasuringState"
+        app:layout_constraintTop_toBottomOf="@id/controlLayout"
         tools:listitem="@layout/item_mesuring" />
 
       <androidx.constraintlayout.widget.ConstraintLayout
@@ -166,7 +182,7 @@
         android:visibility="@{viewmodel.measuringFiltered.size() == 0 ? View.VISIBLE : View.GONE}"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/switchLoadMeasuringState"
+        app:layout_constraintTop_toBottomOf="@id/controlLayout"
         tools:visibility="visible">
 
         <TextView

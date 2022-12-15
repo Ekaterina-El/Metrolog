@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
+import el.ka.someapp.MainActivity
 import el.ka.someapp.R
 import el.ka.someapp.data.model.Node
 import el.ka.someapp.data.model.measuring.LoadMeasuringState
@@ -103,6 +105,16 @@ class NodeMeasuringFragment: BaseFragment() {
   fun goAddMeasuring() {
     visibleViewModel.setNodeNavigationState(false)
     navigate(R.id.action_nodeMeasuringFragment_to_addMeasuringFragment)
+  }
+
+  fun exportMeasuringItems() {
+    val path = (context as MainActivity).exporter.save()
+//    openExcelDocument(path)
+    Toast.makeText(
+      requireContext(),
+      getString(R.string.you_measuring_exported_successfully),
+      Toast.LENGTH_SHORT
+    ).show()
   }
 
 }

@@ -214,4 +214,6 @@
   <string name="measuring_history">История изменений</string>
   <string name="overhaulTitle">Кап.ремонт</string>
   <string name="titleWithDate">%1$s: %2$s - %3$s</string>
+  <string name="export_measuring_to_excel">Экспорт СИ в Excel</string>
+  <string name="you_measuring_exported_successfully">Ваши СИ успешно экспортированы в папку с документами</string>
 </resources>
