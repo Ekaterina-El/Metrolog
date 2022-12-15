@@ -222,4 +222,22 @@
   <string name="count_export_measuring">СИ для экспорта: %1$d</string>
   <string name="nothingToExport">Нет СИ для экспорта</string>
   <string name="noCheckedExportTypes">Не выбранны типы отчетов</string>
+
+  <string name="export_naming">Наименование</string>
+  <string name="export_type">Тип</string>
+  <string name="export_serial_number">Серийный номер</string>
+  <string name="export_inv_number">Инвентарный номер</string>
+  <string name="export_location">Местоположение</string>
+  <string name="export_status">Статус</string>
+  <string name="export_condition">Состояние</string>
+  <string name="lastDateRepair">Дата последнего ремонта</string>
+  <string name="nextDateRepair">Дата следующего ремонта</string>
+  <string name="nextDateTO">Дата следующего ТО</string>
+  <string name="lastDateTO">Дата последнего ТО</string>
+  <string name="nextDateVerification">Дата следующей поверки</string>
+  <string name="lastDateVerification">Дата последней поверки</string>
+  <string name="nextDateCalibration">Дата следующей калибровки</string>
+  <string name="lastDateCalibration">Дата последней калибровки</string>
+  <string name="nextDateCertification">Дата следующей аттестации</string>
+  <string name="lastDateCertification">Дата последней аттестации</string>
 </resources>

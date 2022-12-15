@@ -1,9 +1,12 @@
 package el.ka.someapp.general
 
+import android.content.Context
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Spinner
+import el.ka.someapp.data.model.ExportType
 import el.ka.someapp.data.model.measuring.CategoryHistory
+import el.ka.someapp.data.model.measuring.Measuring
 import el.ka.someapp.data.model.measuring.MeasuringHistoryItemExecuted
 import java.text.SimpleDateFormat
 import java.util.*
@@ -57,4 +60,60 @@ fun List<MeasuringHistoryItemExecuted>.byCategory(): List<CategoryHistory> {
     list.removeAll(actions)
     return@map category
   }
+}
+
+
+fun List<Measuring>.toRowsForExport(
+  context: Context,
+  exportType: ExportType
+): List<List<String>> = this.map {
+  val list = mutableListOf<String>()
+
+  val pass = it.passport
+  list.add(pass.name)
+  list.add(pass.type)
+  list.add(pass.serialNumber.toString())
+  list.add(pass.inventoryNumber.toString())
+  list.add(pass.locationIDNode) // заменить на имя узла + компанию
+
+  when (exportType) {
+    ExportType.GENERAL -> {
+      list.add(context.getString(pass.status.strRes))
+      list.add(context.getString(pass.condition.strRes))
+    }
+
+    ExportType.OVERHAUL -> {
+      list.add(it.overhaul.dateLast?.convertDate() ?: "??/??/????")
+      list.add(it.overhaul.dateNext?.convertDate() ?: "??/??/????")
+      list.add(it.overhaul.place + " " + it.overhaul.laboratory)
+    }
+
+    ExportType.MAINTENANCE_REPAIR -> {
+      list.add(it.maintenanceRepair.dateLast?.convertDate() ?: "??/??/????")
+      list.add(it.maintenanceRepair.dateNext?.convertDate() ?: "??/??/????")
+      list.add(it.maintenanceRepair.place + " " + it.maintenanceRepair.laboratory)
+    }
+
+    ExportType.TO -> {
+      list.add(it.TO.dateLast?.convertDate() ?: "??/??/????")
+      list.add(it.TO.dateNext?.convertDate() ?: "??/??/????")
+    }
+
+    ExportType.VERIFICATION -> {
+      list.add(it.verification.dateLast?.convertDate() ?: "??/??/????")
+      list.add(it.verification.dateNext?.convertDate() ?: "??/??/????")
+    }
+
+    ExportType.CALIBRATION -> {
+      list.add(it.calibration.dateLast?.convertDate() ?: "??/??/????")
+      list.add(it.calibration.dateNext?.convertDate() ?: "??/??/????")
+    }
+
+    ExportType.CERTIFICATION -> {
+      list.add(it.certification.dateLast?.convertDate() ?: "??/??/????")
+      list.add(it.certification.dateNext?.convertDate() ?: "??/??/????")
+    }
+  }
+
+  return@map list
 }

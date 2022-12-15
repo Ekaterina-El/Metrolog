@@ -7,7 +7,7 @@ import el.ka.someapp.data.model.Exporter
 
 class MainActivity : AppCompatActivity(R.layout.activity_main)  {
   var loadingDialog: Dialog? = null
-  var exporter = Exporter()
+  var exporter = Exporter(this)
 
   override fun onCreate(savedInstanceState: Bundle?) {
     setTheme(R.style.Theme_SomeApp)

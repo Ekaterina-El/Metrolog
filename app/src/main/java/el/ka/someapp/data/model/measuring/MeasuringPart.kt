@@ -6,20 +6,29 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
+import el.ka.someapp.R
 import el.ka.someapp.data.model.UserRole
 import el.ka.someapp.databinding.*
 import el.ka.someapp.view.measuring.MeasuringPartFragment
 import el.ka.someapp.viewmodel.*
 
-enum class MeasuringPart(val dbTitle: String, val actionType: MeasuringActionType?) {
-  PASSPORT("passport", MeasuringActionType.EDITED_PASSPORT),
-  MAINTENANCE_REPAIR("maintenanceRepair", MeasuringActionType.EDITED_MAINTENANCE_REPAIR),
-  TO("to", MeasuringActionType.EDITED_TO),
-  OVERHAUL("overhaul", MeasuringActionType.EDITED_OVERHAUL),
-  VERIFICATION("verification", MeasuringActionType.EDITED_VERIFICATION),
-  CERTIFICATION("certification", MeasuringActionType.EDITED_VERIFICATION),
-  CALIBRATION("calibration", MeasuringActionType.EDITED_CALIBRATION),
-  HISTORY("history", null)
+enum class MeasuringPart(
+  val dbTitle: String,
+  val actionType: MeasuringActionType?,
+  val strRes: Int
+) {
+  PASSPORT("passport", MeasuringActionType.EDITED_PASSPORT, R.string.passport),
+  MAINTENANCE_REPAIR(
+    "maintenanceRepair",
+    MeasuringActionType.EDITED_MAINTENANCE_REPAIR,
+    R.string.maintenance_repair
+  ),
+  TO("to", MeasuringActionType.EDITED_TO, R.string.to),
+  OVERHAUL("overhaul", MeasuringActionType.EDITED_OVERHAUL, R.string.overhaul),
+  VERIFICATION("verification", MeasuringActionType.EDITED_VERIFICATION, R.string.verification),
+  CERTIFICATION("certification", MeasuringActionType.EDITED_CERTIFICATION, R.string.certification),
+  CALIBRATION("calibration", MeasuringActionType.EDITED_CALIBRATION, R.string.calibration),
+  HISTORY("history", null, 0)
 }
 
 
