@@ -51,6 +51,11 @@
 
     <TextView
       style="@style/smallText"
+      android:text="@{@string/location(measuring.passport.locationNodeName)}"
+      tools:text="Местоположение: Узел 32" />
+
+    <TextView
+      style="@style/smallText"
       android:layout_marginTop="10dp"
       app:showOverhaulDates="@{measuring.overhaul}"
       tools:text="Кап.ремонт: 13/03/2022 - 13/12/2022" />
@@ -79,5 +84,7 @@
       style="@style/smallText"
       app:showCalibrationDates="@{measuring.calibration}"
       tools:text="Калибровка: 13/03/2022 - 13/12/2022" />
+
+
   </LinearLayout>
 </layout>

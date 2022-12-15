@@ -21,6 +21,7 @@ data class MeasuringPassport(
   var releaseDate: Date? = null,
   var commissioningDate: Date? = null,
   var locationIDNode: String = "",
+  var locationNodeName: String = "",
   override var interval: Int = 0,
   override var dateLast: Date? = null,
   override var dateNext: Date? = null

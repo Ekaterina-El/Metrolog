@@ -87,6 +87,7 @@
   <string name="add_measuring">Добавление СИ</string>
 
   <string name="type">Тип: %1$s</string>
+  <string name="location">Местоположение: %1$s</string>
   <string name="inv_number">Инвентарный номер: %1$s</string>
   <string name="kind">Вид</string>
   <string name="state">Статус</string>

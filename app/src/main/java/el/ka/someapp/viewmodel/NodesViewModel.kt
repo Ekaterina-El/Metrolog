@@ -109,7 +109,10 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
 
   private fun getUserFromAll(uid: String) = _companyAllUsers.value!!.firstOrNull { it.uid == uid }
 
-  private fun loadMeasuring(measuringIds: List<String>) {
+  private fun loadMeasuring(
+    measuringIds: List<String>,
+    measuringNames: MutableMap<String, String>? = null
+  ) {
     changeLoads(Loads.LOAD_MEASURING)
     viewModelScope.launch {
       val measuringItems = MeasuringDatabaseService
@@ -117,7 +120,12 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
         .awaitAll()
         .mapNotNull {
           val measuring = it.toObject(Measuring::class.java)
-          if (measuring != null) measuring.measuringID = it.id
+          if (measuring != null) {
+            measuring.measuringID = it.id
+            val nodeName =
+              if (measuringNames == null) _currentNode.value!!.name else measuringNames[it.id]!!
+            measuring.passport.locationNodeName = nodeName
+          }
           measuring
         }
       setMeasuring(measuringItems)
@@ -157,19 +165,22 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
   private fun loadAllNodesMeasuring(rootNode: Node) {
     changeLoads(Loads.LOAD_ALL_NODES_MEASURING)
     val measuringIds = mutableListOf<String>()
+    val measuringNames = mutableMapOf<String, String>()
+
     measuringIds.addAll(rootNode.measuring)     // Добавляем id СИ рутового елемента
+    measuringIds.forEach { measuringNames[it] = rootNode.name }
 
     viewModelScope.launch {
       // Загрузить все узлы и узлы узлов  |  Взять id СИ
-      rootNode.children.forEach {
+      rootNode.children.forEach { it ->
         // Загружаем узел
         loadNodes(it).forEach { node ->
+          node.measuring.forEach { measuringID -> measuringNames[measuringID] = node.name }
           measuringIds.addAll(node.measuring)    // Берём id СИ, хранящихся в узле
         }
       }
       // Загрузить общий список measuring
-
-      loadMeasuring(measuringIds)
+      loadMeasuring(measuringIds, measuringNames)
       changeLoads(Loads.LOAD_ALL_NODES_MEASURING, false)
     }
   }
