@@ -122,6 +122,7 @@
             app:tint="@color/text_on_primary" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
       </LinearLayout>
       <!--  Search - end  -->
 
@@ -150,10 +151,12 @@
         <ImageView
           android:id="@+id/iconExcel"
           android:layout_width="30dp"
+          android:layout_marginStart="5dp"
           android:layout_height="30dp"
           android:contentDescription="@string/export_measuring_to_excel"
           android:onClick="@{() -> master.exportMeasuringItems()}"
           android:src="@drawable/ic_excel" />
+
       </LinearLayout>
 
       <androidx.recyclerview.widget.RecyclerView

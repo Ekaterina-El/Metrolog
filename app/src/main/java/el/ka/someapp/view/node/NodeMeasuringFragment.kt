@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -110,25 +109,36 @@ class NodeMeasuringFragment : BaseFragment() {
   }
 
   fun exportMeasuringItems() {
-    showExportDialog()
+    val size = viewModel.measuringFiltered.value!!.size
+    if (size == 0) nothingToExport() else showExportDialog()
   }
 
   private var exportDialog: ExportDialog? = null
   private val exportDialogListener = object : ExportDialog.Companion.DialogListener {
     override fun onContinue(exportTypes: List<ExportType>) {
-      ((context) as MainActivity).exporter.export(
-        exportTypes,
-        measuring = viewModel.measuringFiltered.value!!
-      ) {
-//        openExcelDocument(path)
-        exportDialog!!.closeConfirmDialog()
-        Toast.makeText(
-          requireContext(), getString(R.string.you_measuring_exported_successfully),
-          Toast.LENGTH_SHORT
-        ).show()
-      }
+      if (exportTypes.isEmpty()) noCheckedExportTypes() else startExport(exportTypes)
     }
   }
+
+
+  private fun startExport(exportTypes: List<ExportType>) {
+    exportDialog!!.closeConfirmDialog()
+    val measuring = viewModel.measuringFiltered.value!!
+    ((context) as MainActivity).exporter.export(exportTypes, measuring) {
+//        openExcelDocument(path)
+      toast(R.string.you_measuring_exported_successfully)
+    }
+  }
+
+  private fun nothingToExport() {
+    toast(R.string.nothingToExport)
+  }
+
+  private fun noCheckedExportTypes() {
+    exportDialog!!.closeConfirmDialog()
+    toast(R.string.noCheckedExportTypes)
+  }
+
 
   private fun showExportDialog() {
     if (exportDialog == null) exportDialog = ExportDialog.getInstance(requireContext())

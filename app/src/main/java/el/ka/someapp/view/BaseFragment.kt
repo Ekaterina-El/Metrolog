@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
 import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
@@ -318,5 +319,9 @@ abstract class BaseFragment : Fragment() {
     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
     intent.setDataAndType(uri, "application/vnd.ms-excel")
     startActivity(intent)
+  }
+
+  fun toast(messageRes: Int) {
+    Toast.makeText(requireContext(), getString(messageRes), Toast.LENGTH_SHORT).show()
   }
 }
