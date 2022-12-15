@@ -94,8 +94,12 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
             user = getUserFromAll(uid) ?: loadUserByUid(uid)
           )
         }
-      _currentMeasuringHistory.value =
-        historyItemsExecuted.byCategory().sortedByDescending { it.date }
+
+      val categories = historyItemsExecuted.byCategory().sortedByDescending { it.date }
+      categories.forEachIndexed { idx, category ->
+        categories[idx].actions = category.actions.sortedByDescending { it.history.date }
+      }
+      _currentMeasuringHistory.value = categories
       changeLoads(Loads.LOAD_MEASURING_HISTORY, false)
     }
   }

@@ -4,5 +4,5 @@ import java.util.*
 
 data class CategoryHistory(
   val date: Date,
-  val actions: List<MeasuringHistoryItemExecuted>
+  var actions: List<MeasuringHistoryItemExecuted>
 )
