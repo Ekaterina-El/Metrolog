@@ -217,10 +217,10 @@
   <string name="titleWithDate">%1$s: %2$s - %3$s</string>
   <string name="export_measuring_to_excel">Экспорт СИ в Excel</string>
   <string name="you_measuring_exported_successfully">Ваши СИ успешно экспортированы в папку с документами</string>
-  <string name="export_description">Для продолжения операции отметьте необходимые типы отчетов</string>
+  <string name="export_description">Для продолжения операции отметьте необходимые <b>типы отчетов</b></string>
   <string name="information_about_measuring">Информация о СИ</string>
   <string name="export_text">Будут экспортированы только СИ, которые отображаться в данный момент. Используя поисковую строку можно экспортировать СИ по определенным запросам.</string>
-  <string name="count_export_measuring">СИ для экспорта: %1$d</string>
+  <string name="export_measuring">СИ для экспорта:</string>
   <string name="nothingToExport">Нет СИ для экспорта</string>
   <string name="noCheckedExportTypes">Не выбранны типы отчетов</string>
 

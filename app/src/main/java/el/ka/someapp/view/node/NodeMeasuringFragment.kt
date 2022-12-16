@@ -144,10 +144,9 @@ class NodeMeasuringFragment : BaseFragment() {
     toast(R.string.noCheckedExportTypes)
   }
 
-
   private fun showExportDialog() {
     if (exportDialog == null) exportDialog = ExportDialog.getInstance(requireContext())
-    val countOfMeasuring = viewModel.measuringFiltered.value!!.size
-    exportDialog!!.openConfirmDialog(exportDialogListener, countOfMeasuring)
+    val measuringItems = viewModel.measuringFiltered.value!!.map { it.passport.name }
+    exportDialog!!.openConfirmDialog(exportDialogListener, measuringItems)
   }
 }

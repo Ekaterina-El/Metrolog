@@ -13,6 +13,10 @@
     <item name="android:justificationMode">inter_word</item>
   </style>
 
+  <style name="text.items" parent="text">
+    <item name="android:paddingTop">7dp</item>
+  </style>
+
   <style name="text.roles.content" parent="text.justify">
     <item name="android:paddingTop">7dp</item>
   </style>
