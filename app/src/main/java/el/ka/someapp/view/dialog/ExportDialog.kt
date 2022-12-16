@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import el.ka.someapp.R
 import el.ka.someapp.data.model.ExportType
+import el.ka.someapp.data.model.measuring.Measuring
 
 class ExportDialog(context: Context) : Dialog(context) {
   private val cboxInformation by lazy { findViewById<CheckBox>(R.id.checkboxInformation) }
@@ -30,17 +31,17 @@ class ExportDialog(context: Context) : Dialog(context) {
     setCancelable(true)
   }
 
-  fun openConfirmDialog(confirmListener: DialogListener, measuringNames: List<String>) {
-//    textViewCountMeasuring.text =
-//      context.getString(R.string.count_export_measuring, countOfMeasuring)
-
+  fun openConfirmDialog(
+    confirmListener: DialogListener,
+    measuring: List<Measuring>,
+    companyName: String
+  ) {
+    val measuringNames = measuring.map { it.passport.name }
     val listWrapper = findViewById<LinearLayout>(R.id.measuring_names_list)
     showMeasuringNames(listWrapper, measuringNames)
 
     findViewById<Button>(R.id.buttonContinue).setOnClickListener {
-      confirmListener.onContinue(
-        getActiveReports()
-      )
+      confirmListener.onContinue(getActiveReports(), measuring, companyName)
     }
 
     cboxInformation.isChecked = false
@@ -89,7 +90,7 @@ class ExportDialog(context: Context) : Dialog(context) {
 
   companion object {
     interface DialogListener {
-      fun onContinue(exportTypes: List<ExportType>)
+      fun onContinue(exportTypes: List<ExportType>, measuring: List<Measuring>, companyName: String)
     }
 
     private var dialog: ExportDialog? = null

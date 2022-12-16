@@ -7,22 +7,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
-import el.ka.someapp.MainActivity
 import el.ka.someapp.R
-import el.ka.someapp.data.model.ExportType
 import el.ka.someapp.data.model.Node
 import el.ka.someapp.data.model.measuring.LoadMeasuringState
 import el.ka.someapp.data.model.measuring.Measuring
 import el.ka.someapp.data.model.role.AccessType
 import el.ka.someapp.data.model.role.hasRole
 import el.ka.someapp.databinding.FragmentNodeMeasuringBinding
-import el.ka.someapp.view.BaseFragment
+import el.ka.someapp.view.ExportFragment
 import el.ka.someapp.view.adapters.MeasuringAdapter
-import el.ka.someapp.view.dialog.ExportDialog
 import el.ka.someapp.viewmodel.NodesViewModel
 import el.ka.someapp.viewmodel.VisibleViewModel
 
-class NodeMeasuringFragment : BaseFragment() {
+class NodeMeasuringFragment : ExportFragment() {
   private lateinit var binding: FragmentNodeMeasuringBinding
   private val viewModel: NodesViewModel by activityViewModels()
   private val visibleViewModel: VisibleViewModel by activityViewModels()
@@ -109,44 +106,8 @@ class NodeMeasuringFragment : BaseFragment() {
   }
 
   fun exportMeasuringItems() {
-    val size = viewModel.measuringFiltered.value!!.size
-    if (size == 0) nothingToExport() else showExportDialog()
-  }
-
-  private var exportDialog: ExportDialog? = null
-  private val exportDialogListener = object : ExportDialog.Companion.DialogListener {
-    override fun onContinue(exportTypes: List<ExportType>) {
-      if (exportTypes.isEmpty()) noCheckedExportTypes() else startExport(exportTypes)
-    }
-  }
-
-  private fun startExport(exportTypes: List<ExportType>) {
-    exportDialog!!.closeConfirmDialog()
-    export(exportTypes)
-  }
-
-  private fun export(exportTypes: List<ExportType>) {
     val measuring = viewModel.measuringFiltered.value!!
     val companyName = viewModel.getRootNode()?.name ?: "-"
-
-    ((context) as MainActivity).exporter.export(exportTypes, measuring, companyName) {
-//        openExcelDocument(path)
-      toast(R.string.you_measuring_exported_successfully)
-    }
-  }
-
-  private fun nothingToExport() {
-    toast(R.string.nothingToExport)
-  }
-
-  private fun noCheckedExportTypes() {
-    exportDialog!!.closeConfirmDialog()
-    toast(R.string.noCheckedExportTypes)
-  }
-
-  private fun showExportDialog() {
-    if (exportDialog == null) exportDialog = ExportDialog.getInstance(requireContext())
-    val measuringItems = viewModel.measuringFiltered.value!!.map { it.passport.name }
-    exportDialog!!.openConfirmDialog(exportDialogListener, measuringItems)
+    if (measuring.isEmpty()) nothingToExport() else showExportDialog(measuring, companyName)
   }
 }
