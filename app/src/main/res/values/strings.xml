@@ -221,6 +221,7 @@
   <string name="information_about_measuring">Информация о СИ</string>
   <string name="export_text">Будут экспортированы только СИ, которые отображаться в данный момент. Используя поисковую строку можно экспортировать СИ по определенным запросам.</string>
   <string name="export_measuring">СИ для экспорта:</string>
+  <string name="export_to_excel">Экспортировать в Excel</string>
   <string name="nothingToExport">Нет СИ для экспорта</string>
   <string name="noCheckedExportTypes">Не выбранны типы отчетов</string>
 

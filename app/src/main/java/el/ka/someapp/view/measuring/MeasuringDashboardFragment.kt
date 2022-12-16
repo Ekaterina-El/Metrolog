@@ -18,13 +18,13 @@ import el.ka.someapp.data.model.role.hasRole
 import el.ka.someapp.databinding.FragmentMeasuringDashboardBinding
 import el.ka.someapp.general.DateConvertType
 import el.ka.someapp.general.convertDate
-import el.ka.someapp.view.BaseFragment
+import el.ka.someapp.view.ExportFragment
 import el.ka.someapp.view.adapters.MeasuringHistoryAdapter
 import el.ka.someapp.view.dialog.ConfirmDialog
 import el.ka.someapp.viewmodel.NodesViewModel
 import el.ka.someapp.viewmodel.VisibleViewModel
 
-class MeasuringDashboardFragment : BaseFragment() {
+class MeasuringDashboardFragment : ExportFragment() {
   private lateinit var binding: FragmentMeasuringDashboardBinding
 
   private val nodesViewModel: NodesViewModel by activityViewModels()
@@ -73,9 +73,16 @@ class MeasuringDashboardFragment : BaseFragment() {
     popupMenu.setOnMenuItemClickListener {
       when (it.itemId) {
         DELETE_ITEM -> deleteMeasuring()
+        EXPORT_ITEM -> exportMeasuring()
       }
       return@setOnMenuItemClickListener true
     }
+  }
+
+  private fun exportMeasuring() {
+    val measuring = nodesViewModel.currentMeasuring.value!!
+    val companyName = nodesViewModel.getRootNode()!!.name
+    showExportDialog(listOf(measuring), companyName)
   }
 
   override fun inflateBindingVariables() {
@@ -104,9 +111,20 @@ class MeasuringDashboardFragment : BaseFragment() {
     binding.verticalMenu.visibility = if (hasAccess) View.VISIBLE else View.GONE
     if (hasAccess) {
       binding.verticalMenu.setOnClickListener {
-        val showDelete = accessToDelete(nodesViewModel.currentRole.value!!)
+        val role = nodesViewModel.currentRole.value!!
+        val showDelete = accessToDelete(role)
         if (showDelete)
           popupMenu.menu.add(0, DELETE_ITEM, Menu.NONE, requireContext().getString(R.string.delete))
+
+        val showExportToExcel = accessToExport(role)
+        if (showExportToExcel)
+          popupMenu.menu.add(
+            0,
+            EXPORT_ITEM,
+            Menu.NONE,
+            requireContext().getString(R.string.export_to_excel)
+          )
+
         popupMenu.show()
       }
     }
@@ -120,6 +138,7 @@ class MeasuringDashboardFragment : BaseFragment() {
   }
 
   private fun accessToDelete(role: UserRole): Boolean = hasRole(role, AccessType.DELETE_MEASURING)
+  private fun accessToExport(role: UserRole): Boolean = hasRole(role, AccessType.EXPORT_MEASURING)
 
   override fun onBackPressed() {
     goBack()
@@ -169,5 +188,6 @@ class MeasuringDashboardFragment : BaseFragment() {
 
   companion object {
     const val DELETE_ITEM = 1
+    const val EXPORT_ITEM = 2
   }
 }
