@@ -14,47 +14,28 @@
     android:paddingVertical="20dp">
 
     <TextView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:fontFamily="@font/montserrat_regular"
-      android:text="@string/conditions_defining_role"
-      android:textSize="16sp"
-      android:textStyle="bold" />
+      style="@style/header"
+      android:text="@string/conditions_defining_role" />
 
     <TextView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      style="@style/text.justify"
       android:layout_marginTop="10dp"
-      android:fontFamily="@font/montserrat_regular"
-      android:justificationMode="inter_word"
       android:text="@string/conditions_defining_role_t1" />
 
     <TextView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      style="@style/text.justify"
       android:layout_marginTop="5dp"
-      android:fontFamily="@font/montserrat_regular"
-      android:justificationMode="inter_word"
       android:text="@string/conditions_defining_role_t2" />
 
     <TextView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      style="@style/text.justify"
       android:layout_marginTop="5dp"
-      android:fontFamily="@font/montserrat_regular"
-      android:justificationMode="inter_word"
-      android:text="@string/conditions_defining_role_t3"
-      android:textSize="14sp" />
+      android:text="@string/conditions_defining_role_t3" />
 
     <TextView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      style="@style/header"
       android:layout_marginTop="30dp"
-      android:fontFamily="@font/montserrat_regular"
-      android:text="@string/types_authority_in_node"
-      android:textSize="16sp"
-      android:textStyle="bold" />
-
+      android:text="@string/types_authority_in_node" />
     <!--  Роли и полномочия добавляються программно  -->
 
   </LinearLayout>

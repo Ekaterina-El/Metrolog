@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Typeface
-import android.util.TypedValue
 import android.view.ViewGroup.LayoutParams
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -103,30 +102,21 @@ class RoleInfoDialog(context: Context) : Dialog(context) {
     root.addView(title)
 
     val items = getAccessedAuthority(userRole)
-    items.forEachIndexed { idx, i ->
-      val view = createItem(i, idx = idx)
+    items.forEachIndexed { _, i ->
+      val view = createItem(i)
       root.addView(view)
     }
   }
 
-  private fun createItem(it: Int, isTitle: Boolean = false, idx: Int = 0): TextView {
-    val textView = TextView(context)
-
-    val params = LinearLayout.LayoutParams(
-      LinearLayout.LayoutParams.MATCH_PARENT,
-      LinearLayout.LayoutParams.MATCH_PARENT
+  private fun createItem(it: Int, isTitle: Boolean = false): TextView {
+    val textView = TextView(
+      context, null, 0,
+      if (isTitle) R.style.text_roles_headers else R.style.text_roles_content
     )
-    if (!isTitle) params.setMargins(0, 20, 0, 0) else params.setMargins(0, 80, 0, 10)
-    textView.layoutParams = params
-    textView.typeface = font
-    textView.setTextColor(secondaryColor)
-
-    val s = context.getString(it)
-
-    textView.text = if (isTitle) "\"$s\":" else "— $s"
-    textView.setLineSpacing(10f, 1f)
-    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, if (isTitle) 15f else 14f)
-
+    textView.text = context.getString(
+      if (isTitle) R.string.header else R.string.list_item,
+      context.getString(it)
+    )
     return textView
   }
 
