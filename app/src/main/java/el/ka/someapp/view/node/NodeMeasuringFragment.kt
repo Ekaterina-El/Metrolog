@@ -120,9 +120,12 @@ class NodeMeasuringFragment : BaseFragment() {
     }
   }
 
-
   private fun startExport(exportTypes: List<ExportType>) {
     exportDialog!!.closeConfirmDialog()
+    export(exportTypes)
+  }
+
+  private fun export(exportTypes: List<ExportType>) {
     val measuring = viewModel.measuringFiltered.value!!
     val companyName = viewModel.getRootNode()?.name ?: "-"
 
