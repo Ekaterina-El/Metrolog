@@ -90,9 +90,9 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:contentDescription="@null"
-            android:visibility="@{viewmodel.filter.length() > 0 ? View.VISIBLE : View.GONE}"
             android:onClick="@{() -> viewmodel.clearFilter()}"
             android:src="@drawable/ic_close"
+            android:visibility="@{viewmodel.filter.length() > 0 ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="@id/editTextFilter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/editTextFilter"
@@ -100,14 +100,14 @@
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-          app:hasAccessToAddNode="@{viewmodel.currentRole}"
           android:layout_width="35dp"
           android:layout_height="35dp"
           android:layout_marginStart="10dp"
           android:background="@drawable/button_selector"
           android:clickable="true"
           android:focusable="true"
-          android:onClick="@{() -> master.showAddNodeDialog()}">
+          android:onClick="@{() -> master.showAddNodeDialog()}"
+          app:hasAccessToAddNode="@{viewmodel.currentRole}">
 
           <ImageView
             android:layout_width="20dp"
@@ -124,44 +124,34 @@
       </LinearLayout>
       <!--  Search - end  -->
 
-      <androidx.constraintlayout.widget.ConstraintLayout
+      <LinearLayout
         android:id="@+id/layoutEmpty"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/app_padding"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="@dimen/app_padding"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:orientation="vertical"
         android:visibility="@{viewmodel.filteredNodes.size() == 0 ? View.VISIBLE : View.GONE}"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layoutHead">
-
-        <TextView
-          android:id="@+id/textEmptyList"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="10dp"
-          android:fontFamily="@font/montserrat_regular"
-          android:gravity="center"
-          android:text="@string/empty_data"
-          android:textColor="@color/secondary_color"
-          android:textSize="16sp"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/imageEmpty" />
+        app:layout_constraintTop_toBottomOf="@id/layoutHead"
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
           android:id="@+id/imageEmpty"
-          android:layout_width="100dp"
-          android:layout_height="100dp"
-          android:layout_marginTop="5dp"
+          android:layout_width="80dp"
+          android:layout_height="80dp"
           android:contentDescription="@string/empty_data"
-          android:src="@drawable/ic_database"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent" />
+          android:src="@drawable/ic_database" />
 
-      </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+          android:id="@+id/textEmptyList"
+          style="@style/text"
+          android:layout_marginTop="10dp"
+          android:gravity="center"
+          android:text="@string/empty_available_nodes" />
+      </LinearLayout>
 
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listCompanies"

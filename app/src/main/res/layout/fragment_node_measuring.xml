@@ -4,7 +4,9 @@
   xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+
     <import type="el.ka.someapp.data.model.measuring.LoadMeasuringState" />
+
     <import type="android.view.View" />
 
     <variable
@@ -128,12 +130,12 @@
 
       <LinearLayout
         android:id="@+id/controlLayout"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/app_padding"
         android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layoutHead">
 
@@ -151,8 +153,8 @@
         <ImageView
           android:id="@+id/iconExcel"
           android:layout_width="30dp"
-          android:layout_marginStart="5dp"
           android:layout_height="30dp"
+          android:layout_marginStart="5dp"
           android:contentDescription="@string/export_measuring_to_excel"
           android:onClick="@{() -> master.exportMeasuringItems()}"
           android:src="@drawable/ic_excel" />
@@ -175,45 +177,34 @@
         app:layout_constraintTop_toBottomOf="@id/controlLayout"
         tools:listitem="@layout/item_mesuring" />
 
-      <androidx.constraintlayout.widget.ConstraintLayout
+      <LinearLayout
         android:id="@+id/layoutEmpty"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/app_padding"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="@dimen/app_padding"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
         android:visibility="@{viewmodel.measuringFiltered.size() == 0 ? View.VISIBLE : View.GONE}"
         app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/controlLayout"
         tools:visibility="visible">
 
-        <TextView
-          android:id="@+id/textEmptyList"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="10dp"
-          android:fontFamily="@font/montserrat_regular"
-          android:gravity="center"
-          android:text="@string/empty_data"
-          android:textColor="@color/secondary_color"
-          android:textSize="14sp"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/imageEmpty" />
-
         <ImageView
           android:id="@+id/imageEmpty"
-          android:layout_width="100dp"
-          android:layout_height="100dp"
-          android:layout_marginTop="5dp"
+          android:layout_width="80dp"
+          android:layout_height="80dp"
           android:contentDescription="@string/empty_data"
-          android:src="@drawable/ic_database"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent" />
+          android:src="@drawable/ic_database" />
 
-      </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+          android:id="@+id/textEmptyList"
+          style="@style/text"
+          android:layout_marginTop="10dp"
+          android:gravity="center"
+          android:text="@string/empty_measuring" />
+      </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
   </androidx.core.widget.NestedScrollView>
 </layout>

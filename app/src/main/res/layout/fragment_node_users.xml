@@ -4,6 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+
     <import type="android.view.View" />
 
     <variable
@@ -121,47 +122,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
       </LinearLayout>
       <!--  Search - end  -->
-
-      <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layoutEmpty"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/app_padding"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="@dimen/app_padding"
-        android:visibility="@{viewmodel.filteredUsers.size() == 0 ? View.VISIBLE : View.GONE}"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layoutHead">
-
-        <TextView
-          android:id="@+id/textEmptyList"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="10dp"
-          android:fontFamily="@font/montserrat_regular"
-          android:gravity="center"
-          android:text="@string/empty_data"
-          android:textColor="@color/secondary_color"
-          android:textSize="16sp"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/imageEmpty" />
-
-        <ImageView
-          android:id="@+id/imageEmpty"
-          android:layout_width="100dp"
-          android:layout_height="100dp"
-          android:layout_marginTop="5dp"
-          android:contentDescription="@string/empty_data"
-          android:src="@drawable/ic_database"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent" />
-
-      </androidx.constraintlayout.widget.ConstraintLayout>
-
-
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listUsers"
         android:layout_width="match_parent"
@@ -176,6 +136,37 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toBottomOf="@id/layoutHead"
         tools:listitem="@layout/item_user" />
+
+      <LinearLayout
+        android:id="@+id/layoutEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/app_padding"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:visibility="@{viewmodel.filteredUsers.size() == 0 ? View.VISIBLE : View.GONE}"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/layoutHead"
+        tools:ignore="UseCompoundDrawables"
+        tools:visibility="visible">
+
+        <ImageView
+          android:id="@+id/imageEmpty"
+          android:layout_width="80dp"
+          android:layout_height="80dp"
+          android:contentDescription="@string/empty_data"
+          android:src="@drawable/ic_database" />
+
+        <TextView
+          android:id="@+id/textEmptyList"
+          style="@style/text"
+          android:layout_marginTop="10dp"
+          android:gravity="center"
+          android:text="@string/empty_data" />
+      </LinearLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
