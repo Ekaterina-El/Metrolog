@@ -32,6 +32,7 @@ object Fields {
   )
 
   val measurementStatusVariables = listOf(
+    MeasuringState.NOTHING,
     MeasuringState.CALIBRATION,
     MeasuringState.VERIFICATION,
     MeasuringState.CERTIFICATION

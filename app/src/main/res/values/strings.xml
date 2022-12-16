@@ -247,4 +247,5 @@
   <string name="empty_available_companies">Доступные предприятия не найдены</string>
   <string name="empty_available_nodes">Подразделения не найдены</string>
   <string name="empty_measuring">СИ не найдены</string>
+  <string name="nothing_state">Состояние не установлено</string>
 </resources>

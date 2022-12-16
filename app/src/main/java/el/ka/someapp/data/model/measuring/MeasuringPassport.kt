@@ -15,7 +15,7 @@ data class MeasuringPassport(
   var sectorGROEI: String? = "",
   var measurementType: MeasurementType = MeasurementType.GEOMETRIC_QUANTITIES,
   var measurementValues: List<MeasurementValue> = listOf(),
-  var status: MeasuringState = MeasuringState.CALIBRATION,
+  var status: MeasuringState = MeasuringState.NOTHING,
   var condition: MeasuringCondition = MeasuringCondition.IN_WORK,
   var conditionDate: Date? = null,
   var releaseDate: Date? = null,

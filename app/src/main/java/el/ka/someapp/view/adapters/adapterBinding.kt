@@ -100,20 +100,13 @@ fun showKind(textView: TextView, kind: MeasuringKind) {
   textView.text = "${context.getString(R.string.kind)}: $kindString"
 }
 
-
 @SuppressLint("SetTextI18n")
 @BindingAdapter("showStatus")
 fun showStatus(textView: TextView, state: MeasuringState) {
   val context = textView.context
-  val stateString = when (state) {
-    MeasuringState.CALIBRATION -> context.getString(R.string.calibration)
-    MeasuringState.VERIFICATION -> context.getString(R.string.verification)
-    MeasuringState.CERTIFICATION -> context.getString(R.string.certification)
-  }
-
+  val stateString = context.getString(state.strRes)
   textView.text = "${context.getString(R.string.state)}: $stateString"
 }
-
 
 @SuppressLint("SetTextI18n")
 @BindingAdapter("showCondition")
