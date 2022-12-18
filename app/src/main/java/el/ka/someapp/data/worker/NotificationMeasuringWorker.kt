@@ -54,7 +54,12 @@ class NotificationMeasuringWorker(context: Context, workerParams: WorkerParamete
       // удаляем у пользователя в availabilityNodes ID предприятия
     } else {
       // проверяем сроки СИ
+
       // проверяем дочерние подразделения без проверки доступа
+      node!!.children.forEach {
+        val childrenReports = checkNode(uid, it, isCheckCredentials = false)
+        reports.addAll(childrenReports)
+      }
     }
     return reports
   }
