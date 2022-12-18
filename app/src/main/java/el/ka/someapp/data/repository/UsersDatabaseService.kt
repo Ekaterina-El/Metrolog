@@ -145,6 +145,11 @@ object UsersDatabaseService {
     changeFieldArray(refUsers, isAdding = true, AVAILABILITY_NODES, nodeId, onSuccess, onFailure)
   }
 
+  fun removeAvailabilityNodes(userId: String, nodeId: String) {
+    val refUsers = FirebaseServices.databaseUsers.document(userId)
+    changeFieldArray(refUsers, isAdding = false, AVAILABILITY_NODES, nodeId, {}, {})
+  }
+
   private const val AVAILABILITY_NODES = "availabilityNodes"
   private const val FULL_NAME_FIELD = "fullName"
   private const val EMAIL_FIELD = "email"

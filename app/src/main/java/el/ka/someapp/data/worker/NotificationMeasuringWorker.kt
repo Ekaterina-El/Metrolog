@@ -52,6 +52,7 @@ class NotificationMeasuringWorker(context: Context, workerParams: WorkerParamete
     val reports = mutableListOf<MeasuringReport>()
     if (!hasAccess) {
       // удаляем у пользователя в availabilityNodes ID предприятия
+      UsersDatabaseService.removeAvailabilityNodes(uid, nodeId)
     } else {
       // проверяем сроки СИ
 
