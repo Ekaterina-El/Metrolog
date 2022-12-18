@@ -6,6 +6,7 @@ import com.google.firebase.firestore.FieldValue
 import el.ka.someapp.data.model.*
 import el.ka.someapp.data.repository.FirebaseServices.changeField
 import el.ka.someapp.data.repository.FirebaseServices.changeFieldArray
+import el.ka.someapp.data.repository.FirebaseServices.getDocumentById
 import el.ka.someapp.data.repository.UsersDatabaseService.loadCompanyAllUsers
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.awaitAll
@@ -315,6 +316,12 @@ object NodesDatabaseService {
   ) {
     val ref = FirebaseServices.databaseNodes.document(locationNodeId)
     changeFieldArray(ref, isAdding = false, MEASURING_FIELD, measuringId, onSuccess, onFailure)
+  }
+
+  suspend fun getCompanyOfNode(id: String): String {
+    val ref = FirebaseServices.databaseNodes
+    val node = getDocumentById(id, ref).toObject(Node::class.java)
+    return if (node!!.level == 0) node.name else getCompanyOfNode(node.rootNodeId!!)
   }
   // endregion
 

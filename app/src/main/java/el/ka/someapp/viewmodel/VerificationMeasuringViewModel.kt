@@ -22,9 +22,9 @@ class VerificationMeasuringViewModel(application: Application) :
     set(_) {}
 
   override fun getMeasuringPartRealization(): MeasuringPartRealization = Verification(
-    interval = _interval.value!!,
-    dateLast = _lastDate.value!!,
-    dateNext = _nextDate.value!!,
+    interval = _interval.value ?: 0,
+    dateLast = _lastDate.value,
+    dateNext = _nextDate.value,
     place = place.value!!,
     cost = getRoundedCost(),
     verificationCodeCSM = verificationCodeCSM.value!!

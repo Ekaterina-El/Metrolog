@@ -16,9 +16,9 @@ class CertificationMeasuringViewModel(application: Application) :
   override var measuringPart = MeasuringPart.CERTIFICATION
 
   override fun getMeasuringPartRealization(): MeasuringPartRealization = Certification(
-    interval = _interval.value!!,
-    dateLast = _lastDate.value!!,
-    dateNext = _nextDate.value!!,
+    interval = _interval.value ?: 0,
+    dateLast = _lastDate.value,
+    dateNext = _nextDate.value,
     place = place.value!!,
   )
 

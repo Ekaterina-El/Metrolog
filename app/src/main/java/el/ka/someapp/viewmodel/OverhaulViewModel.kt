@@ -15,9 +15,9 @@ class OverhaulViewModel(application: Application) : MeasuringPartViewModel(appli
   override var measuringPart = MeasuringPart.OVERHAUL
 
   override fun getMeasuringPartRealization(): MeasuringPartRealization = Overhaul(
-    interval = _interval.value!!,
-    dateLast = _lastDate.value!!,
-    dateNext = _nextDate.value!!,
+    interval = _interval.value ?: 0,
+    dateLast = _lastDate.value,
+    dateNext = _nextDate.value,
     place = place.value!!,
     laboratory = laboratory.value!!,
   )

@@ -1,10 +1,10 @@
 package el.ka.someapp.data.worker
 
 import android.content.Context
-import androidx.core.app.NotificationManagerCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import el.ka.someapp.data.model.Node
+import el.ka.someapp.data.model.Notifier
 import el.ka.someapp.data.model.User
 import el.ka.someapp.data.model.UserRole
 import el.ka.someapp.data.model.measuring.Measuring
@@ -23,20 +23,22 @@ class NotificationMeasuringWorker(context: Context, workerParams: WorkerParamete
   override suspend fun doWork(): Result {
     return try {
       val notifier = Notifier(applicationContext)
+
       val uid = AuthenticationService.getUserUid()
       val user =
         if (uid != null) UsersDatabaseService.getUserByUid(uid).toObject(User::class.java) else null
 
-      // Выходим если уведомления отключенны или пользователь не найден
+      // Выходим, если уведомления отключенны или пользователь не найден
       if (!notifier.isAvailable || user == null) return Result.success()
 
       val nodesId = user.availabilityNodes
       val reports = mutableListOf<MeasuringReport>()
       nodesId.forEach {
-        val nodeReports = checkNode(uid!!, it, true, getCurrentTime())
+        val nodeReports = checkNode(uid!!, it, true, getCurrentTime(), nodesId)
         reports.addAll(nodeReports)
       }
 
+      if (reports.isNotEmpty()) notifier.notifyMeasuring(reports)
       Result.success()
     } catch (e: Exception) {
       Result.failure()
@@ -47,7 +49,8 @@ class NotificationMeasuringWorker(context: Context, workerParams: WorkerParamete
     uid: String,
     nodeId: String,
     isCheckCredentials: Boolean = false,
-    currentTime: Date
+    currentTime: Date,
+    nodesIds: List<String>
   ): List<MeasuringReport> {
     val node = NodesDatabaseService.getNodeByID(nodeId).toObject(Node::class.java)
 
@@ -62,13 +65,18 @@ class NotificationMeasuringWorker(context: Context, workerParams: WorkerParamete
       UsersDatabaseService.removeAvailabilityNodes(uid, nodeId)
     } else {
       // проверяем сроки СИ
-      val nodeReport = checkMeasuringItems(node, "", currentTime)
+      val companyName =
+        if (node.level == 0) node.name else NodesDatabaseService.getCompanyOfNode(node.rootNodeId!!)
+      val nodeReport = checkMeasuringItems(node, companyName, currentTime)
       if (nodeReport != null) reports.add(nodeReport)
 
       // проверяем дочерние подразделения без проверки доступа
       node.children.forEach {
-        val childrenReports = checkNode(uid, it, isCheckCredentials = false, currentTime)
-        reports.addAll(childrenReports)
+        if (!nodesIds.contains(it)) {
+          val childrenReports =
+            checkNode(uid, it, isCheckCredentials = false, currentTime, nodesIds)
+          reports.addAll(childrenReports)
+        }
       }
     }
     return reports
@@ -85,30 +93,34 @@ class NotificationMeasuringWorker(context: Context, workerParams: WorkerParamete
     MeasuringDatabaseService.getMeasuringByIDs(measuringIds = node.measuring)
       .awaitAll()
       .forEach {
+        var measuringCountOfOverdue = 0
+        var measuringHalfOfOverdue = 0
         val measuring = it.toObject(Measuring::class.java)!!
+
         val parts = listOf(
-          measuring.passport, measuring.overhaul, measuring.maintenanceRepair,
+          measuring.overhaul, measuring.maintenanceRepair,
           measuring.TO, measuring.calibration, measuring.certification, measuring.verification
         )
+
         for (part in parts) {
           val nextDate = part.dateNext
           val days = if (nextDate != null) currentTime.daysTo(nextDate) else 0
           when {
-            days <= 0 -> {
-              countOfOverdue++
-              return@forEach
-            }
-            days <= 30 -> {
-              countOfHalfOverdue++
-              return@forEach
-            }
+            days <= 0 -> measuringCountOfOverdue++
+            days <= 30 -> measuringHalfOfOverdue++
             else -> {}
           }
         }
+
+        if (measuringCountOfOverdue != 0 || measuringHalfOfOverdue != 0) {
+          if (measuringCountOfOverdue > 0) countOfOverdue++
+          else countOfHalfOverdue++
+        }
       }
 
+    val nodeName = if (node.level == 0) null else node.name
     return if (countOfOverdue > 0 || countOfHalfOverdue > 0)
-      MeasuringReport(node.name, companyName, countOfOverdue, countOfHalfOverdue)
+      MeasuringReport(nodeName, companyName, countOfOverdue, countOfHalfOverdue)
     else null
   }
 
@@ -117,8 +129,4 @@ class NotificationMeasuringWorker(context: Context, workerParams: WorkerParamete
     val jobField = node.jobs.firstOrNull { it.userId == uid && it.jobRole != UserRole.READER }
     return jobField != null
   }
-}
-
-class Notifier(private val context: Context) {
-  val isAvailable: Boolean get() = NotificationManagerCompat.from(context).areNotificationsEnabled()
 }

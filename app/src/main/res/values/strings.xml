@@ -249,4 +249,7 @@
   <string name="empty_available_nodes">Подразделения не найдены</string>
   <string name="empty_measuring">СИ не найдены</string>
   <string name="nothing_state">Состояние не установлено</string>
+  <string name="notification_report_title">Напоминание</string>
+  <string name="notification_report_subtitle">В подстанции «%1$s» предприятия «%2$s» у %3$d СИ вышел и у %4$d СИ в скором времени выйдет срок состояния</string>
+  <string name="notification_report_subtitle_without_node_name">В верхнем уровене предприятия «%1$s» у %2$d СИ вышел и у %3$d СИ в скором времени выйдет срок состояния</string>
 </resources>
