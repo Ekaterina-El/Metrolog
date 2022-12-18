@@ -12,12 +12,17 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
 import el.ka.someapp.R
 import el.ka.someapp.data.model.*
+import el.ka.someapp.data.worker.NotificationMeasuringWorker
 import el.ka.someapp.databinding.FragmentCompaniesBinding
 import el.ka.someapp.view.adapters.NodesAdapter
 import el.ka.someapp.view.dialog.AddCompanyDialog
@@ -113,7 +118,19 @@ class CompaniesFragment : BaseFragment() {
     viewModel.loads.removeObserver(loadsObserver)
   }
 
-  override fun onBackPressed() {}
+  override fun onBackPressed() {
+    val constraints = Constraints.Builder()
+      .setRequiredNetworkType(NetworkType.CONNECTED)
+      .build()
+
+    val notifierMeasuringWorker = OneTimeWorkRequestBuilder<NotificationMeasuringWorker>()
+      .setConstraints(constraints)
+      .build()
+
+    val workManager = WorkManager.getInstance(requireContext())
+    workManager.cancelAllWork()
+    workManager.enqueue(notifierMeasuringWorker)
+  }
 
   private fun openNode(nodeId: String) {
     val action = CompaniesFragmentDirections.actionCompaniesFragmentToNodeFragment(nodeId)
