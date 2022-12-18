@@ -6,5 +6,6 @@ data class User(
   var profileImageUrl: String = "",
   var backgroundImageUrl: String = "",
   var email: String = "",
-  var allowedProjects: List<String> = listOf()
+  var allowedProjects: List<String> = listOf(),
+  var availabilityNodes: List<String> = listOf()
 )

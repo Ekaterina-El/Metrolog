@@ -17,22 +17,29 @@ object NodesDatabaseService {
     onSuccess: (String) -> Unit = {},
     onFailure: () -> Unit = {}
   ) {
+
     FirebaseServices.databaseNodes.add(node).addOnFailureListener { onFailure() }
       .addOnSuccessListener { newNode ->
-        afterAddNode(
-          doc = newNode,
-          node = node,
-          onSuccess = {
-            if (node.level == 0) {
-              UsersDatabaseService.addToUserAllowedProjects(
-                uid = AuthenticationService.getUserUid()!!,
-                nodeId = newNode.id,
-                onFailure = { onFailure() },
-                onSuccess = { onSuccess(newNode.id) })
-            } else onSuccess(newNode.id)
-          },
-          onFailure = onFailure
-        )
+        val userUid = AuthenticationService.getUserUid()!!
+        val nodeId = newNode.id
+        UsersDatabaseService.addAvailabilityNodes(userUid, nodeId, onFailure) {
+          afterAddNode(
+            doc = newNode,
+            node = node,
+            onSuccess = {
+              if (node.level == 0) {
+                UsersDatabaseService.addToUserAllowedProjects(
+                  uid = userUid,
+                  nodeId = nodeId,
+                  onFailure = { onFailure() },
+                  onSuccess = {
+                    onSuccess(nodeId)
+                  })
+              } else onSuccess(nodeId)
+            },
+            onFailure = onFailure
+          )
+        }
       }
   }
 
@@ -200,8 +207,13 @@ object NodesDatabaseService {
     onFailure: () -> Unit = {},
     onSuccess: () -> Unit
   ) {
+    val userId = jobField.userId
     val ref = FirebaseServices.databaseNodes.document(nodeId)
-    changeFieldArray(ref, isAdding = true, field = JOBS_FIELD, jobField, onSuccess, onFailure)
+    changeFieldArray(ref, isAdding = true, field = JOBS_FIELD, jobField, onSuccess = {
+      if (userId != "" && jobField.jobRole != UserRole.READER) {
+        UsersDatabaseService.addAvailabilityNodes(userId, nodeId, onFailure, onSuccess)
+      } else onSuccess()
+    }, onFailure)
   }
 
   fun deleteJobField(
@@ -295,7 +307,12 @@ object NodesDatabaseService {
     )
   }
 
-  fun deleteMeasuringIdFromNode(locationNodeId: String, measuringId: String, onFailure: () -> Unit, onSuccess: () -> Unit) {
+  fun deleteMeasuringIdFromNode(
+    locationNodeId: String,
+    measuringId: String,
+    onFailure: () -> Unit,
+    onSuccess: () -> Unit
+  ) {
     val ref = FirebaseServices.databaseNodes.document(locationNodeId)
     changeFieldArray(ref, isAdding = false, MEASURING_FIELD, measuringId, onSuccess, onFailure)
   }

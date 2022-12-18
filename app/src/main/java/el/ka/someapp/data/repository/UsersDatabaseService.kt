@@ -135,6 +135,17 @@ object UsersDatabaseService {
     changeField(ref, field = FULL_NAME_FIELD, value = newFullName, onFailure, onSuccess)
   }
 
+  fun addAvailabilityNodes(
+    userId: String,
+    nodeId: String,
+    onFailure: () -> Unit,
+    onSuccess: () -> Unit
+  ) {
+    val refUsers = FirebaseServices.databaseUsers.document(userId)
+    changeFieldArray(refUsers, isAdding = true, AVAILABILITY_NODES, nodeId, onSuccess, onFailure)
+  }
+
+  private const val AVAILABILITY_NODES = "availabilityNodes"
   private const val FULL_NAME_FIELD = "fullName"
   private const val EMAIL_FIELD = "email"
   private const val PROFILE_IMAGE_URL_FIELD = "profileImageUrl"
