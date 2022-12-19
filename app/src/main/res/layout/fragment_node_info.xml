@@ -109,7 +109,6 @@
 
       </LinearLayout>
 
-
       <!-- Company positions - start -->
       <TextView
         android:id="@+id/textCompanyPositionTitle"
@@ -131,6 +130,7 @@
         android:background="@drawable/button_selector_small"
         android:clickable="true"
         android:focusable="true"
+        android:onClick="@{() -> master.showJobFieldDialog()}"
         app:hasAccessToAddJobField="@{viewmodel.currentRole}"
         app:layout_constraintBottom_toBottomOf="@id/textCompanyPositionTitle"
         app:layout_constraintStart_toEndOf="@id/textCompanyPositionTitle"
@@ -140,10 +140,7 @@
         <ImageView
           android:layout_width="20dp"
           android:layout_height="20dp"
-          android:clickable="true"
           android:contentDescription="@null"
-          android:focusable="true"
-          android:onClick="@{() -> master.showJobFieldDialog()}"
           android:src="@drawable/ic_add"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
@@ -183,6 +180,31 @@
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/company_positions_list" />
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/button_selector_small"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="@{() -> master.goCompaniesScreen()}"
+        app:layout_constraintBottom_toBottomOf="@id/textHierarchyTitle"
+        app:layout_constraintStart_toEndOf="@id/textHierarchyTitle"
+        app:layout_constraintTop_toTopOf="@id/textHierarchyTitle"
+        app:layout_goneMarginStart="10dp">
+
+        <ImageView
+          android:layout_width="20dp"
+          android:layout_height="20dp"
+          android:contentDescription="@null"
+          android:src="@drawable/ic_home"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          app:tint="@color/text_on_primary" />
+      </androidx.constraintlayout.widget.ConstraintLayout>
 
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/hierarchy_list"

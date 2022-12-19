@@ -125,6 +125,10 @@ class NodeInfoFragment : BaseFragment() {
     viewModel.currentRole.removeObserver(roleObserver)
   }
 
+  fun goCompaniesScreen() {
+    viewModel.exitCompany()
+  }
+
 
   // region Role Info Dialog
   private var roleInfoDialog: RoleInfoDialog? = null
