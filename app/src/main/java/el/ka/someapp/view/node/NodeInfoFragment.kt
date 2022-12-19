@@ -87,7 +87,11 @@ class NodeInfoFragment : BaseFragment() {
   override fun initFunctionalityParts() {
     binding = FragmentNodeInfoBinding.inflate(layoutInflater)
     hierarchyAdapter = HierarchyNodesAdapter(listener = hierarchyNodeListener)
-    localUsersAdapter = JobsAdapter(context = requireContext(), listener = localUsersListener)
+    localUsersAdapter = JobsAdapter(
+      context = requireContext(),
+      listener = localUsersListener,
+      uid = viewModel.currentUserProfile.value!!.uid
+    )
   }
 
   override fun inflateBindingVariables() {

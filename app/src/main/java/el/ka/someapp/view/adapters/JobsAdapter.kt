@@ -16,9 +16,8 @@ import el.ka.someapp.data.model.role.AccessType
 import el.ka.someapp.data.model.role.hasRole
 import el.ka.someapp.databinding.ItemCompanyPositionBinding
 
-class JobsAdapter(val context: Context, val listener: ItemListener? = null) :
+class JobsAdapter(val context: Context, val listener: ItemListener? = null, val uid: String) :
   RecyclerView.Adapter<JobsAdapter.ViewHolder>() {
-
   inner class ViewHolder(val binding: ItemCompanyPositionBinding) :
     RecyclerView.ViewHolder(binding.root) {
     private var viewerRole: UserRole? = null
@@ -85,7 +84,8 @@ class JobsAdapter(val context: Context, val listener: ItemListener? = null) :
       val showEdit = accessToEdit(jobField, role)
       if (showEdit) popupMenu.menu.add(0, EDIT_ITEM, Menu.NONE, context.getString(R.string.edit2))
 
-      val showDelete = accessToDelete(jobField, role)
+      val showDelete =
+        accessToDelete(jobField, role) && (viewerRole == UserRole.HEAD || jobField.userId != uid)
       if (showDelete) popupMenu.menu.add(
         0,
         DELETE_ITEM,
