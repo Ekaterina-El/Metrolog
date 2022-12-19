@@ -64,9 +64,7 @@ class NodeUsersFragment : BaseFragment() {
     when (it) {
       State.ADD_USER_ERROR ->
         showAddUserDialogWithEmailAndError(error = getString(viewModel.addUserError.value!!.textId))
-
       State.ADD_USER_SUCCESS -> addUserDialog!!.clearDialog()
-
       else -> {}
     }
   }
@@ -140,44 +138,28 @@ class NodeUsersFragment : BaseFragment() {
     addUserDialog!!.show()
   }
 
-  /*
-  private fun createAddUserDialog() {
-    addUserDialog = Dialog(requireActivity())
-    addUserDialog?.let { dialog ->
-      dialog.setContentView(R.layout.add_user_by_email_dialog)
-      dialog.window!!.setLayout(
-        ViewGroup.LayoutParams.MATCH_PARENT,
-        ViewGroup.LayoutParams.WRAP_CONTENT
-      )
-      dialog.setCancelable(true)
+  // region Exit project dialog
+  private val exitProjectConfirmListener = object : ConfirmDialog.Companion.ConfirmListener {
+    override fun onAgree(value: Any?) {
+      viewModel.exitFromProject { afterExitFromProject() }
+      closeConfirmDialog()
+    }
 
-      val editTextEmail: EditText = dialog.findViewById(R.id.editTextUserEmail)
-      val buttonOk: Button = dialog.findViewById(R.id.buttonOk)
-
-      buttonOk.setOnClickListener {
-        val email = editTextEmail.text.toString()
-        viewModel.addUserToProjectByEmail(email = email)
-        dialog.dismiss()
-      }
+    override fun onDisagree() {
+      closeConfirmDialog()
     }
   }
 
-  fun showAddUserDialog() {
-    if (addUserDialog == null) createAddUserDialog()
-    addUserDialog?.show()
+  private fun afterExitFromProject() {
+    goCompaniesScreen()
   }
 
-  private fun clearAddUserDialog() {
-    addUserDialog?.findViewById<EditText>(R.id.editTextUserEmail)?.setText("")
-    addUserDialog?.findViewById<TextInputLayout>(R.id.layoutEmail)?.error = null
-
+  private fun goCompaniesScreen() {
+    viewModel.exitCompany()
   }
 
-  private fun showAddUserDialogWithEmailAndError(error: String) {
-    addUserDialog?.findViewById<TextInputLayout>(R.id.layoutEmail)?.error = error
-    showAddUserDialog()
+  fun showConfirmProjectExitDialog() {
+    openConfirmDialog(getString(R.string.exit_from_project_message), exitProjectConfirmListener)
   }
-
-   */
   // endregion
 }

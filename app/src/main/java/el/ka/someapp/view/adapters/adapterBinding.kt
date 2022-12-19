@@ -11,10 +11,7 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.google.android.material.textfield.TextInputLayout
 import el.ka.someapp.R
-import el.ka.someapp.data.model.ErrorApp
-import el.ka.someapp.data.model.State
-import el.ka.someapp.data.model.User
-import el.ka.someapp.data.model.UserRole
+import el.ka.someapp.data.model.*
 import el.ka.someapp.data.model.measuring.MeasuringCondition
 import el.ka.someapp.data.model.measuring.MeasuringKind
 import el.ka.someapp.data.model.measuring.MeasuringPartRealization
@@ -208,11 +205,18 @@ fun hasAccessToAddUser(view: View, role: UserRole?) {
   hasAccess(view, role, AccessType.ADD_USER)
 }
 
+@BindingAdapter(value = ["app:roleToDelete", "app:node"], requireAll = true)
+fun hasAccessToExitFromProject(view: View, role: UserRole?, node: Node?) {
+  val access =
+    (if (role != null) hasRole(role, AccessType.EXIT_FROM_PROJECT) else false) && ((node?.level
+      ?: -1) == 0)
+  view.visibility = if (access) View.VISIBLE else View.GONE
+}
+
 @BindingAdapter("app:hasAccessToEditMeasuring")
 fun hasAccessToEditMeasuring(view: View, role: UserRole?) {
   hasAccess(view, role, AccessType.EDIT_MEASURING)
 }
-
 
 @BindingAdapter("app:hasAccessToAddMeasuring")
 fun hasAccessToAddMeasuring(view: View, role: UserRole?) {

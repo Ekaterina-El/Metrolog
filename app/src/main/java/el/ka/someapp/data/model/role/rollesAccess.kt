@@ -2,7 +2,6 @@ package el.ka.someapp.data.model.role
 
 import android.view.View
 import el.ka.someapp.data.model.UserRole
-import kotlin.math.E
 
 val rolesHasAccessToChangeName = listOf(UserRole.HEAD, UserRole.EDITOR_1)
 val rolesHasAccessToDeleteNode = listOf(UserRole.HEAD)
@@ -27,7 +26,9 @@ val rolesHasAccessToAddMeasuring = listOf(UserRole.HEAD, UserRole.EDITOR_1, User
 val rolesHasAccessToEditMeasuring = listOf(UserRole.HEAD, UserRole.EDITOR_1, UserRole.EDITOR_2)
 val rolesHasAccessToDeleteMeasuring = listOf(UserRole.HEAD, UserRole.EDITOR_1, UserRole.EDITOR_2)
 val rolesHasAccessToViewMeasuring = listOf(UserRole.HEAD, UserRole.EDITOR_1, UserRole.EDITOR_2, UserRole.READER)
-val rolesHasAccessToExportMeasuring = listOf(UserRole.HEAD, UserRole.EDITOR_1, UserRole.EDITOR_2, UserRole.READER)
+val rolesHasAccessToExportMeasuring =
+  listOf(UserRole.HEAD, UserRole.EDITOR_1, UserRole.EDITOR_2, UserRole.READER)
+val rolesHasAccessToExitFromProject = listOf(UserRole.EDITOR_1, UserRole.EDITOR_2, UserRole.READER)
 
 fun hasAccess(view: View, role: UserRole?, accessType: AccessType) {
   val access = if (role != null) hasRole(role, accessType) else null
@@ -60,6 +61,8 @@ fun hasRole(role: UserRole, accessType: AccessType): Boolean {
     AccessType.DELETE_MEASURING -> rolesHasAccessToDeleteMeasuring
     AccessType.VIEW_MEASURING -> rolesHasAccessToViewMeasuring
     AccessType.EXPORT_MEASURING -> rolesHasAccessToExportMeasuring
+
+    AccessType.EXIT_FROM_PROJECT -> rolesHasAccessToExitFromProject
   }
 
   return listOfAccess.contains(role)

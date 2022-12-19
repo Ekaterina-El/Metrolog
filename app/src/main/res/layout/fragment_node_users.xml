@@ -120,6 +120,31 @@
             app:tint="@color/text_on_primary" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+          android:layout_width="35dp"
+          android:layout_height="35dp"
+          android:layout_marginStart="10dp"
+          android:background="@drawable/button_selector"
+          android:clickable="true"
+          android:focusable="true"
+          android:onClick="@{() -> master.showConfirmProjectExitDialog()}"
+          app:node="@{viewmodel.currentNode}"
+          app:roleToDelete="@{viewmodel.currentRole}">
+
+          <ImageView
+            android:layout_width="18dp"
+            android:layout_height="20dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_exit"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/text_on_primary" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
       </LinearLayout>
       <!--  Search - end  -->
       <androidx.recyclerview.widget.RecyclerView

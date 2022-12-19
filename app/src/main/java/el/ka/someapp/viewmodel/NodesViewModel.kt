@@ -223,6 +223,11 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
     updateCurrentNodeRole()
   }
 
+  fun exitCompany() {
+    clearFields()
+    _state.value = State.BACK
+  }
+
   fun goBack() {
     popupHistory()
 
@@ -789,9 +794,8 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
 
   fun getRootNode() = _nodesHistory.value?.firstOrNull()
 
-  fun denyAccessUser(userId: String) {
+  fun denyAccessUser(userId: String, after: (String) -> Unit = {}) {
     changeLoads(Loads.DENY_ACCESS_USER)
-//    _state.value = State.LOADING
     val rootId = getRootNode()?.id
 
     // удалить из root_node usersHaveAccess id пользователя
@@ -808,6 +812,7 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
         }) {
           updateProjectUsers(isAdding = false, userId)
           changeLoads(Loads.DENY_ACCESS_USER, false)
+          after(rootId)
         }
       }
   }
@@ -862,6 +867,17 @@ class NodesViewModel(application: Application) : AndroidViewModel(application) {
 
   fun getLocalUserHeadID(): String? {
     return _localUsers.value!!.firstOrNull { it.jobField.jobRole == UserRole.HEAD }?.user?.uid
+  }
+
+  fun exitFromProject(after: () -> Unit) {
+    val profile = _currentUserProfile.value!!
+    val uid = profile.uid
+    denyAccessUser(uid) { nodeRootId ->
+      val projects = profile.allowedProjects.toMutableList()
+      projects.remove(nodeRootId)
+      _currentUserProfile.value!!.allowedProjects = projects
+      after()
+    }
   }
 }
 // endregion
