@@ -21,6 +21,10 @@ import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import el.ka.someapp.MainActivity
@@ -29,10 +33,12 @@ import el.ka.someapp.data.model.ErrorApp
 import el.ka.someapp.data.model.SpinnerItem
 import el.ka.someapp.data.model.measuring.Fields
 import el.ka.someapp.data.model.measuring.MeasuringPassportPart
+import el.ka.someapp.data.worker.NotificationMeasuringWorker
 import el.ka.someapp.view.adapters.SpinnerAdapter
 import el.ka.someapp.view.dialog.ConfirmDialog
 import el.ka.someapp.view.dialog.NetworkErrorDialog
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 abstract class BaseFragment : Fragment() {
 
@@ -323,5 +329,24 @@ abstract class BaseFragment : Fragment() {
 
   fun toast(messageRes: Int) {
     Toast.makeText(requireContext(), getString(messageRes), Toast.LENGTH_SHORT).show()
+  }
+
+  private val workManager by lazy { WorkManager.getInstance(requireContext()) }
+  fun addObserverToNotifications() {
+    removeObserverToNotifications()
+    val constraints = Constraints.Builder()
+      .setRequiredNetworkType(NetworkType.CONNECTED)
+      .build()
+
+    val notifierMeasuringWorker =
+      PeriodicWorkRequestBuilder<NotificationMeasuringWorker>(3, TimeUnit.HOURS)
+        .setConstraints(constraints)
+        .build()
+
+    workManager.enqueue(notifierMeasuringWorker)
+  }
+
+  fun removeObserverToNotifications() {
+    workManager.cancelAllWork()
   }
 }

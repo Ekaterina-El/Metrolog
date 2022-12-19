@@ -61,4 +61,8 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         _errors.value = mutableListOf(error)
       })
   }
+
+  fun toViewState() {
+    _state.value = State.VIEW
+  }
 }

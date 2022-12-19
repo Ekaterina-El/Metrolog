@@ -147,6 +147,7 @@ class DefenderFragment : BaseFragment() {
   }
 
   private fun logout() {
+    removeObserverToNotifications()
     setPassword(null)
     navigate(R.id.action_defenderFragment_to_welcomeFragment)
   }

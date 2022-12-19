@@ -23,7 +23,6 @@ class NotificationMeasuringWorker(context: Context, workerParams: WorkerParamete
   override suspend fun doWork(): Result {
     return try {
       val notifier = Notifier(applicationContext)
-
       val uid = AuthenticationService.getUserUid()
       val user =
         if (uid != null) UsersDatabaseService.getUserByUid(uid).toObject(User::class.java) else null

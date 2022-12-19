@@ -38,8 +38,10 @@ class LoginFragment : BaseFragment() {
 
   private val stateObserver = Observer<State> {
     if (it == AWAITING) {
+      addObserverToNotifications()
       Toast.makeText(requireContext(), getString(R.string.successAuth), Toast.LENGTH_SHORT).show()
       navigate(R.id.action_loginFragment_to_defenderFragment)
+      viewModel.toViewState()
     }
   }
 
