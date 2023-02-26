@@ -33,7 +33,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-Application for metrological organizations with differentiation of access rights. Allows you to store data about measuring instruments in a created enterprise hierarchy.
+Application for metrology organizations with access rights separation and possibility of export to Excel. Allows you to store data about measuring instruments in a created enterprise hierarchy.
 
 Each enterprise node is a subdivision that can store an unlimited number of measuring instruments, internal nodes. Each subdivision has a list of authorized persons, i.e. a flexible setting of the access level to each part of the enterprise.
 
@@ -69,31 +69,31 @@ For safety the "Defender" is introduced. Designed to protect data from unauthori
 ## Usage
 
 ### Screenshots
-![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/1.jpeg)
-![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/2.jpeg)
-![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/3.jpeg)
-![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/4.jpeg)
-![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/5.jpeg)
-![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/6.jpeg)
-![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/7.jpeg)
-![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/8.jpeg)
-![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/9.jpeg)
-![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/10.jpeg)
-![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/11.jpeg)
-![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/12.jpeg)
-![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/13.jpeg)
-![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/14.jpeg)
-![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/15.jpeg)
-![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/16.jpeg)
-![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/17.jpeg)
-![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/18.jpeg)
-![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/19.jpeg)
-![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/20.jpeg)
-![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/21.jpeg)
-![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/22.jpeg)
-![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/23.jpeg)
-![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/24.jpeg)
-![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/25.jpeg)
+![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/1.jpg)
+![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/2.jpg)
+![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/3.jpg)
+![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/4.jpg)
+![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/5.jpg)
+![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/6.jpg)
+![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/7.jpg)
+![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/8.jpg)
+![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/9.jpg)
+![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/10.jpg)
+![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/11.jpg)
+![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/12.jpg)
+![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/13.jpg)
+![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/14.jpg)
+![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/15.jpg)
+![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/16.jpg)
+![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/17.jpg)
+![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/18.jpg)
+![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/19.jpg)
+![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/20.jpg)
+![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/21.jpg)
+![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/22.jpg)
+![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/23.jpg)
+![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/24.jpg)
+![](https://github.com/Ekaterina-El/SoundSpec/blob/master/screenshot/25.jpg)
 
 ## Contacts
 Ekaterina Elshina - [@Ekateri78892975](https://twitter.com/Ekateri78892975) - hackerrussia@yandex.ru
