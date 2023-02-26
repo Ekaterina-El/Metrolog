@@ -20,8 +20,7 @@
     <li>
       <a href="#usage">Usage</a>
       <ul>
-        <li><a href="#demo"></a></li>
-        <li><a href="#srceenshots">Screenshots</a></li>
+        <li><a href="#screenshots">Screenshots</a></li>
       </ul>
     </li>
     <li><a href="#contact">Contact</a></li>
@@ -69,32 +68,31 @@ For safety the "Defender" is introduced. Designed to protect data from unauthori
 ## Usage
 
 ### Screenshots
-![](https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/1.jpg)
-![](https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/2.jpg)
-![](https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/3.jpg)
-![](https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/4.jpg)
-![](https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/5.jpg)
-![](https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/6.jpg)
-![](https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/7.jpg)
-![](https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/8.jpg)
-![](https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/9.jpg)
-![](https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/10.jpg)
-![](https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/11.jpg)
-![](https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/12.jpg)
-![](https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/13.jpg)
-![](https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/14.jpg)
-![](https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/15.jpg)
-![](https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/16.jpg)
-![](https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/17.jpg)
-![](https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/18.jpg)
-![](https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/19.jpg)
-![](https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/20.jpg)
-![](https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/21.jpg)
-![](https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/22.jpg)
-![](https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/23.jpg)
-![](https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/24.jpg)
-![](https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/25.jpg)
-
+<img src="https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/1.jpg" width="350"></img>
+<img src="https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/2.jpg" width="350"></img>
+<img src="https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/3.jpg" width="350"></img>
+<img src="https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/4.jpg" width="350"></img>
+<img src="https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/5.jpg" width="350"></img>
+<img src="https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/6.jpg" width="350"></img>
+<img src="https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/7.jpg" width="350"></img>
+<img src="https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/8.jpg" width="350"></img>
+<img src="https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/9.jpg" width="350"></img>
+<img src="https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/10.jpg" width="350"></img>
+<img src="https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/11.jpg" width="350"></img>
+<img src="https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/12.jpg" width="350"></img>
+<img src="https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/13.jpg" width="350"></img>
+<img src="https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/14.jpg" width="350"></img>
+<img src="https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/15.jpg" width="350"></img>
+<img src="https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/16.jpg" width="350"></img>
+<img src="https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/17.jpg" width="350"></img>
+<img src="https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/18.jpg" width="350"></img>
+<img src="https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/19.jpg" width="350"></img>
+<img src="https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/20.jpg" width="350"></img>
+<img src="https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/21.jpg" width="350"></img>
+<img src="https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/22.jpg" width="350"></img>
+<img src="https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/23.jpg" width="350"></img>
+<img src="https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/24.jpg" width="350"></img>
+<img src="https://github.com/Ekaterina-El/Metrolog/blob/master/screenshots/25.jpg" width="350"></img>
 
 ## Contacts
 Ekaterina Elshina - [@Ekateri78892975](https://twitter.com/Ekateri78892975) - hackerrussia@yandex.ru
